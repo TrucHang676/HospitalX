@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C5759665-6604-4572-8A77-004EE9923C88}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>HospitalX</RootNamespace>
+    <AssemblyName>HospitalX</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>svg.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Guna.UI2, Version=2.0.4.7, Culture=neutral, PublicKeyToken=8b9d14aa5142e261, processorArchitecture=MSIL">
+      <HintPath>..\packages\Guna.UI2.WinForms.2.0.4.7\lib\net48\Guna.UI2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColPicker.Designer.cs">
+      <DependentUpon>ColPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCreateRole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCreateRole.Designer.cs">
+      <DependentUpon>frmCreateRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmChangePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditUser.Designer.cs">
+      <DependentUpon>frmEditUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmChangePassword.Designer.cs">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCreateUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCreateUser.Designer.cs">
+      <DependentUpon>frmCreateUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\GraphicsHelper.cs" />
+    <Compile Include="frmCreateRole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCreateRole.Designer.cs">
+      <DependentUpon>frmCreateRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main_PhanHe1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main_PhanHe1.Designer.cs">
+      <DependentUpon>Main_PhanHe1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Splash.Designer.cs">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucDashboard.Designer.cs">
+      <DependentUpon>ucDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucGrantRevoke.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucGrantRevoke.Designer.cs">
+      <DependentUpon>ucGrantRevoke.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucRevoke.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucRevoke.Designer.cs">
+      <DependentUpon>ucRevoke.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucRole.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucRole.Designer.cs">
+      <DependentUpon>ucRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucUser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucUser.Designer.cs">
+      <DependentUpon>ucUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ucViewPrivilege.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ucViewPrivilege.Designer.cs">
+      <DependentUpon>ucViewPrivilege.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ColPicker.resx">
+      <DependentUpon>ColPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmChangePassword.resx">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCreateRole.resx">
+      <DependentUpon>frmCreateRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCreateUser.resx">
+      <DependentUpon>frmCreateUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEditUser.resx">
+      <DependentUpon>frmEditUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main_PhanHe1.resx">
+      <DependentUpon>Main_PhanHe1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Splash.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucDashboard.resx">
+      <DependentUpon>ucDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucGrantRevoke.resx">
+      <DependentUpon>ucGrantRevoke.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucRevoke.resx">
+      <DependentUpon>ucRevoke.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucRole.resx">
+      <DependentUpon>ucRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucUser.resx">
+      <DependentUpon>ucUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ucViewPrivilege.resx">
+      <DependentUpon>ucViewPrivilege.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eye_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="svg.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
