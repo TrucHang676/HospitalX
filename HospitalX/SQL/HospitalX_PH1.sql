@@ -234,14 +234,47 @@ CREATE TABLE VPD_COL_TRACKING (
 );
 
 -- Dùng cho VPD để grant select mức cột
-CREATE OR REPLACE FUNCTION policy_select_column (
+/*CREATE OR REPLACE FUNCTION policy_select_column (
     p_schema IN VARCHAR2,
     p_table  IN VARCHAR2
 ) RETURN VARCHAR2 AS
 BEGIN
-    RETURN NULL;  -- NULL = không lọc row, nhưng sẽ NULL hóa các cột trong sec_relevant_cols
+    RETURN '1=2';  -- NULL = không lọc row, nhưng sẽ NULL hóa các cột trong sec_relevant_cols
 END;
 /
+*/
+CREATE OR REPLACE FUNCTION policy_select_column (
+    p_schema IN VARCHAR2,
+    p_table  IN VARCHAR2
+) RETURN VARCHAR2 AS
+    v_current_user VARCHAR2(128) := SYS_CONTEXT('USERENV', 'SESSION_USER');
+    v_count        NUMBER;
+BEGIN
+    -- 1. Chủ schema (adminHos) → luôn thấy full, không filter gì
+    IF UPPER(v_current_user) = UPPER(p_schema) THEN
+        RETURN NULL;
+    END IF;
+
+    -- 2. Kiểm tra user này có bị giới hạn cột trên bảng này không
+    SELECT COUNT(*) INTO v_count
+    FROM ADMINHOS.VPD_COL_TRACKING
+    WHERE SCHEMA_NAME = UPPER(p_schema)
+      AND TABLE_NAME  = UPPER(p_table)
+      AND GRANTEE     = UPPER(v_current_user);
+
+    -- 3. Có trong tracking → trả về '1=2' → ẩn cột theo sec_relevant_cols
+    IF v_count > 0 THEN
+        RETURN '1=2';
+    END IF;
+
+    -- 4. Không trong tracking (được cấp SELECT toàn bảng) → không filter
+    RETURN NULL;
+
+EXCEPTION WHEN OTHERS THEN
+    RETURN NULL;  -- An toàn: nếu lỗi gì thì không ẩn gì cả
+END;
+/
+
 
 -- Cấp quyền cho user/role
 CREATE OR REPLACE PROCEDURE SP_GRANT_PRIVILEGE (
@@ -1128,6 +1161,10 @@ INSERT INTO LUONG_NHANVIEN VALUES ('BS_AN', 20000000, 5000000, 2000000, 23000000
 INSERT INTO LUONG_NHANVIEN VALUES ('YT_BINH', 10000000, 2000000, 500000, 11500000, '04/2026');
 COMMIT;
 
+EXEC sp_UpdateUserInfo('BS_AN', N'Nguyễn Văn An', N'Nam', '15/05/1985', '0901234567', N'123 Đường Lê Lợi, Quận 1, TP.HCM', N'Bác sĩ');
+EXEC sp_UpdateUserInfo('YT_BINH', N'Lê Thị Bình', N'Nữ', '20/10/1992', '0988776655', N'456 Đường Nguyễn Huệ, Quận 1, TP.HCM', N'Y tá');
+
+
 -- 3. TẠO CÁC ĐỐI TƯỢNG ĐA DẠNG ĐỂ TEST PHÂN QUYỀN
 
 -- --- A. VIEW (Dùng để test SELECT mức Table/View) ---
@@ -1276,13 +1313,13 @@ END;
 --    -- 2. Quyền cấp cho Role (Lọc role hệ thống)
 --    tp.GRANTEE IN (SELECT ROLE FROM DBA_ROLES WHERE ORACLE_MAINTAINED = 'N');
 
-SELECT SDT FROM ADMINHOS.THONGTIN_NHANVIEN;
-
-SELECT * FROM ADMINHOS.NHANVIEN_MAU;
-
--- 2. Kiểm tra policy đã được tạo sau khi GRANT
-SELECT POLICY_NAME, OBJECT_NAME, FUNCTION
-FROM DBA_POLICIES 
-WHERE OBJECT_OWNER = 'ADMINHOS';
-
-SELECT * FROM VPD_COL_TRACKING;
+--SELECT SDT FROM ADMINHOS.THONGTIN_NHANVIEN;
+--
+--SELECT * FROM ADMINHOS.NHANVIEN_MAU;
+--
+---- 2. Kiểm tra policy đã được tạo sau khi GRANT
+--SELECT POLICY_NAME, OBJECT_NAME, FUNCTION
+--FROM DBA_POLICIES 
+--WHERE OBJECT_OWNER = 'ADMINHOS';
+--
+--SELECT * FROM VPD_COL_TRACKING;
