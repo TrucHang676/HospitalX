@@ -85,9 +85,9 @@ BEGIN
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        RAISE_APPLICATION_ERROR(-20001, 'L?i t?o User: ' || SQLERRM);
+        RAISE_APPLICATION_ERROR(-20001, 'Loi tao User: ' || SQLERRM);
 END;
-
+/
 
 -- 1.2 Xóa User
 CREATE OR REPLACE PROCEDURE sp_DropUser (
@@ -183,6 +183,13 @@ END;
 -- ----------------------------------------------------------
 -- YÊU CẦU 3: CẤP QUYỀN (GRANT PRIVILEGES)
 -- ----------------------------------------------------------
+-- Xóa trước chạy lại đỡ lỗi
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE VPD_COL_TRACKING PURGE';
+EXCEPTION
+    WHEN OTHERS THEN NULL; -- Bỏ qua nếu chưa tồn tại
+END;
+/
 
 -- Chạy 1 lần duy nhất với quyền DBA
 -- PHỤC VỤ CHO SELECT MỨC CỘT
@@ -858,10 +865,9 @@ AS
 BEGIN
     OPEN p_cursor FOR
         SELECT DISTINCT 
-               GRANTEE,
                GRANTEE
         FROM   DBA_ROLE_PRIVS
-        WHERE  ROLE = UPPER(p_role_name)
+        WHERE  GRANTED_ROLE = UPPER(p_role_name)  -- HỒI ĐẦU BỊ LỖI Ở ĐÂY FIX NHẸ CÁI
           AND  GRANTEE NOT LIKE 'C##%'
           AND  GRANTEE IN (SELECT USERNAME FROM DBA_USERS WHERE ORACLE_MAINTAINED = 'N')
         ORDER  BY GRANTEE;
@@ -938,6 +944,7 @@ EXCEPTION
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20001, 'Loi lay dashboard stats: ' || SQLERRM);
 END;
+/
 
 -- Lấy các role của db kèm số lượng user của role đó
 CREATE OR REPLACE PROCEDURE USP_DASHBOARD_ROLE_DISTRIBUTION (
@@ -999,6 +1006,7 @@ EXCEPTION
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20002, 'L?i l?y danh s?ch objects: ' || SQLERRM);
 END;
+/
 
 -- Lấy danh sách tablespace sẵn có
 CREATE OR REPLACE PROCEDURE USP_GET_TABLESPACES(
@@ -1074,14 +1082,18 @@ BEGIN
 EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
-        RAISE_APPLICATION_ERROR(-20002, 'L?i c?p nh?t th?ng tin User: ' || SQLERRM);
+        RAISE_APPLICATION_ERROR(-20002, 'Loi cap nhat thong tin User: ' || SQLERRM);
 END sp_UpdateUserInfo;
 
 
 -- ==========================================================
 -- DEMO DATA - PHÂN HỆ 1: QUẢN TRỊ NGƯỜI DÙNG & BẢO MẬT
 -- ==========================================================
-
+-- Xóa bảng cũ nếu tồn tại (LUONG trước vì có FK phụ thuộc THONGTIN)
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE LUONG_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE THONGTIN_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
 -- 1. TẠO CẤU TRÚC DL (CÁC BẢNG CHÍNH)
 -- BẢNG NHÂN VIÊN (bắt buộc, ko có lỗi app). PH2 set dữ liệu chuẩn cho nhân viên.
 CREATE TABLE THONGTIN_NHANVIEN (
@@ -1107,14 +1119,11 @@ CREATE TABLE LUONG_NHANVIEN (
 );
 
 -- 2. DỮ LIỆU MẪU ĐỂ TEST
-EXEC SP_CREATEUSER('bs_an', '123',  N'Nguyễn Văn An', 'SYSTEM');
-EXEC SP_CREATEUSER('yt_binh', '123',  N'Lê Thị Bình', 'SYSTEM');
+EXEC SP_CREATEUSER('BS_AN', '123',  N'Nguyễn Văn An', 'SYSTEM');
+EXEC SP_CREATEUSER('YT_BINH', '123',  N'Lê Thị Bình', 'SYSTEM');
 
-INSERT INTO THONGTIN_NHANVIEN (USERNAME, HOTEN) VALUES ('bs_an', N'Nguyễn Văn An');
-INSERT INTO THONGTIN_NHANVIEN (USERNAME, HOTEN) VALUES ('yt_binh', N'Lê Thị Bình');
-
-INSERT INTO LUONG_NHANVIEN VALUES ('bs_an', 20000000, 5000000, 2000000, 23000000, '04/2026');
-INSERT INTO LUONG_NHANVIEN VALUES ('yt_binh', 10000000, 2000000, 500000, 11500000, '04/2026');
+INSERT INTO LUONG_NHANVIEN VALUES ('BS_AN', 20000000, 5000000, 2000000, 23000000, '04/2026');
+INSERT INTO LUONG_NHANVIEN VALUES ('YT_BINH', 10000000, 2000000, 500000, 11500000, '04/2026');
 COMMIT;
 
 -- 3. TẠO CÁC ĐỐI TƯỢNG ĐA DẠNG ĐỂ TEST PHÂN QUYỀN
