@@ -1,0 +1,148 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Data;
+using Oracle.ManagedDataAccess.Client;
+using HospitalX.DAO;
+
+namespace HospitalX.GUI.PH1
+{
+    public partial class ColPicker : Form
+    {
+        // Property để ucGrantRevoke đọc kết quả sau khi ShowDialog()
+        public List<string> SelectedColumns { get; private set; } = new List<string>();
+
+        private readonly string _privType;      // "SELECT" hay "UPDATE"
+        private readonly string _objectName;    // Tên bảng đang chọn
+
+        // Constructor nhận đủ thông tin cần thiết
+        public ColPicker(string privType, string objectName, List<string> currentCols)
+        {
+            InitializeComponent();
+            _privType = privType;
+            _objectName = objectName;
+
+            // Set title và sub
+            lblColPopupTitle.Text = $"Chọn cột cho quyền {privType}";
+            // guna2HtmlLabel1 là label phụ (sub) trong designer của bạn
+            lblNameObject.Text = $"Bảng: {objectName} · Chọn cột được phép truy cập";
+
+            LoadColumns(currentCols);
+
+            // Wire events
+            btnSelectAllCols.Click += (s, e) => SetAllChecked(true);
+            btnClearAllCols.Click += (s, e) => SetAllChecked(false);
+            btnCancelCol.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
+            btnCloseColPopup.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
+            btnExecuteGrant.Click += BtnExecuteGrant_Click;
+            clbColumns.ItemCheck += (s, e) => {
+                if (this.IsHandleCreated)
+                {
+                    this.BeginInvoke((Action)UpdateColCount);
+                }
+            };
+
+        }
+
+        private void LoadColumns(List<string> currentCols)
+        {
+            try
+            {
+                // Query ALL_TAB_COLUMNS để lấy danh sách cột từ Oracle
+                string query = @"
+                    SELECT COLUMN_NAME
+                    FROM ALL_TAB_COLUMNS
+                    WHERE OWNER = SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA')
+                    AND TABLE_NAME = :tableName
+                    ORDER BY COLUMN_ID";
+
+                var parameters = new OracleParameter[] {
+                    new OracleParameter(":tableName", OracleDbType.Varchar2) 
+                    { Value = _objectName.ToUpper() }
+                };
+
+                var dtColumns = DataProvider.Instance.ExecuteQuery(query, parameters, isStoredProc: false);
+
+                clbColumns.Items.Clear();
+                if (dtColumns != null && dtColumns.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtColumns.Rows)
+                    {
+                        string colName = row["COLUMN_NAME"].ToString();
+                        bool alreadyChecked = currentCols.Contains(colName);
+                        clbColumns.Items.Add(colName, alreadyChecked);
+                    }
+                }
+                //else
+                //{
+                //    // Fallback: If query fails, use mock columns
+                //    var mockCols = new List<string>
+                //    {
+                //        "MANV","HOTEN","PHAI","NGAYSINH","CMND","SODT","VAITRO","CHUYENKHOA"
+                //    };
+
+                //    foreach (var col in mockCols)
+                //    {
+                //        bool alreadyChecked = currentCols.Contains(col);
+                //        clbColumns.Items.Add(col, alreadyChecked);
+                //    }
+                //}
+
+                UpdateColCount();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải danh sách cột: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // Fallback: load mock columns
+                //var mockCols = new List<string>
+                //{
+                //    "MANV","HOTEN","PHAI","NGAYSINH","CMND","SODT","VAITRO","CHUYENKHOA"
+                //};
+
+                //clbColumns.Items.Clear();
+                //foreach (var col in mockCols)
+                //{
+                //    bool alreadyChecked = currentCols.Contains(col);
+                //    clbColumns.Items.Add(col, alreadyChecked);
+                //}
+
+                UpdateColCount();
+            }
+        }
+
+        private void UpdateColCount()
+        {
+            int selected = clbColumns.CheckedItems.Count;
+            int total = clbColumns.Items.Count;
+            lblSelectedColCount.Text = $"Đã chọn: {selected} / {total} cột";
+        }
+
+        private void SetAllChecked(bool check)
+        {
+            for (int i = 0; i < clbColumns.Items.Count; i++)
+                clbColumns.SetItemChecked(i, check);
+            UpdateColCount();
+        }
+
+        private void BtnExecuteGrant_Click(object sender, EventArgs e)
+        {
+            SelectedColumns.Clear();
+            foreach (var item in clbColumns.CheckedItems)
+                SelectedColumns.Add(item.ToString());
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void btnExecuteGrant_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblColPopupTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

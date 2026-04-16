@@ -42,10 +42,50 @@
     <Reference Include="Guna.UI2, Version=2.0.4.7, Culture=neutral, PublicKeyToken=8b9d14aa5142e261, processorArchitecture=MSIL">
       <HintPath>..\packages\Guna.UI2.WinForms.2.0.4.7\lib\net48\Guna.UI2.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.23.1, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.23.26.200\lib\net472\Oracle.ManagedDataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=10.0.0.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.10.0.3\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.6.0.2\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Formats.Asn1, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Formats.Asn1.8.0.1\lib\net462\System.Formats.Asn1.dll</HintPath>
+    </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.8.0.5\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.0\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,119 +98,136 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColPicker.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ColPicker.Designer.cs">
-      <DependentUpon>ColPicker.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmCreateRole.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmCreateRole.Designer.cs">
-      <DependentUpon>frmCreateRole.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Login.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmChangePassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEditUser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEditUser.Designer.cs">
-      <DependentUpon>frmEditUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmChangePassword.Designer.cs">
-      <DependentUpon>frmChangePassword.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmCreateUser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmCreateUser.Designer.cs">
-      <DependentUpon>frmCreateUser.cs</DependentUpon>
-    </Compile>
+    <Compile Include="DAO\DataProvider.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="Helpers\GraphicsHelper.cs" />
-    <Compile Include="frmCreateRole.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmCreateRole.Designer.cs">
-      <DependentUpon>frmCreateRole.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Login.Designer.cs">
-      <DependentUpon>Login.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Main_PhanHe1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Main_PhanHe1.Designer.cs">
-      <DependentUpon>Main_PhanHe1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Splash.cs">
+    <Compile Include="GUI\Login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Splash.Designer.cs">
+    <Compile Include="GUI\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Splash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucDashboard.cs">
+    <Compile Include="GUI\PH1\ColPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH1\ColPicker.Designer.cs">
+      <DependentUpon>ColPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH1\frmCreateRole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH1\frmCreateRole.Designer.cs">
+      <DependentUpon>frmCreateRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH1\frmChangePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH1\frmChangePassword.Designer.cs">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH1\frmEditUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH1\frmEditUser.Designer.cs">
+      <DependentUpon>frmEditUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH1\frmCreateUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH1\frmCreateUser.Designer.cs">
+      <DependentUpon>frmCreateUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH1\Main_PhanHe1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH1\Main_PhanHe1.Designer.cs">
+      <DependentUpon>Main_PhanHe1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH1\ucDashboard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucDashboard.Designer.cs">
+    <Compile Include="GUI\PH1\ucDashboard.Designer.cs">
       <DependentUpon>ucDashboard.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucGrantRevoke.cs">
+    <Compile Include="GUI\PH1\ucGrantRevoke.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucGrantRevoke.Designer.cs">
+    <Compile Include="GUI\PH1\ucGrantRevoke.Designer.cs">
       <DependentUpon>ucGrantRevoke.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucRevoke.cs">
+    <Compile Include="GUI\PH1\ucRevoke.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucRevoke.Designer.cs">
+    <Compile Include="GUI\PH1\ucRevoke.Designer.cs">
       <DependentUpon>ucRevoke.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucRole.cs">
+    <Compile Include="GUI\PH1\ucRole.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucRole.Designer.cs">
+    <Compile Include="GUI\PH1\ucRole.Designer.cs">
       <DependentUpon>ucRole.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucUser.cs">
+    <Compile Include="GUI\PH1\ucUser.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucUser.Designer.cs">
+    <Compile Include="GUI\PH1\ucUser.Designer.cs">
       <DependentUpon>ucUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucViewPrivilege.cs">
+    <Compile Include="GUI\PH1\ucViewPrivilege.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ucViewPrivilege.Designer.cs">
+    <Compile Include="GUI\PH1\ucViewPrivilege.Designer.cs">
       <DependentUpon>ucViewPrivilege.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ColPicker.resx">
-      <DependentUpon>ColPicker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmChangePassword.resx">
-      <DependentUpon>frmChangePassword.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmCreateRole.resx">
-      <DependentUpon>frmCreateRole.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmCreateUser.resx">
-      <DependentUpon>frmCreateUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmEditUser.resx">
-      <DependentUpon>frmEditUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Login.resx">
+    <EmbeddedResource Include="GUI\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Main_PhanHe1.resx">
+    <EmbeddedResource Include="GUI\Splash.resx">
+      <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\ColPicker.resx">
+      <DependentUpon>ColPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\frmChangePassword.resx">
+      <DependentUpon>frmChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\frmCreateRole.resx">
+      <DependentUpon>frmCreateRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\frmCreateUser.resx">
+      <DependentUpon>frmCreateUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\frmEditUser.resx">
+      <DependentUpon>frmEditUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\Main_PhanHe1.resx">
       <DependentUpon>Main_PhanHe1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\ucDashboard.resx">
+      <DependentUpon>ucDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\ucGrantRevoke.resx">
+      <DependentUpon>ucGrantRevoke.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\ucRevoke.resx">
+      <DependentUpon>ucRevoke.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\ucRole.resx">
+      <DependentUpon>ucRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\ucUser.resx">
+      <DependentUpon>ucUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH1\ucViewPrivilege.resx">
+      <DependentUpon>ucViewPrivilege.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -182,28 +239,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Splash.resx">
-      <DependentUpon>Splash.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ucDashboard.resx">
-      <DependentUpon>ucDashboard.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ucGrantRevoke.resx">
-      <DependentUpon>ucGrantRevoke.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ucRevoke.resx">
-      <DependentUpon>ucRevoke.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ucRole.resx">
-      <DependentUpon>ucRole.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ucUser.resx">
-      <DependentUpon>ucUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ucViewPrivilege.resx">
-      <DependentUpon>ucViewPrivilege.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.manifest" />
+    <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Oracle.ManagedDataAccess.Client.Configuration.Section.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -225,7 +267,10 @@
     <None Include="Resources\eye_open.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GUI\PH2\gitkeep.txt" />
+    <Content Include="SQL\HospitalX_PH1.sql" />
     <Content Include="svg.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
