@@ -538,6 +538,7 @@ END SP_GRANT_ROLE_TO_USER;
 -- YÊU CẦU 4: THU HỒI QUYỀN (REVOKE PRIVILEGES)
 -- ----------------------------------------------------------
 
+
 CREATE OR REPLACE PROCEDURE SP_REVOKE_PRIVILEGE (
     p_type      IN VARCHAR2,          -- TABLE, VIEW, PROCEDURE, FUNCTION, ROLE, SYSTEM
     p_privilege IN VARCHAR2,          -- SELECT, UPDATE, DELETE, INSERT, EXECUTE, tên role
@@ -626,6 +627,7 @@ BEGIN
                     WHERE SCHEMA_NAME = v_schema
                       AND TABLE_NAME  = v_obj_clean
                       AND POLICY_NAME = v_policy_name;
+                    COMMIT;
                     DBMS_OUTPUT.PUT_LINE('Het cot -> Revoke SELECT toan bang [' || v_obj_clean || ']');
                 ELSE
                     -- Còn cột → cập nhật VPD ẩn thêm
@@ -663,6 +665,7 @@ BEGIN
                 WHERE SCHEMA_NAME = v_schema
                   AND TABLE_NAME  = v_obj_clean
                   AND POLICY_NAME = v_policy_name;
+                COMMIT;
                 DBMS_OUTPUT.PUT_LINE('Revoke SELECT toan bo bang [' || v_obj_clean || ']');
             END IF;
 
@@ -775,6 +778,13 @@ BEGIN
 
         ELSIF UPPER(p_privilege) = 'SELECT' AND p_columns IS NULL THEN
             -- ── Revoke toàn bộ SELECT trên VIEW ──
+            -- Revoke trực tiếp trên VIEW gốc (trường hợp grant không giới hạn cột)
+            BEGIN
+                EXECUTE IMMEDIATE 'REVOKE SELECT ON ' || v_schema || '.' || v_obj_clean
+                    || ' FROM ' || p_grantee;
+            EXCEPTION WHEN OTHERS THEN NULL;
+            END;
+            -- Revoke cả các view trung gian (trường hợp grant có giới hạn cột)
             FOR rec IN (
                 SELECT TABLE_NAME FROM DBA_TAB_PRIVS
                 WHERE OWNER     = v_schema
@@ -818,6 +828,7 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20099, 'Loi SP_REVOKE_PRIVILEGE: ' || SQLERRM);
 END;
 /
+
 
 -- ----------------------------------------------------------
 -- YÊU CẦU 5: KIỂM TRA QUYỀN CỦA USER/ROLE
