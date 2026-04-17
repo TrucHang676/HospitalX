@@ -179,7 +179,6 @@ BEGIN
     
     v_sql := 'CREATE ROLE ' || p_role_name;
     EXECUTE IMMEDIATE v_sql;
-    EXECUTE IMMEDIATE 'REVOKE ' || p_role_name || ' FROM ' || USER;
 END;
 /
 
@@ -921,7 +920,7 @@ BEGIN
         ORDER  BY GRANTEE;
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20020, 'L?i l?y danh s?ch members: ' || SQLERRM);
+        RAISE_APPLICATION_ERROR(-20020, 'Loi lay danh sach members: ' || SQLERRM);
 END;
 /
 
@@ -1420,8 +1419,3 @@ END;
 --      EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || r.sid || ',' || r.serial# || ''' IMMEDIATE';
 --END LOOP;
 --END;
-<<<<<<< HEAD
---/
-=======
---/
->>>>>>> 270e74cd675801c013eaca99b728763e252c811a
