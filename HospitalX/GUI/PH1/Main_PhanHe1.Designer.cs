@@ -88,17 +88,19 @@
             this.pnlSidebar.Controls.Add(this.lblQuanTri);
             this.pnlSidebar.Controls.Add(this.pnlTopRight);
             this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
+            this.pnlSidebar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlSidebar.Name = "pnlSidebar";
-            this.pnlSidebar.Size = new System.Drawing.Size(220, 850);
+            this.pnlSidebar.Size = new System.Drawing.Size(293, 1046);
             this.pnlSidebar.TabIndex = 0;
             // 
             // pnlLine1
             // 
             this.pnlLine1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
             this.pnlLine1.FillThickness = 5;
-            this.pnlLine1.Location = new System.Drawing.Point(0, 135);
+            this.pnlLine1.Location = new System.Drawing.Point(0, 166);
+            this.pnlLine1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlLine1.Name = "pnlLine1";
-            this.pnlLine1.Size = new System.Drawing.Size(220, 1);
+            this.pnlLine1.Size = new System.Drawing.Size(293, 1);
             this.pnlLine1.TabIndex = 6;
             // 
             // pnl2
@@ -108,9 +110,10 @@
             this.pnl2.Controls.Add(this.lblBVDBA);
             this.pnl2.Controls.Add(this.ptbAdmin);
             this.pnl2.CustomBorderColor = System.Drawing.Color.WhiteSmoke;
-            this.pnl2.Location = new System.Drawing.Point(1, 75);
+            this.pnl2.Location = new System.Drawing.Point(1, 92);
+            this.pnl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnl2.Name = "pnl2";
-            this.pnl2.Size = new System.Drawing.Size(220, 54);
+            this.pnl2.Size = new System.Drawing.Size(293, 66);
             this.pnl2.TabIndex = 6;
             // 
             // lblDBAdmin
@@ -118,9 +121,10 @@
             this.lblDBAdmin.AutoSize = true;
             this.lblDBAdmin.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDBAdmin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
-            this.lblDBAdmin.Location = new System.Drawing.Point(61, 29);
+            this.lblDBAdmin.Location = new System.Drawing.Point(81, 36);
+            this.lblDBAdmin.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDBAdmin.Name = "lblDBAdmin";
-            this.lblDBAdmin.Size = new System.Drawing.Size(138, 15);
+            this.lblDBAdmin.Size = new System.Drawing.Size(177, 20);
             this.lblDBAdmin.TabIndex = 9;
             this.lblDBAdmin.Text = "Database Administrator";
             // 
@@ -129,9 +133,10 @@
             this.lblBVDBA.AutoSize = true;
             this.lblBVDBA.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBVDBA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(234)))), ((int)(((byte)(255)))));
-            this.lblBVDBA.Location = new System.Drawing.Point(63, 14);
+            this.lblBVDBA.Location = new System.Drawing.Point(84, 17);
+            this.lblBVDBA.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBVDBA.Name = "lblBVDBA";
-            this.lblBVDBA.Size = new System.Drawing.Size(36, 12);
+            this.lblBVDBA.Size = new System.Drawing.Size(48, 15);
             this.lblBVDBA.TabIndex = 8;
             this.lblBVDBA.Text = "BVDBA";
             // 
@@ -141,10 +146,11 @@
             this.ptbAdmin.FillColor = System.Drawing.Color.Transparent;
             this.ptbAdmin.Image = ((System.Drawing.Image)(resources.GetObject("ptbAdmin.Image")));
             this.ptbAdmin.ImageRotate = 0F;
-            this.ptbAdmin.Location = new System.Drawing.Point(18, 10);
-            this.ptbAdmin.MinimumSize = new System.Drawing.Size(36, 36);
+            this.ptbAdmin.Location = new System.Drawing.Point(24, 12);
+            this.ptbAdmin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ptbAdmin.MinimumSize = new System.Drawing.Size(48, 44);
             this.ptbAdmin.Name = "ptbAdmin";
-            this.ptbAdmin.Size = new System.Drawing.Size(36, 36);
+            this.ptbAdmin.Size = new System.Drawing.Size(48, 44);
             this.ptbAdmin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbAdmin.TabIndex = 8;
             this.ptbAdmin.TabStop = false;
@@ -176,11 +182,12 @@
             this.btnViewPrivilege.ImageOffset = new System.Drawing.Point(8, 0);
             this.btnViewPrivilege.ImageSize = new System.Drawing.Size(23, 23);
             this.btnViewPrivilege.IndicateFocus = true;
-            this.btnViewPrivilege.Location = new System.Drawing.Point(21, 426);
+            this.btnViewPrivilege.Location = new System.Drawing.Point(28, 524);
+            this.btnViewPrivilege.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnViewPrivilege.Name = "btnViewPrivilege";
             this.btnViewPrivilege.ShadowDecoration.BorderRadius = 8;
             this.btnViewPrivilege.ShadowDecoration.Depth = 3;
-            this.btnViewPrivilege.Size = new System.Drawing.Size(180, 45);
+            this.btnViewPrivilege.Size = new System.Drawing.Size(240, 55);
             this.btnViewPrivilege.TabIndex = 18;
             this.btnViewPrivilege.Text = "XEM QUYỀN";
             this.btnViewPrivilege.Click += new System.EventHandler(this.btnViewPrivilege_Click);
@@ -211,11 +218,12 @@
             this.btnGrantRevoke.ImageOffset = new System.Drawing.Point(4, 0);
             this.btnGrantRevoke.ImageSize = new System.Drawing.Size(27, 27);
             this.btnGrantRevoke.IndicateFocus = true;
-            this.btnGrantRevoke.Location = new System.Drawing.Point(21, 366);
+            this.btnGrantRevoke.Location = new System.Drawing.Point(28, 450);
+            this.btnGrantRevoke.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGrantRevoke.Name = "btnGrantRevoke";
             this.btnGrantRevoke.ShadowDecoration.BorderRadius = 8;
             this.btnGrantRevoke.ShadowDecoration.Depth = 3;
-            this.btnGrantRevoke.Size = new System.Drawing.Size(180, 45);
+            this.btnGrantRevoke.Size = new System.Drawing.Size(240, 55);
             this.btnGrantRevoke.TabIndex = 17;
             this.btnGrantRevoke.Text = "PHÂN QUYỀN";
             this.btnGrantRevoke.Click += new System.EventHandler(this.btnGrantRevoke_Click);
@@ -245,11 +253,12 @@
             this.btnRole.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnRole.ImageSize = new System.Drawing.Size(30, 30);
             this.btnRole.IndicateFocus = true;
-            this.btnRole.Location = new System.Drawing.Point(21, 306);
+            this.btnRole.Location = new System.Drawing.Point(28, 377);
+            this.btnRole.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRole.Name = "btnRole";
             this.btnRole.ShadowDecoration.BorderRadius = 8;
             this.btnRole.ShadowDecoration.Depth = 3;
-            this.btnRole.Size = new System.Drawing.Size(180, 45);
+            this.btnRole.Size = new System.Drawing.Size(240, 55);
             this.btnRole.TabIndex = 16;
             this.btnRole.Text = "QUẢN LÍ ROLE";
             this.btnRole.Click += new System.EventHandler(this.btnRole_Click);
@@ -279,11 +288,12 @@
             this.btnUser.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnUser.ImageSize = new System.Drawing.Size(30, 30);
             this.btnUser.IndicateFocus = true;
-            this.btnUser.Location = new System.Drawing.Point(18, 246);
+            this.btnUser.Location = new System.Drawing.Point(24, 303);
+            this.btnUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnUser.Name = "btnUser";
             this.btnUser.ShadowDecoration.BorderRadius = 8;
             this.btnUser.ShadowDecoration.Depth = 3;
-            this.btnUser.Size = new System.Drawing.Size(180, 45);
+            this.btnUser.Size = new System.Drawing.Size(240, 55);
             this.btnUser.TabIndex = 15;
             this.btnUser.Text = "QUẢN LÍ USER";
             this.btnUser.Click += new System.EventHandler(this.btnUser_Click);
@@ -307,9 +317,10 @@
             this.btnLogout.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.btnLogout.HoverState.ForeColor = System.Drawing.Color.White;
             this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
-            this.btnLogout.Location = new System.Drawing.Point(12, 788);
+            this.btnLogout.Location = new System.Drawing.Point(16, 970);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(200, 38);
+            this.btnLogout.Size = new System.Drawing.Size(267, 47);
             this.btnLogout.TabIndex = 1;
             this.btnLogout.Text = "Đăng xuất";
             this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
@@ -340,11 +351,12 @@
             this.btnMenuDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnMenuDashboard.ImageOffset = new System.Drawing.Point(8, 0);
             this.btnMenuDashboard.IndicateFocus = true;
-            this.btnMenuDashboard.Location = new System.Drawing.Point(18, 186);
+            this.btnMenuDashboard.Location = new System.Drawing.Point(24, 229);
+            this.btnMenuDashboard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnMenuDashboard.Name = "btnMenuDashboard";
             this.btnMenuDashboard.ShadowDecoration.BorderRadius = 8;
             this.btnMenuDashboard.ShadowDecoration.Depth = 3;
-            this.btnMenuDashboard.Size = new System.Drawing.Size(180, 45);
+            this.btnMenuDashboard.Size = new System.Drawing.Size(240, 55);
             this.btnMenuDashboard.TabIndex = 14;
             this.btnMenuDashboard.Text = "DASHBOARD";
             this.btnMenuDashboard.Click += new System.EventHandler(this.btnMenuDashboard_Click);
@@ -355,9 +367,10 @@
             this.lblQuanTri.BackColor = System.Drawing.Color.Transparent;
             this.lblQuanTri.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblQuanTri.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.lblQuanTri.Location = new System.Drawing.Point(15, 151);
+            this.lblQuanTri.Location = new System.Drawing.Point(20, 186);
+            this.lblQuanTri.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblQuanTri.Name = "lblQuanTri";
-            this.lblQuanTri.Size = new System.Drawing.Size(64, 15);
+            this.lblQuanTri.Size = new System.Drawing.Size(82, 20);
             this.lblQuanTri.TabIndex = 10;
             this.lblQuanTri.Text = "QUẢN TRỊ";
             // 
@@ -369,17 +382,19 @@
             this.pnlTopRight.Controls.Add(this.lblHospital);
             this.pnlTopRight.FillColor = System.Drawing.Color.Transparent;
             this.pnlTopRight.Location = new System.Drawing.Point(0, 0);
+            this.pnlTopRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlTopRight.Name = "pnlTopRight";
-            this.pnlTopRight.Size = new System.Drawing.Size(220, 70);
+            this.pnlTopRight.Size = new System.Drawing.Size(293, 86);
             this.pnlTopRight.TabIndex = 0;
             // 
             // pnlLine2
             // 
             this.pnlLine2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
             this.pnlLine2.FillThickness = 5;
-            this.pnlLine2.Location = new System.Drawing.Point(0, 65);
+            this.pnlLine2.Location = new System.Drawing.Point(0, 80);
+            this.pnlLine2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlLine2.Name = "pnlLine2";
-            this.pnlLine2.Size = new System.Drawing.Size(220, 1);
+            this.pnlLine2.Size = new System.Drawing.Size(293, 1);
             this.pnlLine2.TabIndex = 5;
             // 
             // lblQTCSDLBV
@@ -387,9 +402,10 @@
             this.lblQTCSDLBV.BackColor = System.Drawing.Color.Transparent;
             this.lblQTCSDLBV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblQTCSDLBV.ForeColor = System.Drawing.Color.White;
-            this.lblQTCSDLBV.Location = new System.Drawing.Point(64, 39);
+            this.lblQTCSDLBV.Location = new System.Drawing.Point(85, 48);
+            this.lblQTCSDLBV.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblQTCSDLBV.Name = "lblQTCSDLBV";
-            this.lblQTCSDLBV.Size = new System.Drawing.Size(150, 17);
+            this.lblQTCSDLBV.Size = new System.Drawing.Size(187, 22);
             this.lblQTCSDLBV.TabIndex = 8;
             this.lblQTCSDLBV.Text = "Quản trị CSDL\r\nBệnh viện X\r\n";
             // 
@@ -397,13 +413,14 @@
             // 
             this.pnlLogo.BackColor = System.Drawing.Color.Transparent;
             this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.pnlLogo.BorderRadius = 25;
+            this.pnlLogo.BorderRadius = 31;
             this.pnlLogo.BorderThickness = 1;
             this.pnlLogo.Controls.Add(this.ptbChuThap);
             this.pnlLogo.FillColor = System.Drawing.Color.White;
-            this.pnlLogo.Location = new System.Drawing.Point(8, 6);
+            this.pnlLogo.Location = new System.Drawing.Point(11, 7);
+            this.pnlLogo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.Size = new System.Drawing.Size(50, 50);
+            this.pnlLogo.Size = new System.Drawing.Size(67, 62);
             this.pnlLogo.TabIndex = 1;
             this.pnlLogo.UseTransparentBackground = true;
             // 
@@ -413,9 +430,10 @@
             this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
             this.ptbChuThap.Image = ((System.Drawing.Image)(resources.GetObject("ptbChuThap.Image")));
             this.ptbChuThap.ImageRotate = 0F;
-            this.ptbChuThap.Location = new System.Drawing.Point(12, 14);
+            this.ptbChuThap.Location = new System.Drawing.Point(16, 17);
+            this.ptbChuThap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ptbChuThap.Name = "ptbChuThap";
-            this.ptbChuThap.Size = new System.Drawing.Size(26, 27);
+            this.ptbChuThap.Size = new System.Drawing.Size(35, 33);
             this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbChuThap.TabIndex = 0;
             this.ptbChuThap.TabStop = false;
@@ -426,9 +444,10 @@
             this.lblHospital.BackColor = System.Drawing.Color.Transparent;
             this.lblHospital.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHospital.ForeColor = System.Drawing.Color.Cyan;
-            this.lblHospital.Location = new System.Drawing.Point(66, 21);
+            this.lblHospital.Location = new System.Drawing.Point(88, 26);
+            this.lblHospital.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblHospital.Name = "lblHospital";
-            this.lblHospital.Size = new System.Drawing.Size(150, 14);
+            this.lblHospital.Size = new System.Drawing.Size(185, 15);
             this.lblHospital.TabIndex = 7;
             this.lblHospital.Text = "HOSPITAL MANAGEMENT SYSTEM";
             // 
@@ -439,9 +458,10 @@
             this.pnlTopbar.Controls.Add(this.btnExit);
             this.pnlTopbar.Controls.Add(this.lblPageTitle);
             this.pnlTopbar.FillColor = System.Drawing.Color.White;
-            this.pnlTopbar.Location = new System.Drawing.Point(220, 0);
+            this.pnlTopbar.Location = new System.Drawing.Point(293, 0);
+            this.pnlTopbar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlTopbar.Name = "pnlTopbar";
-            this.pnlTopbar.Size = new System.Drawing.Size(1220, 65);
+            this.pnlTopbar.Size = new System.Drawing.Size(1627, 80);
             this.pnlTopbar.TabIndex = 1;
             // 
             // btnExit
@@ -453,9 +473,10 @@
             this.btnExit.ForeColor = System.Drawing.Color.Black;
             this.btnExit.HoverState.FillColor = System.Drawing.Color.LightBlue;
             this.btnExit.IconColor = System.Drawing.Color.CornflowerBlue;
-            this.btnExit.Location = new System.Drawing.Point(1180, 12);
+            this.btnExit.Location = new System.Drawing.Point(1573, 15);
+            this.btnExit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(28, 30);
+            this.btnExit.Size = new System.Drawing.Size(37, 37);
             this.btnExit.TabIndex = 14;
             // 
             // lblPageTitle
@@ -464,9 +485,10 @@
             this.lblPageTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblPageTitle.Location = new System.Drawing.Point(18, 20);
+            this.lblPageTitle.Location = new System.Drawing.Point(24, 25);
+            this.lblPageTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPageTitle.Name = "lblPageTitle";
-            this.lblPageTitle.Size = new System.Drawing.Size(208, 25);
+            this.lblPageTitle.Size = new System.Drawing.Size(264, 32);
             this.lblPageTitle.TabIndex = 11;
             this.lblPageTitle.Text = "Dashboard tổng quan";
             // 
@@ -475,9 +497,10 @@
             this.pnlContent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlContent.Location = new System.Drawing.Point(220, 65);
+            this.pnlContent.Location = new System.Drawing.Point(293, 80);
+            this.pnlContent.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1217, 785);
+            this.pnlContent.Size = new System.Drawing.Size(1623, 966);
             this.pnlContent.TabIndex = 2;
             // 
             // msgLogout
@@ -491,15 +514,16 @@
             // 
             // Main_PhanHe1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(248)))));
-            this.ClientSize = new System.Drawing.Size(1440, 850);
+            this.ClientSize = new System.Drawing.Size(1920, 1046);
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.pnlTopbar);
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Main_PhanHe1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main_PhanHe1";
