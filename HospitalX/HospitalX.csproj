@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>svg.ico</ApplicationIcon>
+    <ApplicationIcon>..\image\medical-team.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -270,6 +270,7 @@
     <Content Include="GUI\PH2\gitkeep.txt" />
     <Content Include="SQL\HospitalX_PH1.sql" />
     <Content Include="svg.ico" />
+    <Content Include="..\image\medical-team.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
