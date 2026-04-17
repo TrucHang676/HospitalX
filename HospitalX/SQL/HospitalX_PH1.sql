@@ -829,38 +829,61 @@ CREATE OR REPLACE PROCEDURE USP_GET_OBJ_PRIVS (
     p_result  OUT SYS_REFCURSOR
 )
 AS
+    v_schema VARCHAR2(128) := SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA');
 BEGIN
     OPEN p_result FOR
-        -- 1. Lấy quyền mức Bảng (Table Level)
+        -- A. CÁC QUYỀN BẢNG KHÔNG BỊ VPD (INSERT, DELETE, UPDATE ALL, SELECT ALL)
         SELECT 
-            TABLE_NAME AS OBJECT_NAME,
-            TYPE,
-            PRIVILEGE,
-            'ALL COLUMN' AS COLUMN_NAME, -- Mức bảng thì coi như là tất cả cột
-            GRANTABLE AS GRANT_OPTION,
-            GRANTOR
-        FROM DBA_TAB_PRIVS
-        WHERE UPPER(GRANTEE) = UPPER(p_grantee)
-          AND OWNER = SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA')
+            tp.TABLE_NAME AS OBJECT_NAME,
+            tp.TYPE,
+            tp.PRIVILEGE,
+            'ALL COLUMN' AS COLUMN_NAME,
+            tp.GRANTABLE AS GRANT_OPTION,
+            tp.GRANTOR
+        FROM DBA_TAB_PRIVS tp
+        WHERE tp.GRANTEE = UPPER(p_grantee) AND tp.OWNER = v_schema
+          AND (tp.PRIVILEGE <> 'SELECT' OR NOT EXISTS (
+              -- Nếu bảng này KHÔNG có trong tracking VPD của User này thì hiện ALL COLUMN
+              SELECT 1 FROM VPD_COL_TRACKING vt 
+              WHERE vt.GRANTEE = tp.GRANTEE AND vt.TABLE_NAME = tp.TABLE_NAME
+          ))
 
         UNION ALL
 
-        -- 2. Lấy quyền mức Cột (Column Level)
+        -- B. QUYỀN SELECT BỊ GIỚI HẠN BỞI VPD (TÁCH THÀNH TỪNG DÒNG CỘT)
+        SELECT 
+            tp.TABLE_NAME AS OBJECT_NAME,
+            tp.TYPE,
+            tp.PRIVILEGE,
+            c.COLUMN_NAME, -- Tách ra từng dòng ở đây nè Yến!
+            tp.GRANTABLE AS GRANT_OPTION,
+            tp.GRANTOR
+        FROM DBA_TAB_PRIVS tp
+        JOIN VPD_COL_TRACKING vt ON tp.GRANTEE = vt.GRANTEE AND tp.TABLE_NAME = vt.TABLE_NAME
+        JOIN DBA_TAB_COLUMNS c ON vt.SCHEMA_NAME = c.OWNER AND vt.TABLE_NAME = c.TABLE_NAME
+        WHERE tp.GRANTEE = UPPER(p_grantee) AND tp.OWNER = v_schema AND tp.PRIVILEGE = 'SELECT'
+          -- Chỉ lấy những cột KHÔNG nằm trong danh sách Hidden (tức là cột được phép)
+          AND c.COLUMN_NAME NOT IN (
+              SELECT TRIM(UPPER(REGEXP_SUBSTR(vt.HIDDEN_COLS, '[^,]+', 1, LEVEL)))
+              FROM DUAL CONNECT BY REGEXP_SUBSTR(vt.HIDDEN_COLS, '[^,]+', 1, LEVEL) IS NOT NULL
+          )
+
+        UNION ALL
+
+        -- C. QUYỀN MỨC CỘT CÓ SẴN (VÍ DỤ UPDATE TRÊN CỘT - GIỮ NGUYÊN)
         SELECT 
             cp.TABLE_NAME AS OBJECT_NAME,
             (SELECT OBJECT_TYPE FROM DBA_OBJECTS 
-             WHERE OBJECT_NAME = cp.TABLE_NAME 
-               AND OWNER = cp.OWNER 
-               AND OBJECT_TYPE IN ('TABLE', 'VIEW')
-               AND ROWNUM = 1) AS TYPE, 
+             WHERE OBJECT_NAME = cp.TABLE_NAME AND OWNER = cp.OWNER 
+               AND OBJECT_TYPE IN ('TABLE', 'VIEW') AND ROWNUM = 1) AS TYPE, 
             cp.PRIVILEGE,
             cp.COLUMN_NAME,
             cp.GRANTABLE AS GRANT_OPTION,
             cp.GRANTOR
         FROM DBA_COL_PRIVS cp
         WHERE UPPER(cp.GRANTEE) = UPPER(p_grantee)
-          AND cp.OWNER = SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA')
-        ORDER BY OBJECT_NAME, PRIVILEGE;
+          AND cp.OWNER = v_schema
+        ORDER BY OBJECT_NAME, PRIVILEGE, COLUMN_NAME;
 END;
 /
 
@@ -924,50 +947,6 @@ BEGIN
 EXCEPTION
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20011, 'Lỗi khi mở khóa User: ' || SQLERRM);
-END;
-/
-
--- Lấy danh sách users được gán vào một role cụ thể
-CREATE OR REPLACE PROCEDURE USP_LIST_ROLE_MEMBERS (
-    p_role_name IN VARCHAR2,
-    p_cursor OUT SYS_REFCURSOR
-)
-AS
-BEGIN
-    OPEN p_cursor FOR
-        SELECT DISTINCT 
-               GRANTEE
-        FROM   DBA_ROLE_PRIVS
-        WHERE  GRANTED_ROLE = UPPER(p_role_name)
-          AND  GRANTEE NOT LIKE 'C##%'
-          AND  GRANTEE IN (SELECT USERNAME FROM DBA_USERS WHERE ORACLE_MAINTAINED = 'N')
-        ORDER  BY GRANTEE;
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20020, 'Lỗi lấy danh sách members: ' || SQLERRM);
-END;
-/
-
--- Lấy danh sách quyền trên các object được cấp cho một role
-CREATE OR REPLACE PROCEDURE USP_LIST_ROLE_PRIVILEGES (
-    p_role_name IN VARCHAR2,
-    p_cursor OUT SYS_REFCURSOR
-)
-AS
-BEGIN
-    OPEN p_cursor FOR
-        SELECT DISTINCT
-               TRUNC(ROW_NUMBER() OVER (ORDER BY OWNER, TABLE_NAME)) AS priv_id,
-               TABLE_NAME AS object_name,
-               OWNER,
-               PRIVILEGE
-        FROM   DBA_TAB_PRIVS
-        WHERE  GRANTEE = UPPER(p_role_name)
-          AND  OWNER NOT IN ('SYS', 'SYSTEM', 'DBSNMP', 'GSMADMIN_INTERNAL')
-        ORDER  BY OWNER, TABLE_NAME, PRIVILEGE;
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20021, 'Lỗi lấy danh sách privileges: ' || SQLERRM);
 END;
 /
 

@@ -267,137 +267,44 @@ namespace HospitalX.GUI.PH1
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine("LoadRoleMembers error: " + ex.Message); }
         }
-        //private void LoadRoleMembers(RoleItem targetRole)
-        //{
-        //    if (targetRole == null) return;
-
-        //    try
-        //    {
-        //        var param = new OracleParameter[] {
-        //            new OracleParameter("p_role_name", OracleDbType.Varchar2, roleName, ParameterDirection.Input),
-        //            new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
-        //        };
-
-        //        DataTable dt = DataProvider.Instance.ExecuteQuery("USP_LIST_ROLE_MEMBERS", param);
-
-        //        selectedRole.Members.Clear();
-
-        //        Color[] colors = { Color.FromArgb(41, 121, 255), Color.FromArgb(150, 100, 250), Color.FromArgb(250, 150, 50), Color.FromArgb(140, 150, 160) };
-
-        //        for (int i = 0; i < dt.Rows.Count; i++)
-        //        {
-        //            var row = dt.Rows[i];
-        //            string username = row["GRANTEE"]?.ToString() ?? "";
-
-        //            // Derive initials
-        //            string initials = "--";
-        //            var parts = username.Split(new char[] { '_', '.' }, StringSplitOptions.RemoveEmptyEntries);
-        //            if (parts.Length > 0)
-        //                initials = parts[0].Length >= 2 ? parts[0].Substring(0, 2).ToUpper() : parts[0].ToUpper();
-
-        //            int colorIdx = (username.GetHashCode() & 0x7fffffff) % colors.Length;
-
-        //            selectedRole.Members.Add(new MemberItem(username, initials, colors[colorIdx]));
-        //        }
-
-        //        // Refresh badges when member count changes
-        //        lstRoles.Invalidate();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("LoadRoleMembers error: " + ex.Message);
-        //    }
-        //}
 
         // ================================================
         // LOAD PRIVILEGES CỦA ROLE — lấy danh sách quyền của role từ DB
         // ================================================
-        private void LoadRolePrivileges(RoleItem targetRole) // Truyền object vào luôn
+        private void LoadRolePrivileges(RoleItem targetRole)
         {
             if (targetRole == null) return;
 
             try
             {
                 var param = new OracleParameter[] {
-                new OracleParameter("p_role_name", OracleDbType.Varchar2, targetRole.Name, ParameterDirection.Input),
-                new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
-            };
+            new OracleParameter("p_grantee", OracleDbType.Varchar2, targetRole.Name, ParameterDirection.Input),
+            new OracleParameter("p_result", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+        };
 
-                DataTable dt = DataProvider.Instance.ExecuteQuery("USP_LIST_ROLE_PRIVILEGES", param);
+                DataTable dt = DataProvider.Instance.ExecuteQuery("USP_GET_OBJ_PRIVS", param);
                 targetRole.Privileges.Clear();
 
-                Dictionary<string, List<string>> objectPrivs = new Dictionary<string, List<string>>();
-                for (int i = 0; i < dt.Rows.Count; i++)
+                foreach (DataRow row in dt.Rows)
                 {
-                    var row = dt.Rows[i];
-                    string objectName = row["object_name"]?.ToString() ?? row["OBJECT_NAME"]?.ToString() ?? "";
+                    string objectName = row["OBJECT_NAME"]?.ToString() ?? "";
                     string privilege = row["PRIVILEGE"]?.ToString() ?? "";
+                    string columnName = row["COLUMN_NAME"]?.ToString() ?? "ALL COLUMN";
 
-                    if (!objectPrivs.ContainsKey(objectName)) objectPrivs[objectName] = new List<string>();
-                    if (!objectPrivs[objectName].Contains(privilege)) objectPrivs[objectName].Add(privilege);
+                    // Tạo định dạng: "NHANVIEN.HOTEN.SELECT" hoặc "NHANVIEN.SELECT"
+                    string displayName = (columnName == "ALL COLUMN" || columnName == "Tất cả cột")
+                        ? $"{objectName}.{privilege}"
+                        : $"{objectName}.{columnName}.{privilege}";
+
+                    // Mỗi dòng SQL là 1 PrivItem riêng biệt (chỉ chứa 1 Tag duy nhất)
+                    targetRole.Privileges.Add(new PrivItem(displayName, privilege, new string[] { privilege }));
                 }
 
-                foreach (var kvp in objectPrivs)
-                {
-                    targetRole.Privileges.Add(new PrivItem(kvp.Key, "TABLE", kvp.Value.ToArray()));
-                }
+                if (targetRole.Privileges.Count == 0)
+                    targetRole.Privileges.Add(new PrivItem("Không có quyền", "NONE", new string[] { "NONE" }));
             }
             catch (Exception ex) { System.Diagnostics.Debug.WriteLine(ex.Message); }
         }
-        //private void LoadRolePrivileges(string roleName)
-        //{
-        //    if (!(lstRoles.SelectedItem is RoleItem selectedRole)) return;
-
-        //    try
-        //    {
-        //        var param = new OracleParameter[] {
-        //            new OracleParameter("p_role_name", OracleDbType.Varchar2, roleName, ParameterDirection.Input),
-        //            new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
-        //        };
-
-        //        DataTable dt = DataProvider.Instance.ExecuteQuery("USP_LIST_ROLE_PRIVILEGES", param);
-
-        //        selectedRole.Privileges.Clear();
-
-        //        // Group privileges by object name
-        //        Dictionary<string, List<string>> objectPrivs = new Dictionary<string, List<string>>();
-
-        //        for (int i = 0; i < dt.Rows.Count; i++)
-        //        {
-        //            var row = dt.Rows[i];
-        //            // Handle both uppercase and lowercase column names from Oracle alias
-        //            string objectName = row["object_name"]?.ToString() ?? row["OBJECT_NAME"]?.ToString() ?? "";
-        //            string privilege = row["PRIVILEGE"]?.ToString() ?? "";
-
-        //            if (!objectPrivs.ContainsKey(objectName))
-        //                objectPrivs[objectName] = new List<string>();
-
-        //            if (!objectPrivs[objectName].Contains(privilege))
-        //                objectPrivs[objectName].Add(privilege);
-        //        }
-
-        //        // Create PrivItem for each object
-        //        foreach (var kvp in objectPrivs)
-        //        {
-        //            string objName = kvp.Key;
-        //            string[] privs = kvp.Value.ToArray();
-
-        //            // Determine object type (simplified - assume TABLE)
-        //            string objType = "TABLE";
-
-        //            selectedRole.Privileges.Add(new PrivItem(objName, objType, privs));
-        //        }
-
-        //        // Refresh badges when privilege count changes
-        //        lstRoles.Invalidate();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("LoadRolePrivileges error: " + ex.Message);
-        //    }
-        //}
-
-
         // ================================================
         // REFRESH DỮ LIỆU — load lại toàn bộ role từ DB, sau đó load members/privs cho từng role
         // ================================================
@@ -585,70 +492,122 @@ namespace HospitalX.GUI.PH1
         // ================================================
         private void LstDetails_DrawItem(object sender, DrawItemEventArgs e)
         {
-            e.DrawBackground();
             if (e.Index < 0) return;
-            var itemStr = lstDetails.Items[e.Index];
+            e.DrawBackground();
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            // Màu nền xen kẽ trắng/xanh rất nhạt
+            var item = lstDetails.Items[e.Index];
+
+            // Vẽ nền xen kẽ
             var bg = (e.Index % 2 == 0) ? Color.White : Color.FromArgb(250, 252, 254);
-            using (var b = new SolidBrush(bg)) e.Graphics.FillRectangle(b, e.Bounds);
-            // Draw Separator line
-            e.Graphics.DrawLine(new Pen(Color.FromArgb(240, 240, 240)), e.Bounds.X, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
+            using (var b = new SolidBrush(bg)) g.FillRectangle(b, e.Bounds);
+            g.DrawLine(new Pen(Color.FromArgb(245, 245, 245)), e.Bounds.X, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
 
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-            if (_currentTab == "members" && itemStr is MemberItem m)
+            if (_currentTab == "members" && item is MemberItem m)
             {
-                // Avatar tròn với chữ viết tắt
+                // Giữ nguyên logic vẽ Member (Avatar + Tên)
                 var avatarRect = new Rectangle(e.Bounds.X + 15, e.Bounds.Y + 15, 30, 30);
-                e.Graphics.FillEllipse(new SolidBrush(m.Color), avatarRect);
-                e.Graphics.DrawString(m.Initials, new Font("Segoe UI", 8, FontStyle.Bold), Brushes.White, avatarRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                g.FillEllipse(new SolidBrush(m.Color), avatarRect);
+                g.DrawString(m.Initials, new Font("Segoe UI", 8, FontStyle.Bold), Brushes.White, avatarRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                g.DrawString(m.Name, new Font("Segoe UI", 10), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 55, e.Bounds.Y + 20);
 
-                // Tên user
-                e.Graphics.DrawString(m.Name, new Font("Segoe UI", 10, FontStyle.Regular), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 55, e.Bounds.Y + 20);
-
-                // Badge trạng thái Active (cố định xanh vì mock data không có Locked)
-                var activeLabel = new Rectangle(e.Bounds.Right - 65, e.Bounds.Y + 20, 50, 20);
-                e.Graphics.FillRoundedRectangle(new SolidBrush(Color.FromArgb(235, 250, 240)), activeLabel, 10);
-                e.Graphics.DrawString("Active", new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(46, 160, 67)), activeLabel, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+                var badgeRect = new Rectangle(e.Bounds.Right - 65, e.Bounds.Y + 20, 50, 20);
+                g.FillRoundedRectangle(new SolidBrush(Color.FromArgb(235, 250, 240)), badgeRect, 10);
+                g.DrawString("Active", new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(46, 160, 67)), badgeRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
             }
-            else if (_currentTab == "privileges" && itemStr is PrivItem p)
+            else if (_currentTab == "privileges" && item is PrivItem p)
             {
-                // Tên đối tượng DB và loại (TABLE/VIEW/PROCEDURE)
-                e.Graphics.DrawString(p.ObjName, new Font("Segoe UI", 10, FontStyle.Bold), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 15, e.Bounds.Y + 12);
-                e.Graphics.DrawString(p.ObjType, new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(150, 160, 170)), e.Bounds.X + 15, e.Bounds.Y + 32);
+                // VẼ QUYỀN GIỐNG USER UI
+                // 1. Vẽ tên quyền (Bên trái)
+                g.DrawString(p.ObjName, new Font("Segoe UI", 9, FontStyle.Bold),
+                             new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 15, e.Bounds.Y + 20);
 
-                // Vẽ badge tag quyền: tối đa 2 tag mỗi hàng, căn phải
-                int currentY = e.Bounds.Y + 18;
-                for (int i = 0; i < p.Tags.Length; i += 2)
-                {
-                    int itemsInRow = Math.Min(2, p.Tags.Length - i);
-                    int currentX = e.Bounds.Right - 20;
+                // 2. Vẽ Badge quyền (Bên phải)
+                string action = p.ObjType; // Trong logic load mới, ObjType đang giữ tên Quyền (SELECT/UPDATE...)
+                Color tagBg = Color.FromArgb(238, 243, 250);
+                Color tagFg = Color.FromArgb(60, 100, 160);
 
-                    // Render backwards so itemsInRow-1 is left-most, 0 is right-most ensuring right-alignment
-                    for (int j = itemsInRow - 1; j >= 0; j--)
-                    {
-                        string tag = p.Tags[i + j];
-                        Color tagBg = Color.White;
-                        Color tagFg = Color.Black;
-                        if (tag == "SELECT") { tagBg = Color.FromArgb(238, 243, 250); tagFg = Color.FromArgb(60, 100, 160); }
-                        else if (tag == "UPDATE") { tagBg = Color.FromArgb(254, 249, 230); tagFg = Color.FromArgb(180, 130, 40); }
-                        else if (tag == "INSERT") { tagBg = Color.FromArgb(235, 250, 240); tagFg = Color.FromArgb(46, 160, 67); }
-                        else if (tag == "EXECUTE") { tagBg = Color.FromArgb(245, 235, 250); tagFg = Color.FromArgb(130, 60, 180); }
+                if (action == "UPDATE") { tagBg = Color.FromArgb(254, 249, 230); tagFg = Color.FromArgb(180, 130, 40); }
+                else if (action == "INSERT") { tagBg = Color.FromArgb(235, 250, 240); tagFg = Color.FromArgb(46, 160, 67); }
+                else if (action == "EXECUTE") { tagBg = Color.FromArgb(245, 235, 250); tagFg = Color.FromArgb(130, 60, 180); }
+                else if (action == "DELETE") { tagBg = Color.FromArgb(255, 240, 240); tagFg = Color.FromArgb(220, 53, 69); }
 
-                        int width = (int)e.Graphics.MeasureString(tag, new Font("Segoe UI", 8, FontStyle.Bold)).Width + 20;
-                        currentX -= width;
+                int width = (int)g.MeasureString(action, new Font("Segoe UI", 7, FontStyle.Bold)).Width + 20;
+                var tagRect = new Rectangle(e.Bounds.Right - width - 15, e.Bounds.Y + 18, width, 24);
 
-                        var tagRect = new Rectangle(currentX, currentY, width, 24);
-                        e.Graphics.FillRoundedRectangle(new SolidBrush(tagBg), tagRect, 12);
-                        e.Graphics.DrawString(tag, new Font("Segoe UI", 8, FontStyle.Bold), new SolidBrush(tagFg), tagRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-
-                        currentX -= 5; // margin left
-                    }
-                    currentY += 32; // next row starts lower
-                }
+                g.FillRoundedRectangle(new SolidBrush(tagBg), tagRect, 12);
+                g.DrawString(action, new Font("Segoe UI", 7, FontStyle.Bold), new SolidBrush(tagFg), tagRect,
+                             new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
             }
         }
+
+    //    private void LstDetails_DrawItem(object sender, DrawItemEventArgs e)
+    //    {
+    //        e.DrawBackground();
+    //        if (e.Index < 0) return;
+    //        var itemStr = lstDetails.Items[e.Index];
+
+    //        // Màu nền xen kẽ trắng/xanh rất nhạt
+    //        var bg = (e.Index % 2 == 0) ? Color.White : Color.FromArgb(250, 252, 254);
+    //        using (var b = new SolidBrush(bg)) e.Graphics.FillRectangle(b, e.Bounds);
+    //        // Draw Separator line
+    //        e.Graphics.DrawLine(new Pen(Color.FromArgb(240, 240, 240)), e.Bounds.X, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
+
+    //        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+    //        if (_currentTab == "members" && itemStr is MemberItem m)
+    //        {
+    //            // Avatar tròn với chữ viết tắt
+    //            var avatarRect = new Rectangle(e.Bounds.X + 15, e.Bounds.Y + 15, 30, 30);
+    //            e.Graphics.FillEllipse(new SolidBrush(m.Color), avatarRect);
+    //            e.Graphics.DrawString(m.Initials, new Font("Segoe UI", 8, FontStyle.Bold), Brushes.White, avatarRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+
+    //            // Tên user
+    //            e.Graphics.DrawString(m.Name, new Font("Segoe UI", 10, FontStyle.Regular), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 55, e.Bounds.Y + 20);
+
+    //            // Badge trạng thái Active (cố định xanh vì mock data không có Locked)
+    //            var activeLabel = new Rectangle(e.Bounds.Right - 65, e.Bounds.Y + 20, 50, 20);
+    //            e.Graphics.FillRoundedRectangle(new SolidBrush(Color.FromArgb(235, 250, 240)), activeLabel, 10);
+    //            e.Graphics.DrawString("Active", new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(46, 160, 67)), activeLabel, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+    //        }
+    //        else if (_currentTab == "privileges" && itemStr is PrivItem p)
+    //        {
+    //            // Tên đối tượng DB và loại (TABLE/VIEW/PROCEDURE)
+    //            e.Graphics.DrawString(p.ObjName, new Font("Segoe UI", 10, FontStyle.Bold), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 15, e.Bounds.Y + 12);
+    //            e.Graphics.DrawString(p.ObjType, new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(150, 160, 170)), e.Bounds.X + 15, e.Bounds.Y + 32);
+
+    //            // Vẽ badge tag quyền: tối đa 2 tag mỗi hàng, căn phải
+    //            int currentY = e.Bounds.Y + 18;
+    //            for (int i = 0; i < p.Tags.Length; i += 2)
+    //            {
+    //                int itemsInRow = Math.Min(2, p.Tags.Length - i);
+    //                int currentX = e.Bounds.Right - 20;
+
+    //                // Render backwards so itemsInRow-1 is left-most, 0 is right-most ensuring right-alignment
+    //                for (int j = itemsInRow - 1; j >= 0; j--)
+    //                {
+    //                    string tag = p.Tags[i + j];
+    //                    Color tagBg = Color.White;
+    //                    Color tagFg = Color.Black;
+    //                    if (tag == "SELECT") { tagBg = Color.FromArgb(238, 243, 250); tagFg = Color.FromArgb(60, 100, 160); }
+    //                    else if (tag == "UPDATE") { tagBg = Color.FromArgb(254, 249, 230); tagFg = Color.FromArgb(180, 130, 40); }
+    //                    else if (tag == "INSERT") { tagBg = Color.FromArgb(235, 250, 240); tagFg = Color.FromArgb(46, 160, 67); }
+    //                    else if (tag == "EXECUTE") { tagBg = Color.FromArgb(245, 235, 250); tagFg = Color.FromArgb(130, 60, 180); }
+
+    //                    int width = (int)e.Graphics.MeasureString(tag, new Font("Segoe UI", 8, FontStyle.Bold)).Width + 20;
+    //                    currentX -= width;
+
+    //                    var tagRect = new Rectangle(currentX, currentY, width, 24);
+    //                    e.Graphics.FillRoundedRectangle(new SolidBrush(tagBg), tagRect, 12);
+    //                    e.Graphics.DrawString(tag, new Font("Segoe UI", 8, FontStyle.Bold), new SolidBrush(tagFg), tagRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+
+    //                    currentX -= 5; // margin left
+    //                }
+    //                currentY += 32; // next row starts lower
+    //            }
+    //        }
+    //    }
     }
 
     // ================================================
