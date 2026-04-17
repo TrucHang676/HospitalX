@@ -1,3 +1,15 @@
+-- ========================================================
+-- THÔNG TIN CHUNG
+-- ========================================================
+
+-- AN TOÀN VÀ BẢO MẬT DỮ LIỆU TRONG HTTT - ĐỒ ÁN THỰC HÀNH
+-- NHÓM 12 - 5 thành viên:
+--      1. Hoàng Quốc Việt - 23120189
+--      2. Trần Kim Yến - 23120193
+--      3. Nguyễn Thị Trúc Hằng - 23120201
+--      4. Lê Hoàng Nhật Anh - 23120209
+--      5. Lê Lâm Trí Đức - 23120237
+
 -- ==========================================================
 -- PHÂN HỆ 1: QUẢN TRỊ NGƯỜI DÙNG VÀ BẢO MẬT (ORACLE)
 -- ==========================================================
@@ -50,11 +62,15 @@ GRANT EXECUTE ON DBMS_RLS TO adminHos;
 GRANT CREATE ANY VIEW TO adminHos;
 GRANT DROP ANY VIEW TO adminHos;
 
+-- TỰ ĐỘNG CHUYỂN SANG ADMINHOS
 conn adminHos/123@localhost:1521/PDBHOSX
 
--- ----------------------------------------------------------
--- YÊU CẦU 1: CÁC THAO TÁC VỚI USER & ROLE (CRUD)
--- ----------------------------------------------------------
+-- ==========================================================
+-- DEMO DATA - PHÂN HỆ 1: QUẢN TRỊ NGƯỜI DÙNG & BẢO MẬT
+-- ==========================================================
+-- Vì app có thiết kế thông tin user để tạo và chỉnh sửa thông tin
+-- nên bắt buộc cần bảng THONGTIN_NHANVIEN (PHÂN HỆ 2 SẼ THIẾT KẾ CSDL CHUẨN THAY VÀO)
+
 -- Xóa bảng cũ nếu tồn tại (LUONG trước vì có FK phụ thuộc THONGTIN)
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE LUONG_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
 /
@@ -85,6 +101,9 @@ CREATE TABLE LUONG_NHANVIEN (
     CONSTRAINT FK_LUONG_NV FOREIGN KEY (USERNAME) REFERENCES THONGTIN_NHANVIEN(USERNAME)
 );
 
+-- ----------------------------------------------------------
+-- YÊU CẦU 1: CÁC THAO TÁC VỚI USER & ROLE (CRUD)
+-- ----------------------------------------------------------
 -- 1. CÁC THAO TÁC VỚI USER
 
 -- 1.1 Tạo mới User
@@ -214,7 +233,7 @@ END;
 -- ----------------------------------------------------------
 -- YÊU CẦU 3: CẤP QUYỀN (GRANT PRIVILEGES)
 -- ----------------------------------------------------------
--- Xóa trước chạy lại đỡ lỗi
+-- Xóa nếu tồn tại
 BEGIN
     EXECUTE IMMEDIATE 'DROP TABLE VPD_COL_TRACKING PURGE';
 EXCEPTION
@@ -234,15 +253,6 @@ CREATE TABLE VPD_COL_TRACKING (
 );
 
 -- Dùng cho VPD để grant select mức cột
-/*CREATE OR REPLACE FUNCTION policy_select_column (
-    p_schema IN VARCHAR2,
-    p_table  IN VARCHAR2
-) RETURN VARCHAR2 AS
-BEGIN
-    RETURN '1=2';  -- NULL = không lọc row, nhưng sẽ NULL hóa các cột trong sec_relevant_cols
-END;
-/
-*/
 CREATE OR REPLACE FUNCTION policy_select_column (
     p_schema IN VARCHAR2,
     p_table  IN VARCHAR2
@@ -274,7 +284,6 @@ EXCEPTION WHEN OTHERS THEN
     RETURN NULL;  -- An toàn: nếu lỗi gì thì không ẩn gì cả
 END;
 /
-
 
 -- Cấp quyền cho user/role
 CREATE OR REPLACE PROCEDURE SP_GRANT_PRIVILEGE (
@@ -810,8 +819,6 @@ EXCEPTION
 END;
 /
 
-
-
 -- ----------------------------------------------------------
 -- YÊU CẦU 5: KIỂM TRA QUYỀN CỦA USER/ROLE
 -- ----------------------------------------------------------
@@ -1153,7 +1160,7 @@ END sp_UpdateUserInfo;
 -- ==========================================================
 -- DEMO DATA - PHÂN HỆ 1: QUẢN TRỊ NGƯỜI DÙNG & BẢO MẬT
 -- ==========================================================
--- 2. DỮ LIỆU MẪU ĐỂ TEST
+-- 1. DỮ LIỆU MẪU ĐỂ TEST
 EXEC SP_CREATEUSER('BS_AN', '123',  N'Nguyễn Văn An', 'SYSTEM');
 EXEC SP_CREATEUSER('YT_BINH', '123',  N'Lê Thị Bình', 'SYSTEM');
 
@@ -1165,7 +1172,7 @@ EXEC sp_UpdateUserInfo('BS_AN', N'Nguyễn Văn An', N'Nam', '15/05/1985', '0901
 EXEC sp_UpdateUserInfo('YT_BINH', N'Lê Thị Bình', N'Nữ', '20/10/1992', '0988776655', N'456 Đường Nguyễn Huệ, Quận 1, TP.HCM', N'Y tá');
 
 
--- 3. TẠO CÁC ĐỐI TƯỢNG ĐA DẠNG ĐỂ TEST PHÂN QUYỀN
+-- 2. TẠO CÁC ĐỐI TƯỢNG ĐA DẠNG ĐỂ TEST PHÂN QUYỀN
 
 -- --- A. VIEW (Dùng để test SELECT mức Table/View) ---
 
@@ -1256,7 +1263,7 @@ END;
 --EXEC SP_GRANT_PRIVILEGE('SELECT', 'TABLE', 'NHANVIEN_MAU', 'HOTEN', 'TEST_USER_1', 'USER', 'YES');
 --EXEC SP_GRANT_PRIVILEGE('UPDATE', 'TABLE', 'NHANVIEN_MAU', 'HOTEN', 'TEST_USER_1', 'USER', 'YES');
 --
----- TEST QUYỀN VOI TEST_USER_1
+---- TEST QUYỀN 
 --SELECT * FROM ADMINHOS.NHANVIEN_MAU;
 --
 ---- ĐC
@@ -1314,7 +1321,8 @@ END;
 --    tp.GRANTEE IN (SELECT ROLE FROM DBA_ROLES WHERE ORACLE_MAINTAINED = 'N');
 
 --SELECT SDT FROM ADMINHOS.THONGTIN_NHANVIEN;
---
+--EXEC SP_REVOKE_PRIVILEGE('TABLE','SELECT','NHANVIEN_MAU','BS_AN','HOTEN, LUONG');
+--EXEC SP_GRANT_PRIVILEGE('SELECT','TABLE','NHANVIEN_MAU','HOTEN','BS_AN','USER','NO');
 --SELECT * FROM ADMINHOS.NHANVIEN_MAU;
 --
 ---- 2. Kiểm tra policy đã được tạo sau khi GRANT
@@ -1323,3 +1331,80 @@ END;
 --WHERE OBJECT_OWNER = 'ADMINHOS';
 --
 --SELECT * FROM VPD_COL_TRACKING;
+
+-- ====================================================================
+-- CHẠY ĐOẠN SAU XÓA SẠCH DỰ ÁN RỒI COMMENT LẠI CTRL+A CHẠY FULL SCRIPT 
+-- (CHẠY VỚI QUYỀN SYS - CÓ ĐOẠN TỰ CHUYỂN SANG ADMINHOS)
+-- ====================================================================
+-- 0. Chuyển vào đúng PDB của dự án
+ALTER SESSION SET CONTAINER = PDBHOSX;
+
+-- 1. Xóa các chính sách bảo mật (VPD Policies)
+-- Việc này quan trọng vì nếu không xóa Policy, bạn sẽ không thể DROP bảng dễ dàng
+BEGIN
+    FOR rec IN (SELECT object_name, policy_name FROM dba_policies WHERE object_owner = 'SYS')
+    LOOP
+        DBMS_RLS.DROP_POLICY('SYS', rec.object_name, rec.policy_name);
+    END LOOP;
+END;
+/
+
+-- 2. Xóa toàn bộ các bảng nghiệp vụ lỡ tạo trong Schema SYS
+-- Dùng CASCADE CONSTRAINTS PURGE để xóa sạch cả ràng buộc và dọn thùng rác (recyclebin)
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE VPD_COL_TRACKING CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE LUONG_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE THONGTIN_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE NHANVIEN_MAU CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+-- 3. Xóa các View, Procedure, Function lỡ tạo trong SYS
+BEGIN EXECUTE IMMEDIATE 'DROP VIEW V_DANH_SACH_NHAN_VIEN'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP VIEW V_TONG_HOP_THU_NHAP'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP PROCEDURE SP_UPDATE_PHONE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP PROCEDURE SP_REFRESH_SALARY'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION FN_TINH_TONG_THU_NHAP'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION FN_GET_FULLNAME'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION POLICY_SELECT_COLUMN'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+-- 4. Xóa các User mẫu và Role (Xóa tận gốc)
+BEGIN EXECUTE IMMEDIATE 'DROP USER BS_AN CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER YT_BINH CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_1 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_2 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_3 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP ROLE ROLE_KETOAN'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+-- 5. Cuối cùng, xóa luôn adminHos (để tạo lại cho sạch từ đầu)
+BEGIN EXECUTE IMMEDIATE 'DROP USER adminHos CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+COMMIT;
+
+
+-- Chuyển vào đúng PDB
+ALTER SESSION SET CONTAINER = PDBHOSX;
+
+-- Tìm và giết các session của adminHos (nếu có)
+BEGIN
+   FOR r IN (SELECT sid, serial# FROM v$session WHERE username = 'ADMINHOS')
+   LOOP
+      EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || r.sid || ',' || r.serial# || ''' IMMEDIATE';
+END LOOP;
+END;
+/
