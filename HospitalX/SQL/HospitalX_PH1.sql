@@ -179,6 +179,7 @@ BEGIN
     
     v_sql := 'CREATE ROLE ' || p_role_name;
     EXECUTE IMMEDIATE v_sql;
+    EXECUTE IMMEDIATE 'REVOKE ' || p_role_name || ' FROM ' || USER;
 END;
 /
 
@@ -538,6 +539,7 @@ END SP_GRANT_ROLE_TO_USER;
 -- YÊU CẦU 4: THU HỒI QUYỀN (REVOKE PRIVILEGES)
 -- ----------------------------------------------------------
 
+
 CREATE OR REPLACE PROCEDURE SP_REVOKE_PRIVILEGE (
     p_type      IN VARCHAR2,          -- TABLE, VIEW, PROCEDURE, FUNCTION, ROLE, SYSTEM
     p_privilege IN VARCHAR2,          -- SELECT, UPDATE, DELETE, INSERT, EXECUTE, tên role
@@ -626,6 +628,7 @@ BEGIN
                     WHERE SCHEMA_NAME = v_schema
                       AND TABLE_NAME  = v_obj_clean
                       AND POLICY_NAME = v_policy_name;
+                    COMMIT;
                     DBMS_OUTPUT.PUT_LINE('Het cot -> Revoke SELECT toan bang [' || v_obj_clean || ']');
                 ELSE
                     -- Còn cột → cập nhật VPD ẩn thêm
@@ -663,6 +666,7 @@ BEGIN
                 WHERE SCHEMA_NAME = v_schema
                   AND TABLE_NAME  = v_obj_clean
                   AND POLICY_NAME = v_policy_name;
+                COMMIT;
                 DBMS_OUTPUT.PUT_LINE('Revoke SELECT toan bo bang [' || v_obj_clean || ']');
             END IF;
 
@@ -775,6 +779,13 @@ BEGIN
 
         ELSIF UPPER(p_privilege) = 'SELECT' AND p_columns IS NULL THEN
             -- ── Revoke toàn bộ SELECT trên VIEW ──
+            -- Revoke trực tiếp trên VIEW gốc (trường hợp grant không giới hạn cột)
+            BEGIN
+                EXECUTE IMMEDIATE 'REVOKE SELECT ON ' || v_schema || '.' || v_obj_clean
+                    || ' FROM ' || p_grantee;
+            EXCEPTION WHEN OTHERS THEN NULL;
+            END;
+            -- Revoke cả các view trung gian (trường hợp grant có giới hạn cột)
             FOR rec IN (
                 SELECT TABLE_NAME FROM DBA_TAB_PRIVS
                 WHERE OWNER     = v_schema
@@ -818,6 +829,7 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20099, 'Loi SP_REVOKE_PRIVILEGE: ' || SQLERRM);
 END;
 /
+
 
 -- ----------------------------------------------------------
 -- YÊU CẦU 5: KIỂM TRA QUYỀN CỦA USER/ROLE
@@ -890,6 +902,28 @@ END;
 -- ----------------------------------------------------------
 -- CÁC STORED/FUNC BỔ SUNG ĐỂ HOÀN THIỆN CHỨC NĂNG APP
 -- ----------------------------------------------------------
+
+-- Proc liệt kê danh sách user 
+create or replace PROCEDURE USP_LIST_ROLE_MEMBERS (
+    p_role_name IN VARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT DISTINCT 
+               GRANTEE
+        FROM   DBA_ROLE_PRIVS
+        WHERE  GRANTED_ROLE = UPPER(p_role_name)
+          AND  GRANTEE NOT LIKE 'C##%'
+          AND  GRANTEE != 'ADMINHOS'
+          AND  GRANTEE IN (SELECT USERNAME FROM DBA_USERS WHERE ORACLE_MAINTAINED = 'N')
+        ORDER  BY GRANTEE;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20020, 'L?i l?y danh s?ch members: ' || SQLERRM);
+END;
+/
 
 -- Procedure xem role đã được cấp cho 1 user hoặc role
 CREATE OR REPLACE PROCEDURE USP_GET_ROLE_PRIVS (
@@ -1316,74 +1350,74 @@ END;
 -- (CHẠY VỚI QUYỀN SYS - CÓ ĐOẠN TỰ CHUYỂN SANG ADMINHOS)
 -- ====================================================================
 -- 0. Chuyển vào đúng PDB của dự án
-ALTER SESSION SET CONTAINER = PDBHOSX;
-
--- 1. Xóa các chính sách bảo mật (VPD Policies)
--- Việc này quan trọng vì nếu không xóa Policy, bạn sẽ không thể DROP bảng dễ dàng
-BEGIN
-    FOR rec IN (SELECT object_name, policy_name FROM dba_policies WHERE object_owner = 'SYS')
-    LOOP
-        DBMS_RLS.DROP_POLICY('SYS', rec.object_name, rec.policy_name);
-    END LOOP;
-END;
-/
-
--- 2. Xóa toàn bộ các bảng nghiệp vụ lỡ tạo trong Schema SYS
--- Dùng CASCADE CONSTRAINTS PURGE để xóa sạch cả ràng buộc và dọn thùng rác (recyclebin)
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE VPD_COL_TRACKING CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE LUONG_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE THONGTIN_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP TABLE NHANVIEN_MAU CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-
--- 3. Xóa các View, Procedure, Function lỡ tạo trong SYS
-BEGIN EXECUTE IMMEDIATE 'DROP VIEW V_DANH_SACH_NHAN_VIEN'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP VIEW V_TONG_HOP_THU_NHAP'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP PROCEDURE SP_UPDATE_PHONE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP PROCEDURE SP_REFRESH_SALARY'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION FN_TINH_TONG_THU_NHAP'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION FN_GET_FULLNAME'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION POLICY_SELECT_COLUMN'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-
--- 4. Xóa các User mẫu và Role (Xóa tận gốc)
-BEGIN EXECUTE IMMEDIATE 'DROP USER BS_AN CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER YT_BINH CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_1 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_2 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_3 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-BEGIN EXECUTE IMMEDIATE 'DROP ROLE ROLE_KETOAN'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-
--- 5. Cuối cùng, xóa luôn adminHos (để tạo lại cho sạch từ đầu)
-BEGIN EXECUTE IMMEDIATE 'DROP USER adminHos CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
-/
-
-COMMIT;
-
-
--- Chuyển vào đúng PDB
-ALTER SESSION SET CONTAINER = PDBHOSX;
-
--- Tìm và giết các session của adminHos (nếu có)
-BEGIN
-   FOR r IN (SELECT sid, serial# FROM v$session WHERE username = 'ADMINHOS')
-   LOOP
-      EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || r.sid || ',' || r.serial# || ''' IMMEDIATE';
-END LOOP;
-END;
-/
+--ALTER SESSION SET CONTAINER = PDBHOSX;
+--
+---- 1. Xóa các chính sách bảo mật (VPD Policies)
+---- Việc này quan trọng vì nếu không xóa Policy, bạn sẽ không thể DROP bảng dễ dàng
+--BEGIN
+--    FOR rec IN (SELECT object_name, policy_name FROM dba_policies WHERE object_owner = 'SYS')
+--    LOOP
+--        DBMS_RLS.DROP_POLICY('SYS', rec.object_name, rec.policy_name);
+--    END LOOP;
+--END;
+--/
+--
+---- 2. Xóa toàn bộ các bảng nghiệp vụ lỡ tạo trong Schema SYS
+---- Dùng CASCADE CONSTRAINTS PURGE để xóa sạch cả ràng buộc và dọn thùng rác (recyclebin)
+--BEGIN EXECUTE IMMEDIATE 'DROP TABLE VPD_COL_TRACKING CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP TABLE LUONG_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP TABLE THONGTIN_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP TABLE NHANVIEN_MAU CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--
+---- 3. Xóa các View, Procedure, Function lỡ tạo trong SYS
+--BEGIN EXECUTE IMMEDIATE 'DROP VIEW V_DANH_SACH_NHAN_VIEN'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP VIEW V_TONG_HOP_THU_NHAP'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP PROCEDURE SP_UPDATE_PHONE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP PROCEDURE SP_REFRESH_SALARY'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION FN_TINH_TONG_THU_NHAP'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION FN_GET_FULLNAME'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP FUNCTION POLICY_SELECT_COLUMN'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--
+---- 4. Xóa các User mẫu và Role (Xóa tận gốc)
+--BEGIN EXECUTE IMMEDIATE 'DROP USER BS_AN CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP USER YT_BINH CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_1 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_2 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP USER TEST_USER_3 CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--BEGIN EXECUTE IMMEDIATE 'DROP ROLE ROLE_KETOAN'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--
+---- 5. Cuối cùng, xóa luôn adminHos (để tạo lại cho sạch từ đầu)
+--BEGIN EXECUTE IMMEDIATE 'DROP USER adminHos CASCADE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+--/
+--
+--COMMIT;
+--
+--
+---- Chuyển vào đúng PDB
+--ALTER SESSION SET CONTAINER = PDBHOSX;
+--
+---- Tìm và giết các session của adminHos (nếu có)
+--BEGIN
+--   FOR r IN (SELECT sid, serial# FROM v$session WHERE username = 'ADMINHOS')
+--   LOOP
+--      EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || r.sid || ',' || r.serial# || ''' IMMEDIATE';
+--END LOOP;
+--END;
+--/

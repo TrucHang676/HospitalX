@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace HospitalX.GUI.PH1
 {
@@ -225,12 +226,9 @@ namespace HospitalX.GUI.PH1
                 _members = item.Members;
                 _privs = item.Privileges;
 
-                _members = item.Members;
-                _privs = item.Privileges;
-
                 // Update stats
                 lblStatMemberVal.Text = _members.Count.ToString();
-                lblStatPrivVal.Text = _privs.Count.ToString();
+                lblStatPrivVal.Text = _privs.Count(p => p.ObjType != "NONE").ToString();
 
                 RenderTabDetails();
             }
@@ -291,19 +289,20 @@ namespace HospitalX.GUI.PH1
                     string privilege = row["PRIVILEGE"]?.ToString() ?? "";
                     string columnName = row["COLUMN_NAME"]?.ToString() ?? "ALL COLUMN";
 
-                    // Tạo định dạng: "NHANVIEN.HOTEN.SELECT" hoặc "NHANVIEN.SELECT"
                     string displayName = (columnName == "ALL COLUMN" || columnName == "Tất cả cột")
                         ? $"{objectName}.{privilege}"
                         : $"{objectName}.{columnName}.{privilege}";
 
-                    // Mỗi dòng SQL là 1 PrivItem riêng biệt (chỉ chứa 1 Tag duy nhất)
                     targetRole.Privileges.Add(new PrivItem(displayName, privilege, new string[] { privilege }));
                 }
 
                 if (targetRole.Privileges.Count == 0)
-                    targetRole.Privileges.Add(new PrivItem("Không có quyền", "NONE", new string[] { "NONE" }));
+                    targetRole.Privileges.Add(new PrivItem("Không có quyền", "NONE", new string[] { }));
             }
-            catch (Exception ex) { System.Diagnostics.Debug.WriteLine(ex.Message); }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
         }
         // ================================================
         // REFRESH DỮ LIỆU — load lại toàn bộ role từ DB, sau đó load members/privs cho từng role
@@ -542,72 +541,77 @@ namespace HospitalX.GUI.PH1
             }
         }
 
-    //    private void LstDetails_DrawItem(object sender, DrawItemEventArgs e)
-    //    {
-    //        e.DrawBackground();
-    //        if (e.Index < 0) return;
-    //        var itemStr = lstDetails.Items[e.Index];
+        private void lstRoles_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
 
-    //        // Màu nền xen kẽ trắng/xanh rất nhạt
-    //        var bg = (e.Index % 2 == 0) ? Color.White : Color.FromArgb(250, 252, 254);
-    //        using (var b = new SolidBrush(bg)) e.Graphics.FillRectangle(b, e.Bounds);
-    //        // Draw Separator line
-    //        e.Graphics.DrawLine(new Pen(Color.FromArgb(240, 240, 240)), e.Bounds.X, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
+        }
 
-    //        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+        //    private void LstDetails_DrawItem(object sender, DrawItemEventArgs e)
+        //    {
+        //        e.DrawBackground();
+        //        if (e.Index < 0) return;
+        //        var itemStr = lstDetails.Items[e.Index];
 
-    //        if (_currentTab == "members" && itemStr is MemberItem m)
-    //        {
-    //            // Avatar tròn với chữ viết tắt
-    //            var avatarRect = new Rectangle(e.Bounds.X + 15, e.Bounds.Y + 15, 30, 30);
-    //            e.Graphics.FillEllipse(new SolidBrush(m.Color), avatarRect);
-    //            e.Graphics.DrawString(m.Initials, new Font("Segoe UI", 8, FontStyle.Bold), Brushes.White, avatarRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+        //        // Màu nền xen kẽ trắng/xanh rất nhạt
+        //        var bg = (e.Index % 2 == 0) ? Color.White : Color.FromArgb(250, 252, 254);
+        //        using (var b = new SolidBrush(bg)) e.Graphics.FillRectangle(b, e.Bounds);
+        //        // Draw Separator line
+        //        e.Graphics.DrawLine(new Pen(Color.FromArgb(240, 240, 240)), e.Bounds.X, e.Bounds.Bottom - 1, e.Bounds.Right, e.Bounds.Bottom - 1);
 
-    //            // Tên user
-    //            e.Graphics.DrawString(m.Name, new Font("Segoe UI", 10, FontStyle.Regular), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 55, e.Bounds.Y + 20);
+        //        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-    //            // Badge trạng thái Active (cố định xanh vì mock data không có Locked)
-    //            var activeLabel = new Rectangle(e.Bounds.Right - 65, e.Bounds.Y + 20, 50, 20);
-    //            e.Graphics.FillRoundedRectangle(new SolidBrush(Color.FromArgb(235, 250, 240)), activeLabel, 10);
-    //            e.Graphics.DrawString("Active", new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(46, 160, 67)), activeLabel, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-    //        }
-    //        else if (_currentTab == "privileges" && itemStr is PrivItem p)
-    //        {
-    //            // Tên đối tượng DB và loại (TABLE/VIEW/PROCEDURE)
-    //            e.Graphics.DrawString(p.ObjName, new Font("Segoe UI", 10, FontStyle.Bold), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 15, e.Bounds.Y + 12);
-    //            e.Graphics.DrawString(p.ObjType, new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(150, 160, 170)), e.Bounds.X + 15, e.Bounds.Y + 32);
+        //        if (_currentTab == "members" && itemStr is MemberItem m)
+        //        {
+        //            // Avatar tròn với chữ viết tắt
+        //            var avatarRect = new Rectangle(e.Bounds.X + 15, e.Bounds.Y + 15, 30, 30);
+        //            e.Graphics.FillEllipse(new SolidBrush(m.Color), avatarRect);
+        //            e.Graphics.DrawString(m.Initials, new Font("Segoe UI", 8, FontStyle.Bold), Brushes.White, avatarRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
 
-    //            // Vẽ badge tag quyền: tối đa 2 tag mỗi hàng, căn phải
-    //            int currentY = e.Bounds.Y + 18;
-    //            for (int i = 0; i < p.Tags.Length; i += 2)
-    //            {
-    //                int itemsInRow = Math.Min(2, p.Tags.Length - i);
-    //                int currentX = e.Bounds.Right - 20;
+        //            // Tên user
+        //            e.Graphics.DrawString(m.Name, new Font("Segoe UI", 10, FontStyle.Regular), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 55, e.Bounds.Y + 20);
 
-    //                // Render backwards so itemsInRow-1 is left-most, 0 is right-most ensuring right-alignment
-    //                for (int j = itemsInRow - 1; j >= 0; j--)
-    //                {
-    //                    string tag = p.Tags[i + j];
-    //                    Color tagBg = Color.White;
-    //                    Color tagFg = Color.Black;
-    //                    if (tag == "SELECT") { tagBg = Color.FromArgb(238, 243, 250); tagFg = Color.FromArgb(60, 100, 160); }
-    //                    else if (tag == "UPDATE") { tagBg = Color.FromArgb(254, 249, 230); tagFg = Color.FromArgb(180, 130, 40); }
-    //                    else if (tag == "INSERT") { tagBg = Color.FromArgb(235, 250, 240); tagFg = Color.FromArgb(46, 160, 67); }
-    //                    else if (tag == "EXECUTE") { tagBg = Color.FromArgb(245, 235, 250); tagFg = Color.FromArgb(130, 60, 180); }
+        //            // Badge trạng thái Active (cố định xanh vì mock data không có Locked)
+        //            var activeLabel = new Rectangle(e.Bounds.Right - 65, e.Bounds.Y + 20, 50, 20);
+        //            e.Graphics.FillRoundedRectangle(new SolidBrush(Color.FromArgb(235, 250, 240)), activeLabel, 10);
+        //            e.Graphics.DrawString("Active", new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(46, 160, 67)), activeLabel, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+        //        }
+        //        else if (_currentTab == "privileges" && itemStr is PrivItem p)
+        //        {
+        //            // Tên đối tượng DB và loại (TABLE/VIEW/PROCEDURE)
+        //            e.Graphics.DrawString(p.ObjName, new Font("Segoe UI", 10, FontStyle.Bold), new SolidBrush(Color.FromArgb(10, 42, 64)), e.Bounds.X + 15, e.Bounds.Y + 12);
+        //            e.Graphics.DrawString(p.ObjType, new Font("Segoe UI", 8), new SolidBrush(Color.FromArgb(150, 160, 170)), e.Bounds.X + 15, e.Bounds.Y + 32);
 
-    //                    int width = (int)e.Graphics.MeasureString(tag, new Font("Segoe UI", 8, FontStyle.Bold)).Width + 20;
-    //                    currentX -= width;
+        //            // Vẽ badge tag quyền: tối đa 2 tag mỗi hàng, căn phải
+        //            int currentY = e.Bounds.Y + 18;
+        //            for (int i = 0; i < p.Tags.Length; i += 2)
+        //            {
+        //                int itemsInRow = Math.Min(2, p.Tags.Length - i);
+        //                int currentX = e.Bounds.Right - 20;
 
-    //                    var tagRect = new Rectangle(currentX, currentY, width, 24);
-    //                    e.Graphics.FillRoundedRectangle(new SolidBrush(tagBg), tagRect, 12);
-    //                    e.Graphics.DrawString(tag, new Font("Segoe UI", 8, FontStyle.Bold), new SolidBrush(tagFg), tagRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+        //                // Render backwards so itemsInRow-1 is left-most, 0 is right-most ensuring right-alignment
+        //                for (int j = itemsInRow - 1; j >= 0; j--)
+        //                {
+        //                    string tag = p.Tags[i + j];
+        //                    Color tagBg = Color.White;
+        //                    Color tagFg = Color.Black;
+        //                    if (tag == "SELECT") { tagBg = Color.FromArgb(238, 243, 250); tagFg = Color.FromArgb(60, 100, 160); }
+        //                    else if (tag == "UPDATE") { tagBg = Color.FromArgb(254, 249, 230); tagFg = Color.FromArgb(180, 130, 40); }
+        //                    else if (tag == "INSERT") { tagBg = Color.FromArgb(235, 250, 240); tagFg = Color.FromArgb(46, 160, 67); }
+        //                    else if (tag == "EXECUTE") { tagBg = Color.FromArgb(245, 235, 250); tagFg = Color.FromArgb(130, 60, 180); }
 
-    //                    currentX -= 5; // margin left
-    //                }
-    //                currentY += 32; // next row starts lower
-    //            }
-    //        }
-    //    }
+        //                    int width = (int)e.Graphics.MeasureString(tag, new Font("Segoe UI", 8, FontStyle.Bold)).Width + 20;
+        //                    currentX -= width;
+
+        //                    var tagRect = new Rectangle(currentX, currentY, width, 24);
+        //                    e.Graphics.FillRoundedRectangle(new SolidBrush(tagBg), tagRect, 12);
+        //                    e.Graphics.DrawString(tag, new Font("Segoe UI", 8, FontStyle.Bold), new SolidBrush(tagFg), tagRect, new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+
+        //                    currentX -= 5; // margin left
+        //                }
+        //                currentY += 32; // next row starts lower
+        //            }
+        //        }
+        //    }
     }
 
     // ================================================
@@ -625,7 +629,7 @@ namespace HospitalX.GUI.PH1
         public List<PrivItem> Privileges { get; set; }
 
         public int MemberCount => Members.Count;
-        public int PrivilegeCount => Privileges.Count;
+        public int PrivilegeCount => Privileges.Count(p => p.ObjType != "NONE");
 
         public RoleItem(string n, string sub, Color bg, Color ic)
         {
