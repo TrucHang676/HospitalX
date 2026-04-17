@@ -225,9 +225,6 @@ namespace HospitalX.GUI.PH1
                 _members = item.Members;
                 _privs = item.Privileges;
 
-                _members = item.Members;
-                _privs = item.Privileges;
-
                 // Update stats
                 lblStatMemberVal.Text = _members.Count.ToString();
                 lblStatPrivVal.Text = _privs.Count.ToString();

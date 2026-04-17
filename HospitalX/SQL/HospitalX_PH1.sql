@@ -902,6 +902,26 @@ END;
 -- CÁC STORED/FUNC BỔ SUNG ĐỂ HOÀN THIỆN CHỨC NĂNG APP
 -- ----------------------------------------------------------
 
+-- Proc liệt kê danh sách user 
+create or replace PROCEDURE USP_LIST_ROLE_MEMBERS (
+    p_role_name IN VARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT DISTINCT 
+               GRANTEE
+        FROM   DBA_ROLE_PRIVS
+        WHERE  GRANTED_ROLE = UPPER(p_role_name)
+          AND  GRANTEE NOT LIKE 'C##%'
+          AND  GRANTEE IN (SELECT USERNAME FROM DBA_USERS WHERE ORACLE_MAINTAINED = 'N')
+        ORDER  BY GRANTEE;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20020, 'L?i l?y danh s?ch members: ' || SQLERRM);
+END;
+
 -- Procedure xem role đã được cấp cho 1 user hoặc role
 CREATE OR REPLACE PROCEDURE USP_GET_ROLE_PRIVS (
     p_grantee IN VARCHAR2,
