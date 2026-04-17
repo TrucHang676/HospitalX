@@ -853,18 +853,6 @@ namespace HospitalX.GUI.PH1
                     DataProvider.Instance.ExecuteNonQuery("SP_GRANT_PRIVILEGE", parameters);
                 }
 
-                //// Ghi nhật ký
-                //var logParams = new OracleParameter[] {
-                //    new OracleParameter("p_nguoi_thuchien", OracleDbType.Varchar2) { Value = DataProvider.Instance.CurrentUser },
-                //    new OracleParameter("p_hanh_dong", OracleDbType.Varchar2) { Value = "GRANT" },
-                //    new OracleParameter("p_doi_tuong", OracleDbType.Varchar2) { Value = obj.Name },
-                //    new OracleParameter("p_quyen", OracleDbType.Varchar2) { Value = string.Join(",", privileges) },
-                //    new OracleParameter("p_cap_cho", OracleDbType.Varchar2) { Value = grantee.Name },
-                //    new OracleParameter("p_ghichu", OracleDbType.Varchar2) { Value = "Cấp quyền từ HospitalX App" }
-                //};
-
-                //DataProvider.Instance.ExecuteNonQuery("SP_LOG_PHANQUYEN", logParams);
-
                 _step4Done = true;
                 RefreshStepUI();
 

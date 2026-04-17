@@ -168,9 +168,5 @@ namespace HospitalX.GUI.PH1
             }
         }
 
-        private void btnConfirm_Click_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }

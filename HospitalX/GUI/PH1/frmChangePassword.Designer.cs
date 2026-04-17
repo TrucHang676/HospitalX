@@ -259,7 +259,6 @@ namespace HospitalX.GUI.PH1
             this.btnConfirm.Size = new System.Drawing.Size(185, 46);
             this.btnConfirm.TabIndex = 1;
             this.btnConfirm.Text = "Xác nhận đổi";
-            this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click_1);
             // 
             // guna2BorderlessForm1
             // 

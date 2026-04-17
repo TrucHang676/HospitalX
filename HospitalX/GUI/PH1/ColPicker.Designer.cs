@@ -113,7 +113,6 @@
             this.btnExecuteGrant.Size = new System.Drawing.Size(137, 37);
             this.btnExecuteGrant.TabIndex = 2;
             this.btnExecuteGrant.Text = "Xác nhận →";
-            this.btnExecuteGrant.Click += new System.EventHandler(this.btnExecuteGrant_Click_1);
             // 
             // btnCancelCol
             // 
@@ -254,7 +253,6 @@
             this.lblColPopupTitle.Size = new System.Drawing.Size(250, 27);
             this.lblColPopupTitle.TabIndex = 17;
             this.lblColPopupTitle.Text = "Chọn cột cho quyền SELECT";
-            this.lblColPopupTitle.Click += new System.EventHandler(this.lblColPopupTitle_Click);
             // 
             // pnlTop
             // 

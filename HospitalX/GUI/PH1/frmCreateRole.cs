@@ -76,10 +76,6 @@ namespace HospitalX.GUI.PH1
             AuthType = cmbAuthType.SelectedItem.ToString();
             Password = txtPassword.Text;
 
-            //// Hiển thị thông báo thành công
-            //msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
-            //msgDialog.Show($"Đã tạo Role '{RoleName}' thành công!", "Thành công");
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

@@ -73,39 +73,12 @@ namespace HospitalX.GUI.PH1
                         clbColumns.Items.Add(colName, alreadyChecked);
                     }
                 }
-                //else
-                //{
-                //    // Fallback: If query fails, use mock columns
-                //    var mockCols = new List<string>
-                //    {
-                //        "MANV","HOTEN","PHAI","NGAYSINH","CMND","SODT","VAITRO","CHUYENKHOA"
-                //    };
-
-                //    foreach (var col in mockCols)
-                //    {
-                //        bool alreadyChecked = currentCols.Contains(col);
-                //        clbColumns.Items.Add(col, alreadyChecked);
-                //    }
-                //}
 
                 UpdateColCount();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Lỗi tải danh sách cột: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // Fallback: load mock columns
-                //var mockCols = new List<string>
-                //{
-                //    "MANV","HOTEN","PHAI","NGAYSINH","CMND","SODT","VAITRO","CHUYENKHOA"
-                //};
-
-                //clbColumns.Items.Clear();
-                //foreach (var col in mockCols)
-                //{
-                //    bool alreadyChecked = currentCols.Contains(col);
-                //    clbColumns.Items.Add(col, alreadyChecked);
-                //}
 
                 UpdateColCount();
             }
@@ -133,16 +106,6 @@ namespace HospitalX.GUI.PH1
 
             this.DialogResult = DialogResult.OK;
             this.Close();
-        }
-
-        private void btnExecuteGrant_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblColPopupTitle_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

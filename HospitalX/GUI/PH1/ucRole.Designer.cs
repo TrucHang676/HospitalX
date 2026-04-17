@@ -112,7 +112,6 @@ namespace HospitalX.GUI.PH1
             this.lstRoles.Name = "lstRoles";
             this.lstRoles.Size = new System.Drawing.Size(1000, 788);
             this.lstRoles.TabIndex = 0;
-            this.lstRoles.SelectedIndexChanged += new System.EventHandler(this.lstRoles_SelectedIndexChanged_1);
             // 
             // pnlLeftHeader
             // 
