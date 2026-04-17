@@ -1420,4 +1420,8 @@ END;
 --      EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || r.sid || ',' || r.serial# || ''' IMMEDIATE';
 --END LOOP;
 --END;
+<<<<<<< HEAD
 --/
+=======
+--/
+>>>>>>> 270e74cd675801c013eaca99b728763e252c811a
