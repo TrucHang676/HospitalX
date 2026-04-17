@@ -80,11 +80,16 @@ Data Access: Oracle.ManagedDataAccess.
 
 ---
 
-## Nhóm thực hiện: NHÓM 12 - CQ2023/1 - FIT HCMUS
+## Nhóm thực hiện: NHÓM 12 - CQ2023/1 - FIT HCMUS - INFORMATION SYSTEM SECURITY PROJECT
 
 Danh sách thành viên:
+
     1. Hoàng Quốc Việt - 23120189
+    
     2. Trần Kim Yến - 23120193
+    
     3. Nguyễn Thị Trúc Hằng - 23120201
+    
     4. Lê Hoàng Nhật Anh - 23120209
+    
     5. Lê Lâm Trí Đức - 23120237
