@@ -921,6 +921,7 @@ EXCEPTION
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20020, 'L?i l?y danh s?ch members: ' || SQLERRM);
 END;
+/
 
 -- Procedure xem role đã được cấp cho 1 user hoặc role
 CREATE OR REPLACE PROCEDURE USP_GET_ROLE_PRIVS (
