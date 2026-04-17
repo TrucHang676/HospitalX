@@ -511,7 +511,7 @@ namespace HospitalX.GUI.PH1
                 new OracleParameter("p_privilege", OracleDbType.Varchar2, privName, ParameterDirection.Input),
                 new OracleParameter("p_object", OracleDbType.Varchar2, string.IsNullOrEmpty(objName) ? (object)DBNull.Value : objName, ParameterDirection.Input),
                 new OracleParameter("p_grantee", OracleDbType.Varchar2, _currentGrantee.Trim(), ParameterDirection.Input),
-                new OracleParameter("p_column", OracleDbType.Varchar2, (object)columnToIn ?? DBNull.Value, ParameterDirection.Input)
+                new OracleParameter("p_columns", OracleDbType.Varchar2, (object)columnToIn ?? DBNull.Value, ParameterDirection.Input)
             };
 
                     // Gọi Proc
