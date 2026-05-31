@@ -8,10 +8,12 @@ namespace HospitalX.GUI.PH2.BacSi
     public partial class ucTongQuan : UserControl
     {
         private int hoveredActionRowIndex = -1;
+        public event EventHandler ViewAllHsbaRequested;
 
         public ucTongQuan()
         {
             InitializeComponent();
+            btnViewAll.Click += BtnViewAll_Click;
         }
 
         private void ucTongQuan_Load(object sender, EventArgs e)
@@ -168,6 +170,11 @@ namespace HospitalX.GUI.PH2.BacSi
 
             string maHsba = Convert.ToString(dgvRecentHsba.Rows[e.RowIndex].Cells["colHsbaId"].Value);
             MessageBox.Show("Mở chi tiết " + maHsba, "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void BtnViewAll_Click(object sender, EventArgs e)
+        {
+            ViewAllHsbaRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void InvalidateActionCell(int rowIndex)
