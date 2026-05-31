@@ -130,6 +130,12 @@
     <Compile Include="GUI\PH2\BacSi\ucDonThuoc.Designer.cs">
       <DependentUpon>ucDonThuoc.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPrescriptionDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPrescriptionDetail.Designer.cs">
+      <DependentUpon>frmPrescriptionDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\BacSi\ucHSBA.cs">
       <SubType>UserControl</SubType>
     </Compile>
