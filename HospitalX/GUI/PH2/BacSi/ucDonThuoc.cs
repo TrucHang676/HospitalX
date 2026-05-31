@@ -61,14 +61,12 @@ namespace HospitalX.GUI.PH2.BacSi
                 Gender = "Nam",
                 Age = 55,
                 CreatedDate = new DateTime(2026, 5, 15),
-                HasWarning = true,
-                WarningText = "Phát hiện thuốc có nguy cơ dị ứng với bệnh nhân",
                 Drugs = new List<DrugRecord>
                 {
-                    new DrugRecord("Aspirin 81mg", "1 viên/ngày", "Tối sau ăn", 30, true),
-                    new DrugRecord("Clopidogrel 75mg", "1 viên/ngày", "Sáng sau ăn", 30, false),
-                    new DrugRecord("Atorvastatin 40mg", "1 viên/ngày", "Tối sau ăn", 30, false),
-                    new DrugRecord("Bisoprolol 5mg", "1 viên/ngày", "Sáng trước ăn", 30, false)
+                    new DrugRecord("Aspirin 81mg", "1 viên/ngày"),
+                    new DrugRecord("Clopidogrel 75mg", "1 viên/ngày"),
+                    new DrugRecord("Atorvastatin 40mg", "1 viên/ngày"),
+                    new DrugRecord("Bisoprolol 5mg", "1 viên/ngày")
                 }
             });
 
@@ -82,9 +80,9 @@ namespace HospitalX.GUI.PH2.BacSi
                 CreatedDate = new DateTime(2026, 5, 21),
                 Drugs = new List<DrugRecord>
                 {
-                    new DrugRecord("Amlodipine 5mg", "1 viên/ngày", "Sáng sau ăn", 30, false),
-                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày", "Sáng trước ăn", 30, false),
-                    new DrugRecord("Aspirin 81mg", "1 viên/ngày", "Tối sau ăn", 30, false)
+                    new DrugRecord("Amlodipine 5mg", "1 viên/ngày"),
+                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày"),
+                    new DrugRecord("Aspirin 81mg", "1 viên/ngày")
                 }
             });
 
@@ -98,11 +96,11 @@ namespace HospitalX.GUI.PH2.BacSi
                 CreatedDate = new DateTime(2026, 5, 18),
                 Drugs = new List<DrugRecord>
                 {
-                    new DrugRecord("Furosemide 40mg", "1 viên/ngày", "Sáng sau ăn", 30, false),
-                    new DrugRecord("Spironolactone 25mg", "1 viên/ngày", "Sáng sau ăn", 30, false),
-                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày", "Sáng trước ăn", 30, false),
-                    new DrugRecord("Metformin 500mg", "2 viên/ngày", "Sáng và tối sau ăn", 30, false),
-                    new DrugRecord("Atorvastatin 20mg", "1 viên/ngày", "Tối sau ăn", 30, false)
+                    new DrugRecord("Furosemide 40mg", "1 viên/ngày"),
+                    new DrugRecord("Spironolactone 25mg", "1 viên/ngày"),
+                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày"),
+                    new DrugRecord("Metformin 500mg", "2 viên/ngày"),
+                    new DrugRecord("Atorvastatin 20mg", "1 viên/ngày")
                 }
             });
 
@@ -116,10 +114,10 @@ namespace HospitalX.GUI.PH2.BacSi
                 CreatedDate = new DateTime(2026, 5, 17),
                 Drugs = new List<DrugRecord>
                 {
-                    new DrugRecord("Warfarin 5mg", "1 viên/ngày", "Tối sau ăn", 30, false),
-                    new DrugRecord("Atorvastatin 40mg", "1 viên/ngày", "Tối sau ăn", 30, false),
-                    new DrugRecord("Amlodipine 5mg", "1 viên/ngày", "Sáng sau ăn", 30, false),
-                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày", "Sáng trước ăn", 30, false)
+                    new DrugRecord("Warfarin 5mg", "1 viên/ngày"),
+                    new DrugRecord("Atorvastatin 40mg", "1 viên/ngày"),
+                    new DrugRecord("Amlodipine 5mg", "1 viên/ngày"),
+                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày")
                 }
             });
 
@@ -133,8 +131,8 @@ namespace HospitalX.GUI.PH2.BacSi
                 CreatedDate = new DateTime(2026, 5, 12),
                 Drugs = new List<DrugRecord>
                 {
-                    new DrugRecord("Losartan 50mg", "1 viên/ngày", "Sáng sau ăn", 30, false),
-                    new DrugRecord("Hydrochlorothiazide 25mg", "1 viên/ngày", "Sáng sau ăn", 30, false)
+                    new DrugRecord("Losartan 50mg", "1 viên/ngày"),
+                    new DrugRecord("Hydrochlorothiazide 25mg", "1 viên/ngày")
                 }
             });
 
@@ -148,7 +146,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 CreatedDate = new DateTime(2026, 5, 10),
                 Drugs = new List<DrugRecord>
                 {
-                    new DrugRecord("Metoprolol 25mg", "1 viên/ngày", "Sáng trước ăn", 14, false)
+                    new DrugRecord("Metoprolol 25mg", "1 viên/ngày")
                 }
             });
         }
@@ -232,7 +230,7 @@ namespace HospitalX.GUI.PH2.BacSi
             pnlStats.Controls.Clear();
             pnlStats.Controls.Add(CreateStatCard(records.Count.ToString(), "Đơn thuốc", "trong khoảng lọc", Color.FromArgb(15, 110, 86)));
             pnlStats.Controls.Add(CreateStatCard(records.Sum(p => p.Drugs.Count).ToString(), "Tổng số thuốc", "đã kê", Color.FromArgb(15, 110, 86)));
-            pnlStats.Controls.Add(CreateStatCard(records.Count(p => p.HasWarning).ToString(), "Cảnh báo", "dị ứng thuốc", Color.FromArgb(217, 79, 61)));
+            pnlStats.Controls.Add(CreateStatCard(records.Select(p => p.PatientCode).Distinct().Count().ToString(), "Bệnh nhân", "có đơn thuốc", Color.FromArgb(15, 110, 86)));
             pnlStats.ResumeLayout();
         }
 
@@ -245,7 +243,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 BorderThickness = 1,
                 FillColor = Color.White,
                 Margin = new Padding(0, 0, 12, 0),
-                Size = new Size(240, 66)
+                Size = new Size(270, 74)
             };
 
             var lblNumber = new Label
@@ -262,15 +260,15 @@ namespace HospitalX.GUI.PH2.BacSi
                 Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(24, 48, 42),
                 Location = new Point(78, 12),
-                Size = new Size(140, 22),
+                Size = new Size(140, 25),
                 Text = title
             };
             var lblCaption = new Label
             {
                 Font = new Font("Segoe UI", 8.5F),
                 ForeColor = Color.FromArgb(122, 149, 137),
-                Location = new Point(78, 34),
-                Size = new Size(140, 20),
+                Location = new Point(78, 40),
+                Size = new Size(140, 22),
                 Text = caption
             };
 
@@ -320,7 +318,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 BorderThickness = 1,
                 FillColor = Color.White,
                 Margin = new Padding(0, 0, 0, 12),
-                Size = new Size(cardWidth, record.HasWarning ? 158 : 138),
+                Size = new Size(cardWidth, 138),
                 Tag = record
             };
             card.ShadowDecoration.Enabled = true;
@@ -331,7 +329,7 @@ namespace HospitalX.GUI.PH2.BacSi
 
             var accent = new Panel
             {
-                BackColor = record.HasWarning ? Color.FromArgb(217, 79, 61) : Color.FromArgb(15, 110, 86),
+                BackColor = Color.FromArgb(15, 110, 86),
                 Location = new Point(0, 0),
                 Size = new Size(4, card.Height),
                 Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom
@@ -368,22 +366,11 @@ namespace HospitalX.GUI.PH2.BacSi
                 Text = string.Format("{0} · {1}, {2} tuổi · {3}", record.PatientCode, record.Gender, record.Age, record.CreatedDate.ToString("dd/MM/yyyy"))
             };
 
-            var lblWarning = new Label
-            {
-                AutoEllipsis = true,
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(217, 79, 61),
-                Location = new Point(24, 74),
-                Size = new Size(cardWidth - 220, 22),
-                Text = record.HasWarning ? record.WarningText : string.Empty,
-                Visible = record.HasWarning
-            };
-
             var chipPanel = new FlowLayoutPanel
             {
                 BackColor = Color.Transparent,
                 FlowDirection = FlowDirection.LeftToRight,
-                Location = new Point(24, record.HasWarning ? 100 : 76),
+                Location = new Point(24, 86),
                 Size = new Size(cardWidth - 210, 34),
                 WrapContents = false
             };
@@ -408,8 +395,8 @@ namespace HospitalX.GUI.PH2.BacSi
             };
 
             var btnDetail = CreateActionButton("Xem chi tiết", Color.FromArgb(15, 110, 86), Color.White);
-            btnDetail.Location = new Point(cardWidth - 150, record.HasWarning ? 92 : 82);
-            btnDetail.Size = new Size(118, 36);
+            btnDetail.Location = new Point(cardWidth - 166, 82);
+            btnDetail.Size = new Size(134, 36);
             btnDetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDetail.Click += (s, e) => OpenPrescriptionDetail(record);
 
@@ -417,7 +404,6 @@ namespace HospitalX.GUI.PH2.BacSi
             card.Controls.Add(lblHsba);
             card.Controls.Add(lblPatient);
             card.Controls.Add(lblMeta);
-            card.Controls.Add(lblWarning);
             card.Controls.Add(chipPanel);
             card.Controls.Add(lblCount);
             card.Controls.Add(btnDetail);
@@ -426,13 +412,13 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private Label CreateDrugChip(DrugRecord drug)
         {
-            string text = drug.Name + " · " + drug.Dose;
+            string text = drug.Name;
             var chip = new Label
             {
                 AutoSize = false,
-                BackColor = drug.IsWarning ? Color.FromArgb(253, 236, 234) : Color.FromArgb(247, 249, 248),
+                BackColor = Color.FromArgb(247, 249, 248),
                 Font = new Font("Segoe UI", 8.6F, FontStyle.Bold),
-                ForeColor = drug.IsWarning ? Color.FromArgb(217, 79, 61) : Color.FromArgb(61, 82, 73),
+                ForeColor = Color.FromArgb(61, 82, 73),
                 Margin = new Padding(0, 0, 8, 0),
                 Padding = new Padding(10, 0, 10, 0),
                 Size = new Size(Math.Min(190, 80 + text.Length * 6), 28),
@@ -507,8 +493,6 @@ namespace HospitalX.GUI.PH2.BacSi
             public string Gender { get; set; }
             public int Age { get; set; }
             public DateTime CreatedDate { get; set; }
-            public bool HasWarning { get; set; }
-            public string WarningText { get; set; }
             public List<DrugRecord> Drugs { get; set; }
         }
 
@@ -518,20 +502,14 @@ namespace HospitalX.GUI.PH2.BacSi
             {
             }
 
-            public DrugRecord(string name, string dose, string instruction, int days, bool isWarning)
+            public DrugRecord(string name, string dose)
             {
                 Name = name;
                 Dose = dose;
-                Instruction = instruction;
-                Days = days;
-                IsWarning = isWarning;
             }
 
             public string Name { get; set; }
             public string Dose { get; set; }
-            public string Instruction { get; set; }
-            public int Days { get; set; }
-            public bool IsWarning { get; set; }
         }
     }
 

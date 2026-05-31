@@ -36,7 +36,7 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvDrugs.Rows.Clear();
             foreach (ucDonThuoc.DrugRecord drug in _record.Drugs)
             {
-                int rowIndex = dgvDrugs.Rows.Add(drug.Name, drug.Dose, drug.Instruction, drug.Days, drug.IsWarning ? "Có" : "");
+                int rowIndex = dgvDrugs.Rows.Add(drug.Name, drug.Dose);
                 dgvDrugs.Rows[rowIndex].Tag = drug;
             }
         }
@@ -56,9 +56,6 @@ namespace HospitalX.GUI.PH2.BacSi
             var drug = (ucDonThuoc.DrugRecord)dgvDrugs.CurrentRow.Tag;
             txtMedicineName.Text = drug.Name;
             txtDose.Text = drug.Dose;
-            txtInstruction.Text = drug.Instruction;
-            numDays.Value = Math.Max(numDays.Minimum, Math.Min(numDays.Maximum, drug.Days));
-            chkWarning.Checked = drug.IsWarning;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -71,7 +68,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            _record.Drugs.Add(new ucDonThuoc.DrugRecord(txtMedicineName.Text.Trim(), txtDose.Text.Trim(), txtInstruction.Text.Trim(), (int)numDays.Value, chkWarning.Checked));
+            _record.Drugs.Add(new ucDonThuoc.DrugRecord(txtMedicineName.Text.Trim(), txtDose.Text.Trim()));
             _changed = true;
             RefreshGrid();
             ClearInputs();
@@ -87,9 +84,6 @@ namespace HospitalX.GUI.PH2.BacSi
             var drug = (ucDonThuoc.DrugRecord)dgvDrugs.CurrentRow.Tag;
             drug.Name = txtMedicineName.Text.Trim();
             drug.Dose = txtDose.Text.Trim();
-            drug.Instruction = txtInstruction.Text.Trim();
-            drug.Days = (int)numDays.Value;
-            drug.IsWarning = chkWarning.Checked;
             _changed = true;
             RefreshGrid();
         }
@@ -112,9 +106,6 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             txtMedicineName.Clear();
             txtDose.Clear();
-            txtInstruction.Clear();
-            numDays.Value = 30;
-            chkWarning.Checked = false;
         }
     }
 }

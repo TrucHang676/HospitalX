@@ -28,20 +28,13 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnDelete = new Guna.UI2.WinForms.Guna2Button();
             this.btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             this.btnAdd = new Guna.UI2.WinForms.Guna2Button();
-            this.chkWarning = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.numDays = new Guna.UI2.WinForms.Guna2NumericUpDown();
-            this.txtInstruction = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtDose = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtMedicineName = new Guna.UI2.WinForms.Guna2TextBox();
             this.dgvDrugs = new System.Windows.Forms.DataGridView();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDose = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colInstruction = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDays = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colWarning = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlHeader.SuspendLayout();
             this.pnlBody.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDays)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDrugs)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,9 +109,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlBody.Controls.Add(this.btnDelete);
             this.pnlBody.Controls.Add(this.btnUpdate);
             this.pnlBody.Controls.Add(this.btnAdd);
-            this.pnlBody.Controls.Add(this.chkWarning);
-            this.pnlBody.Controls.Add(this.numDays);
-            this.pnlBody.Controls.Add(this.txtInstruction);
             this.pnlBody.Controls.Add(this.txtDose);
             this.pnlBody.Controls.Add(this.txtMedicineName);
             this.pnlBody.Controls.Add(this.dgvDrugs);
@@ -135,7 +125,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnDelete.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(730, 420);
+            this.btnDelete.Location = new System.Drawing.Point(520, 392);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(110, 38);
             this.btnDelete.TabIndex = 8;
@@ -152,7 +142,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnUpdate.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnUpdate.Location = new System.Drawing.Point(606, 420);
+            this.btnUpdate.Location = new System.Drawing.Point(396, 392);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(110, 38);
             this.btnUpdate.TabIndex = 7;
@@ -167,72 +157,12 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnAdd.Location = new System.Drawing.Point(482, 420);
+            this.btnAdd.Location = new System.Drawing.Point(272, 392);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(110, 38);
             this.btnAdd.TabIndex = 6;
             this.btnAdd.Text = "Thêm thuốc";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // chkWarning
-            // 
-            this.chkWarning.AutoSize = true;
-            this.chkWarning.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.chkWarning.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.chkWarning.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.chkWarning.Location = new System.Drawing.Point(22, 356);
-            this.chkWarning.Name = "chkWarning";
-            this.chkWarning.Size = new System.Drawing.Size(190, 19);
-            this.chkWarning.TabIndex = 5;
-            this.chkWarning.Text = "Đánh dấu cảnh báo dị ứng";
-            // 
-            // numDays
-            // 
-            this.numDays.BackColor = System.Drawing.Color.Transparent;
-            this.numDays.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.numDays.BorderRadius = 8;
-            this.numDays.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.numDays.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.numDays.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.numDays.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.numDays.Location = new System.Drawing.Point(746, 302);
-            this.numDays.Maximum = new decimal(new int[] {
-            365,
-            0,
-            0,
-            0});
-            this.numDays.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numDays.Name = "numDays";
-            this.numDays.Size = new System.Drawing.Size(116, 38);
-            this.numDays.TabIndex = 4;
-            this.numDays.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            // 
-            // txtInstruction
-            // 
-            this.txtInstruction.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.txtInstruction.BorderRadius = 8;
-            this.txtInstruction.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtInstruction.DefaultText = "";
-            this.txtInstruction.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtInstruction.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.txtInstruction.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtInstruction.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.txtInstruction.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.txtInstruction.Location = new System.Drawing.Point(470, 302);
-            this.txtInstruction.Name = "txtInstruction";
-            this.txtInstruction.PlaceholderText = "Cách dùng";
-            this.txtInstruction.SelectedText = "";
-            this.txtInstruction.Size = new System.Drawing.Size(260, 38);
-            this.txtInstruction.TabIndex = 3;
             // 
             // txtDose
             // 
@@ -245,11 +175,11 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtDose.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtDose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtDose.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.txtDose.Location = new System.Drawing.Point(286, 302);
+            this.txtDose.Location = new System.Drawing.Point(456, 302);
             this.txtDose.Name = "txtDose";
             this.txtDose.PlaceholderText = "Liều lượng";
             this.txtDose.SelectedText = "";
-            this.txtDose.Size = new System.Drawing.Size(170, 38);
+            this.txtDose.Size = new System.Drawing.Size(260, 38);
             this.txtDose.TabIndex = 2;
             // 
             // txtMedicineName
@@ -267,7 +197,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtMedicineName.Name = "txtMedicineName";
             this.txtMedicineName.PlaceholderText = "Tên thuốc";
             this.txtMedicineName.SelectedText = "";
-            this.txtMedicineName.Size = new System.Drawing.Size(250, 38);
+            this.txtMedicineName.Size = new System.Drawing.Size(420, 38);
             this.txtMedicineName.TabIndex = 1;
             // 
             // dgvDrugs
@@ -281,7 +211,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dgvDrugs.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
@@ -289,16 +219,14 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dgvDrugs.ColumnHeadersHeight = 38;
             this.dgvDrugs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colName,
-            this.colDose,
-            this.colInstruction,
-            this.colDays,
-            this.colWarning});
+            this.colDose});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F);
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvDrugs.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDrugs.EnableHeadersVisualStyles = false;
             this.dgvDrugs.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
@@ -309,7 +237,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dgvDrugs.RowHeadersVisible = false;
             this.dgvDrugs.RowTemplate.Height = 42;
             this.dgvDrugs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDrugs.Size = new System.Drawing.Size(840, 244);
+            this.dgvDrugs.Size = new System.Drawing.Size(840, 252);
             this.dgvDrugs.TabIndex = 0;
             this.dgvDrugs.SelectionChanged += new System.EventHandler(this.dgvDrugs_SelectionChanged);
             // 
@@ -324,26 +252,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.colDose.HeaderText = "LIỀU LƯỢNG";
             this.colDose.Name = "colDose";
             this.colDose.ReadOnly = true;
-            // 
-            // colInstruction
-            // 
-            this.colInstruction.HeaderText = "CÁCH DÙNG";
-            this.colInstruction.Name = "colInstruction";
-            this.colInstruction.ReadOnly = true;
-            // 
-            // colDays
-            // 
-            this.colDays.FillWeight = 45F;
-            this.colDays.HeaderText = "NGÀY";
-            this.colDays.Name = "colDays";
-            this.colDays.ReadOnly = true;
-            // 
-            // colWarning
-            // 
-            this.colWarning.FillWeight = 60F;
-            this.colWarning.HeaderText = "CẢNH BÁO";
-            this.colWarning.Name = "colWarning";
-            this.colWarning.ReadOnly = true;
             // 
             // frmPrescriptionDetail
             // 
@@ -360,8 +268,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.Text = "Chi tiết đơn thuốc";
             this.pnlHeader.ResumeLayout(false);
             this.pnlBody.ResumeLayout(false);
-            this.pnlBody.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDays)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDrugs)).EndInit();
             this.ResumeLayout(false);
 
@@ -377,16 +283,10 @@ namespace HospitalX.GUI.PH2.BacSi
         private System.Windows.Forms.DataGridView dgvDrugs;
         private Guna.UI2.WinForms.Guna2TextBox txtMedicineName;
         private Guna.UI2.WinForms.Guna2TextBox txtDose;
-        private Guna.UI2.WinForms.Guna2TextBox txtInstruction;
-        private Guna.UI2.WinForms.Guna2NumericUpDown numDays;
-        private Guna.UI2.WinForms.Guna2CheckBox chkWarning;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnUpdate;
         private Guna.UI2.WinForms.Guna2Button btnDelete;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDose;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colInstruction;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDays;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colWarning;
     }
 }

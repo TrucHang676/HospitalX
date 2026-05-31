@@ -302,6 +302,9 @@
     <EmbeddedResource Include="GUI\PH2\BacSi\frmPatientHistory.resx">
       <DependentUpon>frmPatientHistory.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmPrescriptionDetail.resx">
+      <DependentUpon>frmPrescriptionDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\Main_BS.resx">
       <DependentUpon>Main_BS.cs</DependentUpon>
     </EmbeddedResource>
