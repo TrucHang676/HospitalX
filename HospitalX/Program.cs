@@ -1,5 +1,4 @@
-﻿using HospitalX.GUI.PH2;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace HospitalX
@@ -16,7 +15,8 @@ namespace HospitalX
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main_BS());
+            Application.Run(new GUI.PH2.Main_BS());
+            //Application.Run(new GUI.PH1.Main_PhanHe1());
         }
 
         // Khai báo hàm API của Windows 

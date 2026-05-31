@@ -108,7 +108,7 @@
             lblGreeting.Location = new System.Drawing.Point(4, 4);
             lblGreeting.Margin = new System.Windows.Forms.Padding(4);
             lblGreeting.Name = "lblGreeting";
-            lblGreeting.Size = new System.Drawing.Size(155, 27);
+            lblGreeting.Size = new System.Drawing.Size(120, 21);
             lblGreeting.TabIndex = 0;
             lblGreeting.Text = "Xin chào, BVDBA!";
             // 
@@ -120,7 +120,7 @@
             lblTitle.Location = new System.Drawing.Point(4, 36);
             lblTitle.Margin = new System.Windows.Forms.Padding(4);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new System.Drawing.Size(449, 37);
+            lblTitle.Size = new System.Drawing.Size(364, 30);
             lblTitle.TabIndex = 2;
             lblTitle.Text = "Chúc bạn một ngày làm việc hiệu quả.";
             // 
@@ -193,7 +193,7 @@
             this.lblDate.Location = new System.Drawing.Point(48, 8);
             this.lblDate.Margin = new System.Windows.Forms.Padding(4);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(85, 22);
+            this.lblDate.Size = new System.Drawing.Size(75, 19);
             this.lblDate.TabIndex = 0;
             this.lblDate.Text = "02/04/2026";
             this.lblDate.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -242,7 +242,7 @@
             this.lblCard2Title.Location = new System.Drawing.Point(21, 119);
             this.lblCard2Title.Margin = new System.Windows.Forms.Padding(4);
             this.lblCard2Title.Name = "lblCard2Title";
-            this.lblCard2Title.Size = new System.Drawing.Size(101, 23);
+            this.lblCard2Title.Size = new System.Drawing.Size(84, 19);
             this.lblCard2Title.TabIndex = 3;
             this.lblCard2Title.Text = "Tổng số Role";
             // 
@@ -254,7 +254,7 @@
             this.lblRoleCount.Location = new System.Drawing.Point(21, 73);
             this.lblRoleCount.Margin = new System.Windows.Forms.Padding(4);
             this.lblRoleCount.Name = "lblRoleCount";
-            this.lblRoleCount.Size = new System.Drawing.Size(220, 38);
+            this.lblRoleCount.Size = new System.Drawing.Size(178, 32);
             this.lblRoleCount.TabIndex = 2;
             this.lblRoleCount.Text = "guna2HtmlLabel1";
             // 
@@ -309,7 +309,7 @@
             this.lblCard3Title.Location = new System.Drawing.Point(21, 119);
             this.lblCard3Title.Margin = new System.Windows.Forms.Padding(4);
             this.lblCard3Title.Name = "lblCard3Title";
-            this.lblCard3Title.Size = new System.Drawing.Size(107, 23);
+            this.lblCard3Title.Size = new System.Drawing.Size(87, 19);
             this.lblCard3Title.TabIndex = 5;
             this.lblCard3Title.Text = "Quyền đã cấp";
             // 
@@ -321,7 +321,7 @@
             this.lblPriCount.Location = new System.Drawing.Point(21, 73);
             this.lblPriCount.Margin = new System.Windows.Forms.Padding(4);
             this.lblPriCount.Name = "lblPriCount";
-            this.lblPriCount.Size = new System.Drawing.Size(220, 38);
+            this.lblPriCount.Size = new System.Drawing.Size(178, 32);
             this.lblPriCount.TabIndex = 2;
             this.lblPriCount.Text = "guna2HtmlLabel1";
             // 
@@ -376,7 +376,7 @@
             this.lblCard1Title.Location = new System.Drawing.Point(21, 119);
             this.lblCard1Title.Margin = new System.Windows.Forms.Padding(4);
             this.lblCard1Title.Name = "lblCard1Title";
-            this.lblCard1Title.Size = new System.Drawing.Size(101, 23);
+            this.lblCard1Title.Size = new System.Drawing.Size(84, 19);
             this.lblCard1Title.TabIndex = 2;
             this.lblCard1Title.Text = "Tổng số User";
             // 
@@ -388,7 +388,7 @@
             this.lblUserCount.Location = new System.Drawing.Point(21, 73);
             this.lblUserCount.Margin = new System.Windows.Forms.Padding(4);
             this.lblUserCount.Name = "lblUserCount";
-            this.lblUserCount.Size = new System.Drawing.Size(220, 38);
+            this.lblUserCount.Size = new System.Drawing.Size(178, 32);
             this.lblUserCount.TabIndex = 1;
             this.lblUserCount.Text = "guna2HtmlLabel1";
             // 
@@ -442,7 +442,7 @@
             this.lblCard4Title.Location = new System.Drawing.Point(21, 119);
             this.lblCard4Title.Margin = new System.Windows.Forms.Padding(4);
             this.lblCard4Title.Name = "lblCard4Title";
-            this.lblCard4Title.Size = new System.Drawing.Size(107, 23);
+            this.lblCard4Title.Size = new System.Drawing.Size(89, 19);
             this.lblCard4Title.TabIndex = 4;
             this.lblCard4Title.Text = "Đối tượng DB";
             // 
@@ -454,7 +454,7 @@
             this.lblDBCount.Location = new System.Drawing.Point(21, 73);
             this.lblDBCount.Margin = new System.Windows.Forms.Padding(4);
             this.lblDBCount.Name = "lblDBCount";
-            this.lblDBCount.Size = new System.Drawing.Size(220, 38);
+            this.lblDBCount.Size = new System.Drawing.Size(178, 32);
             this.lblDBCount.TabIndex = 2;
             this.lblDBCount.Text = "guna2HtmlLabel1";
             // 
@@ -530,10 +530,10 @@
             this.lvObjects.FullRowSelect = true;
             this.lvObjects.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvObjects.HideSelection = false;
-            this.lvObjects.Location = new System.Drawing.Point(19, 79);
+            this.lvObjects.Location = new System.Drawing.Point(19, 72);
             this.lvObjects.Margin = new System.Windows.Forms.Padding(4);
             this.lvObjects.Name = "lvObjects";
-            this.lvObjects.Size = new System.Drawing.Size(729, 575);
+            this.lvObjects.Size = new System.Drawing.Size(729, 582);
             this.lvObjects.TabIndex = 1;
             this.lvObjects.UseCompatibleStateImageBehavior = false;
             this.lvObjects.View = System.Windows.Forms.View.Details;
@@ -548,7 +548,7 @@
             this.lblObject.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblObject.Name = "lblObject";
             this.lblObject.Padding = new System.Windows.Forms.Padding(0, 17, 19, 17);
-            this.lblObject.Size = new System.Drawing.Size(240, 62);
+            this.lblObject.Size = new System.Drawing.Size(196, 55);
             this.lblObject.TabIndex = 0;
             this.lblObject.Text = "Đối tượng trong CSDL";
             // 
@@ -653,7 +653,7 @@
             this.lblRole.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRole.Name = "lblRole";
             this.lblRole.Padding = new System.Windows.Forms.Padding(0, 17, 19, 17);
-            this.lblRole.Size = new System.Drawing.Size(253, 62);
+            this.lblRole.Size = new System.Drawing.Size(207, 55);
             this.lblRole.TabIndex = 1;
             this.lblRole.Text = "Phân bố User theo Role";
             // 
