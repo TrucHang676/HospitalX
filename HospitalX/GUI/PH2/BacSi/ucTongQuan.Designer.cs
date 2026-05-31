@@ -381,7 +381,9 @@
             this.pnlRecent.FillColor = System.Drawing.Color.White;
             this.pnlRecent.Location = new System.Drawing.Point(24, 342);
             this.pnlRecent.Name = "pnlRecent";
-            this.pnlRecent.Size = new System.Drawing.Size(1080, 390);
+            this.pnlRecent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlRecent.Size = new System.Drawing.Size(1080, 430);
             this.pnlRecent.TabIndex = 5;
             // 
             // lblRecentTitle
@@ -414,11 +416,19 @@
             this.btnViewAll.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnViewAll.BorderRadius = 8;
             this.btnViewAll.BorderThickness = 1;
+            this.btnViewAll.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(208)))), ((int)(((byte)(203)))));
+            this.btnViewAll.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.btnViewAll.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.btnViewAll.FillColor = System.Drawing.Color.White;
             this.btnViewAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnViewAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnViewAll.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnViewAll.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnViewAll.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnViewAll.Location = new System.Drawing.Point(932, 26);
             this.btnViewAll.Name = "btnViewAll";
+            this.btnViewAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnViewAll.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnViewAll.Size = new System.Drawing.Size(112, 34);
             this.btnViewAll.TabIndex = 2;
             this.btnViewAll.Text = "Xem tất cả →";
@@ -427,10 +437,16 @@
             // 
             this.dgvRecentHsba.AllowUserToAddRows = false;
             this.dgvRecentHsba.AllowUserToDeleteRows = false;
+            this.dgvRecentHsba.AllowUserToResizeColumns = false;
             this.dgvRecentHsba.AllowUserToResizeRows = false;
+            this.dgvRecentHsba.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvRecentHsba.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvRecentHsba.BackgroundColor = System.Drawing.Color.White;
             this.dgvRecentHsba.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvRecentHsba.ColumnHeadersHeight = 36;
+            this.dgvRecentHsba.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvRecentHsba.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvRecentHsba.ColumnHeadersHeight = 44;
             this.dgvRecentHsba.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colHsbaId,
             this.colPatient,
@@ -444,45 +460,46 @@
             this.dgvRecentHsba.Name = "dgvRecentHsba";
             this.dgvRecentHsba.ReadOnly = true;
             this.dgvRecentHsba.RowHeadersVisible = false;
-            this.dgvRecentHsba.RowTemplate.Height = 46;
+            this.dgvRecentHsba.RowTemplate.Height = 68;
             this.dgvRecentHsba.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecentHsba.Size = new System.Drawing.Size(1032, 278);
+            this.dgvRecentHsba.Size = new System.Drawing.Size(1032, 326);
             this.dgvRecentHsba.TabIndex = 3;
+            this.dgvRecentHsba.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvRecentHsba_CellPainting);
             // 
             // colHsbaId
             // 
             this.colHsbaId.HeaderText = "MÃ HSBA";
             this.colHsbaId.Name = "colHsbaId";
             this.colHsbaId.ReadOnly = true;
-            this.colHsbaId.Width = 140;
+            this.colHsbaId.FillWeight = 13F;
             // 
             // colPatient
             // 
             this.colPatient.HeaderText = "BỆNH NHÂN";
             this.colPatient.Name = "colPatient";
             this.colPatient.ReadOnly = true;
-            this.colPatient.Width = 330;
+            this.colPatient.FillWeight = 34F;
             // 
             // colDate
             // 
             this.colDate.HeaderText = "NGÀY LẬP";
             this.colDate.Name = "colDate";
             this.colDate.ReadOnly = true;
-            this.colDate.Width = 180;
+            this.colDate.FillWeight = 16F;
             // 
             // colStatus
             // 
             this.colStatus.HeaderText = "TRẠNG THÁI";
             this.colStatus.Name = "colStatus";
             this.colStatus.ReadOnly = true;
-            this.colStatus.Width = 220;
+            this.colStatus.FillWeight = 26F;
             // 
             // colAction
             // 
             this.colAction.HeaderText = "THAO TÁC";
             this.colAction.Name = "colAction";
             this.colAction.ReadOnly = true;
-            this.colAction.Width = 130;
+            this.colAction.FillWeight = 11F;
             // 
             // ucTongQuan
             // 

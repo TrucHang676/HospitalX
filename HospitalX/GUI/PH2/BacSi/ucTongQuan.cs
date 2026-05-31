@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2.BacSi
 {
     public partial class ucTongQuan : UserControl
     {
+        private int hoveredActionRowIndex = -1;
+
         public ucTongQuan()
         {
             InitializeComponent();
@@ -29,11 +26,17 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvRecentHsba.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
             dgvRecentHsba.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(122, 149, 137);
             dgvRecentHsba.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvRecentHsba.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            dgvRecentHsba.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(247, 249, 248);
+            dgvRecentHsba.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(122, 149, 137);
             dgvRecentHsba.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
             dgvRecentHsba.DefaultCellStyle.ForeColor = Color.FromArgb(61, 82, 73);
             dgvRecentHsba.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 244, 240);
             dgvRecentHsba.DefaultCellStyle.SelectionForeColor = Color.FromArgb(24, 48, 42);
+            dgvRecentHsba.DefaultCellStyle.Padding = new Padding(10, 0, 8, 0);
             dgvRecentHsba.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
+            dgvRecentHsba.RowsDefaultCellStyle.BackColor = Color.White;
+            dgvRecentHsba.RowTemplate.Height = 68;
 
             if (dgvRecentHsba.Rows.Count > 0)
             {
@@ -45,6 +48,166 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvRecentHsba.Rows.Add("HSBA-0815", "Phạm Quốc Hùng\nBN-00215 · Nam, 67 tuổi", "18/05/2026\n3 ngày trước", "Chờ kết quả", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0801", "Trần Thị Mai\nBN-00189 · Nữ, 45 tuổi", "12/05/2026\n9 ngày trước", "Hoàn thành", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0799", "Võ Minh Tuấn\nBN-00174 · Nam, 29 tuổi", "10/05/2026\n11 ngày trước", "Hoàn thành", "Xem");
+            dgvRecentHsba.ClearSelection();
+            dgvRecentHsba.CurrentCell = null;
+            dgvRecentHsba.MouseMove -= dgvRecentHsba_MouseMove;
+            dgvRecentHsba.MouseMove += dgvRecentHsba_MouseMove;
+            dgvRecentHsba.MouseLeave -= dgvRecentHsba_MouseLeave;
+            dgvRecentHsba.MouseLeave += dgvRecentHsba_MouseLeave;
+            dgvRecentHsba.CellClick -= dgvRecentHsba_CellClick;
+            dgvRecentHsba.CellClick += dgvRecentHsba_CellClick;
+        }
+
+        // Vẽ badge, text 2 dòng và nút hành động để bảng mềm hơn.
+        private void dgvRecentHsba_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            e.PaintBackground(e.CellBounds, true);
+
+            string value = Convert.ToString(e.Value);
+            Rectangle cell = e.CellBounds;
+
+            if (e.ColumnIndex == dgvRecentHsba.Columns["colHsbaId"].Index)
+            {
+                Rectangle badge = new Rectangle(cell.X + 12, cell.Y + 21, 112, 28);
+                FillRound(e.Graphics, badge, 6, Color.FromArgb(230, 244, 240));
+                TextRenderer.DrawText(e.Graphics, value, new Font("Consolas", 9.2F, FontStyle.Bold), badge, Color.FromArgb(15, 110, 86), TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                e.Handled = true;
+                return;
+            }
+
+            if (e.ColumnIndex == dgvRecentHsba.Columns["colPatient"].Index || e.ColumnIndex == dgvRecentHsba.Columns["colDate"].Index)
+            {
+                string[] lines = value.Split('\n');
+                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 10F, FontStyle.Bold), new Rectangle(cell.X + 14, cell.Y + 13, cell.Width - 20, 24), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                if (lines.Length > 1)
+                {
+                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(cell.X + 14, cell.Y + 39, cell.Width - 20, 22), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                }
+                e.Handled = true;
+                return;
+            }
+
+            if (e.ColumnIndex == dgvRecentHsba.Columns["colStatus"].Index)
+            {
+                Color back = Color.FromArgb(238, 242, 240);
+                Color fore = Color.FromArgb(122, 149, 137);
+                Color dot = Color.FromArgb(196, 208, 203);
+
+                if (value == "Đang điều trị")
+                {
+                    back = Color.FromArgb(230, 244, 240);
+                    fore = Color.FromArgb(15, 110, 86);
+                    dot = Color.FromArgb(15, 110, 86);
+                }
+                else if (value == "Chờ kết quả")
+                {
+                    back = Color.FromArgb(255, 244, 220);
+                    fore = Color.FromArgb(154, 98, 0);
+                    dot = Color.FromArgb(232, 168, 56);
+                }
+
+                int pillWidth = Math.Min(cell.Width - 36, 168);
+                Rectangle pill = new Rectangle(cell.X + 18, cell.Y + 20, pillWidth, 30);
+                FillRound(e.Graphics, pill, 13, back);
+                using (SolidBrush brush = new SolidBrush(dot))
+                {
+                    e.Graphics.FillEllipse(brush, pill.X + 12, pill.Y + 11, 7, 7);
+                }
+                TextRenderer.DrawText(e.Graphics, value, new Font("Segoe UI", 8.8F, FontStyle.Bold), new Rectangle(pill.X + 25, pill.Y, pill.Width - 28, pill.Height), fore, TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                e.Handled = true;
+                return;
+            }
+
+            if (e.ColumnIndex == dgvRecentHsba.Columns["colAction"].Index)
+            {
+                bool hovered = e.RowIndex == hoveredActionRowIndex;
+                Rectangle button = new Rectangle(cell.X + 24, cell.Y + 19, 70, 32);
+                Color fill = hovered ? Color.FromArgb(230, 244, 240) : Color.White;
+                Color border = hovered ? Color.FromArgb(15, 110, 86) : Color.FromArgb(218, 232, 226);
+                Color fore = hovered ? Color.FromArgb(10, 79, 61) : Color.FromArgb(15, 110, 86);
+                FillRound(e.Graphics, button, 8, fill);
+                DrawRound(e.Graphics, button, 8, border);
+                TextRenderer.DrawText(e.Graphics, "Xem", new Font("Segoe UI", 9F, FontStyle.Bold), button, fore, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                e.Handled = true;
+            }
+        }
+
+        // Hover cho nút Xem trong DataGridView.
+        private void dgvRecentHsba_MouseMove(object sender, MouseEventArgs e)
+        {
+            DataGridView.HitTestInfo hit = dgvRecentHsba.HitTest(e.X, e.Y);
+            int actionColumnIndex = dgvRecentHsba.Columns["colAction"].Index;
+            int nextHoveredRow = hit.Type == DataGridViewHitTestType.Cell && hit.ColumnIndex == actionColumnIndex ? hit.RowIndex : -1;
+
+            if (hoveredActionRowIndex != nextHoveredRow)
+            {
+                int oldRow = hoveredActionRowIndex;
+                hoveredActionRowIndex = nextHoveredRow;
+                dgvRecentHsba.Cursor = hoveredActionRowIndex >= 0 ? Cursors.Hand : Cursors.Default;
+                InvalidateActionCell(oldRow);
+                InvalidateActionCell(hoveredActionRowIndex);
+            }
+        }
+
+        private void dgvRecentHsba_MouseLeave(object sender, EventArgs e)
+        {
+            int oldRow = hoveredActionRowIndex;
+            hoveredActionRowIndex = -1;
+            dgvRecentHsba.Cursor = Cursors.Default;
+            InvalidateActionCell(oldRow);
+        }
+
+        private void dgvRecentHsba_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != dgvRecentHsba.Columns["colAction"].Index)
+            {
+                return;
+            }
+
+            string maHsba = Convert.ToString(dgvRecentHsba.Rows[e.RowIndex].Cells["colHsbaId"].Value);
+            MessageBox.Show("Mở chi tiết " + maHsba, "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void InvalidateActionCell(int rowIndex)
+        {
+            if (rowIndex >= 0 && rowIndex < dgvRecentHsba.Rows.Count)
+            {
+                dgvRecentHsba.InvalidateCell(dgvRecentHsba.Columns["colAction"].Index, rowIndex);
+            }
+        }
+
+        private static void FillRound(Graphics g, Rectangle rect, int radius, Color color)
+        {
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            using (GraphicsPath path = RoundPath(rect, radius))
+            using (SolidBrush brush = new SolidBrush(color))
+            {
+                g.FillPath(brush, path);
+            }
+        }
+
+        private static void DrawRound(Graphics g, Rectangle rect, int radius, Color color)
+        {
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            using (GraphicsPath path = RoundPath(rect, radius))
+            using (Pen pen = new Pen(color))
+            {
+                g.DrawPath(pen, path);
+            }
+        }
+
+        private static GraphicsPath RoundPath(Rectangle rect, int radius)
+        {
+            int d = radius * 2;
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+            path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+            path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+            return path;
         }
     }
 }
