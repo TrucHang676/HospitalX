@@ -798,9 +798,38 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE('Revoke SELECT toan bo VIEW [' || v_obj_clean || ']');
 
         ELSIF UPPER(p_privilege) = 'UPDATE' AND p_columns IS NOT NULL THEN
-            EXECUTE IMMEDIATE 'REVOKE UPDATE (' || p_columns || ') ON '
-                || v_schema || '.' || v_obj_clean || ' FROM ' || p_grantee;
-
+         -- ── Revoke lẻ cột UPDATE trên VIEW ──
+                SELECT LISTAGG(COLUMN_NAME, ','),
+                       MAX(GRANTABLE)
+                INTO v_remaining_cols, v_is_grantable
+                FROM DBA_COL_PRIVS
+                WHERE GRANTEE    = UPPER(p_grantee)
+                  AND OWNER      = v_schema
+                  AND TABLE_NAME = v_obj_clean
+                  AND PRIVILEGE  = 'UPDATE'
+                  AND COLUMN_NAME NOT IN (
+                      SELECT TRIM(UPPER(REGEXP_SUBSTR(UPPER(REPLACE(p_columns,' ','')), '[^,]+', 1, LEVEL)))
+                      FROM DUAL
+                      CONNECT BY REGEXP_SUBSTR(UPPER(REPLACE(p_columns,' ','')), '[^,]+', 1, LEVEL) IS NOT NULL
+                  );
+        
+                EXECUTE IMMEDIATE 'REVOKE UPDATE ON ' || v_schema || '.' || v_obj_clean
+                    || ' FROM ' || p_grantee;
+        
+                IF v_remaining_cols IS NOT NULL THEN
+                    v_sql := 'GRANT UPDATE (' || v_remaining_cols || ') ON '
+                          || v_schema || '.' || v_obj_clean
+                          || ' TO ' || p_grantee;
+                    IF v_is_grantable = 'YES' THEN
+                        v_sql := v_sql || ' WITH GRANT OPTION';
+                    END IF;
+                    EXECUTE IMMEDIATE v_sql;
+                    DBMS_OUTPUT.PUT_LINE('Revoke cot [' || p_columns || '], grant lai ['
+                        || v_remaining_cols || '] tren VIEW [' || v_obj_clean || ']');
+                ELSE
+                    DBMS_OUTPUT.PUT_LINE('Het cot UPDATE -> Revoke toan bo tren VIEW ['
+                        || v_obj_clean || ']');
+                END IF;
         ELSE
             EXECUTE IMMEDIATE 'REVOKE ' || UPPER(p_privilege) || ' ON '
                 || v_schema || '.' || v_obj_clean || ' FROM ' || p_grantee;
