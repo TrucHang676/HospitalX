@@ -32,10 +32,12 @@
             // 
             // ucHSBA
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ucHSBA";
-            this.Size = new System.Drawing.Size(1826, 1208);
+            this.Size = new System.Drawing.Size(1128, 782);
             this.ResumeLayout(false);
 
         }

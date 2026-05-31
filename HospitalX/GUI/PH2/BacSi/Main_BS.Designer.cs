@@ -424,13 +424,13 @@
             // 
             this.pnlLogo.BackColor = System.Drawing.Color.Transparent;
             this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.pnlLogo.BorderRadius = 37;
+            this.pnlLogo.BorderRadius = 25;
             this.pnlLogo.BorderThickness = 1;
             this.pnlLogo.Controls.Add(this.ptbChuThap);
             this.pnlLogo.FillColor = System.Drawing.Color.White;
             this.pnlLogo.Location = new System.Drawing.Point(8, 6);
             this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.Size = new System.Drawing.Size(49, 48);
+            this.pnlLogo.Size = new System.Drawing.Size(50, 50);
             this.pnlLogo.TabIndex = 1;
             this.pnlLogo.UseTransparentBackground = true;
             // 
@@ -440,7 +440,7 @@
             this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
             this.ptbChuThap.Image = ((System.Drawing.Image)(resources.GetObject("ptbChuThap.Image")));
             this.ptbChuThap.ImageRotate = 0F;
-            this.ptbChuThap.Location = new System.Drawing.Point(11, 11);
+            this.ptbChuThap.Location = new System.Drawing.Point(12, 12);
             this.ptbChuThap.Name = "ptbChuThap";
             this.ptbChuThap.Size = new System.Drawing.Size(26, 27);
             this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

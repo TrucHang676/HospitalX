@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HospitalX.GUI.PH2.BacSi;
+using System;
 using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2
@@ -15,6 +9,44 @@ namespace HospitalX.GUI.PH2
         public Main_BS()
         {
             InitializeComponent();
+            WireNavigationEvents();
+            LoadPage(new ucTongQuan(), "Bảng điều khiển");
+            btnTongQuan.Checked = true;
+        }
+
+        // Gắn sự kiện điều hướng cho các nút sidebar.
+        private void WireNavigationEvents()
+        {
+            btnTongQuan.Click += BtnTongQuan_Click;
+            btnHSBA.Click += BtnHSBA_Click;
+            btnBN.Click += (s, e) => SetPageTitle("Bệnh nhân của tôi");
+            btnDT.Click += (s, e) => SetPageTitle("Đơn thuốc");
+            btnThongBao.Click += (s, e) => SetPageTitle("Thông báo");
+            btnHSCN.Click += (s, e) => SetPageTitle("Hồ sơ cá nhân");
+        }
+
+        private void BtnTongQuan_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucTongQuan(), "Bảng điều khiển");
+        }
+
+        private void BtnHSBA_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucHSBA(), "Hồ sơ bệnh án");
+        }
+
+        // Load UserControl vào vùng nội dung chính.
+        private void LoadPage(UserControl control, string title)
+        {
+            pnlContent.Controls.Clear();
+            control.Dock = DockStyle.Fill;
+            pnlContent.Controls.Add(control);
+            SetPageTitle(title);
+        }
+
+        private void SetPageTitle(string title)
+        {
+            lblPageTitle.Text = title;
         }
     }
 }

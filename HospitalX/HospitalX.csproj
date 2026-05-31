@@ -112,6 +112,12 @@
     <Compile Include="GUI\PH2\BacSi\ucHSBA.Designer.cs">
       <DependentUpon>ucHSBA.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucTongQuan.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucTongQuan.Designer.cs">
+      <DependentUpon>ucTongQuan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\GraphicsHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -207,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\ucHSBA.resx">
       <DependentUpon>ucHSBA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\ucTongQuan.resx">
+      <DependentUpon>ucTongQuan.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
