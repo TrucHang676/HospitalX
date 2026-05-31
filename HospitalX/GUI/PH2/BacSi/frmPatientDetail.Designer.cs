@@ -18,7 +18,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.components = new System.ComponentModel.Container();
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblCode = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -27,6 +26,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlHsba = new Guna.UI2.WinForms.Guna2Panel();
             this.flpHsba = new System.Windows.Forms.FlowLayoutPanel();
             this.lblHsbaTitle = new System.Windows.Forms.Label();
+            this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlHeader.SuspendLayout();
             this.pnlInfo.SuspendLayout();
             this.pnlHsba.SuspendLayout();
@@ -47,28 +47,17 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlHeader.Controls.Add(this.lblName);
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.pnlHeader.Location = new System.Drawing.Point(28, 24);
+            this.pnlHeader.Location = new System.Drawing.Point(24, 20);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1221, 128);
+            this.pnlHeader.Size = new System.Drawing.Size(1226, 135);
             this.pnlHeader.TabIndex = 0;
-            // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnClose.IconColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(1158, 30);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(34, 34);
-            this.btnClose.TabIndex = 3;
             // 
             // lblCode
             // 
             this.lblCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.lblCode.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
             this.lblCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblCode.Location = new System.Drawing.Point(966, 52);
+            this.lblCode.Location = new System.Drawing.Point(1037, 77);
             this.lblCode.Name = "lblCode";
             this.lblCode.Size = new System.Drawing.Size(160, 34);
             this.lblCode.TabIndex = 2;
@@ -87,11 +76,12 @@ namespace HospitalX.GUI.PH2.BacSi
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(34, 26);
+            this.lblTitle.Location = new System.Drawing.Point(22, 9);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(191, 25);
+            this.lblTitle.Size = new System.Drawing.Size(261, 35);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Thông tin bệnh nhân";
             // 
@@ -110,6 +100,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // lblInfoTitle
             // 
             this.lblInfoTitle.AutoSize = true;
+            this.lblInfoTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblInfoTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             this.lblInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblInfoTitle.Location = new System.Drawing.Point(32, 28);
@@ -144,6 +135,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // lblHsbaTitle
             // 
             this.lblHsbaTitle.AutoSize = true;
+            this.lblHsbaTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblHsbaTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             this.lblHsbaTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblHsbaTitle.Location = new System.Drawing.Point(32, 28);
@@ -151,6 +143,19 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblHsbaTitle.Size = new System.Drawing.Size(243, 28);
             this.lblHsbaTitle.TabIndex = 0;
             this.lblHsbaTitle.Text = "Hồ sơ bệnh án liên quan";
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.BorderRadius = 8;
+            this.btnClose.FillColor = System.Drawing.Color.Transparent;
+            this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.btnClose.IconColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(1177, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(36, 32);
+            this.btnClose.TabIndex = 5;
             // 
             // frmPatientDetail
             // 
@@ -178,7 +183,6 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private Guna.UI2.WinForms.Guna2Panel pnlHeader;
-        private Guna.UI2.WinForms.Guna2ControlBox btnClose;
         private System.Windows.Forms.Label lblCode;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Label lblTitle;
@@ -187,5 +191,6 @@ namespace HospitalX.GUI.PH2.BacSi
         private Guna.UI2.WinForms.Guna2Panel pnlHsba;
         private System.Windows.Forms.FlowLayoutPanel flpHsba;
         private System.Windows.Forms.Label lblHsbaTitle;
+        private Guna.UI2.WinForms.Guna2ControlBox btnClose;
     }
 }
