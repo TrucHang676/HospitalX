@@ -43,7 +43,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            dgvRecentHsba.Rows.Add("HSBA-0821", "Nguyễn Văn An\nBN-00341 · Nam, 52 tuổi", "21/05/2026\nHôm nay", "Đang điều trị", "Xem");
+            dgvRecentHsba.Rows.Add("HSBA-0821", "Trà Văn Sỹ\nBN-00341 · Nam, 21 tuổi", "23/05/2026\nHôm nay", "Đang điều trị", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0819", "Lê Thị Bích\nBN-00298 · Nữ, 38 tuổi", "20/05/2026\nHôm qua", "Chờ kết quả", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0815", "Phạm Quốc Hùng\nBN-00215 · Nam, 67 tuổi", "18/05/2026\n3 ngày trước", "Chờ kết quả", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0801", "Trần Thị Mai\nBN-00189 · Nữ, 45 tuổi", "12/05/2026\n9 ngày trước", "Hoàn thành", "Xem");

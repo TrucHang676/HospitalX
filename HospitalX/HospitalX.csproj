@@ -112,6 +112,24 @@
     <Compile Include="GUI\PH2\BacSi\ucHSBA.Designer.cs">
       <DependentUpon>ucHSBA.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmHSBADetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmHSBADetail.Designer.cs">
+      <DependentUpon>frmHSBADetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmHSBAService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmHSBAService.Designer.cs">
+      <DependentUpon>frmHSBAService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmHSBAPrescription.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmHSBAPrescription.Designer.cs">
+      <DependentUpon>frmHSBAPrescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\BacSi\ucTongQuan.cs">
       <SubType>UserControl</SubType>
     </Compile>
