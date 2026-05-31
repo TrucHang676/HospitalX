@@ -19,6 +19,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblCode = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -30,7 +31,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtAllergy = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblAllergyTitle = new System.Windows.Forms.Label();
             this.btnSave = new Guna.UI2.WinForms.Guna2Button();
-            this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlHeader.SuspendLayout();
             this.pnlBody.SuspendLayout();
             this.SuspendLayout();
@@ -64,6 +64,19 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlHeader.Size = new System.Drawing.Size(1226, 135);
             this.pnlHeader.TabIndex = 0;
             // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.BorderRadius = 8;
+            this.btnClose.FillColor = System.Drawing.Color.Transparent;
+            this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.btnClose.IconColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(1177, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(36, 32);
+            this.btnClose.TabIndex = 5;
+            // 
             // lblCode
             // 
             this.lblCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
@@ -78,22 +91,24 @@ namespace HospitalX.GUI.PH2.BacSi
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
+            this.lblName.BackColor = System.Drawing.Color.Transparent;
+            this.lblName.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblName.ForeColor = System.Drawing.Color.White;
-            this.lblName.Location = new System.Drawing.Point(32, 58);
+            this.lblName.Location = new System.Drawing.Point(21, 64);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(0, 41);
+            this.lblName.Size = new System.Drawing.Size(182, 32);
             this.lblName.TabIndex = 1;
+            this.lblName.Text = "Tên bệnh nhân";
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
             this.lblTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(19, 9);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.lblTitle.Location = new System.Drawing.Point(24, 24);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(168, 35);
+            this.lblTitle.Size = new System.Drawing.Size(89, 17);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Tiền sử bệnh";
             // 
@@ -222,19 +237,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Lưu thay đổi";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.BackColor = System.Drawing.Color.Transparent;
-            this.btnClose.BorderRadius = 8;
-            this.btnClose.FillColor = System.Drawing.Color.Transparent;
-            this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnClose.IconColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(1177, 9);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(36, 32);
-            this.btnClose.TabIndex = 5;
             // 
             // frmPatientHistory
             // 

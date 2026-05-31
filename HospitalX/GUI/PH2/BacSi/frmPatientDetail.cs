@@ -8,7 +8,7 @@ namespace HospitalX.GUI.PH2.BacSi
     {
         private ucBenhNhanCuaToi.PatientRecord _patient;
 
-        // Constructor rỗng để Visual Studio Designer render đầy đủ control.
+        // Constructor rong de Visual Studio Designer render day du control.
         public frmPatientDetail()
         {
             InitializeComponent();
@@ -25,63 +25,124 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             lblName.Text = _patient.Name;
             lblCode.Text = _patient.Code;
-
-            AddInfo("Mã bệnh nhân", _patient.Code, 34, 78, true);
-            AddInfo("Giới tính", _patient.Gender, 34, 158, false);
-            AddInfo("Tuổi", _patient.Age + " tuổi", 238, 158, false);
-            AddInfo("Số HSBA", _patient.HsbaCount.ToString(), 34, 238, false);
-            AddInfo("Số đơn thuốc", _patient.PrescriptionCount.ToString(), 238, 238, false);
-            AddInfo("Quê quán", _patient.Hometown, 34, 318, false);
-            AddInfo("CCCD", _patient.Cccd, 34, 398, true);
+            lblPatientCodeValue.Text = _patient.Code;
+            lblGenderValue.Text = _patient.Gender;
+            lblAgeValue.Text = _patient.Age + " tuổi";
+            lblHsbaCountValue.Text = _patient.HsbaCount.ToString();
+            lblRxCountValue.Text = _patient.PrescriptionCount.ToString();
+            lblHometownValue.Text = _patient.Hometown;
+            lblCccdValue.Text = _patient.Cccd;
 
             flpHsba.Controls.Clear();
             foreach (string hsba in _patient.HsbaList)
             {
-                var item = new Guna2Panel
-                {
-                    BorderColor = Color.FromArgb(218, 232, 226),
-                    BorderRadius = 10,
-                    BorderThickness = 1,
-                    FillColor = Color.FromArgb(247, 249, 248),
-                    Margin = new Padding(0, 0, 0, 10),
-                    Size = new Size(668, 76)
-                };
-                var label = new Label
-                {
-                    Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(24, 48, 42),
-                    Location = new Point(18, 15),
-                    Size = new Size(620, 44),
-                    Text = hsba
-                };
-                item.Controls.Add(label);
-                flpHsba.Controls.Add(item);
+                flpHsba.Controls.Add(CreateHsbaItem(hsba));
             }
         }
 
-        private void AddInfo(string label, string value, int x, int y, bool mono)
+        private Guna2Panel CreateHsbaItem(string hsba)
         {
-            var lbl = new Label
+            ParseHsbaText(hsba, out string code, out string date, out string diagnosis);
+
+            var item = new Guna2Panel
             {
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(122, 149, 137),
-                Location = new Point(x, y),
-                Size = new Size(170, 18),
-                Text = label.ToUpper()
+                BorderColor = Color.FromArgb(218, 232, 226),
+                BorderRadius = 10,
+                BorderThickness = 1,
+                FillColor = Color.White,
+                Margin = new Padding(0, 0, 0, 12),
+                Size = new Size(668, 90)
             };
-            var val = new Label
+            item.ShadowDecoration.Enabled = true;
+            item.ShadowDecoration.Color = Color.FromArgb(226, 239, 234);
+            item.ShadowDecoration.Depth = 4;
+            item.MouseEnter += (s, e) => item.BorderColor = Color.FromArgb(26, 148, 112);
+            item.MouseLeave += (s, e) => item.BorderColor = Color.FromArgb(218, 232, 226);
+
+            var accent = new Panel
             {
-                BackColor = Color.FromArgb(247, 249, 248),
-                Font = new Font(mono ? "Consolas" : "Segoe UI", 10F, FontStyle.Bold),
-                ForeColor = mono ? Color.FromArgb(15, 110, 86) : Color.FromArgb(24, 48, 42),
-                Location = new Point(x, y + 24),
-                Padding = new Padding(10, 0, 0, 0),
-                Size = new Size(x > 100 ? 150 : 354, 38),
-                Text = value,
+                BackColor = Color.FromArgb(15, 110, 86),
+                Location = new Point(0, 0),
+                Size = new Size(4, item.Height),
+                Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom
+            };
+
+            var lblCode = new Label
+            {
+                BackColor = Color.FromArgb(230, 244, 240),
+                Font = new Font("Consolas", 9.8F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(15, 110, 86),
+                Location = new Point(22, 18),
+                Size = new Size(118, 28),
+                Text = code,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+
+            var lblDate = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(122, 149, 137),
+                Location = new Point(154, 20),
+                Size = new Size(120, 24),
+                Text = date,
                 TextAlign = ContentAlignment.MiddleLeft
             };
-            pnlInfo.Controls.Add(lbl);
-            pnlInfo.Controls.Add(val);
+
+            var lblDiagnosis = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 10.3F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(24, 48, 42),
+                Location = new Point(22, 54),
+                Size = new Size(510, 24),
+                Text = diagnosis,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            var btnView = new Guna2Button
+            {
+                BorderRadius = 8,
+                Cursor = Cursors.Hand,
+                FillColor = Color.White,
+                BorderColor = Color.FromArgb(15, 110, 86),
+                BorderThickness = 1,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(15, 110, 86),
+                Location = new Point(552, 27),
+                Size = new Size(88, 36),
+                Text = "Xem"
+            };
+            btnView.HoverState.FillColor = Color.FromArgb(230, 244, 240);
+            btnView.HoverState.BorderColor = Color.FromArgb(26, 148, 112);
+            btnView.HoverState.ForeColor = Color.FromArgb(10, 79, 61);
+            btnView.Click += (s, e) =>
+            {
+                MessageBox.Show("Mở chi tiết " + code, "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+
+            item.Controls.Add(accent);
+            item.Controls.Add(lblCode);
+            item.Controls.Add(lblDate);
+            item.Controls.Add(lblDiagnosis);
+            item.Controls.Add(btnView);
+            return item;
+        }
+
+        private static void ParseHsbaText(string hsba, out string code, out string date, out string diagnosis)
+        {
+            string[] parts = hsba.Split('|');
+            if (parts.Length >= 3)
+            {
+                code = parts[0].Trim();
+                date = parts[1].Trim();
+                diagnosis = parts[2].Trim();
+                return;
+            }
+
+            code = hsba;
+            date = string.Empty;
+            diagnosis = hsba;
         }
     }
 }
