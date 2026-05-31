@@ -20,17 +20,17 @@ namespace HospitalX.GUI.PH2.BacSi
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlProfile = new Guna.UI2.WinForms.Guna2Panel();
             this.lblProfileStatus = new System.Windows.Forms.Label();
-            this.lblPatientStatCaption = new System.Windows.Forms.Label();
-            this.lblPatientStat = new System.Windows.Forms.Label();
-            this.lblRelatedStatCaption = new System.Windows.Forms.Label();
-            this.lblRelatedStat = new System.Windows.Forms.Label();
             this.lblProfileDept = new System.Windows.Forms.Label();
             this.lblRoleBadge = new System.Windows.Forms.Label();
             this.lblProfileName = new System.Windows.Forms.Label();
             this.lblAvatar = new System.Windows.Forms.Label();
-            this.pnlPatientCard = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlRelatedCard = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlProfileHeader = new System.Windows.Forms.Panel();
+            this.pnlPatientCard = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblPatientStatCaption = new System.Windows.Forms.Label();
+            this.lblPatientStat = new System.Windows.Forms.Label();
+            this.pnlRelatedCard = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblRelatedStat = new System.Windows.Forms.Label();
+            this.lblRelatedStatCaption = new System.Windows.Forms.Label();
             this.pnlProfessional = new Guna.UI2.WinForms.Guna2Panel();
             this.lblSpecFacilityValue = new System.Windows.Forms.Label();
             this.lblSpecFacility = new System.Windows.Forms.Label();
@@ -47,12 +47,12 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlContact = new Guna.UI2.WinForms.Guna2Panel();
             this.btnEditContact = new Guna.UI2.WinForms.Guna2Button();
             this.txtAddressValue = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblAddressValue = new System.Windows.Forms.Label();
             this.lblAddress = new System.Windows.Forms.Label();
             this.txtContactPhoneValue = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblContactPhoneValue = new System.Windows.Forms.Label();
             this.lblContactPhone = new System.Windows.Forms.Label();
             this.lblContactTitle = new System.Windows.Forms.Label();
+            this.lblAddressValue = new System.Windows.Forms.Label();
+            this.lblContactPhoneValue = new System.Windows.Forms.Label();
             this.pnlSecurity = new Guna.UI2.WinForms.Guna2Panel();
             this.btnChangePassword = new Guna.UI2.WinForms.Guna2Button();
             this.lblPassSub = new System.Windows.Forms.Label();
@@ -94,7 +94,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlProfile.Controls.Add(this.pnlPatientCard);
             this.pnlProfile.Controls.Add(this.pnlRelatedCard);
             this.pnlProfile.FillColor = System.Drawing.Color.White;
-            this.pnlProfile.Location = new System.Drawing.Point(24, 181);
+            this.pnlProfile.Location = new System.Drawing.Point(26, 24);
             this.pnlProfile.Name = "pnlProfile";
             this.pnlProfile.Padding = new System.Windows.Forms.Padding(24);
             this.pnlProfile.Size = new System.Drawing.Size(306, 406);
@@ -111,50 +111,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblProfileStatus.TabIndex = 8;
             this.lblProfileStatus.Text = "Đang hoạt động";
             this.lblProfileStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblPatientStatCaption
-            // 
-            this.lblPatientStatCaption.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
-            this.lblPatientStatCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblPatientStatCaption.Location = new System.Drawing.Point(7, 60);
-            this.lblPatientStatCaption.Name = "lblPatientStatCaption";
-            this.lblPatientStatCaption.Size = new System.Drawing.Size(103, 24);
-            this.lblPatientStatCaption.TabIndex = 7;
-            this.lblPatientStatCaption.Text = "BỆNH NHÂN";
-            this.lblPatientStatCaption.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblPatientStat
-            // 
-            this.lblPatientStat.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblPatientStat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblPatientStat.Location = new System.Drawing.Point(3, 8);
-            this.lblPatientStat.Name = "lblPatientStat";
-            this.lblPatientStat.Size = new System.Drawing.Size(110, 42);
-            this.lblPatientStat.TabIndex = 6;
-            this.lblPatientStat.Text = "9";
-            this.lblPatientStat.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblRelatedStatCaption
-            // 
-            this.lblRelatedStatCaption.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
-            this.lblRelatedStatCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblRelatedStatCaption.Location = new System.Drawing.Point(7, 60);
-            this.lblRelatedStatCaption.Name = "lblRelatedStatCaption";
-            this.lblRelatedStatCaption.Size = new System.Drawing.Size(106, 24);
-            this.lblRelatedStatCaption.TabIndex = 5;
-            this.lblRelatedStatCaption.Text = "HSBA LIÊN QUAN";
-            this.lblRelatedStatCaption.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // lblRelatedStat
-            // 
-            this.lblRelatedStat.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.lblRelatedStat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblRelatedStat.Location = new System.Drawing.Point(14, 8);
-            this.lblRelatedStat.Name = "lblRelatedStat";
-            this.lblRelatedStat.Size = new System.Drawing.Size(90, 42);
-            this.lblRelatedStat.TabIndex = 4;
-            this.lblRelatedStat.Text = "59";
-            this.lblRelatedStat.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblProfileDept
             // 
@@ -202,6 +158,16 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblAvatar.Text = "TH";
             this.lblAvatar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // pnlProfileHeader
+            // 
+            this.pnlProfileHeader.BackColor = System.Drawing.Color.LightSeaGreen;
+            this.pnlProfileHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlProfileHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlProfileHeader.Location = new System.Drawing.Point(24, 24);
+            this.pnlProfileHeader.Name = "pnlProfileHeader";
+            this.pnlProfileHeader.Size = new System.Drawing.Size(258, 82);
+            this.pnlProfileHeader.TabIndex = 11;
+            // 
             // pnlPatientCard
             // 
             this.pnlPatientCard.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
@@ -214,6 +180,28 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlPatientCard.Name = "pnlPatientCard";
             this.pnlPatientCard.Size = new System.Drawing.Size(116, 88);
             this.pnlPatientCard.TabIndex = 9;
+            // 
+            // lblPatientStatCaption
+            // 
+            this.lblPatientStatCaption.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
+            this.lblPatientStatCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblPatientStatCaption.Location = new System.Drawing.Point(7, 60);
+            this.lblPatientStatCaption.Name = "lblPatientStatCaption";
+            this.lblPatientStatCaption.Size = new System.Drawing.Size(103, 24);
+            this.lblPatientStatCaption.TabIndex = 7;
+            this.lblPatientStatCaption.Text = "BỆNH NHÂN";
+            this.lblPatientStatCaption.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // lblPatientStat
+            // 
+            this.lblPatientStat.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblPatientStat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.lblPatientStat.Location = new System.Drawing.Point(3, 8);
+            this.lblPatientStat.Name = "lblPatientStat";
+            this.lblPatientStat.Size = new System.Drawing.Size(110, 42);
+            this.lblPatientStat.TabIndex = 6;
+            this.lblPatientStat.Text = "9";
+            this.lblPatientStat.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pnlRelatedCard
             // 
@@ -228,15 +216,27 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlRelatedCard.Size = new System.Drawing.Size(116, 88);
             this.pnlRelatedCard.TabIndex = 10;
             // 
-            // pnlProfileHeader
+            // lblRelatedStat
             // 
-            this.pnlProfileHeader.BackColor = System.Drawing.Color.LightSeaGreen;
-            this.pnlProfileHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlProfileHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlProfileHeader.Location = new System.Drawing.Point(24, 24);
-            this.pnlProfileHeader.Name = "pnlProfileHeader";
-            this.pnlProfileHeader.Size = new System.Drawing.Size(258, 82);
-            this.pnlProfileHeader.TabIndex = 11;
+            this.lblRelatedStat.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblRelatedStat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblRelatedStat.Location = new System.Drawing.Point(14, 8);
+            this.lblRelatedStat.Name = "lblRelatedStat";
+            this.lblRelatedStat.Size = new System.Drawing.Size(90, 42);
+            this.lblRelatedStat.TabIndex = 4;
+            this.lblRelatedStat.Text = "59";
+            this.lblRelatedStat.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblRelatedStatCaption
+            // 
+            this.lblRelatedStatCaption.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
+            this.lblRelatedStatCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblRelatedStatCaption.Location = new System.Drawing.Point(7, 60);
+            this.lblRelatedStatCaption.Name = "lblRelatedStatCaption";
+            this.lblRelatedStatCaption.Size = new System.Drawing.Size(106, 24);
+            this.lblRelatedStatCaption.TabIndex = 5;
+            this.lblRelatedStatCaption.Text = "HSBA LIÊN QUAN";
+            this.lblRelatedStatCaption.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // pnlProfessional
             // 
@@ -450,9 +450,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtAddressValue.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.txtAddressValue.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.txtAddressValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblAddressValue.Text = "Q. Bình Thạnh, TP.HCM";
-            this.lblAddressValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             this.txtAddressValue.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
             this.txtAddressValue.Location = new System.Drawing.Point(382, 94);
             this.txtAddressValue.Name = "txtAddressValue";
@@ -472,18 +469,8 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblAddress.TabIndex = 4;
             this.lblAddress.Text = "ĐỊA CHỈ CƯ TRÚ";
             // 
-            // lblContactPhoneValue
+            // txtContactPhoneValue
             // 
-            this.lblContactPhoneValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.lblContactPhoneValue.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblContactPhoneValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblContactPhoneValue.Location = new System.Drawing.Point(34, 94);
-            this.lblContactPhoneValue.Name = "lblContactPhoneValue";
-            this.lblContactPhoneValue.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.lblContactPhoneValue.Size = new System.Drawing.Size(300, 36);
-            this.lblContactPhoneValue.TabIndex = 3;
-            this.lblContactPhoneValue.Text = "090 123 4567";
-            this.lblContactPhoneValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.txtContactPhoneValue.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtContactPhoneValue.BorderRadius = 7;
             this.txtContactPhoneValue.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -522,6 +509,28 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblContactTitle.Size = new System.Drawing.Size(140, 21);
             this.lblContactTitle.TabIndex = 0;
             this.lblContactTitle.Text = "Thông tin liên hệ";
+            // 
+            // lblAddressValue
+            // 
+            this.lblAddressValue.Location = new System.Drawing.Point(0, 0);
+            this.lblAddressValue.Name = "lblAddressValue";
+            this.lblAddressValue.Size = new System.Drawing.Size(100, 23);
+            this.lblAddressValue.TabIndex = 0;
+            this.lblAddressValue.Text = "Q. Bình Thạnh, TP.HCM";
+            this.lblAddressValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblContactPhoneValue
+            // 
+            this.lblContactPhoneValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.lblContactPhoneValue.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblContactPhoneValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.lblContactPhoneValue.Location = new System.Drawing.Point(34, 94);
+            this.lblContactPhoneValue.Name = "lblContactPhoneValue";
+            this.lblContactPhoneValue.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.lblContactPhoneValue.Size = new System.Drawing.Size(300, 36);
+            this.lblContactPhoneValue.TabIndex = 3;
+            this.lblContactPhoneValue.Text = "090 123 4567";
+            this.lblContactPhoneValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlSecurity
             // 

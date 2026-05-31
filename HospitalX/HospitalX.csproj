@@ -130,6 +130,12 @@
     <Compile Include="GUI\PH2\BacSi\ucDonThuoc.Designer.cs">
       <DependentUpon>ucDonThuoc.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPrescriptionDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPrescriptionDetail.Designer.cs">
+      <DependentUpon>frmPrescriptionDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\BacSi\ucHSBA.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -165,6 +171,12 @@
     </Compile>
     <Compile Include="GUI\PH2\BacSi\ucThongBao.Designer.cs">
       <DependentUpon>ucThongBao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmNotificationDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmNotificationDetail.Designer.cs">
+      <DependentUpon>frmNotificationDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PH2\BacSi\ucTongQuan.cs">
       <SubType>UserControl</SubType>
@@ -205,6 +217,18 @@
     </Compile>
     <Compile Include="GUI\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\RoleSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\RoleSelection.Designer.cs">
+      <DependentUpon>RoleSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\RoleLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\RoleLogin.Designer.cs">
+      <DependentUpon>RoleLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Splash.cs">
       <SubType>Form</SubType>
@@ -296,11 +320,17 @@
     <EmbeddedResource Include="GUI\PH2\BacSi\frmHSBAService.resx">
       <DependentUpon>frmHSBAService.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmNotificationDetail.resx">
+      <DependentUpon>frmNotificationDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\frmPatientDetail.resx">
       <DependentUpon>frmPatientDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\frmPatientHistory.resx">
       <DependentUpon>frmPatientHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmPrescriptionDetail.resx">
+      <DependentUpon>frmPrescriptionDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\Main_BS.resx">
       <DependentUpon>Main_BS.cs</DependentUpon>
@@ -337,6 +367,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\RoleSelection.resx">
+      <DependentUpon>RoleSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\RoleLogin.resx">
+      <DependentUpon>RoleLogin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH1\ColPicker.resx">
       <DependentUpon>ColPicker.cs</DependentUpon>
