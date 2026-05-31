@@ -100,9 +100,9 @@ namespace HospitalX.GUI
             // Đợi một chút để người dùng kịp thấy trạng thái "Sẵn sàng!"
             await System.Threading.Tasks.Task.Delay(500);
 
-            // Khởi tạo và hiện Login
-            var login = new Login();
-            login.Show();
+            // Khởi tạo và hiện màn chọn vai trò đăng nhập.
+            var roleSelection = new RoleSelection();
+            roleSelection.Show();
 
             // Ẩn Splash đi
             this.Hide();
