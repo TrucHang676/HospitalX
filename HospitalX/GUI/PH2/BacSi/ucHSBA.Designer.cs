@@ -92,7 +92,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.cmbSort.Items.AddRange(new object[] {
             "Mới nhất",
             "Cũ nhất"});
-            this.cmbSort.Location = new System.Drawing.Point(874, 47);
+            this.cmbSort.Location = new System.Drawing.Point(874, 57);
             this.cmbSort.Name = "cmbSort";
             this.cmbSort.Size = new System.Drawing.Size(177, 38);
             this.cmbSort.StartIndex = 0;
@@ -109,7 +109,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpTo.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.dtpTo.Location = new System.Drawing.Point(675, 47);
+            this.dtpTo.Location = new System.Drawing.Point(675, 57);
             this.dtpTo.MaxDate = new System.DateTime(2030, 12, 31, 0, 0, 0, 0);
             this.dtpTo.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.dtpTo.Name = "dtpTo";
@@ -128,7 +128,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpFrom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFrom.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.dtpFrom.Location = new System.Drawing.Point(532, 47);
+            this.dtpFrom.Location = new System.Drawing.Point(532, 57);
             this.dtpFrom.MaxDate = new System.DateTime(2030, 12, 31, 0, 0, 0, 0);
             this.dtpFrom.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.dtpFrom.Name = "dtpFrom";
@@ -155,7 +155,7 @@ namespace HospitalX.GUI.PH2.BacSi
             "7 ngày gần đây",
             "Tất cả",
             "Tùy chọn"});
-            this.cmbDateRange.Location = new System.Drawing.Point(371, 47);
+            this.cmbDateRange.Location = new System.Drawing.Point(371, 57);
             this.cmbDateRange.Name = "cmbDateRange";
             this.cmbDateRange.Size = new System.Drawing.Size(150, 38);
             this.cmbDateRange.StartIndex = 0;
@@ -178,7 +178,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
             this.txtSearch.IconLeftOffset = new System.Drawing.Point(10, 0);
             this.txtSearch.IconLeftSize = new System.Drawing.Size(18, 18);
-            this.txtSearch.Location = new System.Drawing.Point(23, 47);
+            this.txtSearch.Location = new System.Drawing.Point(23, 57);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));

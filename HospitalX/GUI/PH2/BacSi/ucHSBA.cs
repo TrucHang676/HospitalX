@@ -267,15 +267,16 @@ namespace HospitalX.GUI.PH2.BacSi
             }
 
             flpHsbaList.ResumeLayout();
+            BeginInvoke(new Action(ResizeCards));
         }
 
         private Guna2Panel CreateCard(HsbaRecord record)
         {
-            int cardWidth = Math.Max(780, flpHsbaList.ClientSize.Width - 28);
+            int cardWidth = GetCardWidth();
             Guna2Panel card = new Guna2Panel
             {
                 Width = cardWidth,
-                Height = 154,
+                Height = 172,
                 Margin = new Padding(0, 0, 0, 12),
                 BorderRadius = 10,
                 BorderThickness = 1,
@@ -323,7 +324,7 @@ namespace HospitalX.GUI.PH2.BacSi
             Label lblName = new Label
             {
                 AutoSize = false,
-                Location = new Point(26, 52),
+                Location = new Point(26, 56),
                 Size = new Size(340, 26),
                 ForeColor = Color.FromArgb(24, 48, 42),
                 Font = new Font("Segoe UI", 12F, FontStyle.Bold),
@@ -334,7 +335,7 @@ namespace HospitalX.GUI.PH2.BacSi
             Label lblMeta = new Label
             {
                 AutoSize = false,
-                Location = new Point(26, 78),
+                Location = new Point(26, 88),
                 Size = new Size(650, 22),
                 ForeColor = Color.FromArgb(122, 149, 137),
                 Font = new Font("Segoe UI", 9F),
@@ -345,8 +346,9 @@ namespace HospitalX.GUI.PH2.BacSi
             Label lblDiagnosis = new Label
             {
                 AutoSize = false,
-                Location = new Point(26, 106),
-                Size = new Size(cardWidth - 405, 32),
+                Location = new Point(26, 120),
+                Name = "lblDiagnosis",
+                Size = new Size(Math.Max(360, cardWidth - 430), 32),
                 ForeColor = Color.FromArgb(61, 82, 73),
                 Font = new Font("Segoe UI", 9.2F),
                 Text = "Chẩn đoán: " + record.Diagnosis,
@@ -354,20 +356,25 @@ namespace HospitalX.GUI.PH2.BacSi
             };
 
             Guna2Button btnDetail = CreateActionButton("Xem chi tiết", Color.FromArgb(15, 110, 86), Color.White);
-            btnDetail.Location = new Point(cardWidth - 350, 28);
+            btnDetail.Name = "btnDetail";
+            btnDetail.Size = new Size(150, 40);
+            btnDetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDetail.Click += (s, e) => OpenDetail(record);
 
             Guna2Button btnService = CreateActionButton("Thêm dịch vụ", Color.White, Color.FromArgb(15, 110, 86));
+            btnService.Name = "btnService";
+            btnService.Size = new Size(150, 40);
+            btnService.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnService.BorderThickness = 1;
             btnService.BorderColor = Color.FromArgb(15, 110, 86);
-            btnService.Location = new Point(cardWidth - 230, 28);
             btnService.Click += (s, e) => OpenService(record);
 
             Guna2Button btnPrescription = CreateActionButton("Thêm đơn thuốc", Color.White, Color.FromArgb(15, 110, 86));
+            btnPrescription.Name = "btnPrescription";
+            btnPrescription.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnPrescription.BorderThickness = 1;
             btnPrescription.BorderColor = Color.FromArgb(15, 110, 86);
-            btnPrescription.Size = new Size(140, 36);
-            btnPrescription.Location = new Point(cardWidth - 150, 80);
+            btnPrescription.Size = new Size(172, 40);
             btnPrescription.Click += (s, e) => OpenPrescription(record);
 
             card.Controls.Add(accent);
@@ -379,6 +386,7 @@ namespace HospitalX.GUI.PH2.BacSi
             card.Controls.Add(btnDetail);
             card.Controls.Add(btnService);
             card.Controls.Add(btnPrescription);
+            LayoutCard(card);
             return card;
         }
 
@@ -408,10 +416,49 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void ResizeCards()
         {
-            int cardWidth = Math.Max(780, flpHsbaList.ClientSize.Width - 28);
+            int cardWidth = GetCardWidth();
             foreach (Control control in flpHsbaList.Controls)
             {
                 control.Width = cardWidth;
+                Guna2Panel card = control as Guna2Panel;
+                if (card != null)
+                {
+                    LayoutCard(card);
+                }
+            }
+        }
+
+        private int GetCardWidth()
+        {
+            return Math.Max(780, flpHsbaList.Width - flpHsbaList.Padding.Horizontal - 28);
+        }
+
+        private void LayoutCard(Guna2Panel card)
+        {
+            Control lblDiagnosis = card.Controls["lblDiagnosis"];
+            Control btnDetail = card.Controls["btnDetail"];
+            Control btnService = card.Controls["btnService"];
+            Control btnPrescription = card.Controls["btnPrescription"];
+
+            if (btnDetail == null || btnService == null || btnPrescription == null)
+            {
+                return;
+            }
+
+            const int rightPadding = 24;
+            const int gap = 14;
+            int right = card.Width - rightPadding;
+            int actionsWidth = btnDetail.Width + btnService.Width + btnPrescription.Width + gap * 2;
+            int actionsLeft = right - actionsWidth;
+            int buttonTop = 58;
+
+            btnDetail.Location = new Point(actionsLeft, buttonTop);
+            btnService.Location = new Point(btnDetail.Right + gap, buttonTop);
+            btnPrescription.Location = new Point(btnService.Right + gap, buttonTop);
+
+            if (lblDiagnosis != null)
+            {
+                lblDiagnosis.Width = Math.Max(360, actionsLeft - lblDiagnosis.Left - 24);
             }
         }
 

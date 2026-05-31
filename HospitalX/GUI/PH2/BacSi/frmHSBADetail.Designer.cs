@@ -64,7 +64,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.pnlHeader.Location = new System.Drawing.Point(18, 16);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(844, 116);
+            this.pnlHeader.Size = new System.Drawing.Size(1004, 126);
             this.pnlHeader.TabIndex = 0;
             // 
             // btnClose
@@ -75,7 +75,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnClose.ForeColor = System.Drawing.Color.White;
             this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnClose.Location = new System.Drawing.Point(790, 16);
+            this.btnClose.Location = new System.Drawing.Point(950, 18);
             this.btnClose.Name = "btnClose";
             this.btnClose.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(48)))), ((int)(((byte)(36)))));
             this.btnClose.Size = new System.Drawing.Size(36, 32);
@@ -85,23 +85,23 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // lblPatientMeta
             // 
-            this.lblPatientMeta.AutoSize = true;
+            this.lblPatientMeta.AutoSize = false;
             this.lblPatientMeta.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblPatientMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblPatientMeta.Location = new System.Drawing.Point(26, 84);
+            this.lblPatientMeta.Location = new System.Drawing.Point(30, 88);
             this.lblPatientMeta.Name = "lblPatientMeta";
-            this.lblPatientMeta.Size = new System.Drawing.Size(191, 17);
+            this.lblPatientMeta.Size = new System.Drawing.Size(600, 24);
             this.lblPatientMeta.TabIndex = 3;
             this.lblPatientMeta.Text = "BN-00000 · Nam, 00 tuổi · Khoa";
             // 
             // lblPatientName
             // 
-            this.lblPatientName.AutoSize = true;
+            this.lblPatientName.AutoSize = false;
             this.lblPatientName.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this.lblPatientName.ForeColor = System.Drawing.Color.White;
-            this.lblPatientName.Location = new System.Drawing.Point(24, 51);
+            this.lblPatientName.Location = new System.Drawing.Point(28, 52);
             this.lblPatientName.Name = "lblPatientName";
-            this.lblPatientName.Size = new System.Drawing.Size(170, 30);
+            this.lblPatientName.Size = new System.Drawing.Size(600, 34);
             this.lblPatientName.TabIndex = 2;
             this.lblPatientName.Text = "Tên bệnh nhân";
             // 
@@ -110,7 +110,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblHsbaId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.lblHsbaId.Font = new System.Drawing.Font("Consolas", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblHsbaId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblHsbaId.Location = new System.Drawing.Point(680, 66);
+            this.lblHsbaId.Location = new System.Drawing.Point(790, 74);
             this.lblHsbaId.Name = "lblHsbaId";
             this.lblHsbaId.Size = new System.Drawing.Size(124, 28);
             this.lblHsbaId.TabIndex = 1;
@@ -119,12 +119,12 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
+            this.lblTitle.AutoSize = false;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblTitle.Location = new System.Drawing.Point(26, 22);
+            this.lblTitle.Location = new System.Drawing.Point(30, 22);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(118, 19);
+            this.lblTitle.Size = new System.Drawing.Size(220, 24);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Chi tiết bệnh án";
             // 
@@ -136,19 +136,19 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlInfo.Controls.Add(this.lblInfoTitle);
             this.pnlInfo.Controls.Add(this.lblInfo);
             this.pnlInfo.FillColor = System.Drawing.Color.White;
-            this.pnlInfo.Location = new System.Drawing.Point(18, 148);
+            this.pnlInfo.Location = new System.Drawing.Point(18, 158);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(265, 402);
+            this.pnlInfo.Size = new System.Drawing.Size(300, 390);
             this.pnlInfo.TabIndex = 1;
             // 
             // lblInfoTitle
             // 
-            this.lblInfoTitle.AutoSize = true;
+            this.lblInfoTitle.AutoSize = false;
             this.lblInfoTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblInfoTitle.Location = new System.Drawing.Point(18, 18);
             this.lblInfoTitle.Name = "lblInfoTitle";
-            this.lblInfoTitle.Size = new System.Drawing.Size(146, 20);
+            this.lblInfoTitle.Size = new System.Drawing.Size(245, 24);
             this.lblInfoTitle.TabIndex = 0;
             this.lblInfoTitle.Text = "Thông tin bệnh nhân";
             // 
@@ -158,7 +158,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
             this.lblInfo.Location = new System.Drawing.Point(19, 54);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(226, 318);
+            this.lblInfo.Size = new System.Drawing.Size(258, 312);
             this.lblInfo.TabIndex = 1;
             this.lblInfo.Text = "Thông tin";
             // 
@@ -175,9 +175,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlClinical.Controls.Add(this.txtDiagnosis);
             this.pnlClinical.Controls.Add(this.lblClinicalTitle);
             this.pnlClinical.FillColor = System.Drawing.Color.White;
-            this.pnlClinical.Location = new System.Drawing.Point(299, 148);
+            this.pnlClinical.Location = new System.Drawing.Point(336, 158);
             this.pnlClinical.Name = "pnlClinical";
-            this.pnlClinical.Size = new System.Drawing.Size(563, 402);
+            this.pnlClinical.Size = new System.Drawing.Size(686, 390);
             this.pnlClinical.TabIndex = 2;
             // 
             // lblConclusion
@@ -185,7 +185,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblConclusion.AutoSize = true;
             this.lblConclusion.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblConclusion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblConclusion.Location = new System.Drawing.Point(22, 272);
+            this.lblConclusion.Location = new System.Drawing.Point(24, 263);
             this.lblConclusion.Name = "lblConclusion";
             this.lblConclusion.Size = new System.Drawing.Size(56, 15);
             this.lblConclusion.TabIndex = 6;
@@ -202,13 +202,13 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtConclusion.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.txtConclusion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtConclusion.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.txtConclusion.Location = new System.Drawing.Point(22, 292);
+            this.txtConclusion.Location = new System.Drawing.Point(24, 283);
             this.txtConclusion.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtConclusion.Multiline = true;
             this.txtConclusion.Name = "txtConclusion";
             this.txtConclusion.PlaceholderText = "Nhập kết luận...";
             this.txtConclusion.SelectedText = "";
-            this.txtConclusion.Size = new System.Drawing.Size(518, 82);
+            this.txtConclusion.Size = new System.Drawing.Size(638, 82);
             this.txtConclusion.TabIndex = 5;
             // 
             // lblTreatment
@@ -216,7 +216,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblTreatment.AutoSize = true;
             this.lblTreatment.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblTreatment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblTreatment.Location = new System.Drawing.Point(22, 160);
+            this.lblTreatment.Location = new System.Drawing.Point(24, 151);
             this.lblTreatment.Name = "lblTreatment";
             this.lblTreatment.Size = new System.Drawing.Size(55, 15);
             this.lblTreatment.TabIndex = 4;
@@ -233,13 +233,13 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtTreatment.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.txtTreatment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtTreatment.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.txtTreatment.Location = new System.Drawing.Point(22, 180);
+            this.txtTreatment.Location = new System.Drawing.Point(24, 171);
             this.txtTreatment.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtTreatment.Multiline = true;
             this.txtTreatment.Name = "txtTreatment";
             this.txtTreatment.PlaceholderText = "Nhập điều trị...";
             this.txtTreatment.SelectedText = "";
-            this.txtTreatment.Size = new System.Drawing.Size(518, 82);
+            this.txtTreatment.Size = new System.Drawing.Size(638, 82);
             this.txtTreatment.TabIndex = 3;
             // 
             // lblDiagnosis
@@ -247,7 +247,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblDiagnosis.AutoSize = true;
             this.lblDiagnosis.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblDiagnosis.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblDiagnosis.Location = new System.Drawing.Point(22, 49);
+            this.lblDiagnosis.Location = new System.Drawing.Point(24, 48);
             this.lblDiagnosis.Name = "lblDiagnosis";
             this.lblDiagnosis.Size = new System.Drawing.Size(74, 15);
             this.lblDiagnosis.TabIndex = 2;
@@ -264,13 +264,13 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtDiagnosis.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.txtDiagnosis.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtDiagnosis.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.txtDiagnosis.Location = new System.Drawing.Point(22, 69);
+            this.txtDiagnosis.Location = new System.Drawing.Point(24, 68);
             this.txtDiagnosis.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtDiagnosis.Multiline = true;
             this.txtDiagnosis.Name = "txtDiagnosis";
             this.txtDiagnosis.PlaceholderText = "Nhập chẩn đoán...";
             this.txtDiagnosis.SelectedText = "";
-            this.txtDiagnosis.Size = new System.Drawing.Size(518, 82);
+            this.txtDiagnosis.Size = new System.Drawing.Size(638, 74);
             this.txtDiagnosis.TabIndex = 1;
             // 
             // lblClinicalTitle
@@ -296,7 +296,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlLists.FillColor = System.Drawing.Color.White;
             this.pnlLists.Location = new System.Drawing.Point(18, 566);
             this.pnlLists.Name = "pnlLists";
-            this.pnlLists.Size = new System.Drawing.Size(704, 146);
+            this.pnlLists.Size = new System.Drawing.Size(824, 158);
             this.pnlLists.TabIndex = 3;
             // 
             // lstPrescriptions
@@ -306,9 +306,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lstPrescriptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
             this.lstPrescriptions.FormattingEnabled = true;
             this.lstPrescriptions.ItemHeight = 15;
-            this.lstPrescriptions.Location = new System.Drawing.Point(364, 45);
+            this.lstPrescriptions.Location = new System.Drawing.Point(432, 48);
             this.lstPrescriptions.Name = "lstPrescriptions";
-            this.lstPrescriptions.Size = new System.Drawing.Size(318, 75);
+            this.lstPrescriptions.Size = new System.Drawing.Size(362, 90);
             this.lstPrescriptions.TabIndex = 3;
             // 
             // lstServices
@@ -320,7 +320,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lstServices.ItemHeight = 15;
             this.lstServices.Location = new System.Drawing.Point(22, 45);
             this.lstServices.Name = "lstServices";
-            this.lstServices.Size = new System.Drawing.Size(318, 75);
+            this.lstServices.Size = new System.Drawing.Size(374, 90);
             this.lstServices.TabIndex = 2;
             // 
             // lblRxTitle
@@ -328,7 +328,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblRxTitle.AutoSize = true;
             this.lblRxTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblRxTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblRxTitle.Location = new System.Drawing.Point(361, 18);
+            this.lblRxTitle.Location = new System.Drawing.Point(429, 18);
             this.lblRxTitle.Name = "lblRxTitle";
             this.lblRxTitle.Size = new System.Drawing.Size(98, 19);
             this.lblRxTitle.TabIndex = 1;
@@ -356,10 +356,10 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnSave.Location = new System.Drawing.Point(739, 606);
+            this.btnSave.Location = new System.Drawing.Point(860, 618);
             this.btnSave.Name = "btnSave";
             this.btnSave.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnSave.Size = new System.Drawing.Size(123, 42);
+            this.btnSave.Size = new System.Drawing.Size(162, 44);
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Lưu thay đổi";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -369,7 +369,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(880, 730);
+            this.ClientSize = new System.Drawing.Size(1040, 760);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.pnlLists);
             this.Controls.Add(this.pnlClinical);
