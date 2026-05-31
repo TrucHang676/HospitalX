@@ -112,6 +112,18 @@
     <Compile Include="GUI\PH2\BacSi\ucBenhNhanCuaToi.Designer.cs">
       <DependentUpon>ucBenhNhanCuaToi.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPatientDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPatientDetail.Designer.cs">
+      <DependentUpon>frmPatientDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPatientHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\frmPatientHistory.Designer.cs">
+      <DependentUpon>frmPatientHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\BacSi\ucDonThuoc.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -258,6 +270,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\frmHSBAService.resx">
       <DependentUpon>frmHSBAService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmPatientDetail.resx">
+      <DependentUpon>frmPatientDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmPatientHistory.resx">
+      <DependentUpon>frmPatientHistory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\Main_BS.resx">
       <DependentUpon>Main_BS.cs</DependentUpon>
