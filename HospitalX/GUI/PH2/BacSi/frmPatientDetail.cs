@@ -54,7 +54,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 BorderThickness = 1,
                 FillColor = Color.White,
                 Margin = new Padding(0, 0, 0, 12),
-                Size = new Size(668, 90)
+                Size = new Size(668, 100)
             };
             item.ShadowDecoration.Enabled = true;
             item.ShadowDecoration.Color = Color.FromArgb(226, 239, 234);
@@ -98,7 +98,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 Font = new Font("Segoe UI", 10.3F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(24, 48, 42),
                 Location = new Point(22, 54),
-                Size = new Size(510, 24),
+                Size = new Size(510, 30),
                 Text = diagnosis,
                 TextAlign = ContentAlignment.MiddleLeft
             };

@@ -374,8 +374,9 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             int width = Math.Min(cell.Width - 18, 128);
             int height = 36;
+            int leftOffset = 35;
             return new Rectangle(
-                cell.X + (cell.Width - width) / 2,
+                cell.X + (cell.Width - width) / 2 - leftOffset,
                 cell.Y + (cell.Height - height) / 2,
                 width,
                 height);
