@@ -1,0 +1,210 @@
+namespace HospitalX.GUI.PH2.DieuPhoiVien
+{
+    partial class frmChiTietBN
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblCode = new System.Windows.Forms.Label();
+            this.lblName = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.pnlInfo = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblInfoTitle = new System.Windows.Forms.Label();
+            this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnEdit = new Guna.UI2.WinForms.Guna2Button();
+            this.btnViewHsba = new Guna.UI2.WinForms.Guna2Button();
+            this.btnCloseBottom = new Guna.UI2.WinForms.Guna2Button();
+            this.pnlHeader.SuspendLayout();
+            this.pnlInfo.SuspendLayout();
+            this.pnlFooter.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // guna2BorderlessForm1
+            // 
+            this.guna2BorderlessForm1.BorderRadius = 16;
+            this.guna2BorderlessForm1.ContainerControl = this;
+            this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BorderRadius = 12;
+            this.pnlHeader.Controls.Add(this.lblCode);
+            this.pnlHeader.Controls.Add(this.lblName);
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.pnlHeader.Location = new System.Drawing.Point(20, 16);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(530, 100);
+            this.pnlHeader.TabIndex = 0;
+            // 
+            // 
+            // lblCode
+            // 
+            this.lblCode.BackColor = System.Drawing.Color.Transparent;
+            this.lblCode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblCode.ForeColor = System.Drawing.Color.White;
+            this.lblCode.Location = new System.Drawing.Point(360, 48);
+            this.lblCode.Name = "lblCode";
+            this.lblCode.Size = new System.Drawing.Size(150, 30);
+            this.lblCode.TabIndex = 2;
+            this.lblCode.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.BackColor = System.Drawing.Color.Transparent;
+            this.lblName.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblName.ForeColor = System.Drawing.Color.White;
+            this.lblName.Location = new System.Drawing.Point(24, 46);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(0, 30);
+            this.lblName.TabIndex = 1;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(224)))), ((int)(((byte)(216)))));
+            this.lblTitle.Location = new System.Drawing.Point(24, 20);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(153, 17);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Chi tiết bệnh nhân";
+            // 
+            // pnlInfo
+            // 
+            this.pnlInfo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlInfo.BorderRadius = 12;
+            this.pnlInfo.BorderThickness = 1;
+            this.pnlInfo.Controls.Add(this.lblInfoTitle);
+            this.pnlInfo.FillColor = System.Drawing.Color.White;
+            this.pnlInfo.Location = new System.Drawing.Point(20, 128);
+            this.pnlInfo.Name = "pnlInfo";
+            this.pnlInfo.Size = new System.Drawing.Size(530, 450);
+            this.pnlInfo.TabIndex = 1;
+            // 
+            // lblInfoTitle
+            // 
+            this.lblInfoTitle.AutoSize = true;
+            this.lblInfoTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblInfoTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblInfoTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.lblInfoTitle.Location = new System.Drawing.Point(24, 18);
+            this.lblInfoTitle.Name = "lblInfoTitle";
+            this.lblInfoTitle.Size = new System.Drawing.Size(138, 21);
+            this.lblInfoTitle.TabIndex = 0;
+            this.lblInfoTitle.Text = "Thông tin cơ bản";
+            // 
+            // pnlFooter
+            // 
+            this.pnlFooter.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlFooter.BorderRadius = 12;
+            this.pnlFooter.BorderThickness = 1;
+            this.pnlFooter.Controls.Add(this.btnEdit);
+            this.pnlFooter.Controls.Add(this.btnViewHsba);
+            this.pnlFooter.Controls.Add(this.btnCloseBottom);
+            this.pnlFooter.FillColor = System.Drawing.Color.White;
+            this.pnlFooter.Location = new System.Drawing.Point(20, 590);
+            this.pnlFooter.Name = "pnlFooter";
+            this.pnlFooter.Size = new System.Drawing.Size(530, 70);
+            this.pnlFooter.TabIndex = 2;
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.BackColor = System.Drawing.Color.Transparent;
+            this.btnEdit.BorderRadius = 20;
+            this.btnEdit.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnEdit.ForeColor = System.Drawing.Color.White;
+            this.btnEdit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.btnEdit.Location = new System.Drawing.Point(20, 15);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(150, 40);
+            this.btnEdit.TabIndex = 0;
+            this.btnEdit.Text = "Sửa thông tin";
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnViewHsba
+            // 
+            this.btnViewHsba.BackColor = System.Drawing.Color.Transparent;
+            this.btnViewHsba.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnViewHsba.BorderRadius = 20;
+            this.btnViewHsba.BorderThickness = 1;
+            this.btnViewHsba.FillColor = System.Drawing.Color.Transparent;
+            this.btnViewHsba.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnViewHsba.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnViewHsba.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnViewHsba.Location = new System.Drawing.Point(190, 15);
+            this.btnViewHsba.Name = "btnViewHsba";
+            this.btnViewHsba.Size = new System.Drawing.Size(150, 40);
+            this.btnViewHsba.TabIndex = 1;
+            this.btnViewHsba.Text = "Xem HSBA";
+            this.btnViewHsba.Click += new System.EventHandler(this.btnViewHsba_Click);
+            // 
+            // btnCloseBottom
+            // 
+            this.btnCloseBottom.BackColor = System.Drawing.Color.Transparent;
+            this.btnCloseBottom.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.btnCloseBottom.BorderRadius = 20;
+            this.btnCloseBottom.BorderThickness = 1;
+            this.btnCloseBottom.FillColor = System.Drawing.Color.Transparent;
+            this.btnCloseBottom.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnCloseBottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
+            this.btnCloseBottom.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
+            this.btnCloseBottom.Location = new System.Drawing.Point(360, 15);
+            this.btnCloseBottom.Name = "btnCloseBottom";
+            this.btnCloseBottom.Size = new System.Drawing.Size(150, 40);
+            this.btnCloseBottom.TabIndex = 2;
+            this.btnCloseBottom.Text = "Đóng";
+            this.btnCloseBottom.Click += new System.EventHandler(this.btnCloseBottom_Click);
+            // 
+            // frmChiTietBN
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
+            this.ClientSize = new System.Drawing.Size(570, 680);
+            this.Controls.Add(this.pnlFooter);
+            this.Controls.Add(this.pnlInfo);
+            this.Controls.Add(this.pnlHeader);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Name = "frmChiTietBN";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Chi tiết bệnh nhân";
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.pnlInfo.ResumeLayout(false);
+            this.pnlInfo.PerformLayout();
+            this.pnlFooter.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2Panel pnlHeader;
+        private System.Windows.Forms.Label lblCode;
+        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.Label lblTitle;
+        private Guna.UI2.WinForms.Guna2Panel pnlInfo;
+        private System.Windows.Forms.Label lblInfoTitle;
+        private Guna.UI2.WinForms.Guna2Panel pnlFooter;
+        private Guna.UI2.WinForms.Guna2Button btnEdit;
+        private Guna.UI2.WinForms.Guna2Button btnViewHsba;
+        private Guna.UI2.WinForms.Guna2Button btnCloseBottom;
+    }
+}

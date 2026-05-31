@@ -185,6 +185,18 @@
     <Compile Include="GUI\PH2\DieuPhoiVien\ucTrangChu.Designer.cs">
       <DependentUpon>ucTrangChu.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucDanhSachBN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucDanhSachBN.Designer.cs">
+      <DependentUpon>ucDanhSachBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.Designer.cs">
+      <DependentUpon>frmChiTietBN.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\GraphicsHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -316,6 +328,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucTrangChu.resx">
       <DependentUpon>ucTrangChu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucDanhSachBN.resx">
+      <DependentUpon>ucDanhSachBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.resx">
+      <DependentUpon>frmChiTietBN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
