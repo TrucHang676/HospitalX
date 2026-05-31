@@ -140,7 +140,7 @@ namespace HospitalX.GUI.PH2
         {
             btnDashboard.Click += (s, e) => NavigateToDashboard();
             btnDanhSachBN.Click += (s, e) => NavigateToDanhSachBN();
-            btnThemSuaBN.Click += (s, e) => ShowComingSoon(btnThemSuaBN, "Thêm / Sửa bệnh nhân");
+            btnThemSuaBN.Click += (s, e) => NavigateToThemSuaBN();
             btnTaoHSBA.Click += (s, e) => ShowComingSoon(btnTaoHSBA, "Tạo hồ sơ bệnh án");
             btnDieuPhoiKTV.Click += (s, e) => ShowComingSoon(btnDieuPhoiKTV, "Điều phối kỹ thuật viên");
             btnThongBaoNoiBo.Click += (s, e) => ShowComingSoon(btnThongBaoNoiBo, "Thông báo nội bộ");
@@ -154,7 +154,7 @@ namespace HospitalX.GUI.PH2
             btnDashboard.Checked = true;
         }
 
-        private void NavigateToDanhSachBN()
+        public void NavigateToDanhSachBN()
         {
             LoadPage(new ucDanhSachBN(), "Danh sách bệnh nhân", "/ BỆNH NHÂN");
             btnDanhSachBN.Checked = true;
@@ -163,7 +163,8 @@ namespace HospitalX.GUI.PH2
         /// <summary>Navigate to "Thêm / Sửa bệnh nhân" tab. Called from child user controls.</summary>
         public void NavigateToThemSuaBN()
         {
-            ShowComingSoon(btnThemSuaBN, "Thêm / Sửa bệnh nhân");
+            LoadPage(new ucThemSuaBN(), "Thêm bệnh nhân mới", "/ BỆNH NHÂN");
+            btnThemSuaBN.Checked = true;
         }
 
         /// <summary>Navigate to "Tạo hồ sơ bệnh án" tab. Called from child user controls.</summary>

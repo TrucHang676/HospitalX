@@ -203,6 +203,12 @@
     <Compile Include="GUI\PH2\DieuPhoiVien\ucDanhSachBN.Designer.cs">
       <DependentUpon>ucDanhSachBN.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucThemSuaBN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucThemSuaBN.Designer.cs">
+      <DependentUpon>ucThemSuaBN.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -364,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.resx">
       <DependentUpon>frmChiTietBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucThemSuaBN.resx">
+      <DependentUpon>ucThemSuaBN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
