@@ -1,5 +1,8 @@
 using Guna.UI2.WinForms;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2.BacSi
@@ -118,7 +121,7 @@ namespace HospitalX.GUI.PH2.BacSi
             btnView.HoverState.ForeColor = Color.FromArgb(10, 79, 61);
             btnView.Click += (s, e) =>
             {
-                MessageBox.Show("Mở chi tiết " + code, "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                OpenHsbaDetail(code, date, diagnosis);
             };
 
             item.Controls.Add(accent);
@@ -143,6 +146,45 @@ namespace HospitalX.GUI.PH2.BacSi
             code = hsba;
             date = string.Empty;
             diagnosis = hsba;
+        }
+
+        private void OpenHsbaDetail(string code, string date, string diagnosis)
+        {
+            ucHSBA.HsbaRecord record = CreateHsbaRecord(code, date, diagnosis);
+            using (frmHSBADetail form = new frmHSBADetail(record))
+            {
+                form.ShowDialog(this);
+            }
+        }
+
+        private ucHSBA.HsbaRecord CreateHsbaRecord(string code, string date, string diagnosis)
+        {
+            DateTime createdDate;
+            if (!DateTime.TryParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out createdDate))
+            {
+                createdDate = DateTime.Today;
+            }
+
+            return new ucHSBA.HsbaRecord
+            {
+                Id = code,
+                PatientCode = _patient.Code,
+                PatientName = _patient.Name,
+                Gender = _patient.Gender,
+                Age = _patient.Age,
+                Department = "Khoa Tim Mạch",
+                CreatedDate = createdDate,
+                BirthDate = "(Chưa cập nhật)",
+                CitizenId = _patient.Cccd,
+                Address = _patient.Hometown,
+                Allergy = _patient.Allergy,
+                MedicalHistory = _patient.MedicalHistory,
+                Diagnosis = diagnosis,
+                Treatment = "(Chưa cập nhật phác đồ điều trị)",
+                Conclusion = "(Chưa có kết luận)",
+                Services = new List<string> { "(Chưa có dịch vụ liên quan)" },
+                Prescriptions = new List<string> { _patient.PrescriptionCount > 0 ? "(Xem đơn thuốc liên quan trong phân hệ đơn thuốc)" : "(Chưa có đơn thuốc)" }
+            };
         }
     }
 }
