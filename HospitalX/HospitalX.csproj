@@ -106,6 +106,18 @@
     <Compile Include="GUI\PH2\BacSi\Main_BS.Designer.cs">
       <DependentUpon>Main_BS.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucBenhNhanCuaToi.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucBenhNhanCuaToi.Designer.cs">
+      <DependentUpon>ucBenhNhanCuaToi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucDonThuoc.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucDonThuoc.Designer.cs">
+      <DependentUpon>ucDonThuoc.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\BacSi\ucHSBA.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -129,6 +141,18 @@
     </Compile>
     <Compile Include="GUI\PH2\BacSi\frmHSBAPrescription.Designer.cs">
       <DependentUpon>frmHSBAPrescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucHSCN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucHSCN.Designer.cs">
+      <DependentUpon>ucHSCN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucThongBao.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucThongBao.Designer.cs">
+      <DependentUpon>ucThongBao.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PH2\BacSi\ucTongQuan.cs">
       <SubType>UserControl</SubType>
@@ -238,8 +262,20 @@
     <EmbeddedResource Include="GUI\PH2\BacSi\Main_BS.resx">
       <DependentUpon>Main_BS.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\ucBenhNhanCuaToi.resx">
+      <DependentUpon>ucBenhNhanCuaToi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\ucDonThuoc.resx">
+      <DependentUpon>ucDonThuoc.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\ucHSBA.resx">
       <DependentUpon>ucHSBA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\ucHSCN.resx">
+      <DependentUpon>ucHSCN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\ucThongBao.resx">
+      <DependentUpon>ucThongBao.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\ucTongQuan.resx">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
