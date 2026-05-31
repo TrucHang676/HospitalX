@@ -36,7 +36,7 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvRecentHsba.DefaultCellStyle.Padding = new Padding(10, 0, 8, 0);
             dgvRecentHsba.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
             dgvRecentHsba.RowsDefaultCellStyle.BackColor = Color.White;
-            dgvRecentHsba.RowTemplate.Height = 68;
+            dgvRecentHsba.RowTemplate.Height = 75;
 
             if (dgvRecentHsba.Rows.Count > 0)
             {
@@ -80,10 +80,10 @@ namespace HospitalX.GUI.PH2.BacSi
             if (e.ColumnIndex == dgvRecentHsba.Columns["colPatient"].Index || e.ColumnIndex == dgvRecentHsba.Columns["colDate"].Index)
             {
                 string[] lines = value.Split('\n');
-                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 10F, FontStyle.Bold), new Rectangle(cell.X + 14, cell.Y + 13, cell.Width - 20, 24), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 10F, FontStyle.Bold), new Rectangle(cell.X + 14, cell.Y + 8, cell.Width - 20, 40), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 if (lines.Length > 1)
                 {
-                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(cell.X + 14, cell.Y + 39, cell.Width - 20, 22), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(cell.X + 14, cell.Y + 45, cell.Width - 20, 30), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 }
                 e.Handled = true;
                 return;

@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
 
 namespace HospitalX.GUI.PH2.BacSi
 {
@@ -16,11 +17,16 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void LoadRecord()
         {
+            msgDialog.Parent = this;
             lblHsbaId.Text = _record.Id;
             lblPatientName.Text = _record.PatientName;
             lblPatientMeta.Text = string.Format("{0} · {1}, {2} tuổi · {3}", _record.PatientCode, _record.Gender, _record.Age, _record.Department);
-            lblInfo.Text = string.Format("Ngày sinh: {0}\r\nCCCD: {1}\r\nĐịa chỉ: {2}\r\nNgày lập HSBA: {3:dd/MM/yyyy}\r\nDị ứng: {4}\r\nTiền sử: {5}",
-                _record.BirthDate, _record.CitizenId, _record.Address, _record.CreatedDate, _record.Allergy, _record.MedicalHistory);
+            lblBirthValue.Text = _record.BirthDate;
+            lblCccdValue.Text = _record.CitizenId;
+            lblAddressValue.Text = _record.Address;
+            lblCreatedValue.Text = _record.CreatedDate.ToString("dd/MM/yyyy");
+            lblAllergyValue.Text = _record.Allergy;
+            lblHistoryValue.Text = _record.MedicalHistory;
             txtDiagnosis.Text = _record.Diagnosis;
             txtTreatment.Text = _record.Treatment;
             txtConclusion.Text = _record.Conclusion;
@@ -35,7 +41,9 @@ namespace HospitalX.GUI.PH2.BacSi
             _record.Diagnosis = txtDiagnosis.Text.Trim();
             _record.Treatment = txtTreatment.Text.Trim();
             _record.Conclusion = txtConclusion.Text.Trim();
-            MessageBox.Show("Đã lưu thay đổi HSBA.", "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            msgDialog.Icon = MessageDialogIcon.Information;
+            msgDialog.Buttons = MessageDialogButtons.OK;
+            msgDialog.Show("Đã lưu thay đổi HSBA.", "Thành công");
             DialogResult = DialogResult.OK;
             Close();
         }

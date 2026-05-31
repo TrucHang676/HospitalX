@@ -17,17 +17,27 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             this.components = new System.ComponentModel.Container();
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
-            this.pnlMain = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnClose = new Guna.UI2.WinForms.Guna2Button();
-            this.btnAdd = new Guna.UI2.WinForms.Guna2Button();
-            this.txtDose = new Guna.UI2.WinForms.Guna2TextBox();
-            this.txtMedicineName = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblNewTitle = new System.Windows.Forms.Label();
-            this.lstCurrentPrescriptions = new System.Windows.Forms.ListBox();
-            this.lblCurrentTitle = new System.Windows.Forms.Label();
+            this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
+            this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnCloseBox = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.lblHsbaId = new System.Windows.Forms.Label();
             this.lblPatient = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.pnlMain.SuspendLayout();
+            this.pnlCurrent = new Guna.UI2.WinForms.Guna2Panel();
+            this.lstCurrentPrescriptions = new System.Windows.Forms.ListBox();
+            this.lblCurrentHint = new System.Windows.Forms.Label();
+            this.lblCurrentTitle = new System.Windows.Forms.Label();
+            this.pnlNew = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblDoseTitle = new System.Windows.Forms.Label();
+            this.txtDose = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblMedicineTitle = new System.Windows.Forms.Label();
+            this.txtMedicineName = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblNewTitle = new System.Windows.Forms.Label();
+            this.btnClose = new Guna.UI2.WinForms.Guna2Button();
+            this.btnAdd = new Guna.UI2.WinForms.Guna2Button();
+            this.pnlHeader.SuspendLayout();
+            this.pnlCurrent.SuspendLayout();
+            this.pnlNew.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2BorderlessForm1
@@ -37,25 +47,207 @@ namespace HospitalX.GUI.PH2.BacSi
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
-            // pnlMain
+            // msgDialog
             // 
-            this.pnlMain.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlMain.BorderRadius = 12;
-            this.pnlMain.BorderThickness = 1;
-            this.pnlMain.Controls.Add(this.btnClose);
-            this.pnlMain.Controls.Add(this.btnAdd);
-            this.pnlMain.Controls.Add(this.txtDose);
-            this.pnlMain.Controls.Add(this.txtMedicineName);
-            this.pnlMain.Controls.Add(this.lblNewTitle);
-            this.pnlMain.Controls.Add(this.lstCurrentPrescriptions);
-            this.pnlMain.Controls.Add(this.lblCurrentTitle);
-            this.pnlMain.Controls.Add(this.lblPatient);
-            this.pnlMain.Controls.Add(this.lblTitle);
-            this.pnlMain.FillColor = System.Drawing.Color.White;
-            this.pnlMain.Location = new System.Drawing.Point(18, 18);
-            this.pnlMain.Name = "pnlMain";
-            this.pnlMain.Size = new System.Drawing.Size(564, 444);
-            this.pnlMain.TabIndex = 0;
+            this.msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+            this.msgDialog.Caption = "HospitalX";
+            this.msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
+            this.msgDialog.Parent = this;
+            this.msgDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
+            this.msgDialog.Text = null;
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BorderRadius = 12;
+            this.pnlHeader.Controls.Add(this.btnCloseBox);
+            this.pnlHeader.Controls.Add(this.lblHsbaId);
+            this.pnlHeader.Controls.Add(this.lblPatient);
+            this.pnlHeader.Controls.Add(this.lblTitle);
+            this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.pnlHeader.Location = new System.Drawing.Point(32, 24);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(796, 132);
+            this.pnlHeader.TabIndex = 0;
+            // 
+            // btnCloseBox
+            // 
+            this.btnCloseBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCloseBox.BackColor = System.Drawing.Color.Transparent;
+            this.btnCloseBox.BorderRadius = 8;
+            this.btnCloseBox.FillColor = System.Drawing.Color.Transparent;
+            this.btnCloseBox.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.btnCloseBox.IconColor = System.Drawing.Color.White;
+            this.btnCloseBox.Location = new System.Drawing.Point(742, 18);
+            this.btnCloseBox.Name = "btnCloseBox";
+            this.btnCloseBox.Size = new System.Drawing.Size(36, 32);
+            this.btnCloseBox.TabIndex = 3;
+            // 
+            // lblHsbaId
+            // 
+            this.lblHsbaId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.lblHsbaId.Font = new System.Drawing.Font("Consolas", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblHsbaId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblHsbaId.Location = new System.Drawing.Point(620, 82);
+            this.lblHsbaId.Name = "lblHsbaId";
+            this.lblHsbaId.Size = new System.Drawing.Size(128, 30);
+            this.lblHsbaId.TabIndex = 2;
+            this.lblHsbaId.Text = "HSBA-0000";
+            this.lblHsbaId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPatient
+            // 
+            this.lblPatient.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.lblPatient.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblPatient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.lblPatient.Location = new System.Drawing.Point(36, 90);
+            this.lblPatient.Name = "lblPatient";
+            this.lblPatient.Size = new System.Drawing.Size(520, 24);
+            this.lblPatient.TabIndex = 1;
+            this.lblPatient.Text = "Tên bệnh nhân · Mã BN";
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 19F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(34, 36);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(520, 44);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Thêm đơn thuốc";
+            // 
+            // pnlCurrent
+            // 
+            this.pnlCurrent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlCurrent.BorderRadius = 10;
+            this.pnlCurrent.BorderThickness = 1;
+            this.pnlCurrent.Controls.Add(this.lstCurrentPrescriptions);
+            this.pnlCurrent.Controls.Add(this.lblCurrentHint);
+            this.pnlCurrent.Controls.Add(this.lblCurrentTitle);
+            this.pnlCurrent.FillColor = System.Drawing.Color.White;
+            this.pnlCurrent.Location = new System.Drawing.Point(32, 178);
+            this.pnlCurrent.Name = "pnlCurrent";
+            this.pnlCurrent.Size = new System.Drawing.Size(382, 340);
+            this.pnlCurrent.TabIndex = 1;
+            // 
+            // lstCurrentPrescriptions
+            // 
+            this.lstCurrentPrescriptions.BackColor = System.Drawing.Color.White;
+            this.lstCurrentPrescriptions.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstCurrentPrescriptions.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lstCurrentPrescriptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
+            this.lstCurrentPrescriptions.FormattingEnabled = true;
+            this.lstCurrentPrescriptions.ItemHeight = 17;
+            this.lstCurrentPrescriptions.Location = new System.Drawing.Point(26, 86);
+            this.lstCurrentPrescriptions.Name = "lstCurrentPrescriptions";
+            this.lstCurrentPrescriptions.Size = new System.Drawing.Size(330, 221);
+            this.lstCurrentPrescriptions.TabIndex = 2;
+            // 
+            // lblCurrentHint
+            // 
+            this.lblCurrentHint.AutoSize = true;
+            this.lblCurrentHint.Font = new System.Drawing.Font("Segoe UI", 8.8F);
+            this.lblCurrentHint.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblCurrentHint.Location = new System.Drawing.Point(25, 50);
+            this.lblCurrentHint.Name = "lblCurrentHint";
+            this.lblCurrentHint.Size = new System.Drawing.Size(163, 15);
+            this.lblCurrentHint.TabIndex = 1;
+            this.lblCurrentHint.Text = "Các thuốc đang có trong đơn";
+            // 
+            // lblCurrentTitle
+            // 
+            this.lblCurrentTitle.AutoSize = true;
+            this.lblCurrentTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblCurrentTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.lblCurrentTitle.Location = new System.Drawing.Point(24, 22);
+            this.lblCurrentTitle.Name = "lblCurrentTitle";
+            this.lblCurrentTitle.Size = new System.Drawing.Size(138, 20);
+            this.lblCurrentTitle.TabIndex = 0;
+            this.lblCurrentTitle.Text = "Đơn thuốc hiện tại";
+            // 
+            // pnlNew
+            // 
+            this.pnlNew.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlNew.BorderRadius = 10;
+            this.pnlNew.BorderThickness = 1;
+            this.pnlNew.Controls.Add(this.lblDoseTitle);
+            this.pnlNew.Controls.Add(this.txtDose);
+            this.pnlNew.Controls.Add(this.lblMedicineTitle);
+            this.pnlNew.Controls.Add(this.txtMedicineName);
+            this.pnlNew.Controls.Add(this.lblNewTitle);
+            this.pnlNew.FillColor = System.Drawing.Color.White;
+            this.pnlNew.Location = new System.Drawing.Point(438, 178);
+            this.pnlNew.Name = "pnlNew";
+            this.pnlNew.Size = new System.Drawing.Size(390, 340);
+            this.pnlNew.TabIndex = 2;
+            // 
+            // lblDoseTitle
+            // 
+            this.lblDoseTitle.AutoSize = true;
+            this.lblDoseTitle.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDoseTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblDoseTitle.Location = new System.Drawing.Point(27, 148);
+            this.lblDoseTitle.Name = "lblDoseTitle";
+            this.lblDoseTitle.Size = new System.Drawing.Size(71, 15);
+            this.lblDoseTitle.TabIndex = 4;
+            this.lblDoseTitle.Text = "LIỀU DÙNG";
+            // 
+            // txtDose
+            // 
+            this.txtDose.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtDose.BorderRadius = 8;
+            this.txtDose.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtDose.DefaultText = "";
+            this.txtDose.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtDose.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtDose.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtDose.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.txtDose.Location = new System.Drawing.Point(28, 170);
+            this.txtDose.Multiline = true;
+            this.txtDose.Name = "txtDose";
+            this.txtDose.PlaceholderText = "Liều dùng, thời điểm uống, ghi chú...";
+            this.txtDose.SelectedText = "";
+            this.txtDose.Size = new System.Drawing.Size(334, 118);
+            this.txtDose.TabIndex = 3;
+            // 
+            // lblMedicineTitle
+            // 
+            this.lblMedicineTitle.AutoSize = true;
+            this.lblMedicineTitle.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblMedicineTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblMedicineTitle.Location = new System.Drawing.Point(27, 72);
+            this.lblMedicineTitle.Name = "lblMedicineTitle";
+            this.lblMedicineTitle.Size = new System.Drawing.Size(73, 15);
+            this.lblMedicineTitle.TabIndex = 2;
+            this.lblMedicineTitle.Text = "TÊN THUỐC";
+            // 
+            // txtMedicineName
+            // 
+            this.txtMedicineName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtMedicineName.BorderRadius = 8;
+            this.txtMedicineName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtMedicineName.DefaultText = "";
+            this.txtMedicineName.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtMedicineName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtMedicineName.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtMedicineName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.txtMedicineName.Location = new System.Drawing.Point(28, 94);
+            this.txtMedicineName.Name = "txtMedicineName";
+            this.txtMedicineName.PlaceholderText = "Tên thuốc cần thêm...";
+            this.txtMedicineName.SelectedText = "";
+            this.txtMedicineName.Size = new System.Drawing.Size(334, 44);
+            this.txtMedicineName.TabIndex = 1;
+            // 
+            // lblNewTitle
+            // 
+            this.lblNewTitle.AutoSize = true;
+            this.lblNewTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblNewTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.lblNewTitle.Location = new System.Drawing.Point(24, 22);
+            this.lblNewTitle.Name = "lblNewTitle";
+            this.lblNewTitle.Size = new System.Drawing.Size(83, 20);
+            this.lblNewTitle.TabIndex = 0;
+            this.lblNewTitle.Text = "Thuốc mới";
             // 
             // btnClose
             // 
@@ -68,11 +260,11 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(236)))), ((int)(((byte)(234)))));
             this.btnClose.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnClose.Location = new System.Drawing.Point(412, 376);
+            this.btnClose.Location = new System.Drawing.Point(692, 548);
             this.btnClose.Name = "btnClose";
             this.btnClose.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnClose.Size = new System.Drawing.Size(112, 40);
-            this.btnClose.TabIndex = 8;
+            this.btnClose.Size = new System.Drawing.Size(136, 44);
+            this.btnClose.TabIndex = 4;
             this.btnClose.Text = "Đóng";
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -86,129 +278,55 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnAdd.Location = new System.Drawing.Point(282, 376);
+            this.btnAdd.Location = new System.Drawing.Point(540, 548);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnAdd.Size = new System.Drawing.Size(112, 40);
-            this.btnAdd.TabIndex = 7;
+            this.btnAdd.Size = new System.Drawing.Size(136, 44);
+            this.btnAdd.TabIndex = 3;
             this.btnAdd.Text = "Thêm thuốc";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
-            // txtDose
-            // 
-            this.txtDose.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.txtDose.BorderRadius = 8;
-            this.txtDose.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtDose.DefaultText = "";
-            this.txtDose.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtDose.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.txtDose.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtDose.Location = new System.Drawing.Point(40, 302);
-            this.txtDose.Multiline = true;
-            this.txtDose.Name = "txtDose";
-            this.txtDose.PlaceholderText = "Liều dùng, thời điểm uống, ghi chú...";
-            this.txtDose.SelectedText = "";
-            this.txtDose.Size = new System.Drawing.Size(484, 58);
-            this.txtDose.TabIndex = 6;
-            // 
-            // txtMedicineName
-            // 
-            this.txtMedicineName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.txtMedicineName.BorderRadius = 8;
-            this.txtMedicineName.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtMedicineName.DefaultText = "";
-            this.txtMedicineName.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtMedicineName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.txtMedicineName.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMedicineName.Location = new System.Drawing.Point(40, 248);
-            this.txtMedicineName.Name = "txtMedicineName";
-            this.txtMedicineName.PlaceholderText = "Tên thuốc cần thêm...";
-            this.txtMedicineName.SelectedText = "";
-            this.txtMedicineName.Size = new System.Drawing.Size(484, 40);
-            this.txtMedicineName.TabIndex = 5;
-            // 
-            // lblNewTitle
-            // 
-            this.lblNewTitle.AutoSize = true;
-            this.lblNewTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblNewTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblNewTitle.Location = new System.Drawing.Point(36, 218);
-            this.lblNewTitle.Name = "lblNewTitle";
-            this.lblNewTitle.Size = new System.Drawing.Size(82, 19);
-            this.lblNewTitle.TabIndex = 4;
-            this.lblNewTitle.Text = "Thuốc mới";
-            // 
-            // lstCurrentPrescriptions
-            // 
-            this.lstCurrentPrescriptions.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstCurrentPrescriptions.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lstCurrentPrescriptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
-            this.lstCurrentPrescriptions.FormattingEnabled = true;
-            this.lstCurrentPrescriptions.ItemHeight = 17;
-            this.lstCurrentPrescriptions.Location = new System.Drawing.Point(40, 120);
-            this.lstCurrentPrescriptions.Name = "lstCurrentPrescriptions";
-            this.lstCurrentPrescriptions.Size = new System.Drawing.Size(484, 85);
-            this.lstCurrentPrescriptions.TabIndex = 3;
-            // 
-            // lblCurrentTitle
-            // 
-            this.lblCurrentTitle.AutoSize = true;
-            this.lblCurrentTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblCurrentTitle.Location = new System.Drawing.Point(36, 88);
-            this.lblCurrentTitle.Name = "lblCurrentTitle";
-            this.lblCurrentTitle.Size = new System.Drawing.Size(128, 19);
-            this.lblCurrentTitle.TabIndex = 2;
-            this.lblCurrentTitle.Text = "Đơn thuốc hiện tại";
-            // 
-            // lblPatient
-            // 
-            this.lblPatient.AutoSize = true;
-            this.lblPatient.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblPatient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblPatient.Location = new System.Drawing.Point(38, 51);
-            this.lblPatient.Name = "lblPatient";
-            this.lblPatient.Size = new System.Drawing.Size(122, 15);
-            this.lblPatient.TabIndex = 1;
-            this.lblPatient.Text = "Tên bệnh nhân · Mã";
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTitle.Location = new System.Drawing.Point(36, 24);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(154, 25);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Thêm đơn thuốc";
             // 
             // frmHSBAPrescription
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(600, 480);
-            this.Controls.Add(this.pnlMain);
+            this.ClientSize = new System.Drawing.Size(860, 620);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.pnlNew);
+            this.Controls.Add(this.pnlCurrent);
+            this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmHSBAPrescription";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Thêm đơn thuốc";
-            this.pnlMain.ResumeLayout(false);
-            this.pnlMain.PerformLayout();
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlCurrent.ResumeLayout(false);
+            this.pnlCurrent.PerformLayout();
+            this.pnlNew.ResumeLayout(false);
+            this.pnlNew.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
-        private Guna.UI2.WinForms.Guna2Panel pnlMain;
+        private Guna.UI2.WinForms.Guna2MessageDialog msgDialog;
+        private Guna.UI2.WinForms.Guna2Panel pnlHeader;
+        private Guna.UI2.WinForms.Guna2ControlBox btnCloseBox;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblPatient;
+        private System.Windows.Forms.Label lblHsbaId;
+        private Guna.UI2.WinForms.Guna2Panel pnlCurrent;
         private System.Windows.Forms.Label lblCurrentTitle;
+        private System.Windows.Forms.Label lblCurrentHint;
         private System.Windows.Forms.ListBox lstCurrentPrescriptions;
+        private Guna.UI2.WinForms.Guna2Panel pnlNew;
         private System.Windows.Forms.Label lblNewTitle;
+        private System.Windows.Forms.Label lblMedicineTitle;
         private Guna.UI2.WinForms.Guna2TextBox txtMedicineName;
+        private System.Windows.Forms.Label lblDoseTitle;
         private Guna.UI2.WinForms.Guna2TextBox txtDose;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnClose;

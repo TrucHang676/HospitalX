@@ -36,9 +36,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpTo = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.dtpFrom = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.cmbDateRange = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.flpHsbaList = new System.Windows.Forms.FlowLayoutPanel();
             this.ttpHsba = new System.Windows.Forms.ToolTip(this.components);
+            this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.pnlToolbar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +67,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblResultCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResultCount.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
             this.lblResultCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblResultCount.Location = new System.Drawing.Point(815, 20);
+            this.lblResultCount.Location = new System.Drawing.Point(815, 7);
             this.lblResultCount.Name = "lblResultCount";
             this.lblResultCount.Size = new System.Drawing.Size(236, 24);
             this.lblResultCount.TabIndex = 7;
@@ -92,7 +92,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.cmbSort.Items.AddRange(new object[] {
             "Mới nhất",
             "Cũ nhất"});
-            this.cmbSort.Location = new System.Drawing.Point(874, 57);
+            this.cmbSort.Location = new System.Drawing.Point(874, 42);
             this.cmbSort.Name = "cmbSort";
             this.cmbSort.Size = new System.Drawing.Size(177, 38);
             this.cmbSort.StartIndex = 0;
@@ -109,7 +109,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpTo.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.dtpTo.Location = new System.Drawing.Point(675, 57);
+            this.dtpTo.Location = new System.Drawing.Point(785, 42);
             this.dtpTo.MaxDate = new System.DateTime(2030, 12, 31, 0, 0, 0, 0);
             this.dtpTo.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.dtpTo.Name = "dtpTo";
@@ -128,7 +128,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpFrom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFrom.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.dtpFrom.Location = new System.Drawing.Point(532, 57);
+            this.dtpFrom.Location = new System.Drawing.Point(636, 42);
             this.dtpFrom.MaxDate = new System.DateTime(2030, 12, 31, 0, 0, 0, 0);
             this.dtpFrom.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.dtpFrom.Name = "dtpFrom";
@@ -155,37 +155,11 @@ namespace HospitalX.GUI.PH2.BacSi
             "7 ngày gần đây",
             "Tất cả",
             "Tùy chọn"});
-            this.cmbDateRange.Location = new System.Drawing.Point(371, 57);
+            this.cmbDateRange.Location = new System.Drawing.Point(446, 42);
             this.cmbDateRange.Name = "cmbDateRange";
-            this.cmbDateRange.Size = new System.Drawing.Size(150, 38);
+            this.cmbDateRange.Size = new System.Drawing.Size(175, 38);
             this.cmbDateRange.StartIndex = 0;
             this.cmbDateRange.TabIndex = 3;
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.txtSearch.BorderRadius = 8;
-            this.txtSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSearch.DefaultText = "";
-            this.txtSearch.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(208)))), ((int)(((byte)(203)))));
-            this.txtSearch.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.txtSearch.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.txtSearch.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtSearch.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
-            this.txtSearch.IconLeftOffset = new System.Drawing.Point(10, 0);
-            this.txtSearch.IconLeftSize = new System.Drawing.Size(18, 18);
-            this.txtSearch.Location = new System.Drawing.Point(23, 57);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.txtSearch.PlaceholderText = "Tìm theo mã HSBA hoặc tên bệnh nhân...";
-            this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(328, 38);
-            this.txtSearch.TabIndex = 2;
             // 
             // flpHsbaList
             // 
@@ -201,6 +175,32 @@ namespace HospitalX.GUI.PH2.BacSi
             this.flpHsbaList.Size = new System.Drawing.Size(1080, 596);
             this.flpHsbaList.TabIndex = 1;
             this.flpHsbaList.WrapContents = false;
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtSearch.BorderRadius = 8;
+            this.txtSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSearch.DefaultText = "";
+            this.txtSearch.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(208)))), ((int)(((byte)(203)))));
+            this.txtSearch.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.txtSearch.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.txtSearch.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtSearch.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
+            this.txtSearch.IconLeftOffset = new System.Drawing.Point(10, 0);
+            this.txtSearch.IconLeftSize = new System.Drawing.Size(18, 18);
+            this.txtSearch.Location = new System.Drawing.Point(24, 42);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.txtSearch.PlaceholderText = "Tìm theo mã HSBA hoặc tên bệnh nhân...";
+            this.txtSearch.SelectedText = "";
+            this.txtSearch.Size = new System.Drawing.Size(406, 38);
+            this.txtSearch.TabIndex = 2;
             // 
             // ucHSBA
             // 

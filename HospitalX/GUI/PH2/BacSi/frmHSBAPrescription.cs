@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
 
 namespace HospitalX.GUI.PH2.BacSi
 {
@@ -16,7 +17,9 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void LoadRecord()
         {
-            lblTitle.Text = "Thêm đơn thuốc - " + _record.Id;
+            msgDialog.Parent = this;
+            lblTitle.Text = "Thêm đơn thuốc";
+            lblHsbaId.Text = _record.Id;
             lblPatient.Text = _record.PatientName + " · " + _record.PatientCode;
             RefreshPrescriptions();
         }
@@ -34,7 +37,9 @@ namespace HospitalX.GUI.PH2.BacSi
 
             if (string.IsNullOrWhiteSpace(medicine))
             {
-                MessageBox.Show("Vui lòng nhập tên thuốc.", "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                msgDialog.Icon = MessageDialogIcon.Warning;
+                msgDialog.Buttons = MessageDialogButtons.OK;
+                msgDialog.Show("Vui lòng nhập tên thuốc.", "Thiếu thông tin");
                 return;
             }
 
@@ -42,6 +47,9 @@ namespace HospitalX.GUI.PH2.BacSi
             txtMedicineName.Clear();
             txtDose.Clear();
             RefreshPrescriptions();
+            msgDialog.Icon = MessageDialogIcon.Information;
+            msgDialog.Buttons = MessageDialogButtons.OK;
+            msgDialog.Show("Đã thêm thuốc vào đơn hiện tại.", "Thành công");
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -226,6 +226,15 @@
     <EmbeddedResource Include="GUI\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmHSBADetail.resx">
+      <DependentUpon>frmHSBADetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmHSBAPrescription.resx">
+      <DependentUpon>frmHSBAPrescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmHSBAService.resx">
+      <DependentUpon>frmHSBAService.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\Main_BS.resx">
       <DependentUpon>Main_BS.cs</DependentUpon>
     </EmbeddedResource>
