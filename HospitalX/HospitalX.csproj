@@ -172,6 +172,19 @@
     <Compile Include="GUI\PH2\BacSi\ucTongQuan.Designer.cs">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\DpvAssets.cs" />
+    <Compile Include="GUI\PH2\DieuPhoiVien\Main_DPV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\Main_DPV.Designer.cs">
+      <DependentUpon>Main_DPV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucTrangChu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucTrangChu.Designer.cs">
+      <DependentUpon>ucTrangChu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\GraphicsHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -298,6 +311,12 @@
     <EmbeddedResource Include="GUI\PH2\BacSi\ucTongQuan.resx">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\Main_DPV.resx">
+      <DependentUpon>Main_DPV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucTrangChu.resx">
+      <DependentUpon>ucTrangChu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
     </EmbeddedResource>
@@ -375,6 +394,7 @@
     <None Include="Resources\eye_open.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\add.png" />
     <Content Include="SQL\HospitalX_PH1.sql" />
     <Content Include="svg.ico" />
     <Content Include="..\image\medical-team.ico" />
