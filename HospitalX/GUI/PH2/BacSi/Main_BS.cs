@@ -19,10 +19,10 @@ namespace HospitalX.GUI.PH2
         {
             btnTongQuan.Click += BtnTongQuan_Click;
             btnHSBA.Click += BtnHSBA_Click;
-            btnBN.Click += (s, e) => SetPageTitle("Bệnh nhân của tôi");
+            btnBN.Click += BtnBN_Click;
             btnDT.Click += (s, e) => SetPageTitle("Đơn thuốc");
             btnThongBao.Click += (s, e) => SetPageTitle("Thông báo");
-            btnHSCN.Click += (s, e) => SetPageTitle("Hồ sơ cá nhân");
+            btnHSCN.Click += BtnHSCN_Click;
         }
 
         private void BtnTongQuan_Click(object sender, EventArgs e)
@@ -33,6 +33,16 @@ namespace HospitalX.GUI.PH2
         private void BtnHSBA_Click(object sender, EventArgs e)
         {
             LoadPage(new ucHSBA(), "Hồ sơ bệnh án");
+        }
+
+        private void BtnBN_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucBenhNhanCuaToi(), "Bệnh nhân của tôi");
+        }
+
+        private void BtnHSCN_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucHSCN(), "Hồ sơ cá nhân");
         }
 
         // Load UserControl vào vùng nội dung chính.

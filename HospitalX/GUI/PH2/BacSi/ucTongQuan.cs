@@ -36,14 +36,14 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvRecentHsba.DefaultCellStyle.Padding = new Padding(10, 0, 8, 0);
             dgvRecentHsba.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
             dgvRecentHsba.RowsDefaultCellStyle.BackColor = Color.White;
-            dgvRecentHsba.RowTemplate.Height = 68;
+            dgvRecentHsba.RowTemplate.Height = 75;
 
             if (dgvRecentHsba.Rows.Count > 0)
             {
                 return;
             }
 
-            dgvRecentHsba.Rows.Add("HSBA-0821", "Nguyễn Văn An\nBN-00341 · Nam, 52 tuổi", "21/05/2026\nHôm nay", "Đang điều trị", "Xem");
+            dgvRecentHsba.Rows.Add("HSBA-0821", "Trà Văn Sỹ\nBN-00341 · Nam, 21 tuổi", "23/05/2026\nHôm nay", "Đang điều trị", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0819", "Lê Thị Bích\nBN-00298 · Nữ, 38 tuổi", "20/05/2026\nHôm qua", "Chờ kết quả", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0815", "Phạm Quốc Hùng\nBN-00215 · Nam, 67 tuổi", "18/05/2026\n3 ngày trước", "Chờ kết quả", "Xem");
             dgvRecentHsba.Rows.Add("HSBA-0801", "Trần Thị Mai\nBN-00189 · Nữ, 45 tuổi", "12/05/2026\n9 ngày trước", "Hoàn thành", "Xem");
@@ -80,10 +80,10 @@ namespace HospitalX.GUI.PH2.BacSi
             if (e.ColumnIndex == dgvRecentHsba.Columns["colPatient"].Index || e.ColumnIndex == dgvRecentHsba.Columns["colDate"].Index)
             {
                 string[] lines = value.Split('\n');
-                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 10F, FontStyle.Bold), new Rectangle(cell.X + 14, cell.Y + 13, cell.Width - 20, 24), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 10F, FontStyle.Bold), new Rectangle(cell.X + 14, cell.Y + 8, cell.Width - 20, 40), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 if (lines.Length > 1)
                 {
-                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(cell.X + 14, cell.Y + 39, cell.Width - 20, 22), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(cell.X + 14, cell.Y + 45, cell.Width - 20, 30), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 }
                 e.Handled = true;
                 return;
