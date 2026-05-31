@@ -106,6 +106,12 @@
     <Compile Include="GUI\PH2\BacSi\Main_BS.Designer.cs">
       <DependentUpon>Main_BS.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucHSBA.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BacSi\ucHSBA.Designer.cs">
+      <DependentUpon>ucHSBA.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\GraphicsHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -198,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\Main_BS.resx">
       <DependentUpon>Main_BS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\ucHSBA.resx">
+      <DependentUpon>ucHSBA.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
