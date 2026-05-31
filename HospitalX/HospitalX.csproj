@@ -296,6 +296,9 @@
     <EmbeddedResource Include="GUI\PH2\BacSi\frmHSBAService.resx">
       <DependentUpon>frmHSBAService.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BacSi\frmNotificationDetail.resx">
+      <DependentUpon>frmNotificationDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\frmPatientDetail.resx">
       <DependentUpon>frmPatientDetail.cs</DependentUpon>
     </EmbeddedResource>

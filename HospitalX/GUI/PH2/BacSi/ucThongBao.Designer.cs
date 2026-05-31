@@ -75,9 +75,9 @@ namespace HospitalX.GUI.PH2.BacSi
             "Tất cả trạng thái",
             "Chưa đọc",
             "Đã đọc"});
-            this.cmbStatus.Location = new System.Drawing.Point(878, 28);
+            this.cmbStatus.Location = new System.Drawing.Point(820, 28);
             this.cmbStatus.Name = "cmbStatus";
-            this.cmbStatus.Size = new System.Drawing.Size(172, 38);
+            this.cmbStatus.Size = new System.Drawing.Size(230, 38);
             this.cmbStatus.StartIndex = 0;
             this.cmbStatus.TabIndex = 3;
             // 
@@ -99,7 +99,7 @@ namespace HospitalX.GUI.PH2.BacSi
             "Tất cả cấp",
             "Cơ sở y tế",
             "Khoa"});
-            this.cmbLevel.Location = new System.Drawing.Point(690, 28);
+            this.cmbLevel.Location = new System.Drawing.Point(632, 28);
             this.cmbLevel.Name = "cmbLevel";
             this.cmbLevel.Size = new System.Drawing.Size(172, 38);
             this.cmbLevel.StartIndex = 0;
@@ -124,7 +124,7 @@ namespace HospitalX.GUI.PH2.BacSi
             "7 ngày gần đây",
             "Hôm nay",
             "Tất cả"});
-            this.cmbDateRange.Location = new System.Drawing.Point(502, 28);
+            this.cmbDateRange.Location = new System.Drawing.Point(444, 28);
             this.cmbDateRange.Name = "cmbDateRange";
             this.cmbDateRange.Size = new System.Drawing.Size(172, 38);
             this.cmbDateRange.StartIndex = 0;
@@ -151,7 +151,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.txtSearch.PlaceholderText = "Tìm theo tiêu đề, nội dung, địa điểm...";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(452, 38);
+            this.txtSearch.Size = new System.Drawing.Size(256, 38);
             this.txtSearch.TabIndex = 0;
             // 
             // flpNotificationList

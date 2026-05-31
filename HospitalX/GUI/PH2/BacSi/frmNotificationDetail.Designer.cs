@@ -51,7 +51,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.pnlHeader.Location = new System.Drawing.Point(18, 16);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(784, 140);
+            this.pnlHeader.Size = new System.Drawing.Size(844, 140);
             this.pnlHeader.TabIndex = 0;
             // 
             // btnClose
@@ -62,7 +62,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnClose.FillColor = System.Drawing.Color.Transparent;
             this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnClose.IconColor = System.Drawing.Color.White;
-            this.btnClose.Location = new System.Drawing.Point(736, 12);
+            this.btnClose.Location = new System.Drawing.Point(796, 12);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(34, 30);
             this.btnClose.TabIndex = 3;
@@ -83,7 +83,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.lblLevel.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
             this.lblLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblLevel.Location = new System.Drawing.Point(30, 18);
+            this.lblLevel.Location = new System.Drawing.Point(30, 17);
             this.lblLevel.Name = "lblLevel";
             this.lblLevel.Size = new System.Drawing.Size(120, 26);
             this.lblLevel.TabIndex = 0;
@@ -93,11 +93,11 @@ namespace HospitalX.GUI.PH2.BacSi
             // lblTitle
             // 
             this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.Location = new System.Drawing.Point(28, 52);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(680, 42);
+            this.lblTitle.Size = new System.Drawing.Size(680, 44);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "Chi tiết thông báo";
             // 
@@ -116,7 +116,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlBody.FillColor = System.Drawing.Color.White;
             this.pnlBody.Location = new System.Drawing.Point(18, 174);
             this.pnlBody.Name = "pnlBody";
-            this.pnlBody.Size = new System.Drawing.Size(784, 420);
+            this.pnlBody.Size = new System.Drawing.Size(844, 483);
             this.pnlBody.TabIndex = 1;
             // 
             // btnMarkRead
@@ -124,12 +124,12 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnMarkRead.BorderRadius = 8;
             this.btnMarkRead.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMarkRead.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnMarkRead.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnMarkRead.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMarkRead.ForeColor = System.Drawing.Color.White;
             this.btnMarkRead.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnMarkRead.Location = new System.Drawing.Point(592, 360);
+            this.btnMarkRead.Location = new System.Drawing.Point(549, 415);
             this.btnMarkRead.Name = "btnMarkRead";
-            this.btnMarkRead.Size = new System.Drawing.Size(150, 38);
+            this.btnMarkRead.Size = new System.Drawing.Size(240, 37);
             this.btnMarkRead.TabIndex = 6;
             this.btnMarkRead.Text = "Đánh dấu đã đọc";
             this.btnMarkRead.Click += new System.EventHandler(this.btnMarkRead_Click);
@@ -143,21 +143,24 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtContent.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             this.txtContent.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtContent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.txtContent.Location = new System.Drawing.Point(34, 152);
+            this.txtContent.Location = new System.Drawing.Point(34, 205);
             this.txtContent.Multiline = true;
             this.txtContent.Name = "txtContent";
+            this.txtContent.PlaceholderText = "";
             this.txtContent.ReadOnly = true;
             this.txtContent.SelectedText = "";
-            this.txtContent.Size = new System.Drawing.Size(708, 190);
+            this.txtContent.Size = new System.Drawing.Size(755, 190);
             this.txtContent.TabIndex = 5;
             // 
             // lblContentTitle
             // 
+            this.lblContentTitle.AutoSize = true;
+            this.lblContentTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblContentTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
             this.lblContentTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblContentTitle.Location = new System.Drawing.Point(34, 126);
+            this.lblContentTitle.Location = new System.Drawing.Point(34, 171);
             this.lblContentTitle.Name = "lblContentTitle";
-            this.lblContentTitle.Size = new System.Drawing.Size(180, 20);
+            this.lblContentTitle.Size = new System.Drawing.Size(142, 15);
             this.lblContentTitle.TabIndex = 4;
             this.lblContentTitle.Text = "NỘI DUNG THÔNG BÁO";
             // 
@@ -166,7 +169,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblLocationValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             this.lblLocationValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblLocationValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblLocationValue.Location = new System.Drawing.Point(292, 62);
+            this.lblLocationValue.Location = new System.Drawing.Point(291, 73);
             this.lblLocationValue.Name = "lblLocationValue";
             this.lblLocationValue.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.lblLocationValue.Size = new System.Drawing.Size(450, 38);
@@ -176,6 +179,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // lblLocationTitle
             // 
+            this.lblLocationTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblLocationTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
             this.lblLocationTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblLocationTitle.Location = new System.Drawing.Point(292, 36);
@@ -189,7 +193,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblTimeValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             this.lblTimeValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTimeValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTimeValue.Location = new System.Drawing.Point(34, 62);
+            this.lblTimeValue.Location = new System.Drawing.Point(33, 73);
             this.lblTimeValue.Name = "lblTimeValue";
             this.lblTimeValue.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.lblTimeValue.Size = new System.Drawing.Size(220, 38);
@@ -199,6 +203,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // lblTimeTitle
             // 
+            this.lblTimeTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblTimeTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
             this.lblTimeTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblTimeTitle.Location = new System.Drawing.Point(34, 36);
@@ -212,7 +217,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(820, 614);
+            this.ClientSize = new System.Drawing.Size(889, 683);
             this.Controls.Add(this.pnlBody);
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -222,6 +227,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.Text = "Chi tiết thông báo";
             this.pnlHeader.ResumeLayout(false);
             this.pnlBody.ResumeLayout(false);
+            this.pnlBody.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -210,7 +210,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 BorderThickness = 1,
                 FillColor = record.IsRead ? Color.FromArgb(247, 249, 248) : Color.White,
                 Margin = new Padding(0, 0, 0, 12),
-                Size = new Size(cardWidth, 132),
+                Size = new Size(cardWidth, 140),
                 Tag = record
             };
             card.ShadowDecoration.Enabled = !record.IsRead;
@@ -236,7 +236,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 Font = new Font("Segoe UI", 12F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(24, 48, 42),
                 Location = new Point(150, 16),
-                Size = new Size(cardWidth - 330, 28),
+                Size = new Size(cardWidth - 330, 35),
                 Text = record.Title
             };
             var lblMeta = new Label
@@ -244,8 +244,8 @@ namespace HospitalX.GUI.PH2.BacSi
                 AutoEllipsis = true,
                 Font = new Font("Segoe UI", 9F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(122, 149, 137),
-                Location = new Point(150, 46),
-                Size = new Size(cardWidth - 330, 22),
+                Location = new Point(150, 52),
+                Size = new Size(cardWidth - 330, 30),
                 Text = string.Format("{0} · {1:HH:mm dd/MM/yyyy} · {2}", record.Sender, record.Time, record.Location)
             };
             var lblBody = new Label
@@ -253,21 +253,13 @@ namespace HospitalX.GUI.PH2.BacSi
                 AutoEllipsis = true,
                 Font = new Font("Segoe UI", 9F),
                 ForeColor = Color.FromArgb(61, 82, 73),
-                Location = new Point(24, 78),
-                Size = new Size(cardWidth - 210, 34),
+                Location = new Point(24, 90),
+                Size = new Size(cardWidth - 210, 35),
                 Text = record.Content
             };
-            var lblUnread = new Label
-            {
-                BackColor = Color.FromArgb(15, 110, 86),
-                Location = new Point(cardWidth - 166, 24),
-                Size = new Size(9, 9),
-                Visible = !record.IsRead,
-                Anchor = AnchorStyles.Top | AnchorStyles.Right
-            };
             var btnDetail = CreateActionButton("Xem chi tiết", Color.FromArgb(15, 110, 86), Color.White);
-            btnDetail.Location = new Point(cardWidth - 142, 72);
-            btnDetail.Size = new Size(116, 36);
+            btnDetail.Location = new Point(cardWidth - 166, 72);
+            btnDetail.Size = new Size(134, 36);
             btnDetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDetail.Click += (s, e) => OpenNotificationDetail(record);
 
@@ -276,7 +268,6 @@ namespace HospitalX.GUI.PH2.BacSi
             card.Controls.Add(lblTitle);
             card.Controls.Add(lblMeta);
             card.Controls.Add(lblBody);
-            card.Controls.Add(lblUnread);
             card.Controls.Add(btnDetail);
             return card;
         }
