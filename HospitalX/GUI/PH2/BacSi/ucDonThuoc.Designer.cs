@@ -15,6 +15,7 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucDonThuoc));
             this.pnlToolbar = new Guna.UI2.WinForms.Guna2Panel();
             this.lblResultCount = new System.Windows.Forms.Label();
             this.cmbSort = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -164,6 +165,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
             this.txtSearch.IconLeftOffset = new System.Drawing.Point(10, 0);
             this.txtSearch.IconLeftSize = new System.Drawing.Size(18, 18);
             this.txtSearch.Location = new System.Drawing.Point(24, 26);

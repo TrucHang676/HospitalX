@@ -21,7 +21,7 @@ namespace HospitalX.GUI.PH2
             btnHSBA.Click += BtnHSBA_Click;
             btnBN.Click += BtnBN_Click;
             btnDT.Click += BtnDT_Click;
-            btnThongBao.Click += (s, e) => SetPageTitle("Thông báo");
+            btnThongBao.Click += BtnThongBao_Click;
             btnHSCN.Click += BtnHSCN_Click;
         }
 
@@ -43,6 +43,11 @@ namespace HospitalX.GUI.PH2
         private void BtnDT_Click(object sender, EventArgs e)
         {
             LoadPage(new ucDonThuoc(), "Đơn thuốc");
+        }
+
+        private void BtnThongBao_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucThongBao(), "Thông báo");
         }
 
         private void BtnHSCN_Click(object sender, EventArgs e)
