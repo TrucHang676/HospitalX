@@ -18,6 +18,9 @@ namespace HospitalX.GUI.PH2
             ApplySidebarIcons();
             WireNavigationEvents();
             Load += Main_DPV_Load;
+
+            // Set minimum size to prevent squishing dashboard layout
+            this.MinimumSize = new Size(1300, 720);
         }
 
         private void Main_DPV_Load(object sender, EventArgs e)
@@ -80,14 +83,16 @@ namespace HospitalX.GUI.PH2
             btnHoSoCaNhan.Location = new Point(btnHoSoCaNhan.Left, btnThongBaoNoiBo.Bottom + 7);
 
             StyleAvatarAndVpdBadge();
+
+
+
+            AddTopbarControls();
         }
 
         private void ApplyHeaderStyle()
         {
-            lblPageTitle.AutoSize = false;
-            lblPageTitle.Size = new Size(220, 44);
+            lblPageTitle.AutoSize = true;
             lblPageTitle.Location = new Point(24, 10);
-            lblPageTitle.TextAlign = ContentAlignment.MiddleLeft;
 
             lblBreadcrumb.AutoSize = true;
             lblBreadcrumb.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
@@ -134,7 +139,7 @@ namespace HospitalX.GUI.PH2
         private void WireNavigationEvents()
         {
             btnDashboard.Click += (s, e) => NavigateToDashboard();
-            btnDanhSachBN.Click += (s, e) => ShowComingSoon(btnDanhSachBN, "Danh sách bệnh nhân");
+            btnDanhSachBN.Click += (s, e) => NavigateToDanhSachBN();
             btnThemSuaBN.Click += (s, e) => ShowComingSoon(btnThemSuaBN, "Thêm / Sửa bệnh nhân");
             btnTaoHSBA.Click += (s, e) => ShowComingSoon(btnTaoHSBA, "Tạo hồ sơ bệnh án");
             btnDieuPhoiKTV.Click += (s, e) => ShowComingSoon(btnDieuPhoiKTV, "Điều phối kỹ thuật viên");
@@ -149,6 +154,24 @@ namespace HospitalX.GUI.PH2
             btnDashboard.Checked = true;
         }
 
+        private void NavigateToDanhSachBN()
+        {
+            LoadPage(new ucDanhSachBN(), "Danh sách bệnh nhân", "/ BỆNH NHÂN");
+            btnDanhSachBN.Checked = true;
+        }
+
+        /// <summary>Navigate to "Thêm / Sửa bệnh nhân" tab. Called from child user controls.</summary>
+        public void NavigateToThemSuaBN()
+        {
+            ShowComingSoon(btnThemSuaBN, "Thêm / Sửa bệnh nhân");
+        }
+
+        /// <summary>Navigate to "Tạo hồ sơ bệnh án" tab. Called from child user controls.</summary>
+        public void NavigateToTaoHSBA()
+        {
+            ShowComingSoon(btnTaoHSBA, "Tạo hồ sơ bệnh án");
+        }
+
         private void LoadPage(UserControl control, string title, string breadcrumb)
         {
             var old = pnlContent.Controls.Count > 0 ? pnlContent.Controls[0] : null;
@@ -159,6 +182,11 @@ namespace HospitalX.GUI.PH2
             lblPageTitle.Text = title;
             lblBreadcrumb.Text = breadcrumb;
             RefreshHeaderLayout();
+
+            // Hide action buttons on the Patient List page (ucDanhSachBN)
+            if (btnThemBN != null) btnThemBN.Visible = false;
+            if (btnNotif != null) btnNotif.Visible = false;
+            if (btnProfile != null) btnProfile.Visible = false;
         }
 
         private void ShowComingSoon(Guna2Button activeMenu, string feature)
@@ -168,7 +196,7 @@ namespace HospitalX.GUI.PH2
             guna2MessageDialog1.Parent = this;
             guna2MessageDialog1.Icon = MessageDialogIcon.Information;
             guna2MessageDialog1.Buttons = MessageDialogButtons.OK;
-            guna2MessageDialog1.Caption = "MedSys HIS";
+            guna2MessageDialog1.Caption = "Bệnh viện X";
             guna2MessageDialog1.Show($"Chức năng \"{feature}\" đang được phát triển.", "Thông báo");
 
             LoadPage(new ucTrangChu(), "Trang chủ", "/ Dashboard");
@@ -288,6 +316,72 @@ namespace HospitalX.GUI.PH2
                 TextRenderer.DrawText(e.Graphics, lbl.Text, lbl.Font, lbl.ClientRectangle, textColor,
                     TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
             };
+        }
+
+        private Guna2Button btnThemBN;
+        private Guna2Button btnNotif;
+        private Guna2Button btnProfile;
+
+        private void AddTopbarControls()
+        {
+            // Profile button
+            btnProfile = new Guna2Button();
+            btnProfile.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnProfile.Size = new Size(38, 38);
+            btnProfile.Location = new Point(btnExit.Left - 10 - 38, (pnlTopbar.Height - 38) / 2);
+            btnProfile.BorderRadius = 8;
+            btnProfile.BorderColor = Color.FromArgb(216, 232, 227); // #D8E8E3
+            btnProfile.BorderThickness = 1;
+            btnProfile.FillColor = Color.Transparent;
+            btnProfile.Image = DpvAssets.Load("user.png");
+            btnProfile.ImageSize = new Size(18, 18);
+            btnProfile.HoverState.FillColor = Color.FromArgb(230, 244, 240);
+            btnProfile.Cursor = Cursors.Hand;
+            btnProfile.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
+
+            // Notification button
+            btnNotif = new Guna2Button();
+            btnNotif.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNotif.Size = new Size(38, 38);
+            btnNotif.Location = new Point(btnProfile.Left - 10 - 38, (pnlTopbar.Height - 38) / 2);
+            btnNotif.BorderRadius = 8;
+            btnNotif.BorderColor = Color.FromArgb(216, 232, 227);
+            btnNotif.BorderThickness = 1;
+            btnNotif.FillColor = Color.Transparent;
+            btnNotif.Image = DpvAssets.Load("notification.png");
+            btnNotif.ImageSize = new Size(18, 18);
+            btnNotif.HoverState.FillColor = Color.FromArgb(230, 244, 240);
+            btnNotif.Cursor = Cursors.Hand;
+            btnNotif.Click += (s, e) => ShowComingSoon(btnThongBaoNoiBo, "Thông báo nội bộ");
+
+            // Paint red notification dot on btnNotif
+            btnNotif.Paint += (s, e) =>
+            {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                Color dotColor = Color.FromArgb(224, 92, 58); // #E05C3A
+                using (var brush = new SolidBrush(dotColor))
+                {
+                    e.Graphics.FillEllipse(brush, btnNotif.Width - 12, 6, 6, 6);
+                }
+            };
+
+            // Add patient button
+            btnThemBN = new Guna2Button();
+            btnThemBN.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnThemBN.Size = new Size(160, 38);
+            btnThemBN.Location = new Point(btnNotif.Left - 12 - 160, (pnlTopbar.Height - 38) / 2);
+            btnThemBN.BorderRadius = 8;
+            btnThemBN.FillColor = Color.FromArgb(15, 110, 86); // var(--teal)
+            btnThemBN.HoverState.FillColor = Color.FromArgb(10, 82, 64);
+            btnThemBN.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnThemBN.ForeColor = Color.White;
+            btnThemBN.Text = "+ Thêm bệnh nhân";
+            btnThemBN.Cursor = Cursors.Hand;
+            btnThemBN.Click += (s, e) => ShowComingSoon(btnThemSuaBN, "Thêm / Sửa bệnh nhân");
+
+            pnlTopbar.Controls.Add(btnProfile);
+            pnlTopbar.Controls.Add(btnNotif);
+            pnlTopbar.Controls.Add(btnThemBN);
         }
 
         private static System.Drawing.Drawing2D.GraphicsPath GetRoundedPath(Rectangle rect, int radius)

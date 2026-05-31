@@ -68,7 +68,7 @@ namespace HospitalX.GUI.PH2
             // guna2MessageDialog1
             // 
             this.guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-            this.guna2MessageDialog1.Caption = "MedSys HIS";
+            this.guna2MessageDialog1.Caption = "Bệnh viện X";
             this.guna2MessageDialog1.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
             this.guna2MessageDialog1.Parent = this;
             this.guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
@@ -562,7 +562,7 @@ namespace HospitalX.GUI.PH2
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Main_DPV";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "MedSys HIS - Điều phối viên";
+            this.Text = "Bệnh viện X - Điều phối viên";
             this.pnlSidebar.ResumeLayout(false);
             this.pnlSidebar.PerformLayout();
             this.pnlProfile.ResumeLayout(false);
