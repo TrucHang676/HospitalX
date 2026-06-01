@@ -152,7 +152,7 @@ namespace HospitalX.GUI.PH2
             btnTaoHSBA.Click += (s, e) => NavigateToTaoHSBA();
             btnDieuPhoiKTV.Click += (s, e) => NavigateToDieuPhoiKTV();
             btnThongBaoNoiBo.Click += (s, e) => ShowComingSoon(btnThongBaoNoiBo, "Thông báo nội bộ");
-            btnHoSoCaNhan.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
+            btnHoSoCaNhan.Click += (s, e) => NavigateToHoSoCaNhan();
             btnLogout.Click += BtnLogout_Click;
         }
 
@@ -191,6 +191,12 @@ namespace HospitalX.GUI.PH2
         {
             LoadPage(new ucDieuPhoiKTV(), "Điều phối kỹ thuật viên", "/ HSBA_DV");
             btnDieuPhoiKTV.Checked = true;
+        }
+
+        public void NavigateToHoSoCaNhan()
+        {
+            LoadPage(new ucHoSoCaNhan(), "Hồ sơ cá nhân", "/ Cá nhân");
+            btnHoSoCaNhan.Checked = true;
         }
 
         private void LoadPage(UserControl control, string title, string breadcrumb)
@@ -303,7 +309,7 @@ namespace HospitalX.GUI.PH2
             btnProfile.ImageSize = new Size(18, 18);
             btnProfile.HoverState.FillColor = Color.FromArgb(230, 244, 240);
             btnProfile.Cursor = Cursors.Hand;
-            btnProfile.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
+            btnProfile.Click += (s, e) => NavigateToHoSoCaNhan();
 
             // Notification button
             btnNotif = new Guna2Button();
