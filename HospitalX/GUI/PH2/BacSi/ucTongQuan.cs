@@ -45,11 +45,11 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            dgvRecentHsba.Rows.Add("HSBA-0821", "Trà Văn Sỹ\nBN-00341 · Nam, 21 tuổi", "23/05/2026\nHôm nay", "Đang điều trị", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0819", "Lê Thị Bích\nBN-00298 · Nữ, 38 tuổi", "20/05/2026\nHôm qua", "Chờ kết quả", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0815", "Phạm Quốc Hùng\nBN-00215 · Nam, 67 tuổi", "18/05/2026\n3 ngày trước", "Chờ kết quả", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0801", "Trần Thị Mai\nBN-00189 · Nữ, 45 tuổi", "12/05/2026\n9 ngày trước", "Hoàn thành", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0799", "Võ Minh Tuấn\nBN-00174 · Nam, 29 tuổi", "10/05/2026\n11 ngày trước", "Hoàn thành", "Xem");
+            dgvRecentHsba.Rows.Add("HSBA-0821", "Trà Văn Sỹ\nBN-00341 · Nam, 21 tuổi", "23/05/2026\nHôm nay", "Xem");
+            dgvRecentHsba.Rows.Add("HSBA-0819", "Lê Thị Bích\nBN-00298 · Nữ, 38 tuổi", "20/05/2026\nHôm qua", "Xem");
+            dgvRecentHsba.Rows.Add("HSBA-0815", "Phạm Quốc Hùng\nBN-00215 · Nam, 67 tuổi", "18/05/2026\n3 ngày trước", "Xem");
+            dgvRecentHsba.Rows.Add("HSBA-0801", "Trần Thị Mai\nBN-00189 · Nữ, 45 tuổi", "12/05/2026\n9 ngày trước", "Xem");
+            dgvRecentHsba.Rows.Add("HSBA-0799", "Võ Minh Tuấn\nBN-00174 · Nam, 29 tuổi", "10/05/2026\n11 ngày trước", "Xem");
             dgvRecentHsba.ClearSelection();
             dgvRecentHsba.CurrentCell = null;
             dgvRecentHsba.MouseMove -= dgvRecentHsba_MouseMove;
@@ -82,42 +82,11 @@ namespace HospitalX.GUI.PH2.BacSi
             if (e.ColumnIndex == dgvRecentHsba.Columns["colPatient"].Index || e.ColumnIndex == dgvRecentHsba.Columns["colDate"].Index)
             {
                 string[] lines = value.Split('\n');
-                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 10F, FontStyle.Bold), new Rectangle(cell.X + 14, cell.Y + 8, cell.Width - 20, 40), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 10F, FontStyle.Bold), new Rectangle(cell.X + 14, cell.Y + 3, cell.Width - 20, 40), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 if (lines.Length > 1)
                 {
-                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(cell.X + 14, cell.Y + 45, cell.Width - 20, 30), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(cell.X + 14, cell.Y + 40, cell.Width - 20, 30), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 }
-                e.Handled = true;
-                return;
-            }
-
-            if (e.ColumnIndex == dgvRecentHsba.Columns["colStatus"].Index)
-            {
-                Color back = Color.FromArgb(238, 242, 240);
-                Color fore = Color.FromArgb(122, 149, 137);
-                Color dot = Color.FromArgb(196, 208, 203);
-
-                if (value == "Đang điều trị")
-                {
-                    back = Color.FromArgb(230, 244, 240);
-                    fore = Color.FromArgb(15, 110, 86);
-                    dot = Color.FromArgb(15, 110, 86);
-                }
-                else if (value == "Chờ kết quả")
-                {
-                    back = Color.FromArgb(255, 244, 220);
-                    fore = Color.FromArgb(154, 98, 0);
-                    dot = Color.FromArgb(232, 168, 56);
-                }
-
-                int pillWidth = Math.Min(cell.Width - 36, 168);
-                Rectangle pill = new Rectangle(cell.X + 18, cell.Y + 20, pillWidth, 30);
-                FillRound(e.Graphics, pill, 13, back);
-                using (SolidBrush brush = new SolidBrush(dot))
-                {
-                    e.Graphics.FillEllipse(brush, pill.X + 12, pill.Y + 11, 7, 7);
-                }
-                TextRenderer.DrawText(e.Graphics, value, new Font("Segoe UI", 8.8F, FontStyle.Bold), new Rectangle(pill.X + 25, pill.Y, pill.Width - 28, pill.Height), fore, TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 e.Handled = true;
                 return;
             }

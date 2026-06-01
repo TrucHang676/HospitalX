@@ -190,6 +190,13 @@
     <Compile Include="GUI\PH2\BenhNhan\Main_BN.Designer.cs">
       <DependentUpon>Main_BN.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\PatientMedicalRecord.cs" />
+    <Compile Include="GUI\PH2\BenhNhan\frmBenhAnDetailBN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmBenhAnDetailBN.Designer.cs">
+      <DependentUpon>frmBenhAnDetailBN.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\BenhNhan\ucBenhAnBN.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -427,6 +434,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BenhNhan\Main_BN.resx">
       <DependentUpon>Main_BN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\frmBenhAnDetailBN.resx">
+      <DependentUpon>frmBenhAnDetailBN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BenhNhan\ucBenhAnBN.resx">
       <DependentUpon>ucBenhAnBN.cs</DependentUpon>
