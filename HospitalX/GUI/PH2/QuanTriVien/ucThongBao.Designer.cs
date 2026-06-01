@@ -17,19 +17,16 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlRoot = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
             this.flowSent = new System.Windows.Forms.FlowLayoutPanel();
-            this.dgvSent = new System.Windows.Forms.DataGridView();
             this.pnlHistoryHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.lblHistoryCount = new System.Windows.Forms.Label();
             this.lblHistoryTitle = new System.Windows.Forms.Label();
             this.pnlLeft = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlLabels = new Guna.UI2.WinForms.Guna2Panel();
-            this.flowLabels = new System.Windows.Forms.FlowLayoutPanel();
             this.btnSend = new Guna.UI2.WinForms.Guna2Button();
+            this.flowLabels = new System.Windows.Forms.FlowLayoutPanel();
             this.chkT7 = new Guna.UI2.WinForms.Guna2CheckBox();
             this.chkT6 = new Guna.UI2.WinForms.Guna2CheckBox();
             this.chkT5 = new Guna.UI2.WinForms.Guna2CheckBox();
@@ -51,13 +48,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblContent = new System.Windows.Forms.Label();
             this.lblComposeTitle = new System.Windows.Forms.Label();
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
-            this.colSentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSentContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSentLabels = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSentPriority = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlRoot.SuspendLayout();
             this.pnlHistory.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSent)).BeginInit();
             this.pnlHistoryHeader.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlLabels.SuspendLayout();
@@ -85,7 +77,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlHistory.BorderRadius = 8;
             this.pnlHistory.BorderThickness = 1;
             this.pnlHistory.Controls.Add(this.flowSent);
-            this.pnlHistory.Controls.Add(this.dgvSent);
             this.pnlHistory.Controls.Add(this.pnlHistoryHeader);
             this.pnlHistory.FillColor = System.Drawing.Color.White;
             this.pnlHistory.Location = new System.Drawing.Point(477, 35);
@@ -107,50 +98,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.flowSent.Size = new System.Drawing.Size(592, 574);
             this.flowSent.TabIndex = 2;
             this.flowSent.WrapContents = false;
-            // 
-            // dgvSent
-            // 
-            this.dgvSent.AllowUserToAddRows = false;
-            this.dgvSent.AllowUserToDeleteRows = false;
-            this.dgvSent.AllowUserToResizeRows = false;
-            this.dgvSent.BackgroundColor = System.Drawing.Color.White;
-            this.dgvSent.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvSent.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.dgvSent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvSent.ColumnHeadersHeight = 38;
-            this.dgvSent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colSentTime,
-            this.colSentContent,
-            this.colSentLabels,
-            this.colSentPriority});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvSent.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvSent.EnableHeadersVisualStyles = false;
-            this.dgvSent.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
-            this.dgvSent.Location = new System.Drawing.Point(3, 62);
-            this.dgvSent.MultiSelect = false;
-            this.dgvSent.Name = "dgvSent";
-            this.dgvSent.ReadOnly = true;
-            this.dgvSent.RowHeadersVisible = false;
-            this.dgvSent.RowTemplate.Height = 58;
-            this.dgvSent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSent.Size = new System.Drawing.Size(622, 613);
-            this.dgvSent.TabIndex = 1;
-            this.dgvSent.Visible = false;
             // 
             // pnlHistoryHeader
             // 
@@ -225,14 +172,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLabels.Size = new System.Drawing.Size(444, 348);
             this.pnlLabels.TabIndex = 1;
             // 
-            // flowLabels
-            // 
-            this.flowLabels.BackColor = System.Drawing.Color.White;
-            this.flowLabels.Location = new System.Drawing.Point(20, 62);
-            this.flowLabels.Name = "flowLabels";
-            this.flowLabels.Size = new System.Drawing.Size(400, 218);
-            this.flowLabels.TabIndex = 11;
-            // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
@@ -251,6 +190,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.btnSend.TabIndex = 10;
             this.btnSend.Text = "Gửi thông báo qua OLS";
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // flowLabels
+            // 
+            this.flowLabels.BackColor = System.Drawing.Color.White;
+            this.flowLabels.Location = new System.Drawing.Point(20, 62);
+            this.flowLabels.Name = "flowLabels";
+            this.flowLabels.Size = new System.Drawing.Size(400, 218);
+            this.flowLabels.TabIndex = 11;
             // 
             // chkT7
             // 
@@ -617,34 +564,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.msgDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
             this.msgDialog.Text = null;
             // 
-            // colSentTime
-            // 
-            this.colSentTime.HeaderText = "Thời gian";
-            this.colSentTime.Name = "colSentTime";
-            this.colSentTime.ReadOnly = true;
-            this.colSentTime.Width = 150;
-            // 
-            // colSentContent
-            // 
-            this.colSentContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSentContent.HeaderText = "Nội dung";
-            this.colSentContent.Name = "colSentContent";
-            this.colSentContent.ReadOnly = true;
-            // 
-            // colSentLabels
-            // 
-            this.colSentLabels.HeaderText = "Nhãn";
-            this.colSentLabels.Name = "colSentLabels";
-            this.colSentLabels.ReadOnly = true;
-            this.colSentLabels.Width = 90;
-            // 
-            // colSentPriority
-            // 
-            this.colSentPriority.HeaderText = "Ưu tiên";
-            this.colSentPriority.Name = "colSentPriority";
-            this.colSentPriority.ReadOnly = true;
-            this.colSentPriority.Width = 120;
-            // 
             // ucThongBao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -656,7 +575,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.Load += new System.EventHandler(this.ucThongBao_Load);
             this.pnlRoot.ResumeLayout(false);
             this.pnlHistory.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSent)).EndInit();
             this.pnlHistoryHeader.ResumeLayout(false);
             this.pnlHistoryHeader.PerformLayout();
             this.pnlLeft.ResumeLayout(false);
@@ -697,14 +615,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private System.Windows.Forms.Label lblLabelsTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlHistory;
         private System.Windows.Forms.FlowLayoutPanel flowSent;
-        private System.Windows.Forms.DataGridView dgvSent;
         private Guna.UI2.WinForms.Guna2Panel pnlHistoryHeader;
         private System.Windows.Forms.Label lblHistoryCount;
         private System.Windows.Forms.Label lblHistoryTitle;
         private Guna.UI2.WinForms.Guna2MessageDialog msgDialog;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentLabels;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentPriority;
     }
 }
