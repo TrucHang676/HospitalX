@@ -117,7 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="guna2BorderlessForm1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SidebarDashboardNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\layout (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarDashboardActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\layout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarDichVuNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\examination.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarDichVuActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\examination (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarKetQuaNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\medical-record (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarKetQuaActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\medical-record.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarHoSoNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\user (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarHoSoActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\user (2).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarThongBaoNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\notification.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SidebarThongBaoActive" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\image\notification (1).png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
+

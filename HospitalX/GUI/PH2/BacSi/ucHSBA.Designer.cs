@@ -36,9 +36,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpTo = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.dtpFrom = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.cmbDateRange = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.flpHsbaList = new System.Windows.Forms.FlowLayoutPanel();
             this.ttpHsba = new System.Windows.Forms.ToolTip(this.components);
-            this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.pnlToolbar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -161,21 +161,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.cmbDateRange.StartIndex = 0;
             this.cmbDateRange.TabIndex = 3;
             // 
-            // flpHsbaList
-            // 
-            this.flpHsbaList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.flpHsbaList.AutoScroll = true;
-            this.flpHsbaList.BackColor = System.Drawing.Color.Transparent;
-            this.flpHsbaList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpHsbaList.Location = new System.Drawing.Point(24, 162);
-            this.flpHsbaList.Name = "flpHsbaList";
-            this.flpHsbaList.Padding = new System.Windows.Forms.Padding(0, 0, 8, 16);
-            this.flpHsbaList.Size = new System.Drawing.Size(1080, 596);
-            this.flpHsbaList.TabIndex = 1;
-            this.flpHsbaList.WrapContents = false;
-            // 
             // txtSearch
             // 
             this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
@@ -202,9 +187,24 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtSearch.Size = new System.Drawing.Size(406, 38);
             this.txtSearch.TabIndex = 2;
             // 
+            // flpHsbaList
+            // 
+            this.flpHsbaList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flpHsbaList.AutoScroll = true;
+            this.flpHsbaList.BackColor = System.Drawing.Color.Transparent;
+            this.flpHsbaList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpHsbaList.Location = new System.Drawing.Point(24, 162);
+            this.flpHsbaList.Name = "flpHsbaList";
+            this.flpHsbaList.Padding = new System.Windows.Forms.Padding(0, 0, 8, 16);
+            this.flpHsbaList.Size = new System.Drawing.Size(1080, 596);
+            this.flpHsbaList.TabIndex = 1;
+            this.flpHsbaList.WrapContents = false;
+            // 
             // ucHSBA
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.Controls.Add(this.flpHsbaList);

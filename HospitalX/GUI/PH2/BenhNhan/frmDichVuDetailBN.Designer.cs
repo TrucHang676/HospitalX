@@ -83,7 +83,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblCode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
             this.lblCode.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
             this.lblCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblCode.Location = new System.Drawing.Point(570, 48);
+            this.lblCode.Location = new System.Drawing.Point(598, 68);
             this.lblCode.Name = "lblCode";
             this.lblCode.Size = new System.Drawing.Size(130, 34);
             this.lblCode.TabIndex = 1;
@@ -96,9 +96,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(28, 30);
+            this.lblTitle.Location = new System.Drawing.Point(29, 21);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(252, 41);
+            this.lblTitle.Size = new System.Drawing.Size(231, 41);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Chi tiết dịch vụ";
             // 
@@ -123,66 +123,127 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlBody.Size = new System.Drawing.Size(752, 270);
             this.pnlBody.TabIndex = 1;
             // 
-            // fields
+            // txtResult
             // 
-            this.lblHsba.AutoSize = true;
-            this.lblHsba.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblHsba.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblHsba.Location = new System.Drawing.Point(28, 26);
-            this.lblHsba.Text = "HỒ SƠ BỆNH ÁN";
-            this.lblHsbaValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
-            this.lblHsbaValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
-            this.lblHsbaValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblHsbaValue.Location = new System.Drawing.Point(26, 48);
-            this.lblHsbaValue.Size = new System.Drawing.Size(158, 32);
-            this.lblHsbaValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblService.AutoSize = true;
-            this.lblService.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblService.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblService.Location = new System.Drawing.Point(212, 26);
-            this.lblService.Text = "LOẠI DỊCH VỤ";
-            this.lblServiceValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblServiceValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblServiceValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblServiceValue.Location = new System.Drawing.Point(210, 48);
-            this.lblServiceValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblServiceValue.Size = new System.Drawing.Size(500, 32);
-            this.lblDate.AutoSize = true;
-            this.lblDate.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblDate.Location = new System.Drawing.Point(28, 104);
-            this.lblDate.Text = "NGÀY DỊCH VỤ";
-            this.lblDateValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblDateValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
-            this.lblDateValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblDateValue.Location = new System.Drawing.Point(26, 126);
-            this.lblDateValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblDateValue.Size = new System.Drawing.Size(158, 32);
-            this.lblTechnician.AutoSize = true;
-            this.lblTechnician.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblTechnician.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblTechnician.Location = new System.Drawing.Point(212, 104);
-            this.lblTechnician.Text = "KỸ THUẬT VIÊN";
-            this.lblTechnicianValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblTechnicianValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTechnicianValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblTechnicianValue.Location = new System.Drawing.Point(210, 126);
-            this.lblTechnicianValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblTechnicianValue.Size = new System.Drawing.Size(158, 32);
-            this.lblResult.AutoSize = true;
-            this.lblResult.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblResult.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblResult.Location = new System.Drawing.Point(28, 182);
-            this.lblResult.Text = "KẾT QUẢ";
             this.txtResult.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
             this.txtResult.BorderRadius = 6;
+            this.txtResult.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtResult.DefaultText = "";
             this.txtResult.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
             this.txtResult.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtResult.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.txtResult.Location = new System.Drawing.Point(26, 204);
             this.txtResult.Multiline = true;
+            this.txtResult.Name = "txtResult";
+            this.txtResult.PlaceholderText = "";
             this.txtResult.ReadOnly = true;
+            this.txtResult.SelectedText = "";
             this.txtResult.Size = new System.Drawing.Size(684, 42);
+            this.txtResult.TabIndex = 0;
+            // 
+            // lblResult
+            // 
+            this.lblResult.AutoSize = true;
+            this.lblResult.BackColor = System.Drawing.Color.Transparent;
+            this.lblResult.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblResult.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblResult.Location = new System.Drawing.Point(28, 182);
+            this.lblResult.Name = "lblResult";
+            this.lblResult.Size = new System.Drawing.Size(57, 15);
+            this.lblResult.TabIndex = 1;
+            this.lblResult.Text = "KẾT QUẢ";
+            // 
+            // lblTechnicianValue
+            // 
+            this.lblTechnicianValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.lblTechnicianValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTechnicianValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.lblTechnicianValue.Location = new System.Drawing.Point(210, 126);
+            this.lblTechnicianValue.Name = "lblTechnicianValue";
+            this.lblTechnicianValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
+            this.lblTechnicianValue.Size = new System.Drawing.Size(158, 32);
+            this.lblTechnicianValue.TabIndex = 2;
+            // 
+            // lblTechnician
+            // 
+            this.lblTechnician.AutoSize = true;
+            this.lblTechnician.BackColor = System.Drawing.Color.Transparent;
+            this.lblTechnician.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblTechnician.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblTechnician.Location = new System.Drawing.Point(212, 104);
+            this.lblTechnician.Name = "lblTechnician";
+            this.lblTechnician.Size = new System.Drawing.Size(95, 15);
+            this.lblTechnician.TabIndex = 3;
+            this.lblTechnician.Text = "KỸ THUẬT VIÊN";
+            // 
+            // lblDateValue
+            // 
+            this.lblDateValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.lblDateValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
+            this.lblDateValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.lblDateValue.Location = new System.Drawing.Point(26, 126);
+            this.lblDateValue.Name = "lblDateValue";
+            this.lblDateValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
+            this.lblDateValue.Size = new System.Drawing.Size(158, 32);
+            this.lblDateValue.TabIndex = 4;
+            // 
+            // lblDate
+            // 
+            this.lblDate.AutoSize = true;
+            this.lblDate.BackColor = System.Drawing.Color.Transparent;
+            this.lblDate.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblDate.Location = new System.Drawing.Point(28, 104);
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Size = new System.Drawing.Size(91, 15);
+            this.lblDate.TabIndex = 5;
+            this.lblDate.Text = "NGÀY DỊCH VỤ";
+            // 
+            // lblServiceValue
+            // 
+            this.lblServiceValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.lblServiceValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblServiceValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblServiceValue.Location = new System.Drawing.Point(210, 48);
+            this.lblServiceValue.Name = "lblServiceValue";
+            this.lblServiceValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
+            this.lblServiceValue.Size = new System.Drawing.Size(500, 32);
+            this.lblServiceValue.TabIndex = 6;
+            // 
+            // lblService
+            // 
+            this.lblService.AutoSize = true;
+            this.lblService.BackColor = System.Drawing.Color.Transparent;
+            this.lblService.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblService.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblService.Location = new System.Drawing.Point(212, 26);
+            this.lblService.Name = "lblService";
+            this.lblService.Size = new System.Drawing.Size(86, 15);
+            this.lblService.TabIndex = 7;
+            this.lblService.Text = "LOẠI DỊCH VỤ";
+            // 
+            // lblHsbaValue
+            // 
+            this.lblHsbaValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
+            this.lblHsbaValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
+            this.lblHsbaValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.lblHsbaValue.Location = new System.Drawing.Point(26, 48);
+            this.lblHsbaValue.Name = "lblHsbaValue";
+            this.lblHsbaValue.Size = new System.Drawing.Size(158, 32);
+            this.lblHsbaValue.TabIndex = 8;
+            this.lblHsbaValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblHsba
+            // 
+            this.lblHsba.AutoSize = true;
+            this.lblHsba.BackColor = System.Drawing.Color.Transparent;
+            this.lblHsba.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblHsba.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblHsba.Location = new System.Drawing.Point(28, 26);
+            this.lblHsba.Name = "lblHsba";
+            this.lblHsba.Size = new System.Drawing.Size(99, 15);
+            this.lblHsba.TabIndex = 9;
+            this.lblHsba.Text = "HỒ SƠ BỆNH ÁN";
             // 
             // frmDichVuDetailBN
             // 
@@ -201,6 +262,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlBody.ResumeLayout(false);
             this.pnlBody.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
