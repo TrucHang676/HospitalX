@@ -61,65 +61,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void InitMockData()
         {
-            // Initial 10 patients from HTML template
-            var seed = new List<PatientModel>
-            {
-                new PatientModel { Id = "BN240001", Name = "Nguyễn Văn An", Dob = "15/03/1978", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "24/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079204001234" },
-                new PatientModel { Id = "BN240002", Name = "Phạm Thị Lan", Dob = "22/07/1985", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "24/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079285002345" },
-                new PatientModel { Id = "BN240003", Name = "Hoàng Đức Nam", Dob = "09/11/1990", Gender = "Nam", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "23/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079290003456" },
-                new PatientModel { Id = "BN240004", Name = "Trần Thị Mai", Dob = "30/01/1996", Gender = "Nữ", Khoa = "Sản khoa", Bs = "BS. Võ Thu", Date = "23/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079296004567" },
-                new PatientModel { Id = "BN240005", Name = "Lê Văn Hải", Dob = "12/06/1972", Gender = "Nam", Khoa = "Thần kinh", Bs = "BS. Phạm Sơn", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079272005678" },
-                new PatientModel { Id = "BN240006", Name = "Vũ Thị Bích", Dob = "07/09/2000", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079200006789" },
-                new PatientModel { Id = "BN240007", Name = "Đinh Công Sơn", Dob = "14/04/1965", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "21/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079265007890" },
-                new PatientModel { Id = "BN240008", Name = "Ngô Thị Hằng", Dob = "28/12/1982", Gender = "Nữ", Khoa = "Nhi khoa", Bs = "BS. Hồ Linh", Date = "21/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079282008901" },
-                new PatientModel { Id = "BN240009", Name = "Lương Minh Châu", Dob = "05/02/1958", Gender = "Nam", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "20/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079258009012" },
-                new PatientModel { Id = "BN240010", Name = "Đặng Thị Yến", Dob = "19/08/1993", Gender = "Nữ", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "20/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079293010123" }
-            };
-
-            _allPatients.AddRange(seed);
-
-            // Generate additional records to make it total 48 patients (exactly like the HTML spec "48 patients total")
-            string[] firstNames = { "Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng" };
-            string[] middleNames = { "Văn", "Thị", "Hữu", "Minh", "Đức", "Thành", "Hoài", "Quốc", "Xuân", "Mỹ" };
-            string[] lastNames = { "Anh", "Bình", "Cường", "Dương", "Giang", "Hương", "Khánh", "Linh", "Nam", "Phong", "Sơn", "Trang", "Vy", "Yến" };
-            string[] departments = { "Tim mạch", "Nội tổng quát", "Chỉnh hình", "Sản khoa", "Thần kinh", "Nhi khoa" };
-            string[] doctors = { "BS. Trần Minh", "BS. Lê Hùng", "BS. Nguyễn Hà", "BS. Võ Thu", "BS. Phạm Sơn", "BS. Hồ Linh" };
-            string[] statuses = { "active", "pending", "urgent", "done" };
-            string[] statusLabels = { "Đang điều trị", "Chờ xét nghiệm", "Cần điều phối KTV", "Chờ xuất viện" };
-            Random rand = new Random(42);
-
-            for (int i = 11; i <= 48; i++)
-            {
-                string id = $"BN24{i:D4}";
-                string gender = rand.Next(2) == 0 ? "Nam" : "Nữ";
-                string name = firstNames[rand.Next(firstNames.Length)] + " " +
-                              (gender == "Nữ" ? "Thị" : middleNames[rand.Next(middleNames.Length)]) + " " +
-                              lastNames[rand.Next(lastNames.Length)];
-                int age = rand.Next(18, 80);
-                string dob = $"{rand.Next(1, 29):D2}/{rand.Next(1, 13):D2}/{DateTime.Now.Year - age}";
-                string dept = departments[rand.Next(departments.Length)];
-                string doc = doctors[rand.Next(doctors.Length)];
-                int statusIdx = rand.Next(statuses.Length);
-                string status = statuses[statusIdx];
-                string statusLabel = statusLabels[statusIdx];
-                string date = $"{rand.Next(1, 25):D2}/05/2026";
-                string cccd = $"079{rand.Next(100, 300):D3}{rand.Next(100000, 999999):D6}";
-
-                _allPatients.Add(new PatientModel
-                {
-                    Id = id,
-                    Name = name,
-                    Dob = dob,
-                    Gender = gender,
-                    Khoa = dept,
-                    Bs = doc,
-                    Date = date,
-                    Status = status,
-                    StatusLabel = statusLabel,
-                    Cccd = cccd
-                });
-            }
-
+            PatientModel.InitializeSharedPatients();
+            _allPatients.Clear();
+            _allPatients.AddRange(PatientModel.SharedPatients);
             UpdateChipCounts();
         }
 
@@ -1144,6 +1088,77 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
     public class PatientModel
     {
+        public static readonly System.Collections.Generic.List<PatientModel> SharedPatients = new System.Collections.Generic.List<PatientModel>();
+
+        static PatientModel()
+        {
+            InitializeSharedPatients();
+        }
+
+        public static void InitializeSharedPatients()
+        {
+            if (SharedPatients.Count > 0) return;
+
+            // Initial 10 patients from HTML template
+            var seed = new System.Collections.Generic.List<PatientModel>
+            {
+                new PatientModel { Id = "BN240001", Name = "Nguyễn Văn An", Dob = "15/03/1978", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "24/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079204001234" },
+                new PatientModel { Id = "BN240002", Name = "Phạm Thị Lan", Dob = "22/07/1985", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "24/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079285002345" },
+                new PatientModel { Id = "BN240003", Name = "Hoàng Đức Nam", Dob = "09/11/1990", Gender = "Nam", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "23/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079290003456" },
+                new PatientModel { Id = "BN240004", Name = "Trần Thị Mai", Dob = "30/01/1996", Gender = "Nữ", Khoa = "Sản khoa", Bs = "BS. Võ Thu", Date = "23/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079296004567" },
+                new PatientModel { Id = "BN240005", Name = "Lê Văn Hải", Dob = "12/06/1972", Gender = "Nam", Khoa = "Thần kinh", Bs = "BS. Phạm Sơn", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079272005678" },
+                new PatientModel { Id = "BN240006", Name = "Vũ Thị Bích", Dob = "07/09/2000", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079200006789" },
+                new PatientModel { Id = "BN240007", Name = "Đinh Công Sơn", Dob = "14/04/1965", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "21/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079265007890" },
+                new PatientModel { Id = "BN240008", Name = "Ngô Thị Hằng", Dob = "28/12/1982", Gender = "Nữ", Khoa = "Nhi khoa", Bs = "BS. Hồ Linh", Date = "21/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079282008901" },
+                new PatientModel { Id = "BN240009", Name = "Lương Minh Châu", Dob = "05/02/1958", Gender = "Nam", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "20/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079258009012" },
+                new PatientModel { Id = "BN240010", Name = "Đặng Thị Yến", Dob = "19/08/1993", Gender = "Nữ", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "20/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079293010123" }
+            };
+
+            SharedPatients.AddRange(seed);
+
+            // Generate additional records to make it total 48 patients (exactly like the HTML spec "48 patients total")
+            string[] firstNames = { "Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng" };
+            string[] middleNames = { "Văn", "Thị", "Hữu", "Minh", "Đức", "Thành", "Hoài", "Quốc", "Xuân", "Mỹ" };
+            string[] lastNames = { "Anh", "Bình", "Cường", "Dương", "Giang", "Hương", "Khánh", "Linh", "Nam", "Phong", "Sơn", "Trang", "Vy", "Yến" };
+            string[] departments = { "Tim mạch", "Nội tổng quát", "Chỉnh hình", "Sản khoa", "Thần kinh", "Nhi khoa" };
+            string[] doctors = { "BS. Trần Minh", "BS. Lê Hùng", "BS. Nguyễn Hà", "BS. Võ Thu", "BS. Phạm Sơn", "BS. Hồ Linh" };
+            string[] statuses = { "active", "pending", "urgent", "done" };
+            string[] statusLabels = { "Đang điều trị", "Chờ xét nghiệm", "Cần điều phối KTV", "Chờ xuất viện" };
+            System.Random rand = new System.Random(42);
+
+            for (int i = 11; i <= 48; i++)
+            {
+                string id = $"BN24{i:D4}";
+                string gender = rand.Next(2) == 0 ? "Nam" : "Nữ";
+                string name = firstNames[rand.Next(firstNames.Length)] + " " +
+                              (gender == "Nữ" ? "Thị" : middleNames[rand.Next(middleNames.Length)]) + " " +
+                              lastNames[rand.Next(lastNames.Length)];
+                int age = rand.Next(18, 80);
+                string dob = $"{rand.Next(1, 29):D2}/{rand.Next(1, 13):D2}/{System.DateTime.Now.Year - age}";
+                string dept = departments[rand.Next(departments.Length)];
+                string doc = doctors[rand.Next(doctors.Length)];
+                int statusIdx = rand.Next(statuses.Length);
+                string status = statuses[statusIdx];
+                string statusLabel = statusLabels[statusIdx];
+                string date = $"{rand.Next(1, 25):D2}/05/2026";
+                string cccd = $"079{rand.Next(100, 300):D3}{rand.Next(100000, 999999):D6}";
+
+                SharedPatients.Add(new PatientModel
+                {
+                    Id = id,
+                    Name = name,
+                    Dob = dob,
+                    Gender = gender,
+                    Khoa = dept,
+                    Bs = doc,
+                    Date = date,
+                    Status = status,
+                    StatusLabel = statusLabel,
+                    Cccd = cccd
+                });
+            }
+        }
+
         public string Id { get; set; }
         public string Name { get; set; }
         public string Dob { get; set; }
