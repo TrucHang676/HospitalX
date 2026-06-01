@@ -914,7 +914,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void btnViewAllActivity_Click(object sender, EventArgs e)
         {
             if (FindForm() is Main_DPV dlg)
-                ShowInfo(dlg, "Xem toàn bộ hoạt động gần đây trong hệ thống.");
+                dlg.NavigateToHoSoCaNhan();
         }
 
         private void btnQuick_Click(object sender, EventArgs e)
@@ -936,7 +936,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     dlg.NavigateToDieuPhoiKTV();
                     break;
                 case "Thông báo":
-                    dlg.ShowMessage("Chức năng \"Thông báo nội bộ\" đang được phát triển.", "Thông báo");
+                    dlg.NavigateToThongBao();
                     break;
             }
         }

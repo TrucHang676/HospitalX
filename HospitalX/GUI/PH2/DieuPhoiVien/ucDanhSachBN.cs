@@ -142,16 +142,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void ApplyFilter()
         {
-            string query = RemoveDiacritics(txtSearch.Text.Trim());
+            string query = txtSearch.Text.Trim().Normalize(NormalizationForm.FormC).ToLower();
             string selectedGender = cboGioiTinh.SelectedIndex > 0 ? cboGioiTinh.SelectedItem.ToString() : null;
 
             _filteredPatients = _allPatients.Where(p =>
             {
-                // Search condition (accents stripped)
+                // Search condition (case-insensitive, accent-sensitive, Unicode normalized)
                 bool matchesSearch = string.IsNullOrEmpty(query) ||
-                                     RemoveDiacritics(p.Name).Contains(query) ||
-                                     RemoveDiacritics(p.Id).Contains(query) ||
-                                     RemoveDiacritics(p.Cccd).Contains(query);
+                                     (p.Name != null && p.Name.Normalize(NormalizationForm.FormC).ToLower().Contains(query)) ||
+                                     (p.Id != null && p.Id.Normalize(NormalizationForm.FormC).ToLower().Contains(query)) ||
+                                     (p.Cccd != null && p.Cccd.Normalize(NormalizationForm.FormC).ToLower().Contains(query));
 
                 // Gender condition
                 bool matchesGender = selectedGender == null || p.Gender == selectedGender;
