@@ -78,7 +78,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRestore.SuspendLayout();
             this.pnlRestoreRight.SuspendLayout();
             this.pnlRestoreLeft.SuspendLayout();
-            this.pnlContent.SuspendLayout();
             this.pnlBackup.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).BeginInit();
@@ -99,6 +98,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // pnlRoot
             // 
+            this.pnlRoot.Controls.Add(this.pnlBackup);
             this.pnlRoot.Controls.Add(this.pnlRestore);
             this.pnlRoot.Controls.Add(this.pnlContent);
             this.pnlRoot.Controls.Add(this.pnlTabs);
@@ -147,9 +147,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.txtConsole.BorderRadius = 8;
             this.txtConsole.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtConsole.DefaultText = "";
-            this.txtConsole.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
             this.txtConsole.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtConsole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
+            this.txtConsole.ForeColor = System.Drawing.Color.Black;
             this.txtConsole.Location = new System.Drawing.Point(24, 330);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
@@ -157,11 +156,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.txtConsole.ReadOnly = true;
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtConsole.SelectedText = "";
-            this.txtConsole.Size = new System.Drawing.Size(492, 250);
+            this.txtConsole.Size = new System.Drawing.Size(504, 327);
             this.txtConsole.TabIndex = 0;
             // 
             // lblStep5
             // 
+            this.lblStep5.BackColor = System.Drawing.Color.Transparent;
             this.lblStep5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblStep5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblStep5.Location = new System.Drawing.Point(26, 274);
@@ -172,6 +172,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // lblStep4
             // 
+            this.lblStep4.BackColor = System.Drawing.Color.Transparent;
             this.lblStep4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblStep4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblStep4.Location = new System.Drawing.Point(26, 237);
@@ -182,6 +183,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // lblStep3
             // 
+            this.lblStep3.BackColor = System.Drawing.Color.Transparent;
             this.lblStep3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblStep3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblStep3.Location = new System.Drawing.Point(26, 200);
@@ -192,6 +194,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // lblStep2
             // 
+            this.lblStep2.BackColor = System.Drawing.Color.Transparent;
             this.lblStep2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblStep2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblStep2.Location = new System.Drawing.Point(26, 163);
@@ -202,6 +205,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // lblStep1
             // 
+            this.lblStep1.BackColor = System.Drawing.Color.Transparent;
             this.lblStep1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblStep1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblStep1.Location = new System.Drawing.Point(26, 126);
@@ -213,6 +217,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblRestoreStatus
             // 
             this.lblRestoreStatus.AutoSize = true;
+            this.lblRestoreStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblRestoreStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblRestoreStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblRestoreStatus.Location = new System.Drawing.Point(24, 86);
@@ -224,6 +229,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblRestorePercent
             // 
             this.lblRestorePercent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblRestorePercent.BackColor = System.Drawing.Color.Transparent;
             this.lblRestorePercent.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.lblRestorePercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblRestorePercent.Location = new System.Drawing.Point(448, 24);
@@ -248,6 +254,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblRestoreProgressTitle
             // 
             this.lblRestoreProgressTitle.AutoSize = true;
+            this.lblRestoreProgressTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblRestoreProgressTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblRestoreProgressTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.lblRestoreProgressTitle.Location = new System.Drawing.Point(22, 22);
@@ -279,11 +286,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.btnStartRestore.BorderRadius = 8;
             this.btnStartRestore.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStartRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.btnStartRestore.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStartRestore.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartRestore.ForeColor = System.Drawing.Color.White;
             this.btnStartRestore.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.btnStartRestore.HoverState.ForeColor = System.Drawing.Color.White;
-            this.btnStartRestore.Location = new System.Drawing.Point(24, 548);
+            this.btnStartRestore.Location = new System.Drawing.Point(23, 615);
             this.btnStartRestore.Name = "btnStartRestore";
             this.btnStartRestore.PressedColor = System.Drawing.Color.Maroon;
             this.btnStartRestore.Size = new System.Drawing.Size(474, 42);
@@ -298,7 +305,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dtpPointInTime.FillColor = System.Drawing.Color.White;
             this.dtpPointInTime.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpPointInTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpPointInTime.Location = new System.Drawing.Point(24, 493);
+            this.dtpPointInTime.Location = new System.Drawing.Point(23, 554);
             this.dtpPointInTime.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpPointInTime.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpPointInTime.Name = "dtpPointInTime";
@@ -309,9 +316,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblPointInTime
             // 
             this.lblPointInTime.AutoSize = true;
+            this.lblPointInTime.BackColor = System.Drawing.Color.Transparent;
             this.lblPointInTime.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblPointInTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblPointInTime.Location = new System.Drawing.Point(24, 470);
+            this.lblPointInTime.Location = new System.Drawing.Point(23, 531);
             this.lblPointInTime.Name = "lblPointInTime";
             this.lblPointInTime.Size = new System.Drawing.Size(156, 15);
             this.lblPointInTime.TabIndex = 2;
@@ -322,12 +330,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.flowRestoreCards.AutoScroll = true;
             this.flowRestoreCards.Location = new System.Drawing.Point(24, 58);
             this.flowRestoreCards.Name = "flowRestoreCards";
-            this.flowRestoreCards.Size = new System.Drawing.Size(474, 394);
+            this.flowRestoreCards.Size = new System.Drawing.Size(474, 452);
             this.flowRestoreCards.TabIndex = 3;
             // 
             // lblRestoreListTitle
             // 
             this.lblRestoreListTitle.AutoSize = true;
+            this.lblRestoreListTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblRestoreListTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblRestoreListTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.lblRestoreListTitle.Location = new System.Drawing.Point(22, 22);
@@ -338,7 +347,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // pnlContent
             // 
-            this.pnlContent.Controls.Add(this.pnlBackup);
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContent.Location = new System.Drawing.Point(22, 64);
             this.pnlContent.Name = "pnlContent";
@@ -349,9 +357,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.pnlBackup.Controls.Add(this.pnlHistory);
             this.pnlBackup.Controls.Add(this.pnlBackupLeft);
-            this.pnlBackup.Location = new System.Drawing.Point(0, 0);
+            this.pnlBackup.Location = new System.Drawing.Point(22, 18);
             this.pnlBackup.Name = "pnlBackup";
-            this.pnlBackup.Size = new System.Drawing.Size(1084, 634);
+            this.pnlBackup.Size = new System.Drawing.Size(1084, 680);
             this.pnlBackup.TabIndex = 0;
             // 
             // pnlHistory
@@ -363,10 +371,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlHistory.Controls.Add(this.pnlHistoryHeader);
             this.pnlHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlHistory.FillColor = System.Drawing.Color.White;
-            this.pnlHistory.Location = new System.Drawing.Point(402, 0);
+            this.pnlHistory.Location = new System.Drawing.Point(389, 0);
             this.pnlHistory.Name = "pnlHistory";
             this.pnlHistory.Padding = new System.Windows.Forms.Padding(1);
-            this.pnlHistory.Size = new System.Drawing.Size(682, 634);
+            this.pnlHistory.Size = new System.Drawing.Size(695, 680);
             this.pnlHistory.TabIndex = 1;
             // 
             // dgvHistory
@@ -399,15 +407,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvHistory.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvHistory.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.dgvHistory.Location = new System.Drawing.Point(1, 54);
+            this.dgvHistory.Location = new System.Drawing.Point(2, 54);
             this.dgvHistory.MultiSelect = false;
             this.dgvHistory.Name = "dgvHistory";
             this.dgvHistory.ReadOnly = true;
             this.dgvHistory.RowHeadersVisible = false;
             this.dgvHistory.RowTemplate.Height = 42;
-            this.dgvHistory.Size = new System.Drawing.Size(680, 579);
+            this.dgvHistory.Size = new System.Drawing.Size(690, 622);
             this.dgvHistory.TabIndex = 0;
             this.dgvHistory.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvHistory.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -477,12 +484,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // pnlHistoryHeader
             // 
+            this.pnlHistoryHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryTotal);
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryTitle);
             this.pnlHistoryHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHistoryHeader.ForeColor = System.Drawing.Color.White;
             this.pnlHistoryHeader.Location = new System.Drawing.Point(1, 1);
             this.pnlHistoryHeader.Name = "pnlHistoryHeader";
-            this.pnlHistoryHeader.Size = new System.Drawing.Size(680, 53);
+            this.pnlHistoryHeader.Size = new System.Drawing.Size(693, 53);
             this.pnlHistoryHeader.TabIndex = 1;
             // 
             // lblHistoryTotal
@@ -490,7 +499,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblHistoryTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHistoryTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblHistoryTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblHistoryTotal.Location = new System.Drawing.Point(450, 18);
+            this.lblHistoryTotal.Location = new System.Drawing.Point(463, 18);
             this.lblHistoryTotal.Name = "lblHistoryTotal";
             this.lblHistoryTotal.Size = new System.Drawing.Size(210, 20);
             this.lblHistoryTotal.TabIndex = 0;
@@ -500,7 +509,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.lblHistoryTitle.AutoSize = true;
             this.lblHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblHistoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblHistoryTitle.ForeColor = System.Drawing.Color.White;
             this.lblHistoryTitle.Location = new System.Drawing.Point(18, 16);
             this.lblHistoryTitle.Name = "lblHistoryTitle";
             this.lblHistoryTitle.Size = new System.Drawing.Size(123, 21);
@@ -530,7 +539,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlBackupLeft.Location = new System.Drawing.Point(0, 0);
             this.pnlBackupLeft.Name = "pnlBackupLeft";
             this.pnlBackupLeft.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlBackupLeft.Size = new System.Drawing.Size(402, 634);
+            this.pnlBackupLeft.Size = new System.Drawing.Size(389, 680);
             this.pnlBackupLeft.TabIndex = 0;
             // 
             // pnlBackupProgress
@@ -542,7 +551,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlBackupProgress.Controls.Add(this.lblBackupPercent);
             this.pnlBackupProgress.Controls.Add(this.progressBackup);
             this.pnlBackupProgress.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
-            this.pnlBackupProgress.Location = new System.Drawing.Point(26, 470);
+            this.pnlBackupProgress.Location = new System.Drawing.Point(26, 553);
             this.pnlBackupProgress.Name = "pnlBackupProgress";
             this.pnlBackupProgress.Size = new System.Drawing.Size(330, 96);
             this.pnlBackupProgress.TabIndex = 0;
@@ -551,6 +560,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblBackupStatus
             // 
             this.lblBackupStatus.AutoEllipsis = true;
+            this.lblBackupStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblBackupStatus.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
             this.lblBackupStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblBackupStatus.Location = new System.Drawing.Point(18, 62);
@@ -561,6 +571,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // lblBackupPercent
             // 
+            this.lblBackupPercent.BackColor = System.Drawing.Color.Transparent;
             this.lblBackupPercent.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblBackupPercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblBackupPercent.Location = new System.Drawing.Point(248, 15);
@@ -573,7 +584,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // progressBackup
             // 
             this.progressBackup.BorderRadius = 5;
-            this.progressBackup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.progressBackup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(240)))), ((int)(((byte)(230)))));
             this.progressBackup.Location = new System.Drawing.Point(18, 44);
             this.progressBackup.Name = "progressBackup";
             this.progressBackup.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
@@ -584,6 +595,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // btnDryRun
             // 
+            this.btnDryRun.BackColor = System.Drawing.Color.Transparent;
             this.btnDryRun.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.btnDryRun.BorderRadius = 8;
             this.btnDryRun.BorderThickness = 1;
@@ -592,7 +604,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.btnDryRun.Font = this.btnStartBackup.Font;
             this.btnDryRun.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnDryRun.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnDryRun.Location = new System.Drawing.Point(246, 404);
+            this.btnDryRun.Location = new System.Drawing.Point(246, 487);
             this.btnDryRun.Name = "btnDryRun";
             this.btnDryRun.Size = new System.Drawing.Size(110, 40);
             this.btnDryRun.TabIndex = 1;
@@ -600,14 +612,15 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // btnStartBackup
             // 
+            this.btnStartBackup.BackColor = System.Drawing.Color.Transparent;
             this.btnStartBackup.BorderRadius = 8;
             this.btnStartBackup.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnStartBackup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnStartBackup.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStartBackup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartBackup.ForeColor = System.Drawing.Color.White;
             this.btnStartBackup.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
             this.btnStartBackup.HoverState.ForeColor = System.Drawing.Color.White;
-            this.btnStartBackup.Location = new System.Drawing.Point(26, 404);
+            this.btnStartBackup.Location = new System.Drawing.Point(26, 487);
             this.btnStartBackup.Name = "btnStartBackup";
             this.btnStartBackup.Size = new System.Drawing.Size(210, 40);
             this.btnStartBackup.TabIndex = 2;
@@ -615,23 +628,25 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // txtBackupTag
             // 
+            this.txtBackupTag.BackColor = System.Drawing.Color.Transparent;
             this.txtBackupTag.BorderRadius = 8;
             this.txtBackupTag.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtBackupTag.DefaultText = "";
             this.txtBackupTag.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtBackupTag.Location = new System.Drawing.Point(26, 346);
+            this.txtBackupTag.Location = new System.Drawing.Point(27, 405);
             this.txtBackupTag.Name = "txtBackupTag";
             this.txtBackupTag.PlaceholderText = "Manual_before_upgrade_v2.1";
             this.txtBackupTag.SelectedText = "";
-            this.txtBackupTag.Size = new System.Drawing.Size(330, 36);
+            this.txtBackupTag.Size = new System.Drawing.Size(330, 59);
             this.txtBackupTag.TabIndex = 3;
             // 
             // lblBackupTag
             // 
             this.lblBackupTag.AutoSize = true;
+            this.lblBackupTag.BackColor = System.Drawing.Color.Transparent;
             this.lblBackupTag.Font = this.lblBackupType.Font;
             this.lblBackupTag.ForeColor = this.lblBackupType.ForeColor;
-            this.lblBackupTag.Location = new System.Drawing.Point(24, 322);
+            this.lblBackupTag.Location = new System.Drawing.Point(25, 377);
             this.lblBackupTag.Name = "lblBackupTag";
             this.lblBackupTag.Size = new System.Drawing.Size(91, 15);
             this.lblBackupTag.TabIndex = 4;
@@ -640,9 +655,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblBackupType
             // 
             this.lblBackupType.AutoSize = true;
+            this.lblBackupType.BackColor = System.Drawing.Color.Transparent;
             this.lblBackupType.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblBackupType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblBackupType.Location = new System.Drawing.Point(24, 66);
+            this.lblBackupType.Location = new System.Drawing.Point(25, 68);
             this.lblBackupType.Name = "lblBackupType";
             this.lblBackupType.Size = new System.Drawing.Size(88, 15);
             this.lblBackupType.TabIndex = 11;
@@ -664,7 +680,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             "HIGH",
             "LOW",
             "Không nén"});
-            this.cmbCompression.Location = new System.Drawing.Point(26, 268);
+            this.cmbCompression.Location = new System.Drawing.Point(23, 318);
             this.cmbCompression.Name = "cmbCompression";
             this.cmbCompression.Size = new System.Drawing.Size(330, 36);
             this.cmbCompression.StartIndex = 0;
@@ -686,7 +702,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             "/nas/backup/tier1",
             "/nas/backup/tier2",
             "TAPE_DRIVE_01"});
-            this.cmbDestination.Location = new System.Drawing.Point(26, 190);
+            this.cmbDestination.Location = new System.Drawing.Point(24, 229);
             this.cmbDestination.Name = "cmbDestination";
             this.cmbDestination.Size = new System.Drawing.Size(330, 36);
             this.cmbDestination.StartIndex = 0;
@@ -695,9 +711,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblCompression
             // 
             this.lblCompression.AutoSize = true;
+            this.lblCompression.BackColor = System.Drawing.Color.Transparent;
             this.lblCompression.Font = this.lblBackupType.Font;
             this.lblCompression.ForeColor = this.lblBackupType.ForeColor;
-            this.lblCompression.Location = new System.Drawing.Point(24, 244);
+            this.lblCompression.Location = new System.Drawing.Point(24, 289);
             this.lblCompression.Name = "lblCompression";
             this.lblCompression.Size = new System.Drawing.Size(80, 15);
             this.lblCompression.TabIndex = 6;
@@ -706,9 +723,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblDestination
             // 
             this.lblDestination.AutoSize = true;
+            this.lblDestination.BackColor = System.Drawing.Color.Transparent;
             this.lblDestination.Font = this.lblBackupType.Font;
             this.lblDestination.ForeColor = this.lblBackupType.ForeColor;
-            this.lblDestination.Location = new System.Drawing.Point(24, 166);
+            this.lblDestination.Location = new System.Drawing.Point(25, 199);
             this.lblDestination.Name = "lblDestination";
             this.lblDestination.Size = new System.Drawing.Size(90, 15);
             this.lblDestination.TabIndex = 8;
@@ -717,22 +735,25 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // chkIncremental
             // 
             this.chkIncremental.AutoSize = true;
+            this.chkIncremental.BackColor = System.Drawing.Color.Transparent;
             this.chkIncremental.CheckedState.BorderRadius = 0;
             this.chkIncremental.CheckedState.BorderThickness = 0;
             this.chkIncremental.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkIncremental.Font = this.chkFull.Font;
             this.chkIncremental.ForeColor = this.chkFull.ForeColor;
-            this.chkIncremental.Location = new System.Drawing.Point(26, 124);
+            this.chkIncremental.Location = new System.Drawing.Point(28, 126);
             this.chkIncremental.Name = "chkIncremental";
             this.chkIncremental.Size = new System.Drawing.Size(243, 23);
             this.chkIncremental.TabIndex = 9;
             this.chkIncremental.Text = "INCREMENTAL - Dữ liệu thay đổi";
             this.chkIncremental.UncheckedState.BorderRadius = 0;
             this.chkIncremental.UncheckedState.BorderThickness = 0;
+            this.chkIncremental.UseVisualStyleBackColor = false;
             // 
             // chkFull
             // 
             this.chkFull.AutoSize = true;
+            this.chkFull.BackColor = System.Drawing.Color.Transparent;
             this.chkFull.Checked = true;
             this.chkFull.CheckedState.BorderRadius = 0;
             this.chkFull.CheckedState.BorderThickness = 0;
@@ -740,17 +761,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkFull.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkFull.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.chkFull.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkFull.Location = new System.Drawing.Point(26, 92);
+            this.chkFull.Location = new System.Drawing.Point(28, 97);
             this.chkFull.Name = "chkFull";
             this.chkFull.Size = new System.Drawing.Size(165, 23);
             this.chkFull.TabIndex = 10;
             this.chkFull.Text = "FULL - Toàn bộ CSDL";
             this.chkFull.UncheckedState.BorderRadius = 0;
             this.chkFull.UncheckedState.BorderThickness = 0;
+            this.chkFull.UseVisualStyleBackColor = false;
             // 
             // lblManualTitle
             // 
             this.lblManualTitle.AutoSize = true;
+            this.lblManualTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblManualTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblManualTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.lblManualTitle.Location = new System.Drawing.Point(22, 22);
@@ -816,7 +839,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRestoreRight.PerformLayout();
             this.pnlRestoreLeft.ResumeLayout(false);
             this.pnlRestoreLeft.PerformLayout();
-            this.pnlContent.ResumeLayout(false);
             this.pnlBackup.ResumeLayout(false);
             this.pnlHistory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).EndInit();

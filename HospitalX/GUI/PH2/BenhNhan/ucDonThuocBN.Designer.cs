@@ -12,6 +12,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucDonThuocBN));
             this.pnlRoot = new System.Windows.Forms.Panel();
             this.flowPrescriptions = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlToolbar = new Guna.UI2.WinForms.Guna2Panel();
@@ -90,10 +91,14 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.cmbSort.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSort.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
+            this.cmbSort.FocusedColor = System.Drawing.Color.Empty;
             this.cmbSort.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.cmbSort.ItemHeight = 30;
-            this.cmbSort.Items.AddRange(new object[] { "Mới nhất", "Cũ nhất", "Tên thuốc A-Z" });
+            this.cmbSort.Items.AddRange(new object[] {
+            "Mới nhất",
+            "Cũ nhất",
+            "Tên thuốc A-Z"});
             this.cmbSort.Location = new System.Drawing.Point(884, 24);
             this.cmbSort.Name = "cmbSort";
             this.cmbSort.Size = new System.Drawing.Size(169, 36);
@@ -111,6 +116,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpTo.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpTo.Location = new System.Drawing.Point(753, 24);
+            this.dtpTo.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
+            this.dtpTo.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(112, 36);
             this.dtpTo.TabIndex = 3;
@@ -127,6 +134,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpFrom.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpFrom.Location = new System.Drawing.Point(622, 24);
+            this.dtpFrom.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
+            this.dtpFrom.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(112, 36);
             this.dtpFrom.TabIndex = 2;
@@ -141,10 +150,15 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.cmbDateRange.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbDateRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDateRange.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
+            this.cmbDateRange.FocusedColor = System.Drawing.Color.Empty;
             this.cmbDateRange.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbDateRange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.cmbDateRange.ItemHeight = 30;
-            this.cmbDateRange.Items.AddRange(new object[] { "Tất cả thời gian", "Tháng này", "3 tháng gần đây", "Tùy chọn" });
+            this.cmbDateRange.Items.AddRange(new object[] {
+            "Tất cả thời gian",
+            "Tháng này",
+            "3 tháng gần đây",
+            "Tùy chọn"});
             this.cmbDateRange.Location = new System.Drawing.Point(444, 24);
             this.cmbDateRange.Name = "cmbDateRange";
             this.cmbDateRange.Size = new System.Drawing.Size(159, 36);
@@ -162,10 +176,12 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtSearch.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
             this.txtSearch.Location = new System.Drawing.Point(18, 24);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
             this.txtSearch.PlaceholderText = "Tìm theo mã HSBA, tên thuốc, liều dùng...";
+            this.txtSearch.SelectedText = "";
             this.txtSearch.Size = new System.Drawing.Size(404, 36);
             this.txtSearch.TabIndex = 0;
             // 
@@ -180,6 +196,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlRoot.ResumeLayout(false);
             this.pnlToolbar.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.Panel pnlRoot;
