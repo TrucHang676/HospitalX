@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_BN));
-            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm();
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnDV = new Guna.UI2.WinForms.Guna2Button();
             this.btnHSCN = new Guna.UI2.WinForms.Guna2Button();
@@ -40,7 +41,6 @@
             this.btnDT = new Guna.UI2.WinForms.Guna2Button();
             this.btnHSBA = new Guna.UI2.WinForms.Guna2Button();
             this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
-            this.btnTongQuan = new Guna.UI2.WinForms.Guna2Button();
             this.pnlTopRight = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlLine2 = new Guna.UI2.WinForms.Guna2Separator();
             this.lblQTCSDLBV = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -80,7 +80,6 @@
             this.pnlSidebar.Controls.Add(this.btnDT);
             this.pnlSidebar.Controls.Add(this.btnHSBA);
             this.pnlSidebar.Controls.Add(this.btnLogout);
-            this.pnlSidebar.Controls.Add(this.btnTongQuan);
             this.pnlSidebar.Controls.Add(this.pnlTopRight);
             this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
             this.pnlSidebar.Name = "pnlSidebar";
@@ -148,7 +147,7 @@
             this.btnHSCN.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHSCN.ImageOffset = new System.Drawing.Point(8, 0);
             this.btnHSCN.IndicateFocus = true;
-            this.btnHSCN.Location = new System.Drawing.Point(13, 424);
+            this.btnHSCN.Location = new System.Drawing.Point(13, 186);
             this.btnHSCN.Name = "btnHSCN";
             this.btnHSCN.ShadowDecoration.BorderRadius = 8;
             this.btnHSCN.ShadowDecoration.Depth = 3;
@@ -300,42 +299,6 @@
             this.btnLogout.Size = new System.Drawing.Size(200, 38);
             this.btnLogout.TabIndex = 1;
             this.btnLogout.Text = "Đăng xuất";
-            // 
-            // btnTongQuan
-            // 
-            this.btnTongQuan.BackColor = System.Drawing.Color.Transparent;
-            this.btnTongQuan.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(77)))), ((int)(((byte)(120)))));
-            this.btnTongQuan.BorderRadius = 8;
-            this.btnTongQuan.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
-            this.btnTongQuan.CheckedState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnTongQuan.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnTongQuan.CheckedState.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTongQuan.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnTongQuan.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image4")));
-            this.btnTongQuan.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTongQuan.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.btnTongQuan.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnTongQuan.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnTongQuan.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnTongQuan.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnTongQuan.FillColor = System.Drawing.Color.Transparent;
-            this.btnTongQuan.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTongQuan.ForeColor = System.Drawing.Color.Silver;
-            this.btnTongQuan.HoverState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnTongQuan.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
-            this.btnTongQuan.Image = ((System.Drawing.Image)(resources.GetObject("btnTongQuan.Image")));
-            this.btnTongQuan.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTongQuan.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnTongQuan.IndicateFocus = true;
-            this.btnTongQuan.Location = new System.Drawing.Point(13, 186);
-            this.btnTongQuan.Name = "btnTongQuan";
-            this.btnTongQuan.ShadowDecoration.BorderRadius = 8;
-            this.btnTongQuan.ShadowDecoration.Depth = 3;
-            this.btnTongQuan.Size = new System.Drawing.Size(190, 45);
-            this.btnTongQuan.TabIndex = 14;
-            this.btnTongQuan.Text = "TỔNG QUAN";
-            this.btnTongQuan.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTongQuan.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // pnlTopRight
             // 
@@ -497,7 +460,6 @@
         private Guna.UI2.WinForms.Guna2Button btnDT;
         private Guna.UI2.WinForms.Guna2Button btnHSBA;
         private Guna.UI2.WinForms.Guna2Button btnLogout;
-        private Guna.UI2.WinForms.Guna2Button btnTongQuan;
         private Guna.UI2.WinForms.Guna2Panel pnlTopRight;
         private Guna.UI2.WinForms.Guna2Separator pnlLine2;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblQTCSDLBV;

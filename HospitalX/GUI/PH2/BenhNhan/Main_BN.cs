@@ -1,5 +1,5 @@
 using Guna.UI2.WinForms;
-using HospitalX.GUI.PH2.BacSi;
+using HospitalX.GUI.PH2.BenhNhan;
 using System;
 using System.Windows.Forms;
 
@@ -11,50 +11,38 @@ namespace HospitalX.GUI.PH2
         {
             InitializeComponent();
             WireNavigationEvents();
-            LoadPage(CreateTongQuanPage(), "Bảng điều khiển");
-            btnTongQuan.Checked = true;
+            LoadPage(new ucHSCN(), "Trang chủ");
+            btnHSCN.Checked = true;
         }
 
         // Gắn sự kiện điều hướng cho các nút sidebar.
         private void WireNavigationEvents()
         {
-            btnTongQuan.Click += BtnTongQuan_Click;
             btnHSBA.Click += BtnHSBA_Click;
-            btnBN.Click += BtnBN_Click;
+            btnDV.Click += BtnDV_Click;
             btnDT.Click += BtnDT_Click;
-            btnThongBao.Click += BtnThongBao_Click;
             btnHSCN.Click += BtnHSCN_Click;
             btnLogout.Click += BtnLogout_Click;
-        }
-
-        private void BtnTongQuan_Click(object sender, EventArgs e)
-        {
-            LoadPage(CreateTongQuanPage(), "Bảng điều khiển");
-        }
-
-        private void BtnHSBA_Click(object sender, EventArgs e)
-        {
-            NavigateToHsbaPage();
-        }
-
-        private void BtnBN_Click(object sender, EventArgs e)
-        {
-            LoadPage(new ucBenhNhanCuaToi(), "Bệnh nhân của tôi");
-        }
-
-        private void BtnDT_Click(object sender, EventArgs e)
-        {
-            LoadPage(new ucDonThuoc(), "Đơn thuốc");
-        }
-
-        private void BtnThongBao_Click(object sender, EventArgs e)
-        {
-            LoadPage(new ucThongBao(), "Thông báo");
         }
 
         private void BtnHSCN_Click(object sender, EventArgs e)
         {
             LoadPage(new ucHSCN(), "Hồ sơ cá nhân");
+        }
+
+        private void BtnHSBA_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucBenhAnBN(), "Hồ sơ bệnh án");
+        }
+
+        private void BtnDV_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucDichVuBN(), "Dịch vụ");
+        }
+
+        private void BtnDT_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucDonThuocBN(), "Đơn thuốc");
         }
 
         private void BtnLogout_Click(object sender, EventArgs e)
@@ -72,19 +60,6 @@ namespace HospitalX.GUI.PH2
                     Application.Exit();
                 }
             }
-        }
-
-        private ucTongQuan CreateTongQuanPage()
-        {
-            var page = new ucTongQuan();
-            page.ViewAllHsbaRequested += (s, e) => NavigateToHsbaPage();
-            return page;
-        }
-
-        private void NavigateToHsbaPage()
-        {
-            btnHSBA.Checked = true;
-            LoadPage(new ucHSBA(), "Hồ sơ bệnh án");
         }
 
         // Load UserControl vào vùng nội dung chính.

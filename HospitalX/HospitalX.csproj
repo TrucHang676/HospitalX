@@ -214,12 +214,6 @@
     <Compile Include="GUI\PH2\BenhNhan\ucHSCN.Designer.cs">
       <DependentUpon>ucHSCN.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\PH2\BenhNhan\ucTrangChu.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\PH2\BenhNhan\ucTrangChu.Designer.cs">
-      <DependentUpon>ucTrangChu.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\PH2\QuanTriVien\Audit.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -445,9 +439,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BenhNhan\ucHSCN.resx">
       <DependentUpon>ucHSCN.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\PH2\BenhNhan\ucTrangChu.resx">
-      <DependentUpon>ucTrangChu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\QuanTriVien\Audit.resx">
       <DependentUpon>Audit.cs</DependentUpon>
