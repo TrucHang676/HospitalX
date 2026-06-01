@@ -16,20 +16,20 @@ namespace HospitalX.GUI
             btnPh1Dba.Click += (s, e) => OpenRoleLogin(CreateRole("PH1_DBA", "Phân hệ 1", "DBA", "Quản trị viên CSDL", LoginModule.Ph1, Ph1Color));
 
             btnPh2Dba.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_DBA", "Phân hệ 2", "DBA", "Quản trị hệ thống y tế", LoginModule.Ph2, Ph2Color));
-            btnPh2Coordinator.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_COORDINATOR", "Phân hệ 2", "Điều phối viên", "Tiếp nhận & điều phối bệnh nhân", LoginModule.Ph2, Ph2Color));
-            btnPh2Doctor.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_DOCTOR", "Phân hệ 2", "Bác sĩ / Y sĩ", "Chẩn đoán & điều trị", LoginModule.Ph2, Ph2Color));
+            btnPh2Coordinator.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_COORDINATOR", "Phân hệ 2", "Điều phối viên", "Tiếp nhận và điều phối bệnh nhân", LoginModule.Ph2, Ph2Color));
+            btnPh2Doctor.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_DOCTOR", "Phân hệ 2", "Bác sĩ / Y sĩ", "Chẩn đoán và điều trị", LoginModule.Ph2, Ph2Color));
             btnPh2Technician.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_TECHNICIAN", "Phân hệ 2", "Kỹ thuật viên", "Thực hiện dịch vụ chẩn đoán", LoginModule.Ph2, Ph2Color));
-            btnPh2Patient.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_PATIENT", "Phân hệ 2", "Bệnh nhân", "Xem hồ sơ & tiền sử bệnh", LoginModule.Ph2, Ph2Color));
+            btnPh2Patient.Click += (s, e) => OpenRoleLogin(CreateRole("PH2_PATIENT", "Phân hệ 2", "Bệnh nhân", "Xem hồ sơ và tiền sử bệnh", LoginModule.Ph2, Ph2Color));
         }
 
         private static Color Ph1Color
         {
-            get { return Color.FromArgb(43, 76, 132); }
+            get { return Color.FromArgb(37, 74, 132); }
         }
 
         private static Color Ph2Color
         {
-            get { return Color.FromArgb(48, 121, 88); }
+            get { return Color.FromArgb(20, 116, 91); }
         }
 
         private LoginRoleOption CreateRole(string key, string moduleName, string title, string description, LoginModule module, Color themeColor)

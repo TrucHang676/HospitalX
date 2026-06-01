@@ -27,7 +27,7 @@ namespace HospitalX.GUI
 
         private static LoginRoleOption CreateDesignerRole()
         {
-            return new LoginRoleOption("PH2_DOCTOR", "Phân hệ 2", "Bác sĩ / Y sĩ", "Chẩn đoán & điều trị", LoginModule.Ph2, Color.FromArgb(48, 121, 88));
+            return new LoginRoleOption("PH2_DOCTOR", "Phân hệ 2", "Bác sĩ / Y sĩ", "Chẩn đoán và điều trị", LoginModule.Ph2, Color.FromArgb(20, 116, 91));
         }
 
         private void ApplyRoleTheme()
@@ -36,18 +36,24 @@ namespace HospitalX.GUI
             bool isPh1 = _role.Module == LoginModule.Ph1;
 
             Text = "HospitalX - Đăng nhập " + _role.Title;
+            lblFormTitle.Text = "Đăng nhập " + _role.ModuleName;
+            lblBrand.Text = isPh1 ? "HospitalX Data Console" : "HospitalX Medical Console";
+            lblModuleSubtitle.Text = _role.Description;
+            lblRoleBadge.Text = _role.Title;
+
             pnlHeader.FillColor = theme;
+            pnlIcon.FillColor = ControlPaint.Light(theme, 0.18F);
+            lblRoleBadge.BackColor = ControlPaint.Light(theme, 0.16F);
             btnLogin.FillColor = theme;
             btnLogin.HoverState.FillColor = ControlPaint.Light(theme, 0.12F);
+            btnLogin.PressedColor = ControlPaint.Dark(theme, 0.08F);
             btnBack.ForeColor = theme;
-            btnBack.FillColor = isPh1 ? Color.FromArgb(230, 239, 250) : Color.FromArgb(224, 243, 236);
-            btnBack.HoverState.FillColor = isPh1 ? Color.FromArgb(215, 230, 248) : Color.FromArgb(209, 236, 226);
+            btnBack.FillColor = isPh1 ? Color.FromArgb(232, 240, 252) : Color.FromArgb(224, 243, 236);
+            btnBack.HoverState.FillColor = isPh1 ? Color.FromArgb(217, 230, 249) : Color.FromArgb(209, 236, 226);
             txtUsername.FocusedState.BorderColor = theme;
             txtUsername.HoverState.BorderColor = theme;
             txtPassword.FocusedState.BorderColor = theme;
             txtPassword.HoverState.BorderColor = theme;
-            lblModuleSubtitle.Text = isPh1 ? "Quản trị CSDL Oracle" : "Quản lý dữ liệu y tế";
-            lblRoleBadge.Text = "  " + _role.Title;
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -124,6 +130,10 @@ namespace HospitalX.GUI
             {
                 mainForm = new Main_BS();
             }
+            else if (_role.Key == "PH2_PATIENT")
+            {
+                mainForm = new Main_BN();
+            }
             else
             {
                 ShowMessage("Giao diện cho vai trò \"" + _role.Title + "\" chưa được triển khai.", "Thông báo", MessageDialogIcon.Information);
@@ -147,6 +157,5 @@ namespace HospitalX.GUI
             msgDialog.Text = message;
             msgDialog.Show();
         }
-
     }
 }
