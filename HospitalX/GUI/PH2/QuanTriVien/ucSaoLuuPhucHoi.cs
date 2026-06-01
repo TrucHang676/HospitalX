@@ -48,7 +48,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             SetTransparentLabels(this);
 
             pnlRoot.Padding = new Padding(20, 14, 20, 16);
-            pnlAlert.Height = 58;
             pnlTabs.Height = 48;
             pnlBackupLeft.Width = 392;
             pnlRestoreLeft.Width = 500;

@@ -17,12 +17,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlRoot = new System.Windows.Forms.Panel();
-            this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlRestore = new System.Windows.Forms.Panel();
             this.pnlRestoreRight = new Guna.UI2.WinForms.Guna2Panel();
             this.txtConsole = new Guna.UI2.WinForms.Guna2TextBox();
@@ -41,6 +40,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblPointInTime = new System.Windows.Forms.Label();
             this.flowRestoreCards = new System.Windows.Forms.FlowLayoutPanel();
             this.lblRestoreListTitle = new System.Windows.Forms.Label();
+            this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlBackup = new System.Windows.Forms.Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvHistory = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -74,13 +74,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.btnTabRestore = new Guna.UI2.WinForms.Guna2Button();
             this.btnTabBackup = new Guna.UI2.WinForms.Guna2Button();
-            this.pnlAlert = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblAlert = new System.Windows.Forms.Label();
             this.pnlRoot.SuspendLayout();
-            this.pnlContent.SuspendLayout();
             this.pnlRestore.SuspendLayout();
             this.pnlRestoreRight.SuspendLayout();
             this.pnlRestoreLeft.SuspendLayout();
+            this.pnlContent.SuspendLayout();
             this.pnlBackup.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).BeginInit();
@@ -88,7 +86,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlBackupLeft.SuspendLayout();
             this.pnlBackupProgress.SuspendLayout();
             this.pnlTabs.SuspendLayout();
-            this.pnlAlert.SuspendLayout();
             this.SuspendLayout();
             // 
             // msgDialog
@@ -105,7 +102,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRoot.Controls.Add(this.pnlRestore);
             this.pnlRoot.Controls.Add(this.pnlContent);
             this.pnlRoot.Controls.Add(this.pnlTabs);
-            this.pnlRoot.Controls.Add(this.pnlAlert);
             this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRoot.Location = new System.Drawing.Point(0, 0);
             this.pnlRoot.Name = "pnlRoot";
@@ -113,22 +109,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRoot.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.TabIndex = 0;
             // 
-            // pnlContent
-            // 
-            this.pnlContent.Controls.Add(this.pnlBackup);
-            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(22, 130);
-            this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1084, 634);
-            this.pnlContent.TabIndex = 2;
-            // 
             // pnlRestore
             // 
             this.pnlRestore.Controls.Add(this.pnlRestoreRight);
             this.pnlRestore.Controls.Add(this.pnlRestoreLeft);
-            this.pnlRestore.Location = new System.Drawing.Point(20, 134);
+            this.pnlRestore.Location = new System.Drawing.Point(22, 18);
             this.pnlRestore.Name = "pnlRestore";
-            this.pnlRestore.Size = new System.Drawing.Size(1084, 634);
+            this.pnlRestore.Size = new System.Drawing.Size(1084, 680);
             this.pnlRestore.TabIndex = 1;
             // 
             // pnlRestoreRight
@@ -151,7 +138,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRestoreRight.Location = new System.Drawing.Point(522, 0);
             this.pnlRestoreRight.Name = "pnlRestoreRight";
             this.pnlRestoreRight.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlRestoreRight.Size = new System.Drawing.Size(562, 634);
+            this.pnlRestoreRight.Size = new System.Drawing.Size(562, 680);
             this.pnlRestoreRight.TabIndex = 1;
             // 
             // txtConsole
@@ -284,7 +271,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRestoreLeft.Location = new System.Drawing.Point(0, 0);
             this.pnlRestoreLeft.Name = "pnlRestoreLeft";
             this.pnlRestoreLeft.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlRestoreLeft.Size = new System.Drawing.Size(522, 634);
+            this.pnlRestoreLeft.Size = new System.Drawing.Size(522, 680);
             this.pnlRestoreLeft.TabIndex = 0;
             // 
             // btnStartRestore
@@ -349,6 +336,15 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblRestoreListTitle.TabIndex = 4;
             this.lblRestoreListTitle.Text = "Chọn bản backup";
             // 
+            // pnlContent
+            // 
+            this.pnlContent.Controls.Add(this.pnlBackup);
+            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContent.Location = new System.Drawing.Point(22, 64);
+            this.pnlContent.Name = "pnlContent";
+            this.pnlContent.Size = new System.Drawing.Size(1084, 700);
+            this.pnlContent.TabIndex = 2;
+            // 
             // pnlBackup
             // 
             this.pnlBackup.Controls.Add(this.pnlHistory);
@@ -378,14 +374,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvHistory.AllowUserToAddRows = false;
             this.dgvHistory.AllowUserToDeleteRows = false;
             this.dgvHistory.AllowUserToResizeRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
-            this.dgvHistory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
+            this.dgvHistory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvHistory.ColumnHeadersHeight = 34;
             this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colBackupId,
@@ -395,14 +391,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.colBackupSize,
             this.colBackupDuration,
             this.colBackupStatus});
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvHistory.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvHistory.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvHistory.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
             this.dgvHistory.Location = new System.Drawing.Point(1, 54);
@@ -768,7 +764,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlTabs.Controls.Add(this.btnTabRestore);
             this.pnlTabs.Controls.Add(this.btnTabBackup);
             this.pnlTabs.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTabs.Location = new System.Drawing.Point(22, 84);
+            this.pnlTabs.Location = new System.Drawing.Point(22, 18);
             this.pnlTabs.Name = "pnlTabs";
             this.pnlTabs.Size = new System.Drawing.Size(1084, 46);
             this.pnlTabs.TabIndex = 3;
@@ -806,31 +802,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.btnTabBackup.TabIndex = 1;
             this.btnTabBackup.Text = "Sao lưu";
             // 
-            // pnlAlert
-            // 
-            this.pnlAlert.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(230)))), ((int)(((byte)(138)))));
-            this.pnlAlert.BorderRadius = 10;
-            this.pnlAlert.BorderThickness = 1;
-            this.pnlAlert.Controls.Add(this.lblAlert);
-            this.pnlAlert.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlAlert.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(235)))));
-            this.pnlAlert.Location = new System.Drawing.Point(22, 18);
-            this.pnlAlert.Name = "pnlAlert";
-            this.pnlAlert.Size = new System.Drawing.Size(1084, 66);
-            this.pnlAlert.TabIndex = 4;
-            // 
-            // lblAlert
-            // 
-            this.lblAlert.AutoEllipsis = true;
-            this.lblAlert.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblAlert.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(64)))), ((int)(((byte)(14)))));
-            this.lblAlert.Location = new System.Drawing.Point(18, 16);
-            this.lblAlert.Name = "lblAlert";
-            this.lblAlert.Size = new System.Drawing.Size(1036, 34);
-            this.lblAlert.TabIndex = 0;
-            this.lblAlert.Text = "Cảnh báo: thao tác phục hồi CSDL có thể dừng kết nối và không thể hoàn tác. Chỉ t" +
-    "hực hiện khi đã xác nhận bản backup hợp lệ.";
-            // 
             // ucSaoLuuPhucHoi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -840,12 +811,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.Name = "ucSaoLuuPhucHoi";
             this.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.ResumeLayout(false);
-            this.pnlContent.ResumeLayout(false);
             this.pnlRestore.ResumeLayout(false);
             this.pnlRestoreRight.ResumeLayout(false);
             this.pnlRestoreRight.PerformLayout();
             this.pnlRestoreLeft.ResumeLayout(false);
             this.pnlRestoreLeft.PerformLayout();
+            this.pnlContent.ResumeLayout(false);
             this.pnlBackup.ResumeLayout(false);
             this.pnlHistory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).EndInit();
@@ -855,7 +826,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlBackupLeft.PerformLayout();
             this.pnlBackupProgress.ResumeLayout(false);
             this.pnlTabs.ResumeLayout(false);
-            this.pnlAlert.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -864,8 +834,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private Guna.UI2.WinForms.Guna2MessageDialog msgDialog;
         private System.Windows.Forms.Panel pnlRoot;
-        private Guna.UI2.WinForms.Guna2Panel pnlAlert;
-        private System.Windows.Forms.Label lblAlert;
         private System.Windows.Forms.Panel pnlTabs;
         private Guna.UI2.WinForms.Guna2Button btnTabRestore;
         private Guna.UI2.WinForms.Guna2Button btnTabBackup;
