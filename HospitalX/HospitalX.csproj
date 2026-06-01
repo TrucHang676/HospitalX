@@ -233,11 +233,17 @@
     <Compile Include="GUI\PH2\BenhNhan\ucHSCN.Designer.cs">
       <DependentUpon>ucHSCN.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\PH2\QuanTriVien\Audit.cs">
+    <Compile Include="GUI\PH2\QuanTriVien\ucAudit.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\PH2\QuanTriVien\Audit.Designer.cs">
-      <DependentUpon>Audit.cs</DependentUpon>
+    <Compile Include="GUI\PH2\QuanTriVien\ucAudit.Designer.cs">
+      <DependentUpon>ucAudit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\frmAuditLogDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\frmAuditLogDetail.Designer.cs">
+      <DependentUpon>frmAuditLogDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PH2\QuanTriVien\Main_QTV.cs">
       <SubType>Form</SubType>
@@ -468,8 +474,8 @@
     <EmbeddedResource Include="GUI\PH2\BenhNhan\ucHSCN.resx">
       <DependentUpon>ucHSCN.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\PH2\QuanTriVien\Audit.resx">
-      <DependentUpon>Audit.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucAudit.resx">
+      <DependentUpon>ucAudit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\QuanTriVien\Main_QTV.resx">
       <DependentUpon>Main_QTV.cs</DependentUpon>

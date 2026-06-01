@@ -11,13 +11,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
 {
     public partial class ucDonThuocBN : UserControl
     {
-        private readonly List<PrescriptionItem> prescriptions;
+        private readonly List<PatientMedicalRecord> prescriptions;
 
         public ucDonThuocBN()
         {
             InitializeComponent();
             prescriptions = PatientMedicalRecord.CreateSampleData()
-                .SelectMany(record => record.Prescriptions.Select(prescription => new PrescriptionItem(record, prescription)))
+                .Where(record => record.Prescriptions.Any())
                 .ToList();
             WireEvents();
             ApplyDateRange();
@@ -27,7 +27,11 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private void WireEvents()
         {
             txtSearch.TextChanged += (sender, args) => RenderPrescriptions();
-            cmbDateRange.SelectedIndexChanged += (sender, args) => { ApplyDateRange(); RenderPrescriptions(); };
+            cmbDateRange.SelectedIndexChanged += (sender, args) =>
+            {
+                ApplyDateRange();
+                RenderPrescriptions();
+            };
             dtpFrom.ValueChanged += (sender, args) => RenderPrescriptions();
             dtpTo.ValueChanged += (sender, args) => RenderPrescriptions();
             cmbSort.SelectedIndexChanged += (sender, args) => RenderPrescriptions();
@@ -39,6 +43,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             var selected = cmbDateRange.SelectedItem?.ToString() ?? "Tất cả thời gian";
             dtpFrom.Enabled = selected == "Tùy chọn";
             dtpTo.Enabled = selected == "Tùy chọn";
+
             if (selected == "Tháng này")
             {
                 var today = DateTime.Today;
@@ -61,37 +66,60 @@ namespace HospitalX.GUI.PH2.BenhNhan
         {
             flowPrescriptions.SuspendLayout();
             flowPrescriptions.Controls.Clear();
-            foreach (var item in GetFilteredPrescriptions())
+
+            foreach (var record in GetFilteredPrescriptions())
             {
-                flowPrescriptions.Controls.Add(CreateCard(item));
+                flowPrescriptions.Controls.Add(CreateCard(record));
             }
 
-            lblCount.Text = $"Hiển thị {flowPrescriptions.Controls.Count} thuốc";
+            lblCount.Text = $"Hiển thị {flowPrescriptions.Controls.Count} đơn thuốc";
             LayoutCards();
             flowPrescriptions.ResumeLayout();
         }
 
-        private IEnumerable<PrescriptionItem> GetFilteredPrescriptions()
+        private IEnumerable<PatientMedicalRecord> GetFilteredPrescriptions()
         {
             var query = prescriptions.AsEnumerable();
             var keyword = RemoveDiacritics(txtSearch.Text.Trim()).ToLowerInvariant();
             if (!string.IsNullOrWhiteSpace(keyword))
             {
-                query = query.Where(item => RemoveDiacritics($"{item.Record.Id} {item.Prescription.MedicineName} {item.Prescription.Dose} {item.Record.Diagnosis}")
-                    .ToLowerInvariant()
-                    .Contains(keyword));
+                query = query.Where(record =>
+                {
+                    var medicines = string.Join(" ", record.Prescriptions.Select(item => $"{item.MedicineName} {item.Dose}"));
+                    return RemoveDiacritics($"{record.Id} {record.PatientName} {record.Diagnosis} {record.DoctorName} {medicines}")
+                        .ToLowerInvariant()
+                        .Contains(keyword);
+                });
             }
 
-            query = query.Where(item => item.Prescription.Date.Date >= dtpFrom.Value.Date && item.Prescription.Date.Date <= dtpTo.Value.Date);
+            query = query.Where(record =>
+            {
+                var prescriptionDate = GetPrescriptionDate(record);
+                return prescriptionDate.Date >= dtpFrom.Value.Date && prescriptionDate.Date <= dtpTo.Value.Date;
+            });
+
             var sort = cmbSort.SelectedItem?.ToString();
-            if (sort == "Cũ nhất") query = query.OrderBy(item => item.Prescription.Date);
-            else if (sort == "Tên thuốc A-Z") query = query.OrderBy(item => item.Prescription.MedicineName);
-            else query = query.OrderByDescending(item => item.Prescription.Date);
+            if (sort == "Cũ nhất")
+            {
+                query = query.OrderBy(GetPrescriptionDate);
+            }
+            else if (sort == "Tên thuốc A-Z")
+            {
+                query = query.OrderBy(record => record.Prescriptions.First().MedicineName);
+            }
+            else
+            {
+                query = query.OrderByDescending(GetPrescriptionDate);
+            }
+
             return query.ToList();
         }
 
-        private Control CreateCard(PrescriptionItem item)
+        private Control CreateCard(PatientMedicalRecord record)
         {
+            var prescriptionDate = GetPrescriptionDate(record);
+            var medicineNames = string.Join(", ", record.Prescriptions.Select(item => item.MedicineName));
+
             var card = new Guna2Panel
             {
                 BorderColor = Color.FromArgb(205, 224, 219),
@@ -100,29 +128,38 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 CustomBorderColor = Color.FromArgb(0, 128, 102),
                 CustomBorderThickness = new Padding(4, 0, 0, 0),
                 FillColor = Color.White,
-                Height = 124,
+                Height = 132,
                 Margin = new Padding(0, 0, 0, 12),
                 Width = 800
             };
 
-            card.Controls.Add(CreateBadge(item.Record.Id, 24, 18, 116));
-            card.Controls.Add(CreateText(item.Prescription.Date.ToString("dd/MM/yyyy"), 158, 22, 110, 22, 10f, FontStyle.Bold, Color.FromArgb(112, 138, 132)));
-            card.Controls.Add(CreateText(item.Prescription.MedicineName, 24, 54, 620, 26, 13f, FontStyle.Bold, Color.FromArgb(10, 42, 64)));
-            card.Controls.Add(CreateText($"Liều dùng: {item.Prescription.Dose} · Hồ sơ: {item.Record.Diagnosis}", 24, 86, 650, 22, 10f, FontStyle.Regular, Color.FromArgb(74, 98, 92)));
+            card.Controls.Add(CreateBadge(record.Id, 24, 18, 116));
+            card.Controls.Add(CreateText(prescriptionDate.ToString("dd/MM/yyyy"), 158, 22, 110, 22, 10f, FontStyle.Bold, Color.FromArgb(112, 138, 132)));
+            card.Controls.Add(CreateText($"{record.Prescriptions.Count} thuốc trong đơn", 24, 54, 620, 26, 13f, FontStyle.Bold, Color.FromArgb(10, 42, 64)));
+            card.Controls.Add(CreateText(medicineNames, 24, 84, 650, 22, 10f, FontStyle.Regular, Color.FromArgb(74, 98, 92)));
+            card.Controls.Add(CreateText($"Hồ sơ: {record.Diagnosis}", 24, 106, 650, 20, 9f, FontStyle.Regular, Color.FromArgb(112, 138, 132)));
 
             var button = CreateDetailButton();
-            button.Location = new Point(card.Width - 150, 43);
+            button.Location = new Point(card.Width - 150, 47);
             button.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button.Click += (sender, args) =>
             {
-                using (var form = new frmDonThuocDetailBN(item.Record, item.Prescription))
+                using (var form = new frmDonThuocDetailBN(record))
                 {
                     form.ShowDialog(this);
                 }
             };
             card.Controls.Add(button);
-            card.Resize += (sender, args) => button.Location = new Point(card.Width - 150, 43);
+            card.Resize += (sender, args) => button.Location = new Point(card.Width - 150, 47);
             return card;
+        }
+
+        private DateTime GetPrescriptionDate(PatientMedicalRecord record)
+        {
+            return record.Prescriptions
+                .OrderByDescending(item => item.Date)
+                .First()
+                .Date;
         }
 
         private Guna2Button CreateDetailButton()
@@ -176,7 +213,10 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private void LayoutCards()
         {
             var width = Math.Max(720, flowPrescriptions.ClientSize.Width - 24);
-            foreach (Control card in flowPrescriptions.Controls) card.Width = width;
+            foreach (Control card in flowPrescriptions.Controls)
+            {
+                card.Width = width;
+            }
         }
 
         private string RemoveDiacritics(string text)
@@ -186,21 +226,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
             var builder = new StringBuilder();
             foreach (var c in normalized)
             {
-                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark) builder.Append(c);
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
+                    builder.Append(c);
+                }
             }
+
             return builder.ToString().Normalize(NormalizationForm.FormC).Replace("đ", "d").Replace("Đ", "D");
-        }
-
-        private class PrescriptionItem
-        {
-            public PrescriptionItem(PatientMedicalRecord record, RecordPrescription prescription)
-            {
-                Record = record;
-                Prescription = prescription;
-            }
-
-            public PatientMedicalRecord Record { get; }
-            public RecordPrescription Prescription { get; }
         }
     }
 }

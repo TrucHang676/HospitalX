@@ -1,16 +1,9 @@
-﻿namespace HospitalX.GUI.PH2.QuanTriVien
+namespace HospitalX.GUI.PH2.QuanTriVien
 {
     partial class ucSaoLuuPhucHoi
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,24 +15,623 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
+            this.pnlRoot = new System.Windows.Forms.Panel();
+            this.pnlContent = new System.Windows.Forms.Panel();
+            this.pnlRestore = new System.Windows.Forms.Panel();
+            this.pnlRestoreRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.txtConsole = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblStep5 = new System.Windows.Forms.Label();
+            this.lblStep4 = new System.Windows.Forms.Label();
+            this.lblStep3 = new System.Windows.Forms.Label();
+            this.lblStep2 = new System.Windows.Forms.Label();
+            this.lblStep1 = new System.Windows.Forms.Label();
+            this.lblRestoreStatus = new System.Windows.Forms.Label();
+            this.lblRestorePercent = new System.Windows.Forms.Label();
+            this.progressRestore = new Guna.UI2.WinForms.Guna2ProgressBar();
+            this.lblRestoreProgressTitle = new System.Windows.Forms.Label();
+            this.pnlRestoreLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnStartRestore = new Guna.UI2.WinForms.Guna2Button();
+            this.dtpPointInTime = new Guna.UI2.WinForms.Guna2DateTimePicker();
+            this.lblPointInTime = new System.Windows.Forms.Label();
+            this.flowRestoreCards = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblRestoreListTitle = new System.Windows.Forms.Label();
+            this.pnlBackup = new System.Windows.Forms.Panel();
+            this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
+            this.dgvHistory = new Guna.UI2.WinForms.Guna2DataGridView();
+            this.colBackupId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBackupTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBackupType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBackupSource = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBackupSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBackupDuration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBackupStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pnlHistoryHeader = new System.Windows.Forms.Panel();
+            this.lblHistoryTotal = new System.Windows.Forms.Label();
+            this.lblHistoryTitle = new System.Windows.Forms.Label();
+            this.pnlBackupLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.pnlBackupProgress = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblBackupStatus = new System.Windows.Forms.Label();
+            this.lblBackupPercent = new System.Windows.Forms.Label();
+            this.progressBackup = new Guna.UI2.WinForms.Guna2ProgressBar();
+            this.btnDryRun = new Guna.UI2.WinForms.Guna2Button();
+            this.btnStartBackup = new Guna.UI2.WinForms.Guna2Button();
+            this.txtBackupTag = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblBackupTag = new System.Windows.Forms.Label();
+            this.cmbCompression = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.lblCompression = new System.Windows.Forms.Label();
+            this.cmbDestination = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.lblDestination = new System.Windows.Forms.Label();
+            this.chkIncremental = new Guna.UI2.WinForms.Guna2CheckBox();
+            this.chkFull = new Guna.UI2.WinForms.Guna2CheckBox();
+            this.lblBackupType = new System.Windows.Forms.Label();
+            this.lblManualTitle = new System.Windows.Forms.Label();
+            this.pnlTabs = new System.Windows.Forms.Panel();
+            this.btnTabRestore = new Guna.UI2.WinForms.Guna2Button();
+            this.btnTabBackup = new Guna.UI2.WinForms.Guna2Button();
+            this.pnlAlert = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblAlert = new System.Windows.Forms.Label();
+            this.pnlRoot.SuspendLayout();
+            this.pnlContent.SuspendLayout();
+            this.pnlRestore.SuspendLayout();
+            this.pnlRestoreRight.SuspendLayout();
+            this.pnlRestoreLeft.SuspendLayout();
+            this.pnlBackup.SuspendLayout();
+            this.pnlHistory.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).BeginInit();
+            this.pnlHistoryHeader.SuspendLayout();
+            this.pnlBackupLeft.SuspendLayout();
+            this.pnlBackupProgress.SuspendLayout();
+            this.pnlTabs.SuspendLayout();
+            this.pnlAlert.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // msgDialog
+            // 
+            this.msgDialog.Parent = null;
+            this.msgDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
+            // 
+            // pnlRoot
+            // 
+            this.pnlRoot.Controls.Add(this.pnlContent);
+            this.pnlRoot.Controls.Add(this.pnlTabs);
+            this.pnlRoot.Controls.Add(this.pnlAlert);
+            this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRoot.Location = new System.Drawing.Point(0, 0);
+            this.pnlRoot.Name = "pnlRoot";
+            this.pnlRoot.Padding = new System.Windows.Forms.Padding(22, 18, 22, 18);
+            this.pnlRoot.Size = new System.Drawing.Size(1128, 782);
+            this.pnlRoot.TabIndex = 0;
+            // 
+            // pnlContent
+            // 
+            this.pnlContent.Controls.Add(this.pnlRestore);
+            this.pnlContent.Controls.Add(this.pnlBackup);
+            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContent.Location = new System.Drawing.Point(22, 130);
+            this.pnlContent.Name = "pnlContent";
+            this.pnlContent.Size = new System.Drawing.Size(1084, 634);
+            this.pnlContent.TabIndex = 2;
+            // 
+            // pnlRestore
+            // 
+            this.pnlRestore.Controls.Add(this.pnlRestoreRight);
+            this.pnlRestore.Controls.Add(this.pnlRestoreLeft);
+            this.pnlRestore.Location = new System.Drawing.Point(0, 0);
+            this.pnlRestore.Name = "pnlRestore";
+            this.pnlRestore.Size = new System.Drawing.Size(1084, 634);
+            this.pnlRestore.TabIndex = 1;
+            // 
+            // pnlRestoreRight
+            // 
+            this.pnlRestoreRight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlRestoreRight.BorderRadius = 10;
+            this.pnlRestoreRight.BorderThickness = 1;
+            this.pnlRestoreRight.Controls.Add(this.txtConsole);
+            this.pnlRestoreRight.Controls.Add(this.lblStep5);
+            this.pnlRestoreRight.Controls.Add(this.lblStep4);
+            this.pnlRestoreRight.Controls.Add(this.lblStep3);
+            this.pnlRestoreRight.Controls.Add(this.lblStep2);
+            this.pnlRestoreRight.Controls.Add(this.lblStep1);
+            this.pnlRestoreRight.Controls.Add(this.lblRestoreStatus);
+            this.pnlRestoreRight.Controls.Add(this.lblRestorePercent);
+            this.pnlRestoreRight.Controls.Add(this.progressRestore);
+            this.pnlRestoreRight.Controls.Add(this.lblRestoreProgressTitle);
+            this.pnlRestoreRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRestoreRight.FillColor = System.Drawing.Color.White;
+            this.pnlRestoreRight.Location = new System.Drawing.Point(542, 0);
+            this.pnlRestoreRight.Name = "pnlRestoreRight";
+            this.pnlRestoreRight.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlRestoreRight.Size = new System.Drawing.Size(542, 634);
+            this.pnlRestoreRight.TabIndex = 1;
+            // 
+            // restore right labels
+            // 
+            this.lblRestoreProgressTitle.AutoSize = true;
+            this.lblRestoreProgressTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblRestoreProgressTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblRestoreProgressTitle.Location = new System.Drawing.Point(22, 22);
+            this.lblRestoreProgressTitle.Text = "Tiến trình phục hồi";
+            this.lblRestorePercent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblRestorePercent.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRestorePercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblRestorePercent.Location = new System.Drawing.Point(428, 24);
+            this.lblRestorePercent.Size = new System.Drawing.Size(80, 22);
+            this.lblRestorePercent.Text = "0%";
+            this.lblRestorePercent.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.progressRestore.BorderRadius = 5;
+            this.progressRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.progressRestore.Location = new System.Drawing.Point(24, 60);
+            this.progressRestore.Name = "progressRestore";
+            this.progressRestore.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.progressRestore.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.progressRestore.Size = new System.Drawing.Size(492, 12);
+            this.lblRestoreStatus.AutoSize = true;
+            this.lblRestoreStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblRestoreStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblRestoreStatus.Location = new System.Drawing.Point(24, 86);
+            this.lblRestoreStatus.Text = "Standby";
+            this.lblStep1.Location = new System.Drawing.Point(26, 126);
+            this.lblStep2.Location = new System.Drawing.Point(26, 163);
+            this.lblStep3.Location = new System.Drawing.Point(26, 200);
+            this.lblStep4.Location = new System.Drawing.Point(26, 237);
+            this.lblStep5.Location = new System.Drawing.Point(26, 274);
+            this.lblStep1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep1.Size = new System.Drawing.Size(460, 28);
+            this.lblStep2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep2.Size = new System.Drawing.Size(460, 28);
+            this.lblStep3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep3.Size = new System.Drawing.Size(460, 28);
+            this.lblStep4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep4.Size = new System.Drawing.Size(460, 28);
+            this.lblStep5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep5.Size = new System.Drawing.Size(460, 28);
+            this.lblStep1.Text = "1. Xác thực bản backup";
+            this.lblStep2.Text = "2. Tắt DB / MOUNT mode";
+            this.lblStep3.Text = "3. Restore datafiles";
+            this.lblStep4.Text = "4. Recover archive log";
+            this.lblStep5.Text = "5. OPEN RESETLOGS";
+            this.txtConsole.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
+            this.txtConsole.BorderRadius = 8;
+            this.txtConsole.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtConsole.DefaultText = "";
+            this.txtConsole.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
+            this.txtConsole.Font = new System.Drawing.Font("Consolas", 9F);
+            this.txtConsole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(213)))), ((int)(((byte)(225)))));
+            this.txtConsole.Location = new System.Drawing.Point(24, 330);
+            this.txtConsole.Multiline = true;
+            this.txtConsole.Name = "txtConsole";
+            this.txtConsole.ReadOnly = true;
+            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtConsole.Size = new System.Drawing.Size(492, 250);
+            // 
+            // pnlRestoreLeft
+            // 
+            this.pnlRestoreLeft.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlRestoreLeft.BorderRadius = 10;
+            this.pnlRestoreLeft.BorderThickness = 1;
+            this.pnlRestoreLeft.Controls.Add(this.btnStartRestore);
+            this.pnlRestoreLeft.Controls.Add(this.dtpPointInTime);
+            this.pnlRestoreLeft.Controls.Add(this.lblPointInTime);
+            this.pnlRestoreLeft.Controls.Add(this.flowRestoreCards);
+            this.pnlRestoreLeft.Controls.Add(this.lblRestoreListTitle);
+            this.pnlRestoreLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlRestoreLeft.FillColor = System.Drawing.Color.White;
+            this.pnlRestoreLeft.Location = new System.Drawing.Point(0, 0);
+            this.pnlRestoreLeft.Name = "pnlRestoreLeft";
+            this.pnlRestoreLeft.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlRestoreLeft.Size = new System.Drawing.Size(522, 634);
+            this.pnlRestoreLeft.TabIndex = 0;
+            this.lblRestoreListTitle.AutoSize = true;
+            this.lblRestoreListTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblRestoreListTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblRestoreListTitle.Location = new System.Drawing.Point(22, 22);
+            this.lblRestoreListTitle.Text = "Chọn bản backup";
+            this.flowRestoreCards.AutoScroll = true;
+            this.flowRestoreCards.Location = new System.Drawing.Point(24, 58);
+            this.flowRestoreCards.Name = "flowRestoreCards";
+            this.flowRestoreCards.Size = new System.Drawing.Size(474, 394);
+            this.lblPointInTime.AutoSize = true;
+            this.lblPointInTime.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblPointInTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblPointInTime.Location = new System.Drawing.Point(24, 470);
+            this.lblPointInTime.Text = "POINT-IN-TIME RECOVERY";
+            this.dtpPointInTime.BorderRadius = 8;
+            this.dtpPointInTime.Checked = true;
+            this.dtpPointInTime.FillColor = System.Drawing.Color.White;
+            this.dtpPointInTime.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpPointInTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpPointInTime.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dtpPointInTime.Location = new System.Drawing.Point(24, 493);
+            this.dtpPointInTime.Size = new System.Drawing.Size(220, 36);
+            this.btnStartRestore.BorderRadius = 8;
+            this.btnStartRestore.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.btnStartRestore.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStartRestore.ForeColor = System.Drawing.Color.White;
+            this.btnStartRestore.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.btnStartRestore.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnStartRestore.Location = new System.Drawing.Point(24, 548);
+            this.btnStartRestore.Name = "btnStartRestore";
+            this.btnStartRestore.PressedColor = System.Drawing.Color.Maroon;
+            this.btnStartRestore.Size = new System.Drawing.Size(474, 42);
+            this.btnStartRestore.Text = "Khởi động phục hồi CSDL";
+            // 
+            // pnlBackup
+            // 
+            this.pnlBackup.Controls.Add(this.pnlHistory);
+            this.pnlBackup.Controls.Add(this.pnlBackupLeft);
+            this.pnlBackup.Location = new System.Drawing.Point(0, 0);
+            this.pnlBackup.Name = "pnlBackup";
+            this.pnlBackup.Size = new System.Drawing.Size(1084, 634);
+            this.pnlBackup.TabIndex = 0;
+            // 
+            // pnlHistory
+            // 
+            this.pnlHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlHistory.BorderRadius = 10;
+            this.pnlHistory.BorderThickness = 1;
+            this.pnlHistory.Controls.Add(this.dgvHistory);
+            this.pnlHistory.Controls.Add(this.pnlHistoryHeader);
+            this.pnlHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlHistory.FillColor = System.Drawing.Color.White;
+            this.pnlHistory.Location = new System.Drawing.Point(422, 0);
+            this.pnlHistory.Name = "pnlHistory";
+            this.pnlHistory.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlHistory.Size = new System.Drawing.Size(662, 634);
+            this.pnlHistory.TabIndex = 1;
+            this.dgvHistory.AllowUserToAddRows = false;
+            this.dgvHistory.AllowUserToDeleteRows = false;
+            this.dgvHistory.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
+            this.dgvHistory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvHistory.BackgroundColor = System.Drawing.Color.White;
+            this.dgvHistory.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvHistory.ColumnHeadersHeight = 34;
+            this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.colBackupId, this.colBackupTime, this.colBackupType, this.colBackupSource, this.colBackupSize, this.colBackupDuration, this.colBackupStatus });
+            this.dgvHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvHistory.EnableHeadersVisualStyles = false;
+            this.dgvHistory.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.dgvHistory.Location = new System.Drawing.Point(1, 54);
+            this.dgvHistory.MultiSelect = false;
+            this.dgvHistory.Name = "dgvHistory";
+            this.dgvHistory.ReadOnly = true;
+            this.dgvHistory.RowHeadersVisible = false;
+            this.dgvHistory.RowTemplate.Height = 42;
+            this.dgvHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvHistory.Size = new System.Drawing.Size(660, 579);
+            this.colBackupId.HeaderText = "Backup ID";
+            this.colBackupId.Name = "colBackupId";
+            this.colBackupId.ReadOnly = true;
+            this.colBackupId.FillWeight = 130F;
+            this.colBackupTime.HeaderText = "Thời gian";
+            this.colBackupTime.Name = "colBackupTime";
+            this.colBackupTime.ReadOnly = true;
+            this.colBackupTime.FillWeight = 105F;
+            this.colBackupType.HeaderText = "Loại";
+            this.colBackupType.Name = "colBackupType";
+            this.colBackupType.ReadOnly = true;
+            this.colBackupSource.HeaderText = "Nguồn";
+            this.colBackupSource.Name = "colBackupSource";
+            this.colBackupSource.ReadOnly = true;
+            this.colBackupSize.HeaderText = "Kích thước";
+            this.colBackupSize.Name = "colBackupSize";
+            this.colBackupSize.ReadOnly = true;
+            this.colBackupDuration.HeaderText = "Thời lượng";
+            this.colBackupDuration.Name = "colBackupDuration";
+            this.colBackupDuration.ReadOnly = true;
+            this.colBackupStatus.HeaderText = "Trạng thái";
+            this.colBackupStatus.Name = "colBackupStatus";
+            this.colBackupStatus.ReadOnly = true;
+            this.pnlHistoryHeader.Controls.Add(this.lblHistoryTotal);
+            this.pnlHistoryHeader.Controls.Add(this.lblHistoryTitle);
+            this.pnlHistoryHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHistoryHeader.Location = new System.Drawing.Point(1, 1);
+            this.pnlHistoryHeader.Size = new System.Drawing.Size(660, 53);
+            this.lblHistoryTitle.AutoSize = true;
+            this.lblHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblHistoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblHistoryTitle.Location = new System.Drawing.Point(18, 16);
+            this.lblHistoryTitle.Text = "Lịch sử sao lưu";
+            this.lblHistoryTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblHistoryTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblHistoryTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblHistoryTotal.Location = new System.Drawing.Point(430, 18);
+            this.lblHistoryTotal.Size = new System.Drawing.Size(210, 20);
+            this.lblHistoryTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // pnlBackupLeft
+            // 
+            this.pnlBackupLeft.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlBackupLeft.BorderRadius = 10;
+            this.pnlBackupLeft.BorderThickness = 1;
+            this.pnlBackupLeft.Controls.Add(this.pnlBackupProgress);
+            this.pnlBackupLeft.Controls.Add(this.btnDryRun);
+            this.pnlBackupLeft.Controls.Add(this.btnStartBackup);
+            this.pnlBackupLeft.Controls.Add(this.txtBackupTag);
+            this.pnlBackupLeft.Controls.Add(this.lblBackupTag);
+            this.pnlBackupLeft.Controls.Add(this.cmbCompression);
+            this.pnlBackupLeft.Controls.Add(this.lblCompression);
+            this.pnlBackupLeft.Controls.Add(this.cmbDestination);
+            this.pnlBackupLeft.Controls.Add(this.lblDestination);
+            this.pnlBackupLeft.Controls.Add(this.chkIncremental);
+            this.pnlBackupLeft.Controls.Add(this.chkFull);
+            this.pnlBackupLeft.Controls.Add(this.lblBackupType);
+            this.pnlBackupLeft.Controls.Add(this.lblManualTitle);
+            this.pnlBackupLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlBackupLeft.FillColor = System.Drawing.Color.White;
+            this.pnlBackupLeft.Location = new System.Drawing.Point(0, 0);
+            this.pnlBackupLeft.Name = "pnlBackupLeft";
+            this.pnlBackupLeft.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlBackupLeft.Size = new System.Drawing.Size(402, 634);
+            this.pnlBackupLeft.TabIndex = 0;
+            this.lblManualTitle.AutoSize = true;
+            this.lblManualTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblManualTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblManualTitle.Location = new System.Drawing.Point(22, 22);
+            this.lblManualTitle.Text = "Sao lưu chủ động";
+            this.lblBackupType.AutoSize = true;
+            this.lblBackupType.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblBackupType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblBackupType.Location = new System.Drawing.Point(24, 66);
+            this.lblBackupType.Text = "LOẠI SAO LƯU";
+            this.chkFull.AutoSize = true;
+            this.chkFull.Checked = true;
+            this.chkFull.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.chkFull.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.chkFull.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.chkFull.Location = new System.Drawing.Point(26, 92);
+            this.chkFull.Text = "FULL - Toàn bộ CSDL";
+            this.chkIncremental.AutoSize = true;
+            this.chkIncremental.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.chkIncremental.Font = this.chkFull.Font;
+            this.chkIncremental.ForeColor = this.chkFull.ForeColor;
+            this.chkIncremental.Location = new System.Drawing.Point(26, 124);
+            this.chkIncremental.Text = "INCREMENTAL - Dữ liệu thay đổi";
+            this.lblDestination.AutoSize = true;
+            this.lblDestination.Font = this.lblBackupType.Font;
+            this.lblDestination.ForeColor = this.lblBackupType.ForeColor;
+            this.lblDestination.Location = new System.Drawing.Point(24, 166);
+            this.lblDestination.Text = "ĐÍCH LƯU TRỮ";
+            this.cmbDestination.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDestination.BorderRadius = 8;
+            this.cmbDestination.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDestination.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDestination.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbDestination.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbDestination.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.cmbDestination.Items.AddRange(new object[] { "/backup/oracle/rman", "/nas/backup/tier1", "/nas/backup/tier2", "TAPE_DRIVE_01" });
+            this.cmbDestination.Location = new System.Drawing.Point(26, 190);
+            this.cmbDestination.Size = new System.Drawing.Size(330, 36);
+            this.cmbDestination.StartIndex = 0;
+            this.lblCompression.AutoSize = true;
+            this.lblCompression.Font = this.lblBackupType.Font;
+            this.lblCompression.ForeColor = this.lblBackupType.ForeColor;
+            this.lblCompression.Location = new System.Drawing.Point(24, 244);
+            this.lblCompression.Text = "NÉN DỮ LIỆU";
+            this.cmbCompression.BackColor = System.Drawing.Color.Transparent;
+            this.cmbCompression.BorderRadius = 8;
+            this.cmbCompression.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbCompression.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCompression.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbCompression.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbCompression.ForeColor = this.cmbDestination.ForeColor;
+            this.cmbCompression.Items.AddRange(new object[] { "MEDIUM", "HIGH", "LOW", "Không nén" });
+            this.cmbCompression.Location = new System.Drawing.Point(26, 268);
+            this.cmbCompression.Size = new System.Drawing.Size(330, 36);
+            this.cmbCompression.StartIndex = 0;
+            this.lblBackupTag.AutoSize = true;
+            this.lblBackupTag.Font = this.lblBackupType.Font;
+            this.lblBackupTag.ForeColor = this.lblBackupType.ForeColor;
+            this.lblBackupTag.Location = new System.Drawing.Point(24, 322);
+            this.lblBackupTag.Text = "GHI CHÚ / TAG";
+            this.txtBackupTag.BorderRadius = 8;
+            this.txtBackupTag.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtBackupTag.DefaultText = "";
+            this.txtBackupTag.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtBackupTag.Location = new System.Drawing.Point(26, 346);
+            this.txtBackupTag.PlaceholderText = "Manual_before_upgrade_v2.1";
+            this.txtBackupTag.Size = new System.Drawing.Size(330, 36);
+            this.btnStartBackup.BorderRadius = 8;
+            this.btnStartBackup.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartBackup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnStartBackup.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnStartBackup.ForeColor = System.Drawing.Color.White;
+            this.btnStartBackup.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnStartBackup.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnStartBackup.Location = new System.Drawing.Point(26, 404);
+            this.btnStartBackup.Size = new System.Drawing.Size(210, 40);
+            this.btnStartBackup.Text = "Bắt đầu sao lưu";
+            this.btnDryRun.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.btnDryRun.BorderRadius = 8;
+            this.btnDryRun.BorderThickness = 1;
+            this.btnDryRun.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDryRun.FillColor = System.Drawing.Color.White;
+            this.btnDryRun.Font = this.btnStartBackup.Font;
+            this.btnDryRun.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnDryRun.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnDryRun.Location = new System.Drawing.Point(246, 404);
+            this.btnDryRun.Size = new System.Drawing.Size(110, 40);
+            this.btnDryRun.Text = "Dry Run";
+            this.pnlBackupProgress.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlBackupProgress.BorderRadius = 8;
+            this.pnlBackupProgress.BorderThickness = 1;
+            this.pnlBackupProgress.Controls.Add(this.lblBackupStatus);
+            this.pnlBackupProgress.Controls.Add(this.lblBackupPercent);
+            this.pnlBackupProgress.Controls.Add(this.progressBackup);
+            this.pnlBackupProgress.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
+            this.pnlBackupProgress.Location = new System.Drawing.Point(26, 470);
+            this.pnlBackupProgress.Name = "pnlBackupProgress";
+            this.pnlBackupProgress.Size = new System.Drawing.Size(330, 96);
+            this.pnlBackupProgress.Visible = false;
+            this.lblBackupPercent.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblBackupPercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblBackupPercent.Location = new System.Drawing.Point(248, 15);
+            this.lblBackupPercent.Size = new System.Drawing.Size(60, 20);
+            this.lblBackupPercent.Text = "0%";
+            this.lblBackupPercent.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.progressBackup.BorderRadius = 5;
+            this.progressBackup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.progressBackup.Location = new System.Drawing.Point(18, 44);
+            this.progressBackup.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.progressBackup.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.progressBackup.Size = new System.Drawing.Size(290, 10);
+            this.lblBackupStatus.AutoEllipsis = true;
+            this.lblBackupStatus.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblBackupStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblBackupStatus.Location = new System.Drawing.Point(18, 62);
+            this.lblBackupStatus.Size = new System.Drawing.Size(290, 22);
+            this.lblBackupStatus.Text = "Đang chuẩn bị...";
+            // 
+            // tabs and alert
+            // 
+            this.pnlTabs.Controls.Add(this.btnTabRestore);
+            this.pnlTabs.Controls.Add(this.btnTabBackup);
+            this.pnlTabs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlTabs.Location = new System.Drawing.Point(22, 84);
+            this.pnlTabs.Name = "pnlTabs";
+            this.pnlTabs.Size = new System.Drawing.Size(1084, 46);
+            this.btnTabBackup.BorderRadius = 8;
+            this.btnTabBackup.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnTabBackup.Checked = true;
+            this.btnTabBackup.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnTabBackup.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnTabBackup.FillColor = System.Drawing.Color.White;
+            this.btnTabBackup.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnTabBackup.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnTabBackup.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnTabBackup.Location = new System.Drawing.Point(0, 6);
+            this.btnTabBackup.Size = new System.Drawing.Size(130, 34);
+            this.btnTabBackup.Text = "Sao lưu";
+            this.btnTabRestore.BorderRadius = 8;
+            this.btnTabRestore.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnTabRestore.CheckedState.FillColor = this.btnTabBackup.CheckedState.FillColor;
+            this.btnTabRestore.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnTabRestore.FillColor = System.Drawing.Color.White;
+            this.btnTabRestore.Font = this.btnTabBackup.Font;
+            this.btnTabRestore.ForeColor = this.btnTabBackup.ForeColor;
+            this.btnTabRestore.HoverState.FillColor = this.btnTabBackup.HoverState.FillColor;
+            this.btnTabRestore.Location = new System.Drawing.Point(140, 6);
+            this.btnTabRestore.Size = new System.Drawing.Size(130, 34);
+            this.btnTabRestore.Text = "Phục hồi";
+            this.pnlAlert.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(230)))), ((int)(((byte)(138)))));
+            this.pnlAlert.BorderRadius = 10;
+            this.pnlAlert.BorderThickness = 1;
+            this.pnlAlert.Controls.Add(this.lblAlert);
+            this.pnlAlert.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlAlert.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(235)))));
+            this.pnlAlert.Location = new System.Drawing.Point(22, 18);
+            this.pnlAlert.Name = "pnlAlert";
+            this.pnlAlert.Size = new System.Drawing.Size(1084, 66);
+            this.lblAlert.AutoEllipsis = true;
+            this.lblAlert.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblAlert.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(64)))), ((int)(((byte)(14)))));
+            this.lblAlert.Location = new System.Drawing.Point(18, 16);
+            this.lblAlert.Size = new System.Drawing.Size(1036, 34);
+            this.lblAlert.Text = "Cảnh báo: thao tác phục hồi CSDL có thể dừng kết nối và không thể hoàn tác. Chỉ thực hiện khi đã xác nhận bản backup hợp lệ.";
             // 
             // ucSaoLuuPhucHoi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(248)))));
+            this.Controls.Add(this.pnlRoot);
             this.Name = "ucSaoLuuPhucHoi";
             this.Size = new System.Drawing.Size(1128, 782);
+            this.pnlRoot.ResumeLayout(false);
+            this.pnlContent.ResumeLayout(false);
+            this.pnlRestore.ResumeLayout(false);
+            this.pnlRestoreRight.ResumeLayout(false);
+            this.pnlRestoreRight.PerformLayout();
+            this.pnlRestoreLeft.ResumeLayout(false);
+            this.pnlRestoreLeft.PerformLayout();
+            this.pnlBackup.ResumeLayout(false);
+            this.pnlHistory.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).EndInit();
+            this.pnlHistoryHeader.ResumeLayout(false);
+            this.pnlHistoryHeader.PerformLayout();
+            this.pnlBackupLeft.ResumeLayout(false);
+            this.pnlBackupLeft.PerformLayout();
+            this.pnlBackupProgress.ResumeLayout(false);
+            this.pnlTabs.ResumeLayout(false);
+            this.pnlAlert.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
+
+        private Guna.UI2.WinForms.Guna2MessageDialog msgDialog;
+        private System.Windows.Forms.Panel pnlRoot;
+        private Guna.UI2.WinForms.Guna2Panel pnlAlert;
+        private System.Windows.Forms.Label lblAlert;
+        private System.Windows.Forms.Panel pnlTabs;
+        private Guna.UI2.WinForms.Guna2Button btnTabRestore;
+        private Guna.UI2.WinForms.Guna2Button btnTabBackup;
+        private System.Windows.Forms.Panel pnlContent;
+        private System.Windows.Forms.Panel pnlBackup;
+        private Guna.UI2.WinForms.Guna2Panel pnlBackupLeft;
+        private System.Windows.Forms.Label lblManualTitle;
+        private System.Windows.Forms.Label lblBackupType;
+        private Guna.UI2.WinForms.Guna2CheckBox chkFull;
+        private Guna.UI2.WinForms.Guna2CheckBox chkIncremental;
+        private System.Windows.Forms.Label lblDestination;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbDestination;
+        private System.Windows.Forms.Label lblCompression;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbCompression;
+        private System.Windows.Forms.Label lblBackupTag;
+        private Guna.UI2.WinForms.Guna2TextBox txtBackupTag;
+        private Guna.UI2.WinForms.Guna2Button btnStartBackup;
+        private Guna.UI2.WinForms.Guna2Button btnDryRun;
+        private Guna.UI2.WinForms.Guna2Panel pnlBackupProgress;
+        private System.Windows.Forms.Label lblBackupStatus;
+        private System.Windows.Forms.Label lblBackupPercent;
+        private Guna.UI2.WinForms.Guna2ProgressBar progressBackup;
+        private Guna.UI2.WinForms.Guna2Panel pnlHistory;
+        private Guna.UI2.WinForms.Guna2DataGridView dgvHistory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBackupId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBackupTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBackupType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBackupSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBackupSize;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBackupDuration;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colBackupStatus;
+        private System.Windows.Forms.Panel pnlHistoryHeader;
+        private System.Windows.Forms.Label lblHistoryTotal;
+        private System.Windows.Forms.Label lblHistoryTitle;
+        private System.Windows.Forms.Panel pnlRestore;
+        private Guna.UI2.WinForms.Guna2Panel pnlRestoreLeft;
+        private Guna.UI2.WinForms.Guna2Button btnStartRestore;
+        private Guna.UI2.WinForms.Guna2DateTimePicker dtpPointInTime;
+        private System.Windows.Forms.Label lblPointInTime;
+        private System.Windows.Forms.FlowLayoutPanel flowRestoreCards;
+        private System.Windows.Forms.Label lblRestoreListTitle;
+        private Guna.UI2.WinForms.Guna2Panel pnlRestoreRight;
+        private Guna.UI2.WinForms.Guna2TextBox txtConsole;
+        private System.Windows.Forms.Label lblStep5;
+        private System.Windows.Forms.Label lblStep4;
+        private System.Windows.Forms.Label lblStep3;
+        private System.Windows.Forms.Label lblStep2;
+        private System.Windows.Forms.Label lblStep1;
+        private System.Windows.Forms.Label lblRestoreStatus;
+        private System.Windows.Forms.Label lblRestorePercent;
+        private Guna.UI2.WinForms.Guna2ProgressBar progressRestore;
+        private System.Windows.Forms.Label lblRestoreProgressTitle;
     }
 }
