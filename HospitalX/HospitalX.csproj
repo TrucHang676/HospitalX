@@ -215,8 +215,26 @@
     <Compile Include="GUI\PH2\DieuPhoiVien\ucTaoHSBA.Designer.cs">
       <DependentUpon>ucTaoHSBA.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucDieuPhoiKTV.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucDieuPhoiKTV.Designer.cs">
+      <DependentUpon>ucDieuPhoiKTV.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmPhanCongKTV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmPhanCongKTV.Designer.cs">
+      <DependentUpon>frmPhanCongKTV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietYeuCau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietYeuCau.Designer.cs">
+      <DependentUpon>frmChiTietYeuCau.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.Designer.cs">
       <DependentUpon>frmChiTietBN.cs</DependentUpon>
@@ -377,11 +395,20 @@
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.resx">
       <DependentUpon>frmChiTietBN.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmPhanCongKTV.resx">
+      <DependentUpon>frmPhanCongKTV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmChiTietYeuCau.resx">
+      <DependentUpon>frmChiTietYeuCau.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucThemSuaBN.resx">
       <DependentUpon>ucThemSuaBN.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucTaoHSBA.resx">
       <DependentUpon>ucTaoHSBA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucDieuPhoiKTV.resx">
+      <DependentUpon>ucDieuPhoiKTV.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>

@@ -151,7 +151,7 @@ namespace HospitalX.GUI.PH2
             btnDanhSachBN.Click += (s, e) => NavigateToDanhSachBN();
             btnThemSuaBN.Click += (s, e) => NavigateToThemSuaBN();
             btnTaoHSBA.Click += (s, e) => NavigateToTaoHSBA();
-            btnDieuPhoiKTV.Click += (s, e) => ShowComingSoon(btnDieuPhoiKTV, "Điều phối kỹ thuật viên");
+            btnDieuPhoiKTV.Click += (s, e) => NavigateToDieuPhoiKTV();
             btnThongBaoNoiBo.Click += (s, e) => ShowComingSoon(btnThongBaoNoiBo, "Thông báo nội bộ");
             btnHoSoCaNhan.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
             btnLogout.Click += BtnLogout_Click;
@@ -181,6 +181,12 @@ namespace HospitalX.GUI.PH2
         {
             LoadPage(new ucTaoHSBA(), "Tạo hồ sơ bệnh án", "/ HSBA");
             btnTaoHSBA.Checked = true;
+        }
+
+        public void NavigateToDieuPhoiKTV()
+        {
+            LoadPage(new ucDieuPhoiKTV(), "Điều phối kỹ thuật viên", "/ HSBA_DV");
+            btnDieuPhoiKTV.Checked = true;
         }
 
         private void LoadPage(UserControl control, string title, string breadcrumb)
