@@ -20,6 +20,7 @@ namespace HospitalX.GUI.PH2
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.btnHoSoCaNhan = new Guna.UI2.WinForms.Guna2Button();
             this.lblBadgeNotif = new System.Windows.Forms.Label();
             this.btnThongBaoNoiBo = new Guna.UI2.WinForms.Guna2Button();
@@ -38,6 +39,7 @@ namespace HospitalX.GUI.PH2
             this.lblTenDPV = new System.Windows.Forms.Label();
             this.lblAvatarIni = new System.Windows.Forms.Label();
             this.pnlTopRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblHospital = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.pnlLine2 = new Guna.UI2.WinForms.Guna2Separator();
             this.lblQTCSDLBV = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.pnlLogo = new Guna.UI2.WinForms.Guna2Panel();
@@ -47,8 +49,6 @@ namespace HospitalX.GUI.PH2
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.lblHospital = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.pnlSidebar.SuspendLayout();
             this.pnlProfile.SuspendLayout();
             this.pnlTopRight.SuspendLayout();
@@ -99,6 +99,32 @@ namespace HospitalX.GUI.PH2
             this.pnlSidebar.Name = "pnlSidebar";
             this.pnlSidebar.Size = new System.Drawing.Size(347, 1046);
             this.pnlSidebar.TabIndex = 0;
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(110)))), ((int)(((byte)(110)))));
+            this.btnLogout.BorderRadius = 10;
+            this.btnLogout.BorderThickness = 1;
+            this.btnLogout.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnLogout.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnLogout.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLogout.FillColor = System.Drawing.Color.Transparent;
+            this.btnLogout.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btnLogout.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.btnLogout.HoverState.FillColor = System.Drawing.Color.Maroon;
+            this.btnLogout.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
+            this.btnLogout.Location = new System.Drawing.Point(32, 977);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(267, 47);
+            this.btnLogout.TabIndex = 15;
+            this.btnLogout.Text = "Đăng xuất";
             // 
             // btnHoSoCaNhan
             // 
@@ -287,6 +313,7 @@ namespace HospitalX.GUI.PH2
             this.btnDashboard.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnDashboard.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(230)))), ((int)(((byte)(220)))));
             this.btnDashboard.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(120)))), ((int)(((byte)(103)))));
+            this.btnDashboard.Image = ((System.Drawing.Image)(resources.GetObject("btnDashboard.Image")));
             this.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDashboard.ImageOffset = new System.Drawing.Point(8, 0);
             this.btnDashboard.Location = new System.Drawing.Point(19, 281);
@@ -394,6 +421,18 @@ namespace HospitalX.GUI.PH2
             this.pnlTopRight.Name = "pnlTopRight";
             this.pnlTopRight.Size = new System.Drawing.Size(347, 89);
             this.pnlTopRight.TabIndex = 0;
+            // 
+            // lblHospital
+            // 
+            this.lblHospital.BackColor = System.Drawing.Color.Transparent;
+            this.lblHospital.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHospital.ForeColor = System.Drawing.Color.Lime;
+            this.lblHospital.Location = new System.Drawing.Point(91, 25);
+            this.lblHospital.Margin = new System.Windows.Forms.Padding(4);
+            this.lblHospital.Name = "lblHospital";
+            this.lblHospital.Size = new System.Drawing.Size(100, 15);
+            this.lblHospital.TabIndex = 8;
+            this.lblHospital.Text = "HOSPITAL SYSTEM";
             // 
             // pnlLine2
             // 
@@ -509,44 +548,6 @@ namespace HospitalX.GUI.PH2
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(1453, 982);
             this.pnlContent.TabIndex = 2;
-            // 
-            // lblHospital
-            // 
-            this.lblHospital.BackColor = System.Drawing.Color.Transparent;
-            this.lblHospital.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHospital.ForeColor = System.Drawing.Color.Lime;
-            this.lblHospital.Location = new System.Drawing.Point(91, 25);
-            this.lblHospital.Margin = new System.Windows.Forms.Padding(4);
-            this.lblHospital.Name = "lblHospital";
-            this.lblHospital.Size = new System.Drawing.Size(100, 15);
-            this.lblHospital.TabIndex = 8;
-            this.lblHospital.Text = "HOSPITAL SYSTEM";
-            // 
-            // btnLogout
-            // 
-            this.btnLogout.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(110)))), ((int)(((byte)(110)))));
-            this.btnLogout.BorderRadius = 10;
-            this.btnLogout.BorderThickness = 1;
-            this.btnLogout.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
-            this.btnLogout.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.btnLogout.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnLogout.FillColor = System.Drawing.Color.Transparent;
-            this.btnLogout.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btnLogout.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.btnLogout.HoverState.FillColor = System.Drawing.Color.Maroon;
-            this.btnLogout.HoverState.ForeColor = System.Drawing.Color.White;
-            this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
-            this.btnLogout.Location = new System.Drawing.Point(32, 977);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(4);
-            this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(267, 47);
-            this.btnLogout.TabIndex = 15;
-            this.btnLogout.Text = "Đăng xuất";
             // 
             // Main_DPV
             // 
