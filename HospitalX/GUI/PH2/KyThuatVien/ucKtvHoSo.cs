@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2.KyThuatVien
@@ -13,11 +14,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Guna2Panel pnlEditModalOverlay;
         private Guna2Panel cardEditModal;
 
-        // Core Layout Scroll
-        private Panel pnlScroll;
+        // Stats Controls
+        private Guna2Panel[] cardStats = new Guna2Panel[4];
 
         // Hero Panel Controls
-        private Guna2Panel pnlHero;
         private Guna2Panel pnlHeroAvatar;
         private Label lblHeroAvatarText;
         private Guna2Panel pnlHeroAvatarEdit;
@@ -26,20 +26,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private FlowLayoutPanel flpHeroTags;
         private Guna2Button btnHeroEdit;
         private Guna2Button btnHeroPw;
-
-        // Stats Controls
-        private Guna2Panel[] cardStats = new Guna2Panel[4];
-
-        // Two Column Split
-        private Guna2Panel cardPersonalInfo;
-        private Guna2Panel cardWorkInfo;
-
-        // Skills & Certs Column (Left)
-        private Guna2Panel cardSkills;
-        private Guna2Panel cardCerts;
-
-        // Activity History Column (Right)
-        private Guna2Panel cardActivities;
 
         // Edit Profile Modal Overlay — PASSWORD CHANGE (inline)
         private Guna2Panel pnlPwModalOverlay;
@@ -71,14 +57,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private int toastTicks = 0;
         private bool isToastShowing = false;
 
-        // Shared local state data
-        private string ktvName = "Nguyễn Thị Thu";
-        private string ktvDob = "15/08/1992";
-        private string ktvGender = "Nữ";
-        private string ktvPhone = "0914 567 890";
-        private string ktvEmail = "thu.nguyen@hospitalx.vn";
-        private string ktvAddress = "45 Đường Lê Lợi, P.3, TP. Biên Hòa, Đồng Nai";
-        private string ktvShift = "Ca sáng: 07:00 – 15:00";
+        // Shared local state data — từ NHANVIEN (không có Email, địa chỉ nhà riêng; chỉ có SODT và QUEQUAN)
+        private string ktvName    = "Nguyễn Thị Thu";
+        private string ktvDob     = "15/08/1992";   // NGAYSINH
+        private string ktvGender  = "Nữ";            // PHAI
+        private string ktvCmnd    = "079292013456"; // CMND
+        private string ktvPhone   = "0914 567 890"; // SODT
+        private string ktvQueQuan = "45 Đường Lê Lợi, P.3, TP. Biên Hòa, Đồng Nai"; // QUEQUAN
+        private string ktvAddress = "45 Đường Lê Lợi, P.3, TP. Biên Hòa, Đồng Nai"; // map to Quê quán
+        private string ktvEmail   = "thu.nguyen@hospitalx.vn";
+        private string ktvShift   = "Ca sáng: 07:00 – 15:00";
+        private string ktvMaNv    = "KTV042";       // MANV
+        private string ktvVaiTro  = "Kỹ thuật viên"; // VAITRO
+        private string ktvChuyenKhoa = "Khoa Xét nghiệm"; // CHUYENKHOA
 
         public ucKtvHoSo()
         {
@@ -86,6 +77,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             DoubleBuffered = true;
             BackColor = KtvTheme.Bg;
             this.AutoScroll = false;
+
+            // Link the array cardStats to the designer-generated cardStat controls
+            cardStats[0] = this.cardStat1;
+            cardStats[1] = this.cardStat2;
+            cardStats[2] = this.cardStat3;
+            cardStats[3] = this.cardStat4;
 
             BuildBaseStructure();
             BuildModals(); // Only builds the Password Change modal now
@@ -106,26 +103,21 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void BuildBaseStructure()
         {
-            Controls.Clear();
-
-            // Scrollable Panel Container
-            pnlScroll = new Panel
+            // Do NOT call Controls.Clear() and do NOT re-instantiate container panels because they are created in InitializeComponent()!
+            
+            // Clear controls inside the main container cards to redraw fresh content at runtime
+            pnlHero.Controls.Clear();
+            cardPersonalInfo.Controls.Clear();
+            cardWorkInfo.Controls.Clear();
+            cardSkills.Controls.Clear();
+            cardCerts.Controls.Clear();
+            cardActivities.Controls.Clear();
+            for (int i = 0; i < 4; i++)
             {
-                Location = new Point(0, 0),
-                Size = new Size(this.Width, this.Height),
-                AutoScroll = true,
-                BackColor = Color.Transparent
-            };
-            Controls.Add(pnlScroll);
+                cardStats[i].Controls.Clear();
+            }
 
             // A. Profile Hero Card
-            pnlHero = new Guna2Panel
-            {
-                BorderRadius = 12,
-                FillColor = KtvTheme.TealDark,
-                ShadowDecoration = { Enabled = true, Color = KtvTheme.Teal, Depth = 10, Shadow = new Padding(0, 2, 8, 2) }
-            };
-
             // Avatar Container
             pnlHeroAvatar = new Guna2Panel
             {
@@ -195,6 +187,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnHeroEdit.Padding = new Padding(0);
             btnHeroEdit.Click += (s, e) => OpenEditProfileForm();
             pnlHero.Controls.Add(btnHeroEdit);
+            btnHeroEdit.Visible = false;
 
             btnHeroPw = KtvTheme.Button("Đổi mật khẩu", Color.FromArgb(40, 255, 255, 255), Color.White);
             btnHeroPw.BorderColor = Color.FromArgb(80, 255, 255, 255);
@@ -204,19 +197,22 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnHeroPw.TextOffset = new Point(0, 0);
             btnHeroPw.Click += (s, e) => OpenModal(pnlPwModalOverlay);
             pnlHero.Controls.Add(btnHeroPw);
+            btnHeroPw.Visible = false;
 
-            pnlScroll.Controls.Add(pnlHero);
+            // B. Stats Row — dữ liệu từ HSBA_DV
+            var allSvc = KtvData.Services();
+            int totalDv  = allSvc.Count;
+            int doneDv   = allSvc.Count(x => x.Status == "Hoàn thành");
+            int pendDv   = allSvc.Count(x => x.Status == "Chờ thực hiện");
 
-            // B. Stats Row
-            string[] statVals = { "1,248", "4.9", "6 năm", "3" };
-            string[] statLbls = { "Dịch vụ đã thực hiện", "Đánh giá trung bình", "Thâm niên công tác", "Chứng chỉ chuyên môn" };
-            string[] statEmojis = { "🧪", "⭐", "⏱", "🎖" };
-            Color[] statBgs = { KtvTheme.TealLight, KtvTheme.AccentSoft, KtvTheme.InfoSoft, Color.FromArgb(240, 235, 248) };
-            Color[] statColors = { KtvTheme.Teal, Color.FromArgb(160, 112, 0), KtvTheme.Info, Color.FromArgb(123, 94, 167) };
+            string[] statVals   = { totalDv.ToString(), doneDv.ToString(), pendDv.ToString(), ktvChuyenKhoa };
+            string[] statLbls   = { "Tổng DV được phân công", "Đã hoàn thành", "Chờ thực hiện", "Chuyên khoa" };
+            string[] statEmojis = { "🧪", "✅", "⏳", "🏥" };
+            Color[] statBgs     = { KtvTheme.TealLight, KtvTheme.AccentSoft, KtvTheme.InfoSoft, Color.FromArgb(240, 235, 248) };
+            Color[] statColors  = { KtvTheme.Teal, Color.FromArgb(160, 112, 0), KtvTheme.Info, Color.FromArgb(123, 94, 167) };
 
             for (int i = 0; i < 4; i++)
             {
-                cardStats[i] = KtvTheme.Card(0, 0, 100, 92);
                 cardStats[i].ShadowDecoration.Enabled = true;
                 cardStats[i].ShadowDecoration.Color = KtvTheme.Teal;
                 cardStats[i].ShadowDecoration.Depth = 6;
@@ -239,43 +235,32 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 var lblLbl = KtvTheme.Label(statLbls[i], 82, 48, 8.5F, FontStyle.Regular, KtvTheme.TextLight);
 
                 cardStats[i].Controls.AddRange(new Control[] { pnlIcon, lblVal, lblLbl });
-                pnlScroll.Controls.Add(cardStats[i]);
             }
 
             // C. Personal Info Card
-            cardPersonalInfo = KtvTheme.Card(0, 0, 100, 100);
             cardPersonalInfo.ShadowDecoration.Enabled = true;
             cardPersonalInfo.ShadowDecoration.Color = KtvTheme.Teal;
             cardPersonalInfo.ShadowDecoration.Depth = 8;
-            pnlScroll.Controls.Add(cardPersonalInfo);
 
             // D. Work Info Card
-            cardWorkInfo = KtvTheme.Card(0, 0, 100, 100);
             cardWorkInfo.ShadowDecoration.Enabled = true;
             cardWorkInfo.ShadowDecoration.Color = KtvTheme.Teal;
             cardWorkInfo.ShadowDecoration.Depth = 8;
-            pnlScroll.Controls.Add(cardWorkInfo);
 
             // E. Skills Card
-            cardSkills = KtvTheme.Card(0, 0, 100, 100);
             cardSkills.ShadowDecoration.Enabled = true;
             cardSkills.ShadowDecoration.Color = KtvTheme.Teal;
             cardSkills.ShadowDecoration.Depth = 8;
-            pnlScroll.Controls.Add(cardSkills);
 
             // F. Certificates Card
-            cardCerts = KtvTheme.Card(0, 0, 100, 100);
             cardCerts.ShadowDecoration.Enabled = true;
             cardCerts.ShadowDecoration.Color = KtvTheme.Teal;
             cardCerts.ShadowDecoration.Depth = 8;
-            pnlScroll.Controls.Add(cardCerts);
 
             // G. Activity Card
-            cardActivities = KtvTheme.Card(0, 0, 100, 100);
             cardActivities.ShadowDecoration.Enabled = true;
             cardActivities.ShadowDecoration.Color = KtvTheme.Teal;
             cardActivities.ShadowDecoration.Depth = 8;
-            pnlScroll.Controls.Add(cardActivities);
 
             // H. Toast Notification
             pnlToast = new Guna2Panel
@@ -351,12 +336,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblHeroRole.Location = new Point(134, 52);
             
             int heroButtonsY = 49;
-            int heroEditX = cardW - 302;
+            int heroEditX = cardW - 28;
             flpHeroTags.Location = new Point(134, 82);
             flpHeroTags.Size = new Size(Math.Max(260, heroEditX - flpHeroTags.Left - 18), 32);
 
-            btnHeroEdit.Location = new Point(heroEditX, heroButtonsY);
-            btnHeroPw.Location = new Point(cardW - 174, 49);
+            if (btnHeroEdit != null) btnHeroEdit.Location = new Point(heroEditX, heroButtonsY);
+            if (btnHeroPw != null) btnHeroPw.Location = new Point(cardW - 174, 49);
 
             // 2. Layout Stats Row
             int statW = (cardW - 3 * gap) / 4;
@@ -429,16 +414,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             cardPersonalInfo.Controls.AddRange(new Control[] { lblTitle, btnEdit });
 
-            string[] personalLabels = { "Họ và tên", "Ngày sinh", "Giới tính", "CMND / CCCD", "Số điện thoại", "Email", "Địa chỉ", "Trạng thái" };
-            string[] personalVals = { ktvName, ktvDob, ktvGender, "079292013456", ktvPhone, ktvEmail, ktvAddress, "ACTIVE" };
+            // Thông tin cá nhân — chỉ hiển thị trường thực có trong NHANVIEN
+            // Họ tên, Ngày sinh, Giới tính, CMND, Số điện thoại, Quê quán, Trạng thái
+            // Email và địa chỉ nhà riêng đã bỏ vì không tồn tại trong Oracle schema
+            string[] personalLabels = { "Họ và tên", "Ngày sinh", "Giới tính", "CMND / CCCD", "Số điện thoại", "Quê quán", "Trạng thái" };
+            string[] personalVals  = { ktvName, ktvDob, ktvGender, ktvCmnd, ktvPhone, ktvQueQuan, "ACTIVE" };
 
             int yRow = 58;
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++) // 7 rows: họ tên, ngày sinh, giới tính, cmnd, sđt, quê quán, trạng thái
             {
                 var lblRow = KtvTheme.Label(personalLabels[i], 20, yRow + 6, 9F, FontStyle.Regular, KtvTheme.TextLight);
                 cardPersonalInfo.Controls.Add(lblRow);
 
-                if (i == 7) // Status Badge
+                if (i == 6) // Status Badge (index 6 now, not 7)
                 {
                     var pnlBadge = new Guna2Panel
                     {
@@ -469,7 +457,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 }
 
                 // Divider line
-                if (i < 7)
+                if (i < 6)
                 {
                     var line = new Guna2Panel { Location = new Point(20, yRow + 32), Size = new Size(cardPersonalInfo.Width - 40, 1), FillColor = Color.FromArgb(244, 247, 250) };
                     cardPersonalInfo.Controls.Add(line);
@@ -483,23 +471,25 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             cardWorkInfo.Controls.Clear();
             var lblTitle = KtvTheme.Label("🏥 Thông tin công tác", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
+            cardWorkInfo.Controls.Add(lblTitle);
 
-
-            string[] workLabels = { "Mã nhân viên", "Chức danh", "Bộ phận", "Phòng ban", "Ca làm việc", "Ngày vào làm", "Bằng cấp", "Nơi đào tạo" };
-            string[] workVals = { "KTV-2019-042", "Kỹ thuật viên Xét nghiệm", "Khoa Xét nghiệm", "Phòng XN A1 — Huyết học", ktvShift, "03/06/2019", "Cử nhân Xét nghiệm Y học", "ĐH Y Dược TP.HCM" };
+            // Chỉ hiển thị các trường có trong NHANVIEN (bỏ Ca làm, Phòng ban, Bằng cấp, Nơi đào tạo)
+            // VAITRO, CHUYENKHOA, MANV là các cột thực có
+            string[] workLabels = { "Mã nhân viên", "Chức danh", "Chuyên khoa" };
+            string[] workVals   = { ktvMaNv, ktvVaiTro, ktvChuyenKhoa };
 
             int yRow = 58;
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var lblRow = KtvTheme.Label(workLabels[i], 20, yRow + 6, 9F, FontStyle.Regular, KtvTheme.TextLight);
                 var lblVal = KtvTheme.Label(workVals[i], 180, yRow + 6, 9F, FontStyle.Bold, KtvTheme.TextDark);
                 
                 cardWorkInfo.Controls.AddRange(new Control[] { lblRow, lblVal });
 
-                if (i < 7)
+                if (i < 2)
                 {
                     var line = new Guna2Panel { Location = new Point(20, yRow + 32), Size = new Size(cardWorkInfo.Width - 40, 1), FillColor = Color.FromArgb(244, 247, 250) };
-                    cardWorkInfo.Controls.Add(lblTitle);
+                    cardWorkInfo.Controls.Add(line);
                 }
 
                 yRow += 33;
@@ -509,161 +499,128 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private void RenderSkills()
         {
             cardSkills.Controls.Clear();
-            var lblTitle = KtvTheme.Label("⚡ Chuyên môn & kỹ năng", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
+            var lblTitle = KtvTheme.Label("🧪 Thống kê dịch vụ (từ HSBA_DV)", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
             cardSkills.Controls.Add(lblTitle);
 
-            string[] skillNames = { "Xét nghiệm Huyết học", "Sinh hóa lâm sàng", "Miễn dịch học", "Vi sinh lâm sàng", "Vận hành máy Sysmex" };
-            int[] skillPcts = { 95, 88, 75, 70, 92 };
-            Color[] skillColors = { KtvTheme.Teal, KtvTheme.Teal, KtvTheme.Accent, KtvTheme.Accent, KtvTheme.Info };
+            // Dữ liệu từ HSBA_DV — không có skill bars trong Oracle schema
+            var allSvc  = KtvData.Services();
+            var byType  = allSvc.GroupBy(x => x.Service)
+                                .Select(g => new { Name = g.Key, Count = g.Count(), Done = g.Count(s => s.Status == "Hoàn thành") })
+                                .OrderByDescending(g => g.Count)
+                                .ToList();
 
             int yRow = 52;
-            for (int i = 0; i < 5; i++)
+            foreach (var item in byType)
             {
-                var lblName = KtvTheme.Label(skillNames[i], 20, yRow, 8.8F, FontStyle.Bold, KtvTheme.TextDark);
-                var lblPct = KtvTheme.Label($"{skillPcts[i]}%", cardSkills.Width - 60, yRow, 8.5F, FontStyle.Bold, KtvTheme.TextMid);
+                int pct = item.Count > 0 ? item.Done * 100 / item.Count : 0;
+                var lblName = KtvTheme.Label($"{item.Name}", 20, yRow, 8.8F, FontStyle.Bold, KtvTheme.TextDark);
+                var lblPct  = KtvTheme.Label($"{item.Done}/{item.Count} hoàn thành", cardSkills.Width - 160, yRow, 8.5F, FontStyle.Bold, KtvTheme.TextMid);
 
                 var pnlBarBg = new Guna2Panel
                 {
                     Location = new Point(20, yRow + 20),
                     Size = new Size(cardSkills.Width - 40, 6),
                     BorderRadius = 3,
-                    FillColor = KtvTheme.Border
+                    FillColor = KtvTheme.TealLight
                 };
-
-                var pnlBarFill = new Guna2Panel
+                int barW = cardSkills.Width - 40;
+                var pnlBarFg = new Guna2Panel
                 {
                     Location = new Point(0, 0),
-                    Size = new Size((int)((cardSkills.Width - 40) * (skillPcts[i] / 100f)), 6),
+                    Size = new Size((int)(barW * pct / 100), 6),
                     BorderRadius = 3,
-                    FillColor = skillColors[i]
+                    FillColor = KtvTheme.Teal
                 };
-                pnlBarBg.Controls.Add(pnlBarFill);
+                pnlBarBg.Controls.Add(pnlBarFg);
 
                 cardSkills.Controls.AddRange(new Control[] { lblName, lblPct, pnlBarBg });
-
-                yRow += 34;
+                yRow += 48;
             }
         }
 
         private void RenderCertificates()
         {
             cardCerts.Controls.Clear();
-            var lblTitle = KtvTheme.Label("🏆 Chứng chỉ chuyên môn", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
+            // Chứng chỉ không có trong Oracle schema — thay bằng danh sách dịch vụ gần nhất từ HSBA_DV
+            var lblTitle = KtvTheme.Label("📊 Dịch vụ gần nhất (HSBA_DV)", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
             cardCerts.Controls.Add(lblTitle);
 
-            string[] certEmojis = { "📜", "🔬", "🧬" };
-            string[] certNames = { "Chứng chỉ hành nghề Kỹ thuật viên XN", "ISO 15189:2022 — Phòng XN Y tế", "Nâng cao — Huyết học phân tử" };
-            string[] certExps = { "Bộ Y tế · Cấp: 06/2020 · HH: 06/2025", "VIAS · Cấp: 09/2022 · HH: 09/2025", "Bệnh viện Chợ Rẫy · Cấp: 03/2023 · Vô thời hạn" };
-            string[] certBadges = { "⚠ Sắp hết hạn", "✅ Còn hiệu lực", "✅ Còn hiệu lực" };
-            Color[] badgeBgs = { KtvTheme.AccentSoft, KtvTheme.TealLight, KtvTheme.TealLight };
-            Color[] badgeFgs = { Color.FromArgb(160, 112, 0), KtvTheme.Teal, KtvTheme.Teal };
+            var allSvc  = KtvData.Services();
+            // Hiển thị 4 dịch vụ đầu tiên (ORDER BY NGAYDV DESC)
+            var recent  = allSvc.OrderByDescending(x => x.NgayDv).Take(4).ToList();
 
             int yRow = 52;
-            for (int i = 0; i < 3; i++)
+            foreach (var svc in recent)
             {
-                // Emoji Icon round
+                Color dot  = svc.Status == "Hoàn thành" ? KtvTheme.Teal  : Color.FromArgb(240, 165, 0);
+                Color dotBg = svc.Status == "Hoàn thành" ? KtvTheme.TealLight : KtvTheme.AccentSoft;
+                string icon = svc.Status == "Hoàn thành" ? "✅" : "⏳";
+
                 var pnlIc = new Guna2Panel
                 {
-                    Size = new Size(38, 38),
+                    Size = new Size(32, 32),
                     Location = new Point(20, yRow),
                     BorderRadius = 8,
-                    FillColor = KtvTheme.TealLight
+                    FillColor = dotBg
                 };
-                var lblEm = KtvTheme.Label(certEmojis[i], 0, 0, 11F, FontStyle.Regular, Color.Black);
-                lblEm.AutoSize = false;
-                lblEm.Location = new Point(0, 0);
-                lblEm.Size = new Size(38, 38);
-                lblEm.TextAlign = ContentAlignment.MiddleCenter;
-                pnlIc.Controls.Add(lblEm);
+                var lblIc = KtvTheme.Label(icon, 0, 0, 10F, FontStyle.Regular, dot);
+                lblIc.AutoSize = false; lblIc.Location = new Point(0,0); lblIc.Size = new Size(32,32);
+                lblIc.TextAlign = ContentAlignment.MiddleCenter;
+                pnlIc.Controls.Add(lblIc);
 
-                var lblN = KtvTheme.Label(certNames[i], 70, yRow, 9F, FontStyle.Bold, KtvTheme.TextDark);
-                var lblE = KtvTheme.Label(certExps[i], 70, yRow + 20, 7.8F, FontStyle.Regular, KtvTheme.TextLight);
+                var lblN = KtvTheme.Label(svc.Service, 64, yRow, 9F, FontStyle.Bold, KtvTheme.TextDark);
+                var lblS = KtvTheme.Label($"{svc.Patient}  ·  {svc.NgayDv}  ·  {svc.Status}", 64, yRow + 20, 7.8F, FontStyle.Regular, KtvTheme.TextLight);
 
-                var pnlB = new Guna2Panel
-                {
-                    Location = new Point(cardCerts.Width - 154, yRow + 6),
-                    Size = new Size(134, 24),
-                    BorderRadius = 12,
-                    FillColor = badgeBgs[i]
-                };
-                var lblBT = KtvTheme.Label(certBadges[i], 0, 0, 7.5F, FontStyle.Bold, badgeFgs[i]);
-                lblBT.AutoSize = false;
-                lblBT.Location = new Point(0, 0);
-                lblBT.Size = new Size(134, 24);
-                lblBT.TextAlign = ContentAlignment.MiddleCenter;
-                pnlB.Controls.Add(lblBT);
+                cardCerts.Controls.AddRange(new Control[] { pnlIc, lblN, lblS });
 
-                cardCerts.Controls.AddRange(new Control[] { pnlIc, lblN, lblE, pnlB });
+                var line = new Guna2Panel { Location = new Point(20, yRow + 46), Size = new Size(cardCerts.Width - 40, 1), FillColor = Color.FromArgb(244, 247, 250) };
+                cardCerts.Controls.Add(line);
 
-                if (i < 2)
-                {
-                    var line = new Guna2Panel { Location = new Point(20, yRow + 46), Size = new Size(cardCerts.Width - 40, 1), FillColor = Color.FromArgb(244, 247, 250) };
-                    cardCerts.Controls.Add(line);
-                }
-
-                yRow += 56;
+                yRow += 54;
             }
         }
 
         private void RenderActivities()
         {
             cardActivities.Controls.Clear();
-            var lblTitle = KtvTheme.Label("🕐 Lịch sử hoạt động gần đây", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
+            // Không có audit log trong Oracle schema — hiển thị danh sách dịch vụ phân công (từ HSBA_DV JOIN BENHNHAN)
+            var lblTitle = KtvTheme.Label("📝 Dịch vụ được phân công (HSBA_DV)", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
             cardActivities.Controls.Add(lblTitle);
 
-            string[] actIcons = { "✅", "✅", "📋", "🔑", "✅", "✏️", "🏆", "📜" };
-            string[] actTexts = {
-                "Hoàn thành XN máu CBC — BN Trần Văn Bình",
-                "Cập nhật kết quả Siêu âm ổ bụng — BN Hoàng Văn Tuấn",
-                "Nhận phân công Điện tim ECG — BN Vũ Thị Hằng",
-                "Đăng nhập hệ thống từ thiết bị mới",
-                "Hoàn thành 9 dịch vụ phân công trong ca sáng",
-                "Cập nhật thông tin hồ sơ cá nhân",
-                "Hoàn thành 200 dịch vụ trong tháng 04/2025",
-                "Tải lên chứng chỉ Huyết học phân tử mới"
-            };
-            string[] actTimes = {
-                "Hôm nay · 09:15",
-                "Hôm nay · 10:42",
-                "Hôm nay · 07:05",
-                "Hôm qua · 06:58",
-                "Hôm qua · 15:02",
-                "23/05/2025 · 08:30",
-                "30/04/2025",
-                "15/03/2025"
-            };
-            Color[] actBgs = { KtvTheme.TealLight, KtvTheme.TealLight, KtvTheme.AccentSoft, KtvTheme.InfoSoft, KtvTheme.TealLight, KtvTheme.AccentSoft, KtvTheme.TealLight, KtvTheme.InfoSoft };
+            var allSvc = KtvData.Services();
 
             int yRow = 52;
-            for (int i = 0; i < 8; i++)
+            foreach (var svc in allSvc)
             {
+                string icon   = svc.Status == "Hoàn thành" ? "✅" : "⏳";
+                Color dotBg   = svc.Status == "Hoàn thành" ? KtvTheme.TealLight : KtvTheme.AccentSoft;
+                Color dotFore = svc.Status == "Hoàn thành" ? KtvTheme.Teal : Color.FromArgb(160, 112, 0);
+
                 var pnlDot = new Guna2Panel
                 {
                     Size = new Size(28, 28),
                     Location = new Point(20, yRow + 2),
                     BorderRadius = 14,
-                    FillColor = actBgs[i]
+                    FillColor = dotBg
                 };
-                var lblI = KtvTheme.Label(actIcons[i], 0, 0, 9F, FontStyle.Regular, Color.Black);
+                var lblI = KtvTheme.Label(icon, 0, 0, 9F, FontStyle.Regular, dotFore);
                 lblI.Size = new Size(28, 28);
                 lblI.TextAlign = ContentAlignment.MiddleCenter;
                 pnlDot.Controls.Add(lblI);
 
-                var lblT = KtvTheme.Label(actTexts[i], 60, yRow, 8.8F, FontStyle.Bold, KtvTheme.TextDark);
-                // Wrap text to prevent cutting off
+                // Tên dịch vụ (LOAIDV) — Bệnh nhân (TENBN)
+                var lblT = KtvTheme.Label($"{svc.Service} — {svc.Patient}", 60, yRow, 8.8F, FontStyle.Bold, KtvTheme.TextDark);
                 lblT.AutoSize = false;
                 lblT.Size = new Size(cardActivities.Width - 80, 20);
                 lblT.AutoEllipsis = true;
 
-                var lblTm = KtvTheme.Label(actTimes[i], 60, yRow + 20, 7.8F, FontStyle.Regular, KtvTheme.TextLight);
+                // Ngày DV (NGAYDV) · MAHSBA · Trạng thái
+                var lblTm = KtvTheme.Label($"{svc.NgayDv}  ·  {svc.MaHsba}  ·  {svc.Status}", 60, yRow + 20, 7.8F, FontStyle.Regular, KtvTheme.TextLight);
 
                 cardActivities.Controls.AddRange(new Control[] { pnlDot, lblT, lblTm });
 
-                if (i < 7)
-                {
-                    var line = new Guna2Panel { Location = new Point(60, yRow + 44), Size = new Size(cardActivities.Width - 80, 1), FillColor = Color.FromArgb(244, 247, 250) };
-                    cardActivities.Controls.Add(line);
-                }
+                var line = new Guna2Panel { Location = new Point(60, yRow + 44), Size = new Size(cardActivities.Width - 80, 1), FillColor = Color.FromArgb(244, 247, 250) };
+                cardActivities.Controls.Add(line);
 
                 yRow += 51;
             }

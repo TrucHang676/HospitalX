@@ -104,6 +104,11 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\PH2\KyThuatVien\KtvData.cs" />
+    <Compile Include="GUI\PH2\KyThuatVien\KtvIcons.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>KtvIcons.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="GUI\PH2\KyThuatVien\KtvTheme.cs" />
     <Compile Include="GUI\PH2\KyThuatVien\Main_KTV.cs">
       <SubType>Form</SubType>
@@ -118,15 +123,25 @@
       <DependentUpon>ucKtvDashboard.cs</DependentUpon>
       <SubType>Designer</SubType>
     </Compile>
-    <Compile Include="GUI\PH2\KyThuatVien\ucKtvDichVu.cs">
+    <Compile Include="GUI\PH2\KyThuatVien\UcKtvDichVu.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\PH2\KyThuatVien\ucKtvDichVu.Designer.cs">
-      <DependentUpon>ucKtvDichVu.cs</DependentUpon>
+    <Compile Include="GUI\PH2\KyThuatVien\UcKtvDichVu.Designer.cs">
+      <DependentUpon>UcKtvDichVu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvFilter.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvFilter.Designer.cs">
+      <DependentUpon>ucKtvFilter.cs</DependentUpon>
       <SubType>Designer</SubType>
     </Compile>
     <Compile Include="GUI\PH2\KyThuatVien\frmKtvServiceDetail.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\frmKtvServiceDetail.Designer.cs">
+      <DependentUpon>frmKtvServiceDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PH2\KyThuatVien\ucKtvHoSo.cs">
       <SubType>UserControl</SubType>
@@ -420,8 +435,16 @@
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\Main_KTV.resx">
       <DependentUpon>Main_KTV.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\KtvIcons.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>KtvIcons.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\frmKtvEditProfile.resx">
       <DependentUpon>frmKtvEditProfile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\frmKtvServiceDetail.resx">
+      <DependentUpon>frmKtvServiceDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\Main_DPV.resx">
       <DependentUpon>Main_DPV.cs</DependentUpon>
@@ -440,6 +463,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucTaoHSBA.resx">
       <DependentUpon>ucTaoHSBA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\UcKtvDichVu.resx">
+      <DependentUpon>UcKtvDichVu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvFilter.resx">
+      <DependentUpon>ucKtvFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvKetQua.resx">
+      <DependentUpon>ucKtvKetQua.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>

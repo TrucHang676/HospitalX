@@ -209,55 +209,146 @@ namespace HospitalX.GUI.PH2
             this.lblRole.TabIndex = 5;
             this.lblRole.Text = "KTV xét nghiệm";
             // 
+            // 
             // btnDashboard
             // 
-            this.btnDashboard.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnDashboard.ForeColor = System.Drawing.Color.White;
-            this.btnDashboard.Location = new System.Drawing.Point(0, 0);
+            this.btnDashboard.BackColor = System.Drawing.Color.Transparent;
+            this.btnDashboard.BorderRadius = 8;
+            this.btnDashboard.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnDashboard.CheckedState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnDashboard.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnDashboard.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnDashboard.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDashboard.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnDashboard.FillColor = System.Drawing.Color.Transparent;
+            this.btnDashboard.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDashboard.ForeColor = System.Drawing.Color.Silver;
+            this.btnDashboard.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnDashboard.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
+            this.btnDashboard.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDashboard.ImageOffset = new System.Drawing.Point(8, 0);
+            this.btnDashboard.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnDashboard.Location = new System.Drawing.Point(16, 176);
             this.btnDashboard.Margin = new System.Windows.Forms.Padding(4);
             this.btnDashboard.Name = "btnDashboard";
-            this.btnDashboard.Size = new System.Drawing.Size(240, 55);
+            this.btnDashboard.Size = new System.Drawing.Size(260, 45);
             this.btnDashboard.TabIndex = 6;
+            this.btnDashboard.Text = "TỔNG QUAN";
+            this.btnDashboard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDashboard.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // btnDichVu
             // 
-            this.btnDichVu.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnDichVu.ForeColor = System.Drawing.Color.White;
-            this.btnDichVu.Location = new System.Drawing.Point(0, 0);
+            this.btnDichVu.BackColor = System.Drawing.Color.Transparent;
+            this.btnDichVu.BorderRadius = 8;
+            this.btnDichVu.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnDichVu.CheckedState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnDichVu.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnDichVu.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnDichVu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDichVu.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnDichVu.FillColor = System.Drawing.Color.Transparent;
+            this.btnDichVu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDichVu.ForeColor = System.Drawing.Color.Silver;
+            this.btnDichVu.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnDichVu.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
+            this.btnDichVu.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnDichVu.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDichVu.ImageOffset = new System.Drawing.Point(8, 0);
+            this.btnDichVu.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnDichVu.Location = new System.Drawing.Point(16, 230);
             this.btnDichVu.Margin = new System.Windows.Forms.Padding(4);
             this.btnDichVu.Name = "btnDichVu";
-            this.btnDichVu.Size = new System.Drawing.Size(240, 55);
+            this.btnDichVu.Size = new System.Drawing.Size(260, 45);
             this.btnDichVu.TabIndex = 7;
+            this.btnDichVu.Text = "DỊCH VỤ PHÂN CÔNG   7";
+            this.btnDichVu.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDichVu.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // btnKetQua
             // 
-            this.btnKetQua.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnKetQua.ForeColor = System.Drawing.Color.White;
-            this.btnKetQua.Location = new System.Drawing.Point(0, 0);
+            this.btnKetQua.BackColor = System.Drawing.Color.Transparent;
+            this.btnKetQua.BorderRadius = 8;
+            this.btnKetQua.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnKetQua.CheckedState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnKetQua.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnKetQua.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnKetQua.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnKetQua.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnKetQua.FillColor = System.Drawing.Color.Transparent;
+            this.btnKetQua.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnKetQua.ForeColor = System.Drawing.Color.Silver;
+            this.btnKetQua.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnKetQua.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
+            this.btnKetQua.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnKetQua.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnKetQua.ImageOffset = new System.Drawing.Point(8, 0);
+            this.btnKetQua.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnKetQua.Location = new System.Drawing.Point(16, 284);
             this.btnKetQua.Margin = new System.Windows.Forms.Padding(4);
             this.btnKetQua.Name = "btnKetQua";
-            this.btnKetQua.Size = new System.Drawing.Size(240, 55);
+            this.btnKetQua.Size = new System.Drawing.Size(260, 45);
             this.btnKetQua.TabIndex = 8;
+            this.btnKetQua.Text = "CẬP NHẬT KẾT QUẢ   3";
+            this.btnKetQua.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnKetQua.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // btnHoSo
             // 
-            this.btnHoSo.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnHoSo.ForeColor = System.Drawing.Color.White;
-            this.btnHoSo.Location = new System.Drawing.Point(0, 0);
+            this.btnHoSo.BackColor = System.Drawing.Color.Transparent;
+            this.btnHoSo.BorderRadius = 8;
+            this.btnHoSo.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnHoSo.CheckedState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnHoSo.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnHoSo.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnHoSo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnHoSo.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnHoSo.FillColor = System.Drawing.Color.Transparent;
+            this.btnHoSo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHoSo.ForeColor = System.Drawing.Color.Silver;
+            this.btnHoSo.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnHoSo.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
+            this.btnHoSo.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnHoSo.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnHoSo.ImageOffset = new System.Drawing.Point(8, 0);
+            this.btnHoSo.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnHoSo.Location = new System.Drawing.Point(16, 338);
             this.btnHoSo.Margin = new System.Windows.Forms.Padding(4);
             this.btnHoSo.Name = "btnHoSo";
-            this.btnHoSo.Size = new System.Drawing.Size(240, 55);
+            this.btnHoSo.Size = new System.Drawing.Size(260, 45);
             this.btnHoSo.TabIndex = 9;
+            this.btnHoSo.Text = "HỒ SƠ CÁ NHÂN";
+            this.btnHoSo.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnHoSo.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // btnThongBao
             // 
-            this.btnThongBao.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnThongBao.ForeColor = System.Drawing.Color.White;
-            this.btnThongBao.Location = new System.Drawing.Point(0, 0);
+            this.btnThongBao.BackColor = System.Drawing.Color.Transparent;
+            this.btnThongBao.BorderRadius = 8;
+            this.btnThongBao.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnThongBao.CheckedState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnThongBao.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnThongBao.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnThongBao.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnThongBao.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnThongBao.FillColor = System.Drawing.Color.Transparent;
+            this.btnThongBao.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnThongBao.ForeColor = System.Drawing.Color.Silver;
+            this.btnThongBao.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnThongBao.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
+            this.btnThongBao.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnThongBao.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnThongBao.ImageOffset = new System.Drawing.Point(8, 0);
+            this.btnThongBao.ImageSize = new System.Drawing.Size(24, 24);
+            this.btnThongBao.Location = new System.Drawing.Point(16, 392);
             this.btnThongBao.Margin = new System.Windows.Forms.Padding(4);
             this.btnThongBao.Name = "btnThongBao";
-            this.btnThongBao.Size = new System.Drawing.Size(240, 55);
+            this.btnThongBao.Size = new System.Drawing.Size(260, 45);
             this.btnThongBao.TabIndex = 10;
+            this.btnThongBao.Text = "THÔNG BÁO   5";
+            this.btnThongBao.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnThongBao.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // btnLogout
             // 

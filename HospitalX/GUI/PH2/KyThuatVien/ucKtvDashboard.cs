@@ -10,45 +10,45 @@ namespace HospitalX.GUI.PH2.KyThuatVien
     public partial class ucKtvDashboard : UserControl
     {
         // Khai báo các Controls thành viên để hỗ trợ layout động (Responsive)
-        private Guna2Panel banner;
         private Guna2Panel pnlBannerAvatar;
         private Label lblBannerAvatarText;
         private Label lblBannerTitle;
         private Label lblBannerSub;
 
-        private Guna2Panel[] statCards = new Guna2Panel[4];
-        private Guna2Panel[] statDots = new Guna2Panel[4];
-        private Label[] lblStatValues = new Label[4];
-        private Label[] lblStatLabels = new Label[4];
-        private Label[] lblStatNotes = new Label[4];
+        private readonly Guna2Panel[] statCards = new Guna2Panel[4];
+        private readonly Guna2Panel[] statDots = new Guna2Panel[4];
+        private readonly Label[] lblStatValues = new Label[4];
+        private readonly Label[] lblStatLabels = new Label[4];
 
         // Hàng 1
-        private Guna2Panel taskCard;
         private Label lblTaskTitle;
 
-        private Guna2Panel activityCard;
         private Label lblActivityTitle;
 
         // Hàng 2 (Timeline & Progress)
-        private Guna2Panel scheduleCard;
         private Label lblScheduleTitle;
-        private List<Control> scheduleControls = new List<Control>();
+        private readonly List<Control> scheduleControls = new List<Control>();
 
-        private Guna2Panel progressCard;
         private Label lblProgressTitle;
-        private Guna2CircleProgressBar[] progressRings = new Guna2CircleProgressBar[3];
-        private Label[] lblProgressRingVals = new Label[3];
-        private Label[] lblProgressRingLabels = new Label[3];
+        private readonly Guna2CircleProgressBar[] progressRings = new Guna2CircleProgressBar[3];
+        private readonly Label[] lblProgressRingVals = new Label[3];
+        private readonly Label[] lblProgressRingLabels = new Label[3];
         private Guna2Panel progressDivider;
-        private Label[] lblProgDetails = new Label[3];
-        private Label[] lblProgVals = new Label[3];
-        private Guna2Panel[] progressDetailRows = new Guna2Panel[3];
+        private readonly Label[] lblProgDetails = new Label[3];
+        private readonly Label[] lblProgVals = new Label[3];
+        private readonly Guna2Panel[] progressDetailRows = new Guna2Panel[3];
 
         public ucKtvDashboard()
         {
             InitializeComponent();
             BackColor = Color.FromArgb(236, 245, 243); // Đồng bộ nền xanh ngọc nhạt của phân hệ bác sĩ
             
+            // Link the array statCards to the designer-generated cardStat controls
+            statCards[0] = this.cardStat1;
+            statCards[1] = this.cardStat2;
+            statCards[2] = this.cardStat3;
+            statCards[3] = this.cardStat4;
+
             // Bật tự động cuộn trang (AutoScroll) cho UserControl
             this.AutoScroll = true;
             this.DoubleBuffered = true;
@@ -67,14 +67,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void BuildControls()
         {
-            Controls.Clear();
+            // Do NOT call Controls.Clear() and do NOT re-instantiate container panels because they are created in InitializeComponent()!
+            
+            // Clear children of main container panels to rebuild dynamically at runtime
+            banner.Controls.Clear();
+            taskCard.Controls.Clear();
+            activityCard.Controls.Clear();
+            scheduleCard.Controls.Clear();
+            progressCard.Controls.Clear();
+            for (int i = 0; i < 4; i++)
+            {
+                statCards[i].Controls.Clear();
+            }
 
             // 1. Khởi tạo Banner (Đồng bộ cấu hình Avatar trái của phân hệ Bác sĩ, xóa bỏ emoji lỗi font)
-            banner = new Guna2Panel
-            {
-                BorderRadius = 14,
-                FillColor = Color.FromArgb(15, 110, 86) // Đồng bộ màu Teal của phân hệ Bác sĩ
-            };
 
             pnlBannerAvatar = new Guna2Panel
             {
@@ -120,7 +126,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             for (int i = 0; i < 4; i++)
             {
-                statCards[i] = KtvTheme.Card(0, 0, 10, 10);
                 statCards[i].BorderColor = Color.FromArgb(218, 232, 226); // Đồng bộ viền của phân hệ Bác sĩ
                 PrepareRoundedPanel(statCards[i]);
 
@@ -146,50 +151,42 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
                 // Đồng bộ cỡ chữ với phân hệ bác sĩ (Value: 20F Bold, Caption: 9.5F Regular)
                 // Đặt chiều cao 38 cho lblStatValues để tránh bị che mất phần dưới của số
-                lblStatValues[i] = TextLabel("-", 86, 22, 120, 38, 20F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
-                lblStatLabels[i] = TextLabel("-", 88, 66, 140, 20, 9.5F, FontStyle.Regular, Color.FromArgb(122, 149, 137));
-                lblStatNotes[i] = TextLabel("-", 88, 90, 140, 20, 8.5F, FontStyle.Bold, Color.FromArgb(15, 110, 86));
+                lblStatValues[i] = TextLabel("-", 86, 32, 120, 38, 20F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
+                lblStatLabels[i] = TextLabel("-", 88, 70, 140, 20, 9.5F, FontStyle.Regular, Color.FromArgb(122, 149, 137));
 
                 statCards[i].Controls.Add(statDots[i]);
                 statCards[i].Controls.Add(lblStatValues[i]);
                 statCards[i].Controls.Add(lblStatLabels[i]);
-                statCards[i].Controls.Add(lblStatNotes[i]);
                 Controls.Add(statCards[i]);
             }
 
             // 3. Khởi tạo Task Card (Dịch vụ hôm nay) - Xóa hover của card cha
-            taskCard = KtvTheme.Card(0, 0, 10, 10);
             taskCard.BorderColor = Color.FromArgb(218, 232, 226);
             PrepareRoundedPanel(taskCard);
             lblTaskTitle = TextLabel("Dịch vụ hôm nay", 26, 20, 300, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
             taskCard.Controls.Add(lblTaskTitle);
-            Controls.Add(taskCard);
 
             // 4. Khởi tạo Activity Card (Hoạt động gần đây) - Xóa hover của card cha
-            activityCard = KtvTheme.Card(0, 0, 10, 10);
             activityCard.BorderColor = Color.FromArgb(218, 232, 226);
             PrepareRoundedPanel(activityCard);
             lblActivityTitle = TextLabel("Hoạt động gần đây", 24, 20, 260, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
             activityCard.Controls.Add(lblActivityTitle);
-            Controls.Add(activityCard);
 
             // 5. Khởi tạo Schedule Card (Lịch thực hiện hôm nay) - Xóa hover của card cha
-            scheduleCard = KtvTheme.Card(0, 0, 10, 10);
             scheduleCard.BorderColor = Color.FromArgb(218, 232, 226);
             lblScheduleTitle = TextLabel("Lịch thực hiện hôm nay", 26, 20, 300, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
             scheduleCard.Controls.Add(lblScheduleTitle);
-            Controls.Add(scheduleCard);
 
             // 6. Khởi tạo Progress Card (Tiến độ hôm nay) - Xóa hover của card cha
-            progressCard = KtvTheme.Card(0, 0, 10, 10);
             progressCard.BorderColor = Color.FromArgb(218, 232, 226);
             PrepareRoundedPanel(progressCard);
             lblProgressTitle = TextLabel("Tiến độ hôm nay", 24, 20, 260, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
             progressCard.Controls.Add(lblProgressTitle);
 
             // Khởi tạo 3 Vòng tiến độ Guna2 sạch sẽ (Xóa background xám mờ)
-            Color[] ringColors = { Color.FromArgb(15, 110, 86), Color.FromArgb(240, 165, 0), Color.FromArgb(217, 64, 64) };
-            string[] ringLabels = { "Hoàn thành", "Đang thực hiện", "Chưa bắt đầu" };
+            // Chỉ có 2 trạng thái thực trong DB: Hoàn thành (KETQUA IS NOT NULL) và Chờ thực hiện (KETQUA IS NULL)
+            Color[] ringColors = { Color.FromArgb(15, 110, 86), Color.FromArgb(240, 165, 0), Color.FromArgb(100, 100, 100) };
+            string[] ringLabels = { "Hoàn thành", "Chờ thực hiện", "Tiến độ" };
 
             for (int i = 0; i < 3; i++)
             {
@@ -282,7 +279,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 progressCard.Controls.Add(progressDetailRows[i]);
             }
 
-            Controls.Add(progressCard);
+            // Removed redundant dynamic add of progressCard since it is created in InitializeComponent
         }
 
         private void AddHoverEffect(Guna2Panel card)
@@ -376,12 +373,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 int labelWidth = cardWidth - 96;
                 lblStatValues[i].Width = labelWidth;
                 lblStatLabels[i].Width = labelWidth;
-                lblStatNotes[i].Width = labelWidth;
 
                 // Căn chỉnh tọa độ Y thông minh bên trong card cao 138px để hiển thị thoáng và sang trọng
-                lblStatValues[i].Location = new Point(86, 22);
-                lblStatLabels[i].Location = new Point(88, 66);
-                lblStatNotes[i].Location = new Point(88, 90);
+                lblStatValues[i].Location = new Point(86, 32);
+                lblStatLabels[i].Location = new Point(88, 70);
             }
 
             // 3. Layout Hàng 1 (Dịch vụ hôm nay & Hoạt động gần đây)
@@ -511,99 +506,86 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void LoadData()
         {
-            string ktvName = KtvData.TechnicianName();
+            var ktv     = KtvData.CurrentTechnician();
+            string ktvName = ktv.HoTen;
             var mockSvc = KtvData.Services();
 
-            // Tạo Avatar Initials động chuẩn Bác sĩ
-            string initials = "KT";
-            if (!string.IsNullOrEmpty(ktvName))
-            {
-                var parts = ktvName.Trim().Split(' ');
-                if (parts.Length >= 2)
-                {
-                    initials = (parts[0][0].ToString() + parts[parts.Length - 1][0].ToString()).ToUpper();
-                }
-                else if (parts.Length == 1 && parts[0].Length > 0)
-                {
-                    initials = parts[0][0].ToString().ToUpper();
-                }
-            }
-            lblBannerAvatarText.Text = initials;
+            lblBannerAvatarText.Text = KtvData.GetInitials(ktvName);
 
-            // 2. Tải số liệu thống kê từ dữ liệu giả lập
+            // 2. Tải số liệu thống kê — chỉ 2 trạng thái từ KETQUA: Chờ thực hiện / Hoàn thành
             int totalToday = mockSvc.Count;
-            int pendingKq = mockSvc.Count(x => x.Status == "Chờ thực hiện");
-            int completed = mockSvc.Count(x => x.Status == "Hoàn thành");
-            int progress = totalToday > 0 ? (completed * 100 / totalToday) : 0;
-            string progressNote = progress >= 100 ? "Hoàn thành ca" : "Theo ca làm";
-            string pendingNote = pendingKq > 0 ? "Cần xử lý" : "Đã sạch việc";
-            string totalNote = "Tăng 2 so với hôm qua";
+            int pendingKq  = mockSvc.Count(x => x.Status == "Chờ thực hiện");  // KETQUA IS NULL
+            int completed  = mockSvc.Count(x => x.Status == "Hoàn thành");     // KETQUA IS NOT NULL
+            int progress   = totalToday > 0 ? (completed * 100 / totalToday) : 0;
+            string progressNote = progress >= 100 ? "Hoàn thành" : $"{completed}/{totalToday} DV";
+            string pendingNote  = pendingKq > 0 ? "Cần nhập KQ" : "Đã xong";
 
-            // Cập nhật Text cho Banner và Thống kê
-            lblBannerTitle.Text = $"Chào buổi sáng, Kỹ thuật viên {ktvName}!";
-            lblBannerSub.Text = $"Hôm nay bạn có {totalToday} dịch vụ cần thực hiện • {pendingKq} kết quả đang chờ cập nhật • Ca làm: 07:00 - 15:00";
+            // Cập nhật Banner — không có thông tin ca làm trong DB, chỉ hiển thị số liệu thực
+            lblBannerTitle.Text = $"Xin chào, Kỹ thuật viên {ktvName}!";
+            lblBannerSub.Text = $"{DateTime.Now:dd/MM/yyyy} · {totalToday} dịch vụ được phân công · {pendingKq} kết quả chờ cập nhật";
 
             lblStatValues[0].Text = totalToday.ToString();
             lblStatLabels[0].Text = "Dịch vụ hôm nay";
-            lblStatNotes[0].Text = totalNote;
 
             lblStatValues[1].Text = pendingKq.ToString();
             lblStatLabels[1].Text = "Chờ cập nhật KQ";
-            lblStatNotes[1].Text = pendingNote;
 
             lblStatValues[2].Text = completed.ToString();
             lblStatLabels[2].Text = "Đã hoàn thành";
-            lblStatNotes[2].Text = "Đúng tiến độ";
 
             lblStatValues[3].Text = $"{progress}%";
             lblStatLabels[3].Text = "Tiến độ trong ngày";
-            lblStatNotes[3].Text = progressNote;
 
-            // Cập nhật chi tiết 3 vòng tiến độ hôm nay
-            int ring1Val = progress;
-            int ring2Val = totalToday > 0 ? (pendingKq * 100 / totalToday) : 0;
-            int ring3Val = Math.Max(0, 100 - ring1Val - ring2Val);
+            // Vòng tiến độ: Ring 0=Hoàn thành, Ring 1=Chờ thực hiện, Ring 2=% Tổng tiến độ
+            int ring0Val = totalToday > 0 ? (completed  * 100 / totalToday) : 0;
+            int ring1Val = totalToday > 0 ? (pendingKq  * 100 / totalToday) : 0;
+            int ring2Val = progress;
 
-            progressRings[0].Value = ring1Val;
-            lblProgressRingVals[0].Text = $"{ring1Val}%";
+            progressRings[0].Value = ring0Val;
+            lblProgressRingVals[0].Text = $"{ring0Val}%";
 
-            progressRings[1].Value = ring2Val;
-            lblProgressRingVals[1].Text = $"{ring2Val}%";
+            progressRings[1].Value = ring1Val;
+            lblProgressRingVals[1].Text = $"{ring1Val}%";
 
-            progressRings[2].Value = ring3Val;
-            lblProgressRingVals[2].Text = $"{ring3Val}%";
+            progressRings[2].Value = ring2Val;
+            lblProgressRingVals[2].Text = $"{ring2Val}%";
 
+            // Detail rows: Tổng / Hoàn thành / Chờ cập nhật KQ
             lblProgVals[0].Text = totalToday.ToString();
             lblProgVals[1].Text = completed.ToString();
             lblProgVals[2].Text = pendingKq.ToString();
 
-            // 3. Tải danh sách Dịch vụ hôm nay (Task list) từ dữ liệu giả lập
+            // 3. Danh sách dịch vụ: LOAIDV · TENBN · NGAYDV (từ HSBA_DV JOIN BENHNHAN)
             for (int i = 0; i < Math.Min(5, mockSvc.Count); i++)
             {
-                string info = $"{mockSvc[i].Patient}  ·  {mockSvc[i].RecordId}  ·  {mockSvc[i].Time}";
-                AddTaskRow(mockSvc[i].Service, info, mockSvc[i].Status, mockSvc[i].Priority);
+                // info: TENBN · MABN · NGAYDV — phản ánh đúng join HSBA_DV-HSBA-BENHNHAN
+                string info = $"{mockSvc[i].Patient}  ·  {mockSvc[i].MaBn}  ·  {mockSvc[i].NgayDv}";
+                AddTaskRow(mockSvc[i].Service, info, mockSvc[i].Status);
             }
 
-            // 4. Tải Hoạt động gần đây - Decorate dòng cực kỳ sang trọng & hover dòng con
-            AddActivityRow("Đã cập nhật KQ Siêu âm cho BN Hoàng Văn Tuấn", "10 phút trước", "✅", Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
-            AddActivityRow("BS. Minh phân công XN CBC cho BN Trần Văn Bình", "45 phút trước", "📋", Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            AddActivityRow("KQ Glucose BN Nguyễn Thị Mai cần xác nhận lại", "3 giờ trước", "⚠️", Color.FromArgb(217, 64, 64), Color.FromArgb(253, 234, 234));
-            AddActivityRow("Nhận ca từ KTV Minh Anh, thêm 2 dịch vụ", "2 giờ trước", "🔔", Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
+            // 4. Hoạt động gần đây — không có audit log trong DB, giữ mock phù hợp nghiệp vụ
+            AddActivityRow($"Đã lưu KQ: {mockSvc[4].Service} — {mockSvc[4].Patient}",
+                "Vừa xong", "✅", Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
+            AddActivityRow($"Nhận phân công mới: {mockSvc[0].Service} — {mockSvc[0].Patient}",
+                "30 phút trước", "📋", Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            AddActivityRow($"Nhận phân công mới: {mockSvc[1].Service} — {mockSvc[1].Patient}",
+                "1 giờ trước", "📋", Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
+            AddActivityRow($"Đã lưu KQ: {mockSvc[6].Service} — {mockSvc[6].Patient}",
+                "2 giờ trước", "✅", Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
 
-            // 5. Tải danh sách Lịch thực hiện hôm nay (Row 2 - Schedule Timeline)
+            // 5. Lịch thực hiện hôm nay — dùng LOAIDV + TENBN + Time từ mock HSBA_DV
             scheduleControls.Clear();
-            var mockSvcList = mockSvc;
-            AddScheduleItem("07:30", mockSvcList[0].Service, mockSvcList[0].Patient, mockSvcList[0].Room, Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
-            AddScheduleItem("08:00", mockSvcList[1].Service, mockSvcList[1].Patient, mockSvcList[1].Room, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            AddScheduleItem("08:30", mockSvcList[2].Service, mockSvcList[2].Patient, mockSvcList[2].Room, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            AddScheduleItem("10:00", mockSvcList[5].Service, mockSvcList[5].Patient, mockSvcList[5].Room, Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
-            AddScheduleItem("11:00", mockSvcList[6].Service, mockSvcList[6].Patient, mockSvcList[6].Room, Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
+            AddScheduleItem(mockSvc[0].Time, mockSvc[0].Service, mockSvc[0].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            AddScheduleItem(mockSvc[1].Time, mockSvc[1].Service, mockSvc[1].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            AddScheduleItem(mockSvc[2].Time, mockSvc[2].Service, mockSvc[2].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            AddScheduleItem(mockSvc[4].Time, mockSvc[4].Service, mockSvc[4].Patient, Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
+            AddScheduleItem(mockSvc[5].Time, mockSvc[5].Service, mockSvc[5].Patient, Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
 
             // Cập nhật lại giao diện sau khi tải dữ liệu
             LayoutControls();
         }
 
-        private void AddTaskRow(string service, string info, string status, string priority)
+        private void AddTaskRow(string service, string info, string status)
         {
             // Mỗi dịch vụ hôm nay là một dòng Card nhỏ cực kỳ đẹp mắt có hover
             var rowPanel = new Guna2Panel
@@ -617,21 +599,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 Tag = "TaskRow"
             };
             PrepareRoundedPanel(rowPanel);
-
-            // Dải màu chỉ thị độ ưu tiên ở sát lề trái, full chiều cao với bo góc trái CustomBorderRadius
-            Color priColor = Color.FromArgb(15, 110, 86); // Bình thường: Teal
-            if (priority == "Khẩn cấp") priColor = Color.FromArgb(217, 64, 64); // Khẩn cấp: Đỏ
-            else if (priority == "Cao") priColor = Color.FromArgb(240, 165, 0); // Cao: Vàng cam
-
-            var priBar = new Guna2Panel
-            {
-                Location = new Point(0, 8),
-                Size = new Size(5, 42),
-                BorderRadius = 2,
-                FillColor = priColor
-            };
-            PrepareRoundedPanel(priBar);
-            rowPanel.Controls.Add(priBar);
 
             // Các label text tinh chỉnh kích thước và font chữ chuẩn
             var lblTitle = TextLabel(service, 20, 8, 100, 22, 9.8F, FontStyle.Bold, Color.FromArgb(33, 49, 41));
@@ -647,11 +614,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 badgeBg = Color.FromArgb(255, 248, 230);
                 badgeFore = Color.FromArgb(196, 128, 0);
-            }
-            else if (status == "Đang thực hiện")
-            {
-                badgeBg = Color.FromArgb(235, 243, 254);
-                badgeFore = Color.FromArgb(30, 110, 190);
             }
             else // Hoàn thành
             {
@@ -770,7 +732,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             activityCard.Controls.Add(actRow);
         }
 
-        private void AddScheduleItem(string time, string service, string patient, string room, Color borderColor, Color fillColor)
+        private void AddScheduleItem(string time, string service, string patient, Color borderColor, Color fillColor)
         {
             var lblTime = TextLabel(time, 0, 0, 60, 34, 9.5F, FontStyle.Bold, Color.FromArgb(122, 149, 137), ContentAlignment.MiddleCenter);
             lblTime.Tag = new ScheduleControlInfo { Role = "Time" };
@@ -788,7 +750,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             block.Tag = new ScheduleControlInfo { Role = "Block" };
 
             var lblSvc = TextLabel(service, 16, 6, 200, 20, 9.8F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
-            var lblPat = TextLabel($"{patient}  ·  {room}", 16, 26, 250, 18, 8.8F, FontStyle.Regular, Color.FromArgb(74, 85, 104));
+            var lblPat = TextLabel(patient, 16, 26, 250, 18, 8.8F, FontStyle.Regular, Color.FromArgb(74, 85, 104));
 
             block.Controls.Add(lblSvc);
             block.Controls.Add(lblPat);

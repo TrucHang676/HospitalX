@@ -54,13 +54,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.SuspendLayout();
 
             // ── guna2BorderlessForm1 ──────────────────────────────
-            this.guna2BorderlessForm1.BorderRadius = 14;
+            this.guna2BorderlessForm1.BorderRadius = 16;
             this.guna2BorderlessForm1.ContainerControl = this;
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2BorderlessForm1.TransparentWhileDrag = true;
 
             // ── pnlHeader ────────────────────────────────────────
-            this.pnlHeader.FillColor = System.Drawing.Color.White;
+            this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Size = new System.Drawing.Size(560, 56);
             this.pnlHeader.BorderRadius = 0;
@@ -69,37 +69,38 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             // ── lblTitle ─────────────────────────────────────────
             this.lblTitle.Text = "✏️ Chỉnh sửa hồ sơ cá nhân";
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(26, 39, 51);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
             this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTitle.Location = new System.Drawing.Point(24, 14);
-            this.lblTitle.Size = new System.Drawing.Size(440, 28);
+            this.lblTitle.Location = new System.Drawing.Point(20, 16);
+            this.lblTitle.Size = new System.Drawing.Size(400, 24);
             this.lblTitle.AutoSize = false;
 
             // ── btnCloseX ────────────────────────────────────────
             this.btnCloseX.Text = "✕";
-            this.btnCloseX.Size = new System.Drawing.Size(28, 28);
-            this.btnCloseX.Location = new System.Drawing.Point(508, 14);
-            this.btnCloseX.BorderRadius = 14;
-            this.btnCloseX.FillColor = System.Drawing.Color.White;
-            this.btnCloseX.ForeColor = System.Drawing.Color.FromArgb(138, 152, 170);
-            this.btnCloseX.BorderColor = System.Drawing.Color.FromArgb(226, 235, 240);
-            this.btnCloseX.BorderThickness = 1;
-            this.btnCloseX.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
+            this.btnCloseX.Size = new System.Drawing.Size(36, 32);
+            this.btnCloseX.Location = new System.Drawing.Point(512, 12);
+            this.btnCloseX.BorderRadius = 8;
+            this.btnCloseX.BackColor = System.Drawing.Color.Transparent;
+            this.btnCloseX.FillColor = System.Drawing.Color.Transparent;
+            this.btnCloseX.ForeColor = System.Drawing.Color.White;
+            this.btnCloseX.BorderColor = System.Drawing.Color.Transparent;
+            this.btnCloseX.BorderThickness = 0;
+            this.btnCloseX.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnCloseX.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCloseX.HoverState.FillColor = System.Drawing.Color.FromArgb(254, 235, 235);
-            this.btnCloseX.HoverState.ForeColor = System.Drawing.Color.FromArgb(200, 50, 50);
+            this.btnCloseX.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.btnCloseX.HoverState.ForeColor = System.Drawing.Color.White;
             this.btnCloseX.Click += new System.EventHandler(this.btnCancel_Click);
 
             // ── divHeader ────────────────────────────────────────
-            this.divHeader.FillColor = System.Drawing.Color.FromArgb(226, 235, 240);
+            this.divHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.divHeader.Location = new System.Drawing.Point(0, 56);
             this.divHeader.Size = new System.Drawing.Size(560, 1);
             this.divHeader.BorderRadius = 0;
 
             // ── Helpers ──────────────────────────────────────────
             System.Drawing.Color borderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            System.Drawing.Color midText = System.Drawing.Color.FromArgb(74, 85, 104);
+            System.Drawing.Color midText = System.Drawing.Color.FromArgb(74, 98, 89);
             System.Drawing.Font labelFont = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             System.Drawing.Font inputFont = new System.Drawing.Font("Segoe UI", 9F);
 
@@ -108,7 +109,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblName.Text = "Họ và tên *";
             this.lblName.Font = labelFont;
             this.lblName.ForeColor = midText;
-            this.lblName.BackColor = System.Drawing.Color.White;
+            this.lblName.BackColor = System.Drawing.Color.Transparent;
             this.lblName.Location = new System.Drawing.Point(24, 76);
             this.lblName.AutoSize = true;
 
@@ -118,6 +119,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.txtEditName.BorderRadius = 8;
             this.txtEditName.BorderColor = borderColor;
             this.txtEditName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.txtEditName.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             this.txtEditName.Font = inputFont;
             this.txtEditName.PlaceholderText = "Nhập họ và tên...";
 
@@ -125,7 +127,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblPhone.Text = "Số điện thoại *";
             this.lblPhone.Font = labelFont;
             this.lblPhone.ForeColor = midText;
-            this.lblPhone.BackColor = System.Drawing.Color.White;
+            this.lblPhone.BackColor = System.Drawing.Color.Transparent;
             this.lblPhone.Location = new System.Drawing.Point(284, 76);
             this.lblPhone.AutoSize = true;
 
@@ -135,6 +137,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.txtEditPhone.BorderRadius = 8;
             this.txtEditPhone.BorderColor = borderColor;
             this.txtEditPhone.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.txtEditPhone.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             this.txtEditPhone.Font = inputFont;
             this.txtEditPhone.PlaceholderText = "0900 000 000";
 
@@ -143,7 +146,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblEmail.Text = "Email liên lạc *";
             this.lblEmail.Font = labelFont;
             this.lblEmail.ForeColor = midText;
-            this.lblEmail.BackColor = System.Drawing.Color.White;
+            this.lblEmail.BackColor = System.Drawing.Color.Transparent;
             this.lblEmail.Location = new System.Drawing.Point(24, 148);
             this.lblEmail.AutoSize = true;
 
@@ -153,6 +156,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.txtEditEmail.BorderRadius = 8;
             this.txtEditEmail.BorderColor = borderColor;
             this.txtEditEmail.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.txtEditEmail.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             this.txtEditEmail.Font = inputFont;
             this.txtEditEmail.PlaceholderText = "email@hospitalx.vn";
 
@@ -160,7 +164,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblDob.Text = "Ngày sinh *";
             this.lblDob.Font = labelFont;
             this.lblDob.ForeColor = midText;
-            this.lblDob.BackColor = System.Drawing.Color.White;
+            this.lblDob.BackColor = System.Drawing.Color.Transparent;
             this.lblDob.Location = new System.Drawing.Point(284, 148);
             this.lblDob.AutoSize = true;
 
@@ -179,7 +183,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblAddress.Text = "Địa chỉ nơi ở";
             this.lblAddress.Font = labelFont;
             this.lblAddress.ForeColor = midText;
-            this.lblAddress.BackColor = System.Drawing.Color.White;
+            this.lblAddress.BackColor = System.Drawing.Color.Transparent;
             this.lblAddress.Location = new System.Drawing.Point(24, 220);
             this.lblAddress.AutoSize = true;
 
@@ -189,6 +193,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.txtEditAddress.BorderRadius = 8;
             this.txtEditAddress.BorderColor = borderColor;
             this.txtEditAddress.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.txtEditAddress.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             this.txtEditAddress.Font = inputFont;
             this.txtEditAddress.PlaceholderText = "Số nhà, đường, phường, quận...";
 
@@ -196,7 +201,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblGender.Text = "Giới tính";
             this.lblGender.Font = labelFont;
             this.lblGender.ForeColor = midText;
-            this.lblGender.BackColor = System.Drawing.Color.White;
+            this.lblGender.BackColor = System.Drawing.Color.Transparent;
             this.lblGender.Location = new System.Drawing.Point(284, 220);
             this.lblGender.AutoSize = true;
 
@@ -205,6 +210,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.cboEditGender.Size = new System.Drawing.Size(252, 36);
             this.cboEditGender.BorderRadius = 8;
             this.cboEditGender.BorderColor = borderColor;
+            this.cboEditGender.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.cboEditGender.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             this.cboEditGender.Font = inputFont;
             this.cboEditGender.Items.AddRange(new object[] { "Nữ", "Nam", "Khác" });
             this.cboEditGender.SelectedIndex = 0;
@@ -214,7 +221,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblShift.Text = "Ca làm việc đăng ký";
             this.lblShift.Font = labelFont;
             this.lblShift.ForeColor = midText;
-            this.lblShift.BackColor = System.Drawing.Color.White;
+            this.lblShift.BackColor = System.Drawing.Color.Transparent;
             this.lblShift.Location = new System.Drawing.Point(24, 292);
             this.lblShift.AutoSize = true;
 
@@ -223,6 +230,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.cboEditShift.Size = new System.Drawing.Size(512, 36);
             this.cboEditShift.BorderRadius = 8;
             this.cboEditShift.BorderColor = borderColor;
+            this.cboEditShift.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.cboEditShift.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             this.cboEditShift.Font = inputFont;
             this.cboEditShift.Items.AddRange(new object[]
             {
@@ -237,7 +246,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblSkills.Text = "Mô tả tóm tắt kỹ năng chuyên môn";
             this.lblSkills.Font = labelFont;
             this.lblSkills.ForeColor = midText;
-            this.lblSkills.BackColor = System.Drawing.Color.White;
+            this.lblSkills.BackColor = System.Drawing.Color.Transparent;
             this.lblSkills.Location = new System.Drawing.Point(24, 364);
             this.lblSkills.AutoSize = true;
 
@@ -248,11 +257,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.txtEditSkills.BorderRadius = 8;
             this.txtEditSkills.BorderColor = borderColor;
             this.txtEditSkills.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.txtEditSkills.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             this.txtEditSkills.Font = inputFont;
             this.txtEditSkills.PlaceholderText = "Nhập mô tả kỹ năng, kinh nghiệm chuyên môn...";
 
             // ── Footer divider ────────────────────────────────────
-            this.divFooter.FillColor = borderColor;
+            this.divFooter.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.divFooter.Location = new System.Drawing.Point(0, 472);
             this.divFooter.Size = new System.Drawing.Size(560, 1);
             this.divFooter.BorderRadius = 0;
@@ -260,35 +270,36 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // ── btnCancel ────────────────────────────────────────
             this.btnCancel.Text = "Hủy";
             this.btnCancel.Size = new System.Drawing.Size(96, 38);
-            this.btnCancel.Location = new System.Drawing.Point(328, 484);
+            this.btnCancel.Location = new System.Drawing.Point(292, 484);
             this.btnCancel.BorderRadius = 8;
-            this.btnCancel.FillColor = System.Drawing.Color.White;
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(74, 85, 104);
+            this.btnCancel.FillColor = System.Drawing.Color.Transparent;
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(74, 98, 89);
             this.btnCancel.BorderColor = borderColor;
             this.btnCancel.BorderThickness = 1;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.HoverState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
-            this.btnCancel.HoverState.ForeColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.btnCancel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.btnCancel.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
+            this.btnCancel.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 
             // ── btnSave ──────────────────────────────────────────
             this.btnSave.Text = "💾 Lưu thay đổi";
             this.btnSave.Size = new System.Drawing.Size(136, 38);
-            this.btnSave.Location = new System.Drawing.Point(440, 484);
+            this.btnSave.Location = new System.Drawing.Point(400, 484);
             this.btnSave.BorderRadius = 8;
-            this.btnSave.FillColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSave.HoverState.FillColor = System.Drawing.Color.FromArgb(26, 148, 112);
-            this.btnSave.PressedColor = System.Drawing.Color.FromArgb(10, 79, 61);
+            this.btnSave.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnSave.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(66)))), ((int)(((byte)(51)))));
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 
             // ── Form ─────────────────────────────────────────────
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.ClientSize = new System.Drawing.Size(560, 538);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

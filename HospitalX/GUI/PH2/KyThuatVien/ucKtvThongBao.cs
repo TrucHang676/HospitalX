@@ -25,13 +25,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             public string ActionText { get; set; }
             public string ActionType { get; set; } // "view_result", "view_assignment", "register", "swap", "none"
         }
-
         // Layout UI controls
-        private Guna2Panel pnlHero;
         private Label lblHeroTitle;
         private Label lblHeroSub;
         private Guna2Button btnHeroMarkAll;
-        private Guna2Panel pnlFilter;
         private Label lblFilterTitle;
         private Guna2TextBox txtSearch;
         private Guna2Panel divFilter;
@@ -42,18 +39,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Label[] lblStatVals = new Label[4];
 
         // List Toolbar
-        private Guna2Panel pnlToolbar;
         private Guna2Button btnPillAll;
         private Guna2Button btnPillUnread;
         private Guna2Button btnPillUrgent;
         private Guna2ComboBox cboSort;
         private Guna2Button btnMarkAll;
 
-        // Main Notif List container
-        private Panel pnlNotifScroll;
-
         // Custom Toast Notification
-        private Guna2Panel pnlToast;
         private Label lblToastText;
         private Timer tmrToast;
         private int toastTicks = 0;
@@ -71,6 +63,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             DoubleBuffered = true;
             BackColor = KtvTheme.Bg;
             this.AutoScroll = false;
+
+            // Link the array cardStats to the designer-generated cardStat controls
+            cardStats[0] = this.cardStat1;
+            cardStats[1] = this.cardStat2;
+            cardStats[2] = this.cardStat3;
+            cardStats[3] = this.cardStat4;
 
             InitializeMockData();
             BuildControls();
@@ -216,13 +214,16 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void BuildControls()
         {
-            Controls.Clear();
+            // Do NOT call Controls.Clear() and do NOT re-instantiate container panels because they are created in InitializeComponent()!
 
-            pnlHero = new Guna2Panel
-            {
-                BorderRadius = 14,
-                FillColor = KtvTheme.TealDark
-            };
+            // Clear children of main container panels to rebuild dynamically at runtime
+            pnlHero.Controls.Clear();
+            pnlFilter.Controls.Clear();
+            pnlToolbar.Controls.Clear();
+            pnlToast.Controls.Clear();
+
+            pnlHero.BorderRadius = 14;
+            pnlHero.FillColor = KtvTheme.TealDark;
             pnlHero.ShadowDecoration.Enabled = true;
             pnlHero.ShadowDecoration.Color = Color.FromArgb(45, 15, 110, 86);
             pnlHero.ShadowDecoration.Depth = 12;
@@ -246,10 +247,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnHeroMarkAll.Click += BtnMarkAll_Click;
 
             pnlHero.Controls.AddRange(new Control[] { lblHeroTitle, lblHeroSub, btnHeroMarkAll });
-            Controls.Add(pnlHero);
 
             // 1. Filter Panel (Left)
-            pnlFilter = KtvTheme.Card(0, 0, 300, 100);
             pnlFilter.BorderColor = KtvTheme.Border;
             pnlFilter.ShadowDecoration.Enabled = true;
             pnlFilter.ShadowDecoration.Color = KtvTheme.Teal;
@@ -285,18 +284,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 BackColor = Color.White
             };
             pnlFilter.Controls.Add(flpCategories);
-            Controls.Add(pnlFilter);
 
-            // 2. Build Scrollable Right Panel Stack
-            pnlNotifScroll = new Panel
-            {
-                AutoScroll = true,
-                BackColor = Color.Transparent
-            };
-            Controls.Add(pnlNotifScroll);
-
-            // Build Toolbar (Right Column inside Scroll container)
-            pnlToolbar = KtvTheme.Card(0, 98, 100, 52);
+            // 2. Build Toolbar (Right Column inside Scroll container)
             pnlToolbar.ShadowDecoration.Enabled = true;
             pnlToolbar.ShadowDecoration.Color = KtvTheme.Teal;
             pnlToolbar.ShadowDecoration.Depth = 6;
@@ -348,16 +337,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnMarkAll.Click += BtnMarkAll_Click;
             pnlToolbar.Controls.Add(btnMarkAll);
 
-            pnlNotifScroll.Controls.Add(pnlToolbar);
-
             // 3. Build Toast Notification
-            pnlToast = new Guna2Panel
-            {
-                Size = new Size(360, 52),
-                BorderRadius = 10,
-                FillColor = KtvTheme.TealDark,
-                Visible = false
-            };
+            pnlToast.Size = new Size(360, 52);
+            pnlToast.BorderRadius = 10;
+            pnlToast.FillColor = KtvTheme.TealDark;
+            pnlToast.Visible = false;
             pnlToast.ShadowDecoration.Enabled = true;
             pnlToast.ShadowDecoration.Color = Color.Black;
             pnlToast.ShadowDecoration.Depth = 12;
@@ -372,7 +356,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 BackColor = Color.Transparent
             };
             pnlToast.Controls.Add(lblToastText);
-            Controls.Add(pnlToast);
 
             tmrToast = new Timer { Interval = 20 };
             tmrToast.Tick += TmrToast_Tick;
@@ -418,24 +401,21 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             for (int i = 0; i < 4; i++)
             {
-                if (cardStats[i] == null)
-                {
-                    cardStats[i] = KtvTheme.Card(0, 0, 100, 72);
-                    cardStats[i].ShadowDecoration.Enabled = true;
-                    cardStats[i].ShadowDecoration.Color = KtvTheme.Teal;
-                    cardStats[i].ShadowDecoration.Depth = 6;
+                cardStats[i].Controls.Clear();
+                cardStats[i].ShadowDecoration.Enabled = true;
+                cardStats[i].ShadowDecoration.Color = KtvTheme.Teal;
+                cardStats[i].ShadowDecoration.Depth = 6;
 
-                    lblStatVals[i] = KtvTheme.Label(statVals[i], 20, 8, 20F, FontStyle.Bold, valColors[i]);
-                    lblStatVals[i].AutoSize = false;
-                    lblStatVals[i].Size = new Size(80, 36);
+                lblStatVals[i] = KtvTheme.Label(statVals[i], 20, 8, 20F, FontStyle.Bold, valColors[i]);
+                lblStatVals[i].AutoSize = false;
+                lblStatVals[i].Size = new Size(80, 36);
 
-                    var lblL = KtvTheme.Label(statLbls[i], 20, 44, 9F, FontStyle.Regular, KtvTheme.TextLight);
-                    lblL.AutoSize = false;
-                    lblL.Size = new Size(100, 20);
+                var lblL = KtvTheme.Label(statLbls[i], 20, 44, 9F, FontStyle.Regular, KtvTheme.TextLight);
+                lblL.AutoSize = false;
+                lblL.Size = new Size(100, 20);
 
-                    cardStats[i].Controls.AddRange(new Control[] { lblStatVals[i], lblL });
-                    pnlNotifScroll.Controls.Add(cardStats[i]);
-                }
+                cardStats[i].Controls.AddRange(new Control[] { lblStatVals[i], lblL });
+                
                 cardStats[i].Location = new Point(0 + i * (statW + gap), statY);
                 cardStats[i].Size = new Size(statW, 72);
                 cardStats[i].FillColor = i == 0 ? Color.FromArgb(242, 250, 247) : (i == 1 ? Color.FromArgb(253, 244, 244) : Color.White);
@@ -533,9 +513,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 Margin = new Padding(10, 3, 10, 3)
             };
             pnl.Click += (s, e) => SwitchCategory(catCode);
+            pnl.MouseEnter += (s, e) => SetCategoryHover(pnl, true, active);
+            pnl.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
 
             var lblT = KtvTheme.Label(text, 10, 9, 8.8F, active ? FontStyle.Bold : FontStyle.Regular, active ? KtvTheme.Teal : KtvTheme.TextMid);
             lblT.Click += (s, e) => SwitchCategory(catCode);
+            lblT.MouseEnter += (s, e) => SetCategoryHover(pnl, true, active);
+            lblT.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
             pnl.Controls.Add(lblT);
 
             var pnlCount = new Guna2Panel
@@ -559,9 +543,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             lblC.Click += (s, e) => SwitchCategory(catCode);
             pnlCount.Click += (s, e) => SwitchCategory(catCode);
+            pnlCount.MouseEnter += (s, e) => SetCategoryHover(pnl, true, active);
+            pnlCount.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
 
             catItemPanels.Add(pnl);
             return pnl;
+        }
+
+        private void SetCategoryHover(Guna2Panel panel, bool hover, bool active)
+        {
+            if (panel == null || active) return;
+            panel.FillColor = hover ? Color.FromArgb(244, 250, 248) : Color.White;
+            panel.BorderThickness = hover ? 1 : 0;
+            panel.BorderColor = hover ? Color.FromArgb(218, 232, 226) : Color.Transparent;
         }
 
         private void RenderNotificationsList()
@@ -685,12 +679,15 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     var pnlIcon = new Guna2Panel
                     {
                         Size = new Size(42, 42),
-                        Location = new Point(18, 16),
+                        Location = new Point(18, 20),
                         BorderRadius = 21,
+                        UseTransparentBackground = true,
                         FillColor = notif.IsUrgent ? KtvTheme.DangerSoft : (notif.Type == "Phân công" ? KtvTheme.AccentSoft : (notif.Type == "Hệ thống" ? KtvTheme.InfoSoft : KtvTheme.TealLight))
                     };
                     string emoji = notif.IsUrgent ? "🚨" : (notif.Type == "Phân công" ? "📋" : (notif.Type == "Hệ thống" ? "🏥" : "✅"));
                     var lblEmoji = KtvTheme.Label(emoji, 0, 0, 11F, FontStyle.Regular, Color.Black);
+                    lblEmoji.AutoSize = false;
+                    lblEmoji.Location = new Point(0, 0);
                     lblEmoji.Size = new Size(42, 42);
                     lblEmoji.TextAlign = ContentAlignment.MiddleCenter;
                     pnlIcon.Controls.Add(lblEmoji);
@@ -893,15 +890,18 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 Size = new Size(104, 32),
                 BorderRadius = 16,
                 BorderThickness = 1,
-                BorderColor = active ? KtvTheme.Teal : KtvTheme.Border,
-                FillColor = active ? KtvTheme.Teal : Color.White,
-                ForeColor = active ? Color.White : KtvTheme.TextMid,
+                BorderColor = KtvTheme.Border,
+                FillColor = Color.White,
+                ForeColor = KtvTheme.TextMid,
                 Font = new Font("Segoe UI", 8.2F, FontStyle.Bold),
                 Cursor = Cursors.Hand,
                 ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton,
                 Checked = active,
+                TextAlign = HorizontalAlignment.Center,
+                TextOffset = new Point(0, 0),
+                Padding = new Padding(0),
                 CheckedState = { FillColor = KtvTheme.Teal, ForeColor = Color.White, BorderColor = KtvTheme.Teal },
-                HoverState = { FillColor = active ? KtvTheme.Teal : KtvTheme.TealLight }
+                HoverState = { FillColor = KtvTheme.TealLight }
             };
             return btn;
         }

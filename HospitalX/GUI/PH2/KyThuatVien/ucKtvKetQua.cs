@@ -32,32 +32,25 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         }
 
         // Layout UI controls
-        private Guna2Panel pnlQueue;
         private Label lblQueueTitle;
         private Label lblQueueCount;
         private Guna2TextBox txtSearchQueue;
         private FlowLayoutPanel pnlQueueItems;
 
-        private Guna2Panel pnlFormContainer;
-
         // Form Cards
-        private Guna2Panel pnlPatientStrip;
         private Guna2Panel pnlAvatarCircle;
         private Label lblAvatarText;
         private Label lblPatientName;
         private Label lblPatientMeta;
-        private Guna2Panel pnlPrioBadge;
-        private Label lblPrioText;
-
-        private Guna2Panel cardSvc;
+        // pnlPrioBadge removed â€” Priority does not exist in Oracle DB schema
         private Label lblSvcTitle;
         private Label lblSvcMeta;
         private Guna2Panel divSvc1;
         private Guna2Panel divSvc2;
         private Label lblParamsTitle;
         private Guna2Panel pnlTableHeader;
+        // pnlPrioBadge and lblPrioText removed â€” Priority does not exist in Oracle DB schema
 
-        private Guna2Panel cardConclusion;
         private Label lblConclusionHeader;
         private Label lblRemarksLabel;
         private Guna2TextBox txtRemarks;
@@ -66,17 +59,15 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Label lblTimeLabel;
         private Guna2DateTimePicker dtpFinishTime;
 
-        private Guna2Panel cardAttachment;
         private Label lblAttachmentHeader;
         private Guna2Panel pnlUploadZone;
         private Label lblUpload1;
         private Label lblUpload2;
         private FlowLayoutPanel flpUploadedFiles;
 
-        private Guna2Panel cardActions;
         private Label lblActionsKtvInfo;
         private Guna2Button btnSaveDraft;
-        private Guna2Button btnSendDoctor;
+        // btnSendDoctor removed â€” 'Äang thá»±c hiá»‡n' state does not exist in Oracle DB schema (only KETQUA IS NULL or IS NOT NULL)
         private Guna2Button btnComplete;
 
         // Topbar
@@ -86,6 +77,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Guna2Panel pnlTopbarBadge;
         private Label lblTopbarBadge;
         private const int TopbarHeight = 64;
+        private FlowLayoutPanel flpServiceRecords;
+        private readonly Dictionary<Guna2Panel, KtvService> serviceCardMap = new Dictionary<Guna2Panel, KtvService>();
 
         // Custom Toast Notification
         private Guna2Panel pnlToast;
@@ -109,7 +102,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             allServices = KtvData.Services();
             // Start with the first service that is not completed
-            activeService = allServices.FirstOrDefault(x => x.Status != "Hoàn thành") ?? allServices.First();
+            activeService = allServices.FirstOrDefault(x => x.Status != "Ho\u00e0n th\u00e0nh") ?? allServices.First();
 
             BuildControls();
 
@@ -130,8 +123,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void BuildControls()
         {
-            Controls.Clear();
-
             // 0. Build Topbar
             pnlTopbar = new Guna2Panel
             {
@@ -140,10 +131,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 BorderColor = KtvTheme.Border,
                 BorderThickness = 1
             };
-            // Custom bottom border via CustomBorderColor bottom only — use full border, clip top/left/right via thickness=0 trick
             lblTopbarTitle = new Label
             {
-                Text = "Cập nhật kết quả dịch vụ",
+                Text = "C\u1eadp nh\u1eadt k\u1ebft qu\u1ea3 d\u1ecbch v\u1ee5",
                 Font = new Font("Segoe UI", 13F, FontStyle.Bold),
                 ForeColor = KtvTheme.TextDark,
                 AutoSize = true,
@@ -174,19 +164,21 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlTopbar.Visible = false;
             Controls.Add(pnlTopbar);
 
+            SetupDesignerNativeForm();
+
+#if false
             // 1. Build Queue Panel (Left)
-            pnlQueue = KtvTheme.Card(0, 0, 320, 100);
             pnlQueue.BorderColor = KtvTheme.Border;
             pnlQueue.ShadowDecoration.Enabled = true;
             pnlQueue.ShadowDecoration.Color = KtvTheme.Teal;
             pnlQueue.ShadowDecoration.Depth = 8;
             pnlQueue.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
 
-            lblQueueTitle = KtvTheme.Label("🗂 Hàng chờ kết quả", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
+            lblQueueTitle = KtvTheme.Label("ðŸ—‚ HÃ ng chá» káº¿t quáº£", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
 
             lblQueueCount = new Label
             {
-                Text = "3 chờ",
+                Text = "3 chá»",
                 Location = new Point(236, 18),
                 Size = new Size(64, 24),
                 BackColor = KtvTheme.AccentSoft,
@@ -194,12 +186,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 Font = new Font("Segoe UI", 8F, FontStyle.Bold),
                 TextAlign = ContentAlignment.MiddleCenter
             };
-            // Soft rounded badge
             pnlQueue.Controls.Add(lblQueueCount);
 
             txtSearchQueue = new Guna2TextBox
             {
-                PlaceholderText = "Tìm bệnh nhân…",
+                PlaceholderText = "TÃ¬m bá»‡nh nhÃ¢nâ€¦",
                 FillColor = Color.FromArgb(244, 247, 250),
                 BorderColor = KtvTheme.Border,
                 BorderRadius = 8,
@@ -220,15 +211,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             };
             pnlQueue.Controls.Add(pnlQueueItems);
             pnlQueue.Controls.Add(lblQueueTitle);
-            Controls.Add(pnlQueue);
 
-            // 2. Build Scrollable Form Container (Right)
-            pnlFormContainer = new Guna2Panel
-            {
-                AutoScroll = true,
-                BackColor = Color.Transparent
-            };
-            Controls.Add(pnlFormContainer);
+            // 2. Form Container is created statically in InitializeComponent()
+#endif
 
             // 3. Build Toast Notification
             pnlToast = new Guna2Panel
@@ -261,7 +246,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private void LayoutControls()
         {
             int margin = 28;
-            int gap = 20;
             int topbarH = 0;
 
             // 0. Topbar (full width, top)
@@ -273,9 +257,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblTopbarSub.Location = new Point(margin, 38);
 
             // Update badge text & subtitle
-            int waitCount = allServices != null ? allServices.Count(x => x.Status != "Hoàn thành") : 0;
-            lblTopbarSub.Text = $"{waitCount} kết quả đang chờ cập nhật · Hôm nay {DateTime.Now:dd/MM/yyyy}";
-            lblTopbarBadge.Text = $"⏳ {waitCount} chờ cập nhật";
+            int waitCount = allServices != null ? allServices.Count(x => x.Status != "Ho\u00e0n th\u00e0nh") : 0;
+            lblTopbarSub.Text = $"{waitCount} k\u1ebft qu\u1ea3 \u0111ang ch\u1edd c\u1eadp nh\u1eadt - H\u00f4m nay {DateTime.Now:dd/MM/yyyy}";
+            lblTopbarBadge.Text = $"{waitCount} ch\u1edd c\u1eadp nh\u1eadt";
 
             // Badge position (right side of topbar)
             pnlTopbarBadge.Location = new Point(this.Width - margin - pnlTopbarBadge.Width, (topbarH - pnlTopbarBadge.Height) / 2);
@@ -286,31 +270,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             int availHeight = this.Height - availTop - margin;
             if (availHeight < 200) availHeight = 500;
 
-            // 1. Layout Queue Panel
-            pnlQueue.Location = new Point(margin, availTop);
-            pnlQueue.Size = new Size(320, availHeight);
+            pnlQueue.Visible = false;
 
-            lblQueueTitle.Location = new Point(20, 18);
-            lblQueueCount.Location = new Point(236, 18);
-            // Apply simple rounded bounds to badge via Guna if possible, otherwise we set region
-            lblQueueCount.Region = GetRoundedRegion(lblQueueCount.ClientRectangle, 8);
-
-            txtSearchQueue.Location = new Point(20, 52);
-            txtSearchQueue.Size = new Size(280, 36);
-
-            pnlQueueItems.Location = new Point(1, 100);
-            pnlQueueItems.Size = new Size(318, availHeight - 102);
-
-            // 2. Layout Form Container (Right)
-            int formX = pnlQueue.Right + gap;
-            int formWidth = this.Width - formX - margin;
-            if (formWidth < 400) formWidth = 400;
-
-            pnlFormContainer.Location = new Point(formX, availTop);
-            pnlFormContainer.Size = new Size(formWidth, availHeight);
-
-            // Render right side components inside pnlFormContainer
-            LayoutRightSideForm(formWidth);
+            ResizeDesignerNativeForm();
+            BindDesignerNativeForm();
 
             // Adjust Toast location
             pnlToast.Location = new Point(this.Width - pnlToast.Width - margin, this.Height - pnlToast.Height - 16);
@@ -318,6 +281,564 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         }
 
         private void LayoutRightSideForm(int w)
+        {
+            if (activeService == null) return;
+
+            BindDesignerNativeForm();
+            return;
+        }
+
+        private void SetupDesignerNativeForm()
+        {
+            pnlQueue.Visible = false;
+            EnsureServiceCardsList();
+            ApplyVietnameseText();
+            pnlFormContainer.AutoScroll = false;
+            pnlFormContainer.HorizontalScroll.Enabled = false;
+            pnlFormContainer.HorizontalScroll.Visible = false;
+            pnlFormContainer.HorizontalScroll.Maximum = 0;
+
+            cboConclusion.Items.Clear();
+            cboConclusion.Items.AddRange(new object[] { "B\u00ecnh th\u01b0\u1eddng", "B\u1ea5t th\u01b0\u1eddng - C\u1ea7n theo d\u00f5i", "B\u1ea5t th\u01b0\u1eddng - Kh\u1ea9n c\u1ea5p", "C\u1ea7n th\u1ef1c hi\u1ec7n l\u1ea1i" });
+            cboConclusion.SelectedIndex = 1;
+            ApplyFormStyling();
+        }
+
+        private void ApplyVietnameseText()
+        {
+            lblSimpleTitle.Text = "Bi\u1ec3u m\u1eabu c\u1eadp nh\u1eadt";
+            lblSimplePatient.Text = "B\u1ec7nh nh\u00e2n:";
+            lblHeaderIndicator.Text = "Ch\u1ec9 s\u1ed1";
+            lblHeaderResult.Text = "K\u1ebft qu\u1ea3";
+            lblDensity.Text = "M\u1eadt \u0111\u1ed9/H\u00ecnh \u1ea3nh";
+            lblLesion.Text = "M\u00f4 t\u1ea3 t\u1ed5n th\u01b0\u01a1ng";
+            lblSimpleConclusion.Text = "K\u1ebft lu\u1eadn chung:";
+            lblRemarksLabel.Text = "Ghi ch\u00fa c\u1ee7a K\u1ef9 thu\u1eadt vi\u00ean (L\u01b0u v\u00e0o KETQUA):";
+            txtDensity.DefaultText = "B\u00ecnh th\u01b0\u1eddng";
+            txtLesion.DefaultText = "Kh\u00f4ng c\u00f3";
+            txtRemarks.PlaceholderText = "Nh\u1eadp n\u1ed9i dung chuy\u00ean m\u00f4n...";
+            btnComplete.Text = "X\u00e1c nh\u1eadn ho\u00e0n t\u1ea5t";
+            lblRecordsTitle.Text = "Danh s\u00e1ch h\u1ed3 s\u01a1 b\u1ec7nh \u00e1n d\u1ecbch v\u1ee5";
+        }
+
+        private void ResizeDesignerNativeForm()
+        {
+            int pad = 28;
+            int listPad = 18;
+            int listInnerW = pnlRecords.ClientSize.Width - listPad * 2 - SystemInformation.VerticalScrollBarWidth - 4;
+            if (listInnerW < 180) listInnerW = 180;
+            lblRecordsTitle.Width = listInnerW;
+            if (flpServiceRecords != null)
+            {
+                flpServiceRecords.Location = new Point(listPad, 96);
+                flpServiceRecords.Size = new Size(listInnerW, pnlRecords.ClientSize.Height - 124);
+            }
+
+            int innerW = pnlFormContainer.ClientSize.Width - pad * 2 - SystemInformation.VerticalScrollBarWidth - 8;
+            if (innerW < 320) innerW = 320;
+
+            pnlFormContainer.AutoScrollPosition = Point.Empty;
+            lblSimpleTitle.Location = new Point(pad, 34);
+            lblSimpleTitle.Width = innerW;
+            lblSimpleTitle.Height = 44;
+            lblSimplePatient.Location = new Point(pad, 91);
+            lblSimplePatient.Width = innerW;
+            lblSimplePatient.Height = 32;
+            pnlSimpleDivider.Location = new Point(pad, 150);
+            pnlSimpleDivider.Width = innerW;
+            pnlSimpleDivider.Height = 2;
+            pnlResultsCard.Location = new Point(pad, 185);
+            pnlResultsCard.Width = innerW;
+            pnlResultsCard.Height = 171;
+            tblSimpleResults.Location = new Point(1, 1);
+            tblSimpleResults.Width = pnlResultsCard.ClientSize.Width - 2;
+            tblSimpleResults.Height = pnlResultsCard.ClientSize.Height - 2;
+            if (tblSimpleResults.Width > 0 && tblSimpleResults.Height > 0)
+            {
+                tblSimpleResults.Region = GetRoundedRegion(tblSimpleResults.ClientRectangle, 8);
+            }
+            lblSimpleConclusion.Location = new Point(pad, 376);
+            lblSimpleConclusion.Width = innerW;
+            lblSimpleConclusion.Height = 30;
+            cboConclusion.Location = new Point(pad, 410);
+            cboConclusion.Width = innerW;
+            cboConclusion.Height = 40;
+            lblRemarksLabel.Location = new Point(pad, 486);
+            lblRemarksLabel.Width = innerW;
+            lblRemarksLabel.Height = 30;
+            txtRemarks.Location = new Point(pad, 522);
+            txtRemarks.Width = innerW;
+            txtRemarks.Height = 153;
+            btnComplete.Location = new Point(pad, 710);
+
+            foreach (Control control in new Control[] { lblSimpleTitle, lblSimplePatient, pnlSimpleDivider, pnlResultsCard, tblSimpleResults, lblSimpleConclusion, cboConclusion, lblRemarksLabel, txtRemarks, btnComplete })
+            {
+                control.Visible = true;
+                control.BringToFront();
+            }
+        }
+
+        private void BindDesignerNativeForm()
+        {
+            if (activeService == null) return;
+
+
+            lblSimplePatient.Text = $"B\u1ec7nh nh\u00e2n: {activeService.Patient} - {activeService.MaBn}";
+            txtDensity.Text = "B\u00ecnh th\u01b0\u1eddng";
+            txtLesion.Text = "Kh\u00f4ng c\u00f3";
+            if (cboConclusion.SelectedIndex < 0) cboConclusion.SelectedIndex = 1;
+            txtRemarks.Text = activeService.KetQua ?? string.Empty;
+            RenderServiceCards();
+        }
+
+        private void dgvServiceRecords_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.RowIndex >= allServices.Count) return;
+            activeService = allServices[e.RowIndex];
+            BindDesignerNativeForm();
+        }
+
+        private void btnComplete_Click(object sender, EventArgs e)
+        {
+            if (activeService == null) return;
+
+            string details = $"M\u1eadt \u0111\u1ed9/H\u00ecnh \u1ea3nh: {txtDensity.Text}; M\u00f4 t\u1ea3 t\u1ed5n th\u01b0\u01a1ng: {txtLesion.Text}; K\u1ebft lu\u1eadn: {cboConclusion.Text}";
+            string note = txtRemarks.Text.Trim();
+            activeService.KetQua = string.IsNullOrWhiteSpace(note) ? details : details + ". Ghi ch\u00fa: " + note;
+            ShowToastNotification("\u0110\u00e3 l\u01b0u KETQUA v\u00e0o HSBA_DV th\u00e0nh c\u00f4ng!");
+            BindDesignerNativeForm();
+        }
+
+        private void EnsureServiceCardsList()
+        {
+            if (flpServiceRecords != null) return;
+
+            flpServiceRecords = new FlowLayoutPanel
+            {
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                AutoScroll = true,
+                BackColor = Color.White,
+                Location = new Point(28, 96),
+                Size = new Size(284, 600)
+            };
+            pnlRecords.Controls.Add(flpServiceRecords);
+            flpServiceRecords.BringToFront();
+        }
+
+        private void RenderServiceCards()
+        {
+            if (flpServiceRecords == null || allServices == null) return;
+
+            flpServiceRecords.SuspendLayout();
+            flpServiceRecords.Controls.Clear();
+            serviceCardMap.Clear();
+
+            int cardW = Math.Max(280, flpServiceRecords.ClientSize.Width - SystemInformation.VerticalScrollBarWidth - 2);
+            foreach (var service in allServices)
+            {
+                var card = CreateServiceRecordCard(service, cardW, service == activeService);
+                flpServiceRecords.Controls.Add(card);
+                serviceCardMap[card] = service;
+            }
+
+            flpServiceRecords.ResumeLayout();
+        }
+
+        private Guna2Panel CreateServiceRecordCard(KtvService service, int width, bool active)
+        {
+            var card = new Guna2Panel
+            {
+                Size = new Size(width, 76),
+                Margin = new Padding(0, 0, 0, 8),
+                BorderRadius = 10,
+                BorderColor = active ? KtvTheme.Teal : KtvTheme.Border,
+                BorderThickness = 1,
+                FillColor = active ? KtvTheme.TealLight : Color.White,
+                Cursor = Cursors.Hand,
+                CustomBorderColor = active ? KtvTheme.Teal : Color.Transparent,
+                CustomBorderThickness = new Padding(active ? 4 : 0, 0, 0, 0)
+            };
+
+            var lblHsba = KtvTheme.Label(service.MaHsba, 14, 10, 8F, FontStyle.Bold, active ? KtvTheme.Teal : KtvTheme.TextMid);
+            lblHsba.AutoSize = false;
+            lblHsba.Size = new Size(width - 28, 18);
+
+            var lblPatient = KtvTheme.Label(service.Patient, 14, 30, 9F, FontStyle.Bold, KtvTheme.TextDark);
+            lblPatient.AutoSize = false;
+            lblPatient.Size = new Size(width - 28, 18);
+            lblPatient.AutoEllipsis = true;
+
+            var lblService = KtvTheme.Label(service.Service, 14, 50, 8F, FontStyle.Regular, KtvTheme.TextMid);
+            lblService.AutoSize = false;
+            lblService.Size = new Size(width - 128, 18);
+            lblService.AutoEllipsis = true;
+
+            bool waiting = string.IsNullOrWhiteSpace(service.KetQua);
+            var status = new Guna2Panel
+            {
+                Size = new Size(72, 22),
+                Location = new Point(width - 88, 46),
+                BorderRadius = 11,
+                FillColor = waiting ? KtvTheme.AccentSoft : KtvTheme.TealLight,
+                BackColor = active ? KtvTheme.TealLight : Color.White,
+                UseTransparentBackground = true
+            };
+            var lblStatus = new Label
+            {
+                Text = waiting ? "Ch\u1edd" : "Xong",
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font = new Font("Segoe UI", 7.5F, FontStyle.Bold),
+                ForeColor = waiting ? Color.FromArgb(160, 112, 0) : KtvTheme.Teal,
+                BackColor = Color.Transparent
+            };
+            status.Controls.Add(lblStatus);
+
+            card.Controls.AddRange(new Control[] { lblHsba, lblPatient, lblService, status });
+            WireServiceCardEvents(card, service);
+            foreach (Control child in card.Controls)
+                WireServiceCardEvents(child, service);
+
+            return card;
+        }
+
+        private void WireServiceCardEvents(Control control, KtvService service)
+        {
+            control.Click += (s, e) => SelectPatient(service);
+            control.MouseEnter += (s, e) => SetServiceCardHover(control, true);
+            control.MouseLeave += (s, e) => SetServiceCardHover(control, false);
+        }
+
+        private void SetServiceCardHover(Control source, bool hover)
+        {
+            Guna2Panel card = source as Guna2Panel;
+            while (card != null && !serviceCardMap.ContainsKey(card))
+                card = card.Parent as Guna2Panel;
+
+            if (card == null || !serviceCardMap.ContainsKey(card)) return;
+
+            // Check if cursor is still within the boundaries of the card when MouseLeave is triggered
+            if (!hover)
+            {
+                Point clientPos = card.PointToClient(Cursor.Position);
+                if (card.ClientRectangle.Contains(clientPos))
+                {
+                    // The mouse is still inside the card boundary, ignore to prevent flickering
+                    return;
+                }
+            }
+
+            bool active = serviceCardMap[card] == activeService;
+            card.FillColor = active ? KtvTheme.TealLight : (hover ? Color.FromArgb(244, 250, 248) : Color.White);
+            card.BorderColor = active || hover ? KtvTheme.Teal : KtvTheme.Border;
+            foreach (Control child in card.Controls)
+            {
+                if (child is Guna2Panel panel && !serviceCardMap.ContainsKey(panel))
+                {
+                    panel.BackColor = card.FillColor;
+                }
+            }
+        }
+
+        private void ApplyFormStyling()
+        {
+            pnlRecords.ShadowDecoration.Color = Color.FromArgb(120, 15, 110, 86);
+            pnlRecords.ShadowDecoration.Depth = 6;
+            pnlRecords.ShadowDecoration.Shadow = new Padding(0, 2, 6, 2);
+
+            pnlFormContainer.ShadowDecoration.Enabled = true;
+            pnlFormContainer.ShadowDecoration.Color = Color.FromArgb(120, 15, 110, 86);
+            pnlFormContainer.ShadowDecoration.Depth = 6;
+            pnlFormContainer.ShadowDecoration.Shadow = new Padding(0, 2, 6, 2);
+
+            pnlResultsCard.ShadowDecoration.Enabled = true;
+            pnlResultsCard.ShadowDecoration.Color = KtvTheme.Teal;
+            pnlResultsCard.ShadowDecoration.Depth = 8;
+            pnlResultsCard.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
+
+            StyleTextBox(txtDensity);
+            StyleTextBox(txtLesion);
+            StyleTextBox(txtRemarks);
+
+            tblSimpleResults.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
+            tblSimpleResults.BackColor = Color.White;
+            tblSimpleResults.Padding = new Padding(0);
+            foreach (Control cell in tblSimpleResults.Controls)
+            {
+                cell.Margin = new Padding(0);
+            }
+            lblHeaderIndicator.BackColor = Color.FromArgb(250, 252, 253);
+            lblHeaderResult.BackColor = Color.FromArgb(250, 252, 253);
+            lblDensity.BackColor = Color.White;
+            lblLesion.BackColor = Color.White;
+            lblHeaderIndicator.ForeColor = KtvTheme.TextDark;
+            lblHeaderResult.ForeColor = KtvTheme.TextDark;
+            lblDensity.ForeColor = KtvTheme.TextDark;
+            lblLesion.ForeColor = KtvTheme.TextDark;
+            txtDensity.BorderRadius = 6;
+            txtLesion.BorderRadius = 6;
+
+            cboConclusion.BorderColor = KtvTheme.Border;
+            cboConclusion.FocusedState.BorderColor = KtvTheme.Teal;
+            cboConclusion.HoverState.BorderColor = KtvTheme.Teal;
+            cboConclusion.FillColor = Color.White;
+            cboConclusion.ForeColor = KtvTheme.TextDark;
+            cboConclusion.ShadowDecoration.Enabled = true;
+            cboConclusion.ShadowDecoration.Color = KtvTheme.Teal;
+            cboConclusion.ShadowDecoration.Depth = 5;
+            cboConclusion.ShadowDecoration.Shadow = new Padding(0, 2, 5, 2);
+
+            txtRemarks.ShadowDecoration.Enabled = true;
+            txtRemarks.ShadowDecoration.Color = KtvTheme.Teal;
+            txtRemarks.ShadowDecoration.Depth = 5;
+            txtRemarks.ShadowDecoration.Shadow = new Padding(0, 2, 5, 2);
+            btnComplete.FillColor = KtvTheme.Teal;
+            btnComplete.HoverState.FillColor = KtvTheme.TealDark;
+        }
+
+        private void StyleTextBox(Guna2TextBox textBox)
+        {
+            textBox.BorderColor = KtvTheme.Border;
+            textBox.FocusedState.BorderColor = KtvTheme.Teal;
+            textBox.HoverState.BorderColor = KtvTheme.TealMid;
+            textBox.FillColor = Color.White;
+            textBox.PlaceholderForeColor = KtvTheme.TextLight;
+            textBox.ForeColor = KtvTheme.TextDark;
+        }
+
+        private void BuildSimpleResultForm(int w)
+        {
+            pnlFormContainer.Controls.Clear();
+            pnlFormContainer.AutoScroll = true;
+            pnlFormContainer.HorizontalScroll.Enabled = false;
+            pnlFormContainer.HorizontalScroll.Visible = false;
+            pnlFormContainer.HorizontalScroll.Maximum = 0;
+            pnlFormContainer.BorderRadius = 12;
+            pnlFormContainer.BorderColor = KtvTheme.Border;
+            pnlFormContainer.BorderThickness = 1;
+            pnlFormContainer.FillColor = Color.White;
+
+            int pad = 28;
+            int scrollBarReserve = SystemInformation.VerticalScrollBarWidth + 8;
+            int innerW = pnlFormContainer.ClientSize.Width - pad * 2 - scrollBarReserve;
+            if (innerW < 320) innerW = 320;
+
+            int y = 28;
+
+            var lblListTitle = KtvTheme.Label("Danh sÃ¡ch há»“ sÆ¡ bá»‡nh Ã¡n dá»‹ch vá»¥", pad, y, 13F, FontStyle.Bold, KtvTheme.TextDark);
+            lblListTitle.AutoSize = false;
+            lblListTitle.Size = new Size(innerW, 28);
+            pnlFormContainer.Controls.Add(lblListTitle);
+
+            var gridRecords = CreateServiceRecordsGrid(innerW);
+            gridRecords.Location = new Point(pad, y + 38);
+            pnlFormContainer.Controls.Add(gridRecords);
+
+            y += 38 + gridRecords.Height + 30;
+
+            var lblTitle = KtvTheme.Label("Cáº­p nháº­t káº¿t quáº£ dá»‹ch vá»¥", pad, y, 18F, FontStyle.Bold, KtvTheme.TextDark);
+            lblTitle.AutoSize = false;
+            lblTitle.Size = new Size(innerW, 34);
+            pnlFormContainer.Controls.Add(lblTitle);
+
+            var patientLine = $"Bá»‡nh nhÃ¢n: {activeService.Patient} - {activeService.MaBn}";
+            var lblPatient = KtvTheme.Label(patientLine, pad, y + 46, 12F, FontStyle.Regular, KtvTheme.TextDark);
+            lblPatient.AutoSize = false;
+            lblPatient.Size = new Size(innerW, 26);
+            pnlFormContainer.Controls.Add(lblPatient);
+
+            var divider = new Guna2Panel
+            {
+                Location = new Point(pad, y + 94),
+                Size = new Size(innerW, 2),
+                FillColor = KtvTheme.Teal
+            };
+            pnlFormContainer.Controls.Add(divider);
+
+            var table = new TableLayoutPanel
+            {
+                Location = new Point(pad, y + 122),
+                Size = new Size(innerW, 132),
+                ColumnCount = 2,
+                RowCount = 3,
+                BackColor = Color.White,
+                CellBorderStyle = TableLayoutPanelCellBorderStyle.Single
+            };
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43F));
+            table.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 57F));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 45F));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 43F));
+            table.RowStyles.Add(new RowStyle(SizeType.Absolute, 43F));
+
+            table.Controls.Add(CreateTableLabel("Chá»‰ sá»‘", true), 0, 0);
+            table.Controls.Add(CreateTableLabel("Káº¿t quáº£", true), 1, 0);
+            table.Controls.Add(CreateTableLabel("Máº­t Ä‘á»™/HÃ¬nh áº£nh", false), 0, 1);
+            table.Controls.Add(CreateTableLabel("MÃ´ táº£ tá»•n thÆ°Æ¡ng", false), 0, 2);
+
+            var txtDensity = CreateSimpleInput("BÃ¬nh thÆ°á»ng");
+            var txtLesion = CreateSimpleInput("KhÃ´ng cÃ³");
+            table.Controls.Add(txtDensity, 1, 1);
+            table.Controls.Add(txtLesion, 1, 2);
+            pnlFormContainer.Controls.Add(table);
+
+            var lblConclusion = KtvTheme.Label("Káº¿t luáº­n chung:", pad, y + 274, 11F, FontStyle.Bold, KtvTheme.TextDark);
+            pnlFormContainer.Controls.Add(lblConclusion);
+
+            cboConclusion = new Guna2ComboBox
+            {
+                Location = new Point(pad, y + 300),
+                Size = new Size(innerW, 40),
+                BorderRadius = 6,
+                BorderColor = KtvTheme.Border,
+                FillColor = Color.White,
+                Font = new Font("Segoe UI", 10F),
+                ForeColor = KtvTheme.TextDark,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            cboConclusion.Items.AddRange(new object[] { "BÃ¬nh thÆ°á»ng", "Báº¥t thÆ°á»ng - Cáº§n theo dÃµi", "Báº¥t thÆ°á»ng - Kháº©n cáº¥p", "Cáº§n thá»±c hiá»‡n láº¡i" });
+            cboConclusion.SelectedIndex = 1;
+            pnlFormContainer.Controls.Add(cboConclusion);
+
+            lblRemarksLabel = KtvTheme.Label("Ghi chÃº cá»§a Ká»¹ thuáº­t viÃªn (LÆ°u vÃ o KETQUA):", pad, y + 360, 11F, FontStyle.Bold, KtvTheme.TextDark);
+            pnlFormContainer.Controls.Add(lblRemarksLabel);
+
+            txtRemarks = new Guna2TextBox
+            {
+                Location = new Point(pad, y + 388),
+                Size = new Size(innerW, 124),
+                Multiline = true,
+                BorderRadius = 6,
+                BorderColor = KtvTheme.Border,
+                FillColor = Color.White,
+                Font = new Font("Segoe UI", 10F),
+                ForeColor = KtvTheme.TextDark,
+                PlaceholderForeColor = KtvTheme.TextLight,
+                PlaceholderText = "Nháº­p ná»™i dung chuyÃªn mÃ´n..."
+            };
+            if (!string.IsNullOrWhiteSpace(activeService.KetQua))
+                txtRemarks.Text = activeService.KetQua;
+            pnlFormContainer.Controls.Add(txtRemarks);
+
+            btnComplete = KtvTheme.Button("XÃ¡c nháº­n hoÃ n táº¥t", KtvTheme.Teal, Color.White);
+            btnComplete.Location = new Point(pad, y + 538);
+            btnComplete.Size = new Size(170, 45);
+            btnComplete.BorderRadius = 6;
+            btnComplete.TextAlign = HorizontalAlignment.Center;
+            btnComplete.TextOffset = new Point(0, 0);
+            btnComplete.Click += (s, e) =>
+            {
+                string details = $"Máº­t Ä‘á»™/HÃ¬nh áº£nh: {txtDensity.Text}; MÃ´ táº£ tá»•n thÆ°Æ¡ng: {txtLesion.Text}; Káº¿t luáº­n: {cboConclusion.Text}";
+                string note = txtRemarks.Text.Trim();
+                activeService.KetQua = string.IsNullOrWhiteSpace(note) ? details : details + ". Ghi chÃº: " + note;
+                ShowToastNotification("ÄÃ£ lÆ°u KETQUA vÃ o HSBA_DV thÃ nh cÃ´ng!");
+            };
+            pnlFormContainer.Controls.Add(btnComplete);
+
+            pnlToast.BringToFront();
+        }
+
+        private DataGridView CreateServiceRecordsGrid(int width)
+        {
+            var grid = new DataGridView
+            {
+                Width = width,
+                Height = 176,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                AllowUserToResizeRows = false,
+                AutoGenerateColumns = false,
+                BackgroundColor = Color.White,
+                BorderStyle = BorderStyle.None,
+                CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
+                ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None,
+                EnableHeadersVisualStyles = false,
+                GridColor = KtvTheme.Border,
+                MultiSelect = false,
+                ReadOnly = true,
+                RowHeadersVisible = false,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                ScrollBars = ScrollBars.Vertical
+            };
+
+            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(250, 252, 253);
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = KtvTheme.TextDark;
+            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            grid.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
+            grid.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            grid.DefaultCellStyle.ForeColor = KtvTheme.TextDark;
+            grid.DefaultCellStyle.SelectionBackColor = KtvTheme.TealLight;
+            grid.DefaultCellStyle.SelectionForeColor = KtvTheme.TextDark;
+            grid.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
+            grid.RowTemplate.Height = 34;
+            grid.ColumnHeadersHeight = 34;
+
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "HSBA", DataPropertyName = "MaHsba", FillWeight = 16 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Bá»‡nh nhÃ¢n", DataPropertyName = "Patient", FillWeight = 28 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Dá»‹ch vá»¥", DataPropertyName = "Service", FillWeight = 32 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NgÃ y DV", DataPropertyName = "NgayDv", FillWeight = 14 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tráº¡ng thÃ¡i", DataPropertyName = "Status", FillWeight = 16 });
+
+            grid.DataSource = allServices.Select(x => new
+            {
+                x.MaHsba,
+                x.Patient,
+                x.Service,
+                x.NgayDv,
+                Status = string.IsNullOrWhiteSpace(x.KetQua) ? "Chá» cáº­p nháº­t" : "HoÃ n thÃ nh"
+            }).ToList();
+
+            int activeIndex = allServices.IndexOf(activeService);
+            if (activeIndex >= 0 && activeIndex < grid.Rows.Count)
+            {
+                grid.Rows[activeIndex].Selected = true;
+                grid.CurrentCell = grid.Rows[activeIndex].Cells[0];
+            }
+
+            grid.CellClick += (s, e) =>
+            {
+                if (e.RowIndex < 0 || e.RowIndex >= allServices.Count) return;
+                activeService = allServices[e.RowIndex];
+                BuildSimpleResultForm(pnlFormContainer.Width);
+            };
+
+            return grid;
+        }
+
+        private Label CreateTableLabel(string text, bool isHeader)
+        {
+            return new Label
+            {
+                Text = text,
+                Dock = DockStyle.Fill,
+                Padding = new Padding(12, 0, 8, 0),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Font = new Font("Segoe UI", isHeader ? 10F : 9.8F, isHeader ? FontStyle.Bold : FontStyle.Regular),
+                ForeColor = KtvTheme.TextDark,
+                BackColor = isHeader ? Color.FromArgb(250, 252, 253) : Color.White
+            };
+        }
+
+        private Guna2TextBox CreateSimpleInput(string text)
+        {
+            var input = new Guna2TextBox
+            {
+                Text = text,
+                Anchor = AnchorStyles.Left,
+                Size = new Size(230, 30),
+                BorderRadius = 4,
+                BorderColor = KtvTheme.Border,
+                FillColor = Color.White,
+                Font = new Font("Segoe UI", 9.5F),
+                ForeColor = KtvTheme.TextDark,
+                Margin = new Padding(12, 6, 0, 0)
+            };
+
+            return input;
+        }
+
+        private void LayoutDetailedResultForm(int w)
         {
             if (activeService == null) return;
 
@@ -359,50 +880,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblPatientName.Size = new Size(cardW - 260, 24);
             pnlPatientStrip.Controls.Add(lblPatientName);
 
-            string gender = (activeService.Patient.Contains("Mai") || activeService.Patient.Contains("Lan") || activeService.Patient.Contains("Hằng")) ? "Nữ" : "Nam";
-            string age = "45 tuổi";
-            if (activeService.Patient == "Trần Văn Bình") age = "47 tuổi";
-            else if (activeService.Patient == "Nguyễn Thị Mai") age = "52 tuổi";
-            else if (activeService.Patient == "Vũ Thị Hằng") age = "38 tuổi";
+            // A. Patient Strip â€” dÃ¹ng thÃ´ng tin tá»« BENHNHAN (BnGender, BnDob, MaBn, CCCD)
+            // KhÃ´ng cÃ²n dÃ¹ng tÃªn bá»‡nh nhÃ¢n Ä‘á»ƒ Ä‘oÃ¡n giá»›i tÃ­nh
+            string bnGender = activeService.BnGender ?? "Nam";
+            string bnDob    = activeService.BnDob ?? "";
+            int    bAge     = 0;
+            if (!string.IsNullOrEmpty(bnDob))
+                bAge = KtvData.CalcAge(bnDob);
+            string bAgeStr  = bAge > 0 ? $"{bAge} tuá»•i" : bnDob;
 
-            lblPatientMeta = KtvTheme.Label($"{activeService.RecordId} · {gender} · {age} · Chỉ định: BS. {activeService.Doctor.Replace("BS. ", "")}", 90, 55, 9F, FontStyle.Regular, Color.FromArgb(200, 230, 222));
+            // Metadata: MÃ£BN Â· PhÃ¡i Â· Tuá»•i â€” tá»« BENHNHAN (khÃ´ng hiá»ƒn thá»‹ tÃªn BÃ¡c sÄ© vÃ¬ khÃ´ng join trong prototype)
+            lblPatientMeta = KtvTheme.Label($"{activeService.MaBn} Â· {bnGender} Â· {bAgeStr} Â· HSBA: {activeService.MaHsba}", 90, 55, 9F, FontStyle.Regular, Color.FromArgb(200, 230, 222));
             lblPatientMeta.AutoSize = false;
-            lblPatientMeta.Size = new Size(cardW - 260, 18);
+            lblPatientMeta.Size = new Size(cardW - 120, 18);
             pnlPatientStrip.Controls.Add(lblPatientMeta);
-
-            // Priority Badge
-            pnlPrioBadge = new Guna2Panel
-            {
-                Size = new Size(136, 30),
-                Location = new Point(cardW - 156, 35),
-                BorderRadius = 15
-            };
-            Color badgeBg = Color.FromArgb(40, 255, 255, 255);
-            Color badgeFg = Color.White;
-            string prioText = activeService.Priority;
-
-            if (activeService.Priority == "Khẩn cấp")
-            {
-                badgeBg = KtvTheme.Danger;
-                prioText = "⚠ Khẩn cấp";
-            }
-            else if (activeService.Priority == "Cao")
-            {
-                badgeBg = KtvTheme.Accent;
-                prioText = "🟡 Cao";
-            }
-            else
-            {
-                prioText = "🟢 Bình thường";
-            }
-            pnlPrioBadge.FillColor = badgeBg;
-            lblPrioText = KtvTheme.Label(prioText, 0, 0, 8.5F, FontStyle.Bold, badgeFg);
-            lblPrioText.AutoSize = false;
-            lblPrioText.Location = new Point(0, 0);
-            lblPrioText.Size = new Size(136, 30);
-            lblPrioText.TextAlign = ContentAlignment.MiddleCenter;
-            pnlPrioBadge.Controls.Add(lblPrioText);
-            pnlPatientStrip.Controls.Add(pnlPrioBadge);
 
             pnlFormContainer.Controls.Add(pnlPatientStrip);
             y += 100 + 16;
@@ -419,13 +910,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             cardSvc.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
 
             // Card header with divider line
-            lblSvcTitle = KtvTheme.Label($"🔬 {activeService.Service}", 22, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
+            lblSvcTitle = KtvTheme.Label($"ðŸ”¬ {activeService.Service}", 22, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
             lblSvcTitle.AutoSize = false;
             lblSvcTitle.Size = new Size(cardW - 260, 22);
             lblSvcTitle.AutoEllipsis = true;
             cardSvc.Controls.Add(lblSvcTitle);
 
-            lblSvcMeta = KtvTheme.Label($"{activeService.Room} · Giờ hẹn: {activeService.Time}", cardW - 230, 20, 8.5F, FontStyle.Regular, KtvTheme.TextLight);
+            // lblSvcMeta: hiá»ƒn NGAYDV (tá»« HSBA_DV) thay vÃ¬ giá» háº¹n mock
+            lblSvcMeta = KtvTheme.Label($"NgÃ y DV: {activeService.NgayDv}", cardW - 230, 20, 8.5F, FontStyle.Regular, KtvTheme.TextLight);
             lblSvcMeta.AutoSize = false;
             lblSvcMeta.Size = new Size(208, 18);
             lblSvcMeta.TextAlign = ContentAlignment.TopRight;
@@ -434,14 +926,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             divSvc1 = new Guna2Panel { Location = new Point(0, 50), Size = new Size(cardW, 1), FillColor = KtvTheme.Border };
             cardSvc.Controls.Add(divSvc1);
 
-            // Info Grid: 2-column × 2-row matching HTML .info-grid
+            // Info Grid: 2-column Ã— 2-row matching HTML .info-grid
             int colW = (cardW - 66) / 2;
-            string[] gridLabels = { "MÃ DỊCH VỤ", "LOẠI MẪU XÉT NGHIỆM", "THỜI GIAN LẤY MẪU", "THIẾT BỊ HỖ TRỢ" };
+            string[] gridLabels = { "MÃƒ Dá»ŠCH Vá»¤", "LOáº I MáºªU XÃ‰T NGHIá»†M", "THá»œI GIAN Láº¤Y MáºªU", "THIáº¾T Bá»Š Há»– TRá»¢" };
             string[] gridVals = {
                 activeService.RecordId.Replace("BV", "DV"),
-                activeService.Service.Contains("máu") ? "Máu tĩnh mạch (EDTA)" : (activeService.Service.Contains("tiểu") ? "Nước tiểu (24h)" : "Không yêu cầu mẫu"),
+                activeService.Service.Contains("mÃ¡u") ? "MÃ¡u tÄ©nh máº¡ch (EDTA)" : (activeService.Service.Contains("tiá»ƒu") ? "NÆ°á»›c tiá»ƒu (24h)" : "KhÃ´ng yÃªu cáº§u máº«u"),
                 "07:35",
-                activeService.Service.Contains("máu") ? "Sysmex XN-1000" : (activeService.Service.Contains("Điện tim") ? "Nihon Kohden ECG-2150" : "Thiết bị chụp MedRad")
+                activeService.Service.Contains("mÃ¡u") ? "Sysmex XN-1000" : (activeService.Service.Contains("Äiá»‡n tim") ? "Nihon Kohden ECG-2150" : "Thiáº¿t bá»‹ chá»¥p MedRad")
             };
             for (int i = 0; i < 4; i++)
             {
@@ -466,19 +958,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             divSvc2 = new Guna2Panel { Location = new Point(0, 210), Size = new Size(cardW, 1), FillColor = KtvTheme.Border };
             cardSvc.Controls.Add(divSvc2);
 
-            lblParamsTitle = KtvTheme.Label("NHẬP KẾT QUẢ TỪNG CHỈ SỐ", 22, 224, 8F, FontStyle.Bold, KtvTheme.TextLight);
+            lblParamsTitle = KtvTheme.Label("NHáº¬P Káº¾T QUáº¢ Tá»ªNG CHá»ˆ Sá»", 22, 224, 8F, FontStyle.Bold, KtvTheme.TextLight);
             cardSvc.Controls.Add(lblParamsTitle);
 
             // Stable column X anchors for consistent alignment across header + rows
             int tblInnerW = cardW - 44;
-            int colX0 = 22;                               // CHỈ SỐ
-            int colX1 = 22 + (int)(tblInnerW * 0.29f);   // KẾT QUẢ
+            int colX0 = 22;                               // CHá»ˆ Sá»
+            int colX1 = 22 + (int)(tblInnerW * 0.29f);   // Káº¾T QUáº¢
             int resultColW = Math.Min(260, Math.Max(230, (int)(tblInnerW * 0.23f)));
             int resultInputW = Math.Min(150, Math.Max(130, resultColW - 100));
             int resultInputX = colX1 + (resultColW - resultInputW) / 2;
-            int colX2 = colX1 + resultColW + 18;         // ĐƠN VỊ
-            int colX3 = Math.Max(colX2 + 112, 22 + (int)(tblInnerW * 0.77f)); // TRỊ SỐ THAM CHIẾU
-            int colX4 = Math.Max(colX3 + 136, 22 + (int)(tblInnerW * 0.92f)); // CỜ
+            int colX2 = colX1 + resultColW + 18;         // ÄÆ N Vá»Š
+            int colX3 = Math.Max(colX2 + 112, 22 + (int)(tblInnerW * 0.77f)); // TRá»Š Sá» THAM CHIáº¾U
+            int colX4 = Math.Max(colX3 + 136, 22 + (int)(tblInnerW * 0.92f)); // Cá»œ
 
             // Table Header row
             pnlTableHeader = new Guna2Panel
@@ -488,14 +980,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 FillColor = KtvTheme.Bg,
                 BorderRadius = 0
             };
-            var th0 = KtvTheme.Label("CHỈ SỐ", colX0, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
-            var th1 = KtvTheme.Label("KẾT QUẢ", resultInputX, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            var th0 = KtvTheme.Label("CHá»ˆ Sá»", colX0, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            var th1 = KtvTheme.Label("Káº¾T QUáº¢", resultInputX, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
             th1.AutoSize = false;
             th1.Size = new Size(resultInputW, 18);
             th1.TextAlign = ContentAlignment.MiddleCenter;
-            var th2 = KtvTheme.Label("ĐƠN VỊ", colX2, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
-            var th3 = KtvTheme.Label("TRỊ SỐ THAM CHIẾU", colX3, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
-            var th4 = KtvTheme.Label("CỜ", colX4, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            var th2 = KtvTheme.Label("ÄÆ N Vá»Š", colX2, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            var th3 = KtvTheme.Label("TRá»Š Sá» THAM CHIáº¾U", colX3, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            var th4 = KtvTheme.Label("Cá»œ", colX4, 7, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
             pnlTableHeader.Controls.AddRange(new Control[] { th0, th1, th2, th3, th4 });
             cardSvc.Controls.Add(pnlTableHeader);
 
@@ -531,7 +1023,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 lblUnit.Size = new Size(colX3 - colX2 - 10, 18);
                 lblUnit.TextAlign = ContentAlignment.MiddleLeft;
                 var lblRefRange = KtvTheme.Label(
-                    param.IsTextParam ? "—" : $"{param.MinVal:F1} – {param.MaxVal:F1}",
+                    param.IsTextParam ? "â€”" : $"{param.MinVal:F1} â€“ {param.MaxVal:F1}",
                     colX3, startY + 12, 8.5F, FontStyle.Regular, KtvTheme.TextLight);
                 lblRefRange.AutoSize = false;
                 lblRefRange.Size = new Size(colX4 - colX3 - 10, 18);
@@ -588,19 +1080,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             cardConclusion.ShadowDecoration.Depth = 8;
             cardConclusion.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
 
-            lblConclusionHeader = KtvTheme.Label("📝 Nhận xét & kết luận", 22, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
+            lblConclusionHeader = KtvTheme.Label("ðŸ“ Nháº­n xÃ©t & káº¿t luáº­n", 22, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
             cardConclusion.Controls.Add(lblConclusionHeader);
 
             // Horizontal divider under header
             var concDiv = new Guna2Panel { Location = new Point(0, 50), Size = new Size(cardW, 1), FillColor = KtvTheme.Border };
             cardConclusion.Controls.Add(concDiv);
 
-            lblRemarksLabel = KtvTheme.Label("NHẬN XÉT CỦA KỸ THUẬT VIÊN", 22, 62, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            lblRemarksLabel = KtvTheme.Label("NHáº¬N XÃ‰T Cá»¦A Ká»¸ THUáº¬T VIÃŠN", 22, 62, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
             cardConclusion.Controls.Add(lblRemarksLabel);
 
+            // txtRemarks: placeholder reflects KETQUA field (NVARCHAR2(200))
             txtRemarks = new Guna2TextBox
             {
-                PlaceholderText = "Nhập nhận xét về chất lượng mẫu, các bất thường quan sát được trong phòng thí nghiệm…",
+                PlaceholderText = "Nháº­p káº¿t quáº£ dá»‹ch vá»¥ â€” sáº½ Ä‘Æ°á»£c lÆ°u vÃ o trÆ°á»ng KETQUA trong HSBA_DVâ€¦",
                 Location = new Point(22, 82),
                 Size = new Size(cardW - 44, 78),
                 Multiline = true,
@@ -609,17 +1102,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 Font = new Font("Segoe UI", 9F),
                 ForeColor = KtvTheme.TextDark
             };
-            if (activeService.Patient == "Trần Văn Bình")
-                txtRemarks.Text = "Mẫu máu đạt chất lượng. Hồng cầu giảm nhẹ, hemoglobin thấp — nghi ngờ thiếu máu nhược sắc. Đề nghị bác sĩ xem xét chỉ định bổ sung xét nghiệm sắt huyết thanh.";
-            else if (activeService.Patient == "Nguyễn Thị Mai")
-                txtRemarks.Text = "Mẫu huyết thanh không tán huyết. Chỉ số Glucose và Cholesterol tăng cao hơn ngưỡng tham chiếu. Đề nghị hội chẩn nội tiết.";
-            else
-                txtRemarks.Text = "Kết quả đo ghi nhận trạng thái bình thường ổn định, không phát hiện dấu hiệu bất thường cấp tính.";
+            // Pre-fill from existing KETQUA if already recorded
+            if (!string.IsNullOrEmpty(activeService.KetQua))
+                txtRemarks.Text = activeService.KetQua;
             cardConclusion.Controls.Add(txtRemarks);
 
-            // Two-column row: KẾT LUẬN CHUNG | THỜI GIAN HOÀN THÀNH
+            // Two-column row: Káº¾T LUáº¬N CHUNG | THá»œI GIAN HOÃ€N THÃ€NH
             int halfW = (cardW - 66) / 2;
-            lblConclusionDropdownLabel = KtvTheme.Label("KẾT LUẬN CHUNG", 22, 172, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            lblConclusionDropdownLabel = KtvTheme.Label("Káº¾T LUáº¬N CHUNG", 22, 172, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
             cardConclusion.Controls.Add(lblConclusionDropdownLabel);
 
             cboConclusion = new Guna2ComboBox
@@ -630,11 +1120,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 BorderColor = KtvTheme.Border,
                 Font = new Font("Segoe UI", 9F)
             };
-            cboConclusion.Items.AddRange(new object[] { "Bình thường", "Bất thường — Cần theo dõi", "Bất thường — Khẩn cấp", "Cần thực hiện lại" });
-            cboConclusion.SelectedIndex = (activeService.Patient == "Trần Văn Bình" || activeService.Patient == "Nguyễn Thị Mai") ? 1 : 0;
+            cboConclusion.Items.AddRange(new object[] { "BÃ¬nh thÆ°á»ng", "Báº¥t thÆ°á»ng â€” Cáº§n theo dÃµi", "Báº¥t thÆ°á»ng â€” Kháº©n cáº¥p", "Cáº§n thá»±c hiá»‡n láº¡i" });
+            cboConclusion.SelectedIndex = (activeService.Patient == "Tráº§n VÄƒn BÃ¬nh" || activeService.Patient == "Nguyá»…n Thá»‹ Mai") ? 1 : 0;
             cardConclusion.Controls.Add(cboConclusion);
 
-            lblTimeLabel = KtvTheme.Label("THỜI GIAN HOÀN THÀNH", 22 + halfW + 22, 172, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
+            lblTimeLabel = KtvTheme.Label("THá»œI GIAN HOÃ€N THÃ€NH", 22 + halfW + 22, 172, 7.8F, FontStyle.Bold, KtvTheme.TextLight);
             cardConclusion.Controls.Add(lblTimeLabel);
 
             dtpFinishTime = new Guna2DateTimePicker
@@ -664,7 +1154,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             cardAttachment.ShadowDecoration.Depth = 8;
             cardAttachment.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
 
-            lblAttachmentHeader = KtvTheme.Label("📎 Đính kèm tệp kết quả", 20, 18, 10F, FontStyle.Bold, KtvTheme.TextDark);
+            lblAttachmentHeader = KtvTheme.Label("ðŸ“Ž ÄÃ­nh kÃ¨m tá»‡p káº¿t quáº£", 20, 18, 10F, FontStyle.Bold, KtvTheme.TextDark);
             cardAttachment.Controls.Add(lblAttachmentHeader);
 
             pnlUploadZone = new Guna2Panel
@@ -700,19 +1190,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlUploadZone.Click += PnlUploadZone_Click;
 
             // Icon (large, centered top)
-            var lblUploadIcon = KtvTheme.Label("📄", 0, 12, 20F, FontStyle.Regular, KtvTheme.TextMid);
+            var lblUploadIcon = KtvTheme.Label("ðŸ“„", 0, 12, 20F, FontStyle.Regular, KtvTheme.TextMid);
             lblUploadIcon.Size = new Size(cardW - 40, 30);
             lblUploadIcon.TextAlign = ContentAlignment.MiddleCenter;
             lblUploadIcon.Click += PnlUploadZone_Click;
             pnlUploadZone.Controls.Add(lblUploadIcon);
 
-            lblUpload1 = KtvTheme.Label("Nhấp để tải lên hoặc kéo file vào đây", 0, 46, 9F, FontStyle.Bold, KtvTheme.Teal);
+            lblUpload1 = KtvTheme.Label("Nháº¥p Ä‘á»ƒ táº£i lÃªn hoáº·c kÃ©o file vÃ o Ä‘Ã¢y", 0, 46, 9F, FontStyle.Bold, KtvTheme.Teal);
             lblUpload1.Size = new Size(cardW - 40, 22);
             lblUpload1.TextAlign = ContentAlignment.MiddleCenter;
             lblUpload1.Click += PnlUploadZone_Click;
             pnlUploadZone.Controls.Add(lblUpload1);
 
-            lblUpload2 = KtvTheme.Label("PDF, JPG, PNG · Tối đa 10MB mỗi file", 0, 70, 8F, FontStyle.Regular, KtvTheme.TextLight);
+            lblUpload2 = KtvTheme.Label("PDF, JPG, PNG Â· Tá»‘i Ä‘a 10MB má»—i file", 0, 70, 8F, FontStyle.Regular, KtvTheme.TextLight);
             lblUpload2.Size = new Size(cardW - 40, 18);
             lblUpload2.TextAlign = ContentAlignment.MiddleCenter;
             lblUpload2.Click += PnlUploadZone_Click;
@@ -744,41 +1234,32 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             cardActions.ShadowDecoration.Depth = 8;
             cardActions.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
 
-            lblActionsKtvInfo = KtvTheme.Label("Kỹ thuật viên: Nguyễn Thị Thu · Khoa xét nghiệm", 20, 26, 9F, FontStyle.Bold, KtvTheme.TextMid);
+            lblActionsKtvInfo = KtvTheme.Label("Ká»¹ thuáº­t viÃªn: Nguyá»…n Thá»‹ Thu Â· Khoa xÃ©t nghiá»‡m", 20, 26, 9F, FontStyle.Bold, KtvTheme.TextMid);
             cardActions.Controls.Add(lblActionsKtvInfo);
 
-            btnSaveDraft = KtvTheme.Button("💾 Lưu nháp", Color.White, KtvTheme.TextMid);
-            btnSaveDraft.Text = "Lưu";
+            // Buttons â€” only 2 actions: LÆ°u káº¿t quáº£ (set KETQUA) + Xem láº¡i
+            // btnSendDoctor removed â€” 'Äang thá»±c hiá»‡n' does not exist in HSBA_DV
+            btnSaveDraft = KtvTheme.Button("LÆ°u", Color.White, KtvTheme.TextMid);
             btnSaveDraft.BorderColor = KtvTheme.Border;
             btnSaveDraft.BorderThickness = 1;
             btnSaveDraft.Size = new Size(112, 40);
             btnSaveDraft.TextAlign = HorizontalAlignment.Center;
             btnSaveDraft.TextOffset = new Point(0, 0);
-            btnSaveDraft.Click += (s, e) => ShowToastNotification("💾 Kết quả đã được lưu nháp thành công!");
+            btnSaveDraft.Click += (s, e) => ShowToastNotification("ðŸ’¾ Káº¿t quáº£ Ä‘Ã£ Ä‘Æ°á»£c lÆ°u thÃ nh cÃ´ng! (KETQUA Ä‘Æ°á»£c cáº­p nháº­t)");
             cardActions.Controls.Add(btnSaveDraft);
 
-            btnSendDoctor = KtvTheme.Button("📤 Gửi duyệt", KtvTheme.Accent, Color.White);
-            btnSendDoctor.Text = "Gửi";
-            btnSendDoctor.Size = new Size(112, 40);
-            btnSendDoctor.TextAlign = HorizontalAlignment.Center;
-            btnSendDoctor.TextOffset = new Point(0, 0);
-            btnSendDoctor.Click += (s, e) => {
-                activeService.Status = "Đang thực hiện";
-                ShowToastNotification("📤 Đã chuyển kết quả cho bác sĩ chỉ định duyệt!");
-                BuildQueueItems();
-            };
-            cardActions.Controls.Add(btnSendDoctor);
-
-            btnComplete = KtvTheme.Button("✅ Xác nhận & Hoàn thành", KtvTheme.Teal, Color.White);
-            btnComplete.Text = "Xác nhận hoàn tất";
-            btnComplete.Size = new Size(220, 40);
+            btnComplete = KtvTheme.Button("âœ… XÃ¡c nháº­n & HoÃ n thÃ nh", KtvTheme.Teal, Color.White);
+            btnComplete.Text = "XÃ¡c nháº­n hoÃ n táº¥t (KETQUA IS NOT NULL)";
+            btnComplete.Size = new Size(280, 40);
             btnComplete.TextAlign = HorizontalAlignment.Center;
             btnComplete.TextOffset = new Point(0, 0);
             btnComplete.Click += (s, e) => {
-                activeService.Status = "Hoàn thành";
-                ShowToastNotification("✅ Đã phê duyệt và đồng bộ hồ sơ bệnh án thành công!");
+                activeService.KetQua = txtRemarks.Text.Trim().Length > 0 
+                    ? txtRemarks.Text.Trim() 
+                    : (activeService.Service + ": káº¿t quáº£ bÃ¬nh thÆ°á»ng");
+                ShowToastNotification("âœ… ÄÃ£ lÆ°u KETQUA vÃ o HSBA_DV thÃ nh cÃ´ng!");
                 BuildQueueItems();
-                var next = allServices.FirstOrDefault(x => x.Status != "Hoàn thành");
+                var next = allServices.FirstOrDefault(x => x.Status != "HoÃ n thÃ nh");
                 if (next != null) SelectPatient(next);
                 else SelectPatient(allServices.First());
             };
@@ -787,8 +1268,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // Position buttons from right edge
             int btnRight = cardW - 20;
             btnComplete.Location = new Point(btnRight - btnComplete.Width, 16);
-            btnSendDoctor.Location = new Point(btnComplete.Left - 10 - btnSendDoctor.Width, 16);
-            btnSaveDraft.Location = new Point(btnSendDoctor.Left - 10 - btnSaveDraft.Width, 16);
+            btnSaveDraft.Location = new Point(btnComplete.Left - 10 - btnSaveDraft.Width, 16);
 
             pnlFormContainer.Controls.Add(cardActions);
         }
@@ -801,11 +1281,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             if (param.IsTextParam)
             {
                 // Simple text comparison
-                if (txt.Text.Trim().ToLower().Contains("bất thường") ||
-                    txt.Text.Trim().ToLower().Contains("hẹp") ||
-                    txt.Text.Trim().ToLower().Contains("dày") ||
-                    txt.Text.Trim().ToLower().Contains("sỏi") ||
-                    txt.Text.Trim().ToLower().Contains("loãng"))
+                if (txt.Text.Trim().ToLower().Contains("báº¥t thÆ°á»ng") ||
+                    txt.Text.Trim().ToLower().Contains("háº¹p") ||
+                    txt.Text.Trim().ToLower().Contains("dÃ y") ||
+                    txt.Text.Trim().ToLower().Contains("sá»i") ||
+                    txt.Text.Trim().ToLower().Contains("loÃ£ng"))
                 {
                     txt.FillColor = KtvTheme.DangerSoft;
                     txt.BorderColor = KtvTheme.Danger;
@@ -857,7 +1337,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     txt.FillColor = Color.White;
                     txt.BorderColor = KtvTheme.Border;
                     pnl.FillColor = KtvTheme.TextLight;
-                    lbl.Text = "—";
+                    lbl.Text = "â€”";
                     lbl.ForeColor = Color.White;
                 }
             }
@@ -874,7 +1354,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 mockAttachedFiles.Add(selected);
                 RenderAttachmentsList();
-                ShowToastNotification($"📎 Đã đính kèm tệp {selected} thành công!");
+                ShowToastNotification($"ðŸ“Ž ÄÃ£ Ä‘Ã­nh kÃ¨m tá»‡p {selected} thÃ nh cÃ´ng!");
             }
         }
 
@@ -884,7 +1364,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             flpUploadedFiles.Controls.Clear();
 
             // Default mock file if empty
-            if (mockAttachedFiles.Count == 0 && activeService.Patient == "Trần Văn Bình")
+            if (mockAttachedFiles.Count == 0 && activeService.Patient == "Tráº§n VÄƒn BÃ¬nh")
             {
                 mockAttachedFiles.Add("CBC_BinhTranVan_240525.pdf");
             }
@@ -901,7 +1381,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
                 var lblName = new Label
                 {
-                    Text = $"📄 {file}",
+                    Text = $"ðŸ“„ {file}",
                     Font = new Font("Segoe UI", 8F, FontStyle.Bold),
                     ForeColor = KtvTheme.Teal,
                     Location = new Point(10, 0),
@@ -912,7 +1392,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
                 var btnDelete = new Guna2Button
                 {
-                    Text = "✕",
+                    Text = "âœ•",
                     Size = new Size(20, 20),
                     Location = new Point(190, 6),
                     BorderRadius = 10,
@@ -934,6 +1414,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void BuildQueueItems()
         {
+            if (pnlQueueItems == null || txtSearchQueue == null || lblQueueCount == null)
+            {
+                BindDesignerNativeForm();
+                return;
+            }
+
             pnlQueueItems.Controls.Clear();
 
             string searchKey = txtSearchQueue.Text.Trim().ToLowerInvariant();
@@ -944,20 +1430,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             ).ToList();
 
             // Count waiting patients
-            int waitCount = allServices.Count(x => x.Status != "Hoàn thành");
-            lblQueueCount.Text = $"{waitCount} chờ";
+            int waitCount = allServices.Count(x => x.Status != "HoÃ n thÃ nh");
+            lblQueueCount.Text = $"{waitCount} chá»";
 
             // Update topbar badge
             if (lblTopbarBadge != null)
             {
-                lblTopbarBadge.Text = $"⏳ {waitCount} chờ cập nhật";
-                lblTopbarSub.Text = $"{waitCount} kết quả đang chờ cập nhật · Hôm nay {DateTime.Now:dd/MM/yyyy}";
+                lblTopbarBadge.Text = $"â³ {waitCount} chá» cáº­p nháº­t";
+                lblTopbarSub.Text = $"{waitCount} káº¿t quáº£ Ä‘ang chá» cáº­p nháº­t Â· HÃ´m nay {DateTime.Now:dd/MM/yyyy}";
             }
 
             foreach (var service in filtered)
             {
                 bool isActive = (service == activeService);
-                bool isDone = service.Status == "Hoàn thành";
+                bool isDone = service.Status == "HoÃ n thÃ nh";
 
                 // Wrapper panel that draws bottom border line
                 var pnlWrapper = new Panel
@@ -1024,26 +1510,26 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 pnlItem.Controls.Add(lblSvc);
                 lblSvc.Click += (s, e) => SelectPatient(service);
 
-                // Status Badge — auto-width to prevent text crop
+                // Status Badge â€” auto-width to prevent text crop
                 string stText;
                 Color stBg = KtvTheme.AccentSoft;
                 Color stFg = Color.FromArgb(160, 112, 0);
 
-                if (service.Status == "Hoàn thành")
+                if (service.Status == "HoÃ n thÃ nh")
                 {
-                    stText = "✅ Hoàn thành";
+                    stText = "âœ… HoÃ n thÃ nh";
                     stBg = KtvTheme.TealLight;
                     stFg = isDone ? Color.FromArgb(150, 165, 160) : KtvTheme.Teal;
                 }
-                else if (service.Status == "Đang thực hiện")
+                else if (service.Status == "Äang thá»±c hiá»‡n")
                 {
-                    stText = "⚙️ Đang thực hiện";
+                    stText = "âš™ï¸ Äang thá»±c hiá»‡n";
                     stBg = KtvTheme.InfoSoft;
                     stFg = KtvTheme.Info;
                 }
                 else
                 {
-                    stText = "⏳ Chờ cập nhật";
+                    stText = "â³ Chá» cáº­p nháº­t";
                 }
 
                 var lblBadge = KtvTheme.Label(stText, 0, 0, 7.5F, FontStyle.Bold, stFg);
@@ -1078,13 +1564,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             activeService = service;
             mockAttachedFiles.Clear();
 
-            BuildQueueItems();
-
-            // Re-render forms panel
-            int formX = pnlQueue.Right + 20;
-            int formWidth = this.Width - formX - 28;
-            if (formWidth < 400) formWidth = 400;
-            LayoutRightSideForm(formWidth);
+            BindDesignerNativeForm();
         }
 
         private void TxtSearchQueue_TextChanged(object sender, EventArgs e)
@@ -1144,42 +1624,42 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             var list = new List<TestParam>();
 
-            if (serviceName.Contains("máu toàn phần") || serviceName.Contains("CBC"))
+            if (serviceName.Contains("mÃ¡u toÃ n pháº§n") || serviceName.Contains("CBC"))
             {
-                list.Add(new TestParam { Name = "WBC (Bạch cầu)", SubName = "White Blood Cells", MinVal = 4.0, MaxVal = 10.0, Unit = "×10³/μL", DefaultVal = 8.2 });
-                list.Add(new TestParam { Name = "RBC (Hồng cầu)", SubName = "Red Blood Cells", MinVal = 4.2, MaxVal = 5.5, Unit = "×10⁶/μL", DefaultVal = 3.8 });
-                list.Add(new TestParam { Name = "HGB (Hemoglobin)", SubName = "Huyết sắc tố", MinVal = 13.0, MaxVal = 17.0, Unit = "g/dL", DefaultVal = 11.5 });
-                list.Add(new TestParam { Name = "HCT (Hematocrit)", SubName = "Thể tích khối hồng cầu", MinVal = 40.0, MaxVal = 52.0, Unit = "%", DefaultVal = 35.2 });
-                list.Add(new TestParam { Name = "PLT (Tiểu cầu)", SubName = "Platelets", MinVal = 150.0, MaxVal = 400.0, Unit = "×10³/μL", DefaultVal = 220.0 });
-                list.Add(new TestParam { Name = "MCV", SubName = "Thể tích trung bình hồng cầu", MinVal = 80.0, MaxVal = 100.0, Unit = "fL", DefaultVal = 75.4 });
-                list.Add(new TestParam { Name = "Neutrophil", SubName = "Bạch cầu trung tính", MinVal = 50.0, MaxVal = 70.0, Unit = "%", DefaultVal = 65.0 });
+                list.Add(new TestParam { Name = "WBC (Báº¡ch cáº§u)", SubName = "White Blood Cells", MinVal = 4.0, MaxVal = 10.0, Unit = "Ã—10Â³/Î¼L", DefaultVal = 8.2 });
+                list.Add(new TestParam { Name = "RBC (Há»“ng cáº§u)", SubName = "Red Blood Cells", MinVal = 4.2, MaxVal = 5.5, Unit = "Ã—10â¶/Î¼L", DefaultVal = 3.8 });
+                list.Add(new TestParam { Name = "HGB (Hemoglobin)", SubName = "Huyáº¿t sáº¯c tá»‘", MinVal = 13.0, MaxVal = 17.0, Unit = "g/dL", DefaultVal = 11.5 });
+                list.Add(new TestParam { Name = "HCT (Hematocrit)", SubName = "Thá»ƒ tÃ­ch khá»‘i há»“ng cáº§u", MinVal = 40.0, MaxVal = 52.0, Unit = "%", DefaultVal = 35.2 });
+                list.Add(new TestParam { Name = "PLT (Tiá»ƒu cáº§u)", SubName = "Platelets", MinVal = 150.0, MaxVal = 400.0, Unit = "Ã—10Â³/Î¼L", DefaultVal = 220.0 });
+                list.Add(new TestParam { Name = "MCV", SubName = "Thá»ƒ tÃ­ch trung bÃ¬nh há»“ng cáº§u", MinVal = 80.0, MaxVal = 100.0, Unit = "fL", DefaultVal = 75.4 });
+                list.Add(new TestParam { Name = "Neutrophil", SubName = "Báº¡ch cáº§u trung tÃ­nh", MinVal = 50.0, MaxVal = 70.0, Unit = "%", DefaultVal = 65.0 });
             }
-            else if (serviceName.Contains("Sinh hóa máu"))
+            else if (serviceName.Contains("Sinh hÃ³a mÃ¡u"))
             {
-                list.Add(new TestParam { Name = "Glucose", SubName = "Đường huyết", MinVal = 3.9, MaxVal = 6.4, Unit = "mmol/L", DefaultVal = 7.2 });
-                list.Add(new TestParam { Name = "Cholesterol toàn phần", SubName = "Total Cholesterol", MinVal = 3.9, MaxVal = 5.2, Unit = "mmol/L", DefaultVal = 5.8 });
-                list.Add(new TestParam { Name = "Triglycerides", SubName = "Chất béo trung tính", MinVal = 0.46, MaxVal = 1.88, Unit = "mmol/L", DefaultVal = 1.50 });
+                list.Add(new TestParam { Name = "Glucose", SubName = "ÄÆ°á»ng huyáº¿t", MinVal = 3.9, MaxVal = 6.4, Unit = "mmol/L", DefaultVal = 7.2 });
+                list.Add(new TestParam { Name = "Cholesterol toÃ n pháº§n", SubName = "Total Cholesterol", MinVal = 3.9, MaxVal = 5.2, Unit = "mmol/L", DefaultVal = 5.8 });
+                list.Add(new TestParam { Name = "Triglycerides", SubName = "Cháº¥t bÃ©o trung tÃ­nh", MinVal = 0.46, MaxVal = 1.88, Unit = "mmol/L", DefaultVal = 1.50 });
                 list.Add(new TestParam { Name = "AST (SGOT)", SubName = "Men gan AST", MinVal = 0.0, MaxVal = 37.0, Unit = "U/L", DefaultVal = 24.0 });
                 list.Add(new TestParam { Name = "ALT (SGPT)", SubName = "Men gan ALT", MinVal = 0.0, MaxVal = 41.0, Unit = "U/L", DefaultVal = 28.0 });
             }
-            else if (serviceName.Contains("nước tiểu") || serviceName.Contains("Urinalysis"))
+            else if (serviceName.Contains("nÆ°á»›c tiá»ƒu") || serviceName.Contains("Urinalysis"))
             {
-                list.Add(new TestParam { Name = "pH nước tiểu", SubName = "Urinary pH", MinVal = 5.0, MaxVal = 8.5, Unit = "pH", DefaultVal = 6.0 });
-                list.Add(new TestParam { Name = "Glucose nước tiểu", SubName = "U-Glucose", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Âm tính (Negative)", IsTextParam = true });
-                list.Add(new TestParam { Name = "Protein nước tiểu", SubName = "U-Protein", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Âm tính (Negative)", IsTextParam = true });
-                list.Add(new TestParam { Name = "Ketone nước tiểu", SubName = "U-Ketones", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Âm tính (Negative)", IsTextParam = true });
+                list.Add(new TestParam { Name = "pH nÆ°á»›c tiá»ƒu", SubName = "Urinary pH", MinVal = 5.0, MaxVal = 8.5, Unit = "pH", DefaultVal = 6.0 });
+                list.Add(new TestParam { Name = "Glucose nÆ°á»›c tiá»ƒu", SubName = "U-Glucose", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Ã‚m tÃ­nh (Negative)", IsTextParam = true });
+                list.Add(new TestParam { Name = "Protein nÆ°á»›c tiá»ƒu", SubName = "U-Protein", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Ã‚m tÃ­nh (Negative)", IsTextParam = true });
+                list.Add(new TestParam { Name = "Ketone nÆ°á»›c tiá»ƒu", SubName = "U-Ketones", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Ã‚m tÃ­nh (Negative)", IsTextParam = true });
             }
-            else if (serviceName.Contains("Điện tim") || serviceName.Contains("ECG"))
+            else if (serviceName.Contains("Äiá»‡n tim") || serviceName.Contains("ECG"))
             {
-                list.Add(new TestParam { Name = "Nhịp tim (HR)", SubName = "Heart Rate", MinVal = 60.0, MaxVal = 100.0, Unit = "bpm", DefaultVal = 78.0 });
-                list.Add(new TestParam { Name = "Nhịp xoang", SubName = "Rhythm", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Nhịp xoang đều", IsTextParam = true });
-                list.Add(new TestParam { Name = "Trục điện tim", SubName = "Axis", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Trục trung gian", IsTextParam = true });
+                list.Add(new TestParam { Name = "Nhá»‹p tim (HR)", SubName = "Heart Rate", MinVal = 60.0, MaxVal = 100.0, Unit = "bpm", DefaultVal = 78.0 });
+                list.Add(new TestParam { Name = "Nhá»‹p xoang", SubName = "Rhythm", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Nhá»‹p xoang Ä‘á»u", IsTextParam = true });
+                list.Add(new TestParam { Name = "Trá»¥c Ä‘iá»‡n tim", SubName = "Axis", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Trá»¥c trung gian", IsTextParam = true });
             }
             else
             {
                 // General/image-based defaults
-                list.Add(new TestParam { Name = "Mật độ/Hình ảnh", SubName = "Density/Visuals", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Bình thường ổn định", IsTextParam = true });
-                list.Add(new TestParam { Name = "Mô tả tổn thương", SubName = "Lesions/Anomalies", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Không có tổn thương khu trú phát hiện", IsTextParam = true });
+                list.Add(new TestParam { Name = "Máº­t Ä‘á»™/HÃ¬nh áº£nh", SubName = "Density/Visuals", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "BÃ¬nh thÆ°á»ng á»•n Ä‘á»‹nh", IsTextParam = true });
+                list.Add(new TestParam { Name = "MÃ´ táº£ tá»•n thÆ°Æ¡ng", SubName = "Lesions/Anomalies", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "KhÃ´ng cÃ³ tá»•n thÆ°Æ¡ng khu trÃº phÃ¡t hiá»‡n", IsTextParam = true });
             }
 
             return list;
@@ -1187,17 +1667,17 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private string GetInitials(string fullName)
         {
-            if (string.IsNullOrWhiteSpace(fullName)) return "—";
+            if (string.IsNullOrWhiteSpace(fullName)) return "â€”";
 
-            // Loại bỏ khoảng trắng thừa
+            // Loáº¡i bá» khoáº£ng tráº¯ng thá»«a
             var parts = fullName.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length >= 2)
             {
-                // Lấy chữ cái đầu của từ áp chót và từ cuối cùng (VD: Nguyễn Thị Mai -> TM)
+                // Láº¥y chá»¯ cÃ¡i Ä‘áº§u cá»§a tá»« Ã¡p chÃ³t vÃ  tá»« cuá»‘i cÃ¹ng (VD: Nguyá»…n Thá»‹ Mai -> TM)
                 return (parts[parts.Length - 2].Substring(0, 1) + parts[parts.Length - 1].Substring(0, 1)).ToUpper();
             }
-            // Nếu chỉ có 1 tên
+            // Náº¿u chá»‰ cÃ³ 1 tÃªn
             return fullName.Substring(0, Math.Min(2, fullName.Length)).ToUpper();
         }
 
@@ -1211,6 +1691,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
             path.CloseFigure();
             return new Region(path);
+        }
+
+        private void lblSimpleTitle_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
