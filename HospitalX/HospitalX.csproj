@@ -366,6 +366,18 @@
     <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.Designer.cs">
       <DependentUpon>frmChiTietBN.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucHoSoCaNhan.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucHoSoCaNhan.Designer.cs">
+      <DependentUpon>ucHoSoCaNhan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmDoiMatKhau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmDoiMatKhau.Designer.cs">
+      <DependentUpon>frmDoiMatKhau.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -607,6 +619,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucDieuPhoiKTV.resx">
       <DependentUpon>ucDieuPhoiKTV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucHoSoCaNhan.resx">
+      <DependentUpon>ucHoSoCaNhan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmDoiMatKhau.resx">
+      <DependentUpon>frmDoiMatKhau.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.resx">
       <DependentUpon>ucSaoLuuPhucHoi.cs</DependentUpon>
