@@ -1,0 +1,328 @@
+using Guna.UI2.WinForms;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace HospitalX.GUI.PH2.BacSi
+{
+    public partial class ucThongBao : UserControl
+    {
+        private readonly List<NotificationRecord> _notifications = new List<NotificationRecord>();
+        private bool _isLoaded;
+
+        public ucThongBao()
+        {
+            InitializeComponent();
+        }
+
+        private void ucThongBao_Load(object sender, EventArgs e)
+        {
+            if (_isLoaded)
+            {
+                return;
+            }
+
+            _isLoaded = true;
+            SeedData();
+            WireEvents();
+            ApplyFilters();
+        }
+
+        private void WireEvents()
+        {
+            txtSearch.TextChanged += (s, e) => ApplyFilters();
+            cmbDateRange.SelectedIndexChanged += (s, e) => ApplyFilters();
+            cmbLevel.SelectedIndexChanged += (s, e) => ApplyFilters();
+            cmbStatus.SelectedIndexChanged += (s, e) => ApplyFilters();
+            flpNotificationList.Resize += (s, e) => ResizeCards();
+        }
+
+        private void SeedData()
+        {
+            if (_notifications.Count > 0)
+            {
+                return;
+            }
+
+            _notifications.Add(new NotificationRecord
+            {
+                Title = "Họp phổ biến quy trình cấp phát thuốc ngoại trú",
+                Level = "Cơ sở y tế",
+                Sender = "Ban Giám đốc bệnh viện",
+                Time = new DateTime(2026, 5, 21, 8, 0, 0),
+                Location = "Hội trường A - Tầng 2",
+                IsRead = false,
+                IsImportant = true,
+                Content = "Tất cả bác sĩ tham dự buổi họp phổ biến quy trình cấp phát thuốc ngoại trú mới. Nội dung tập trung vào phê duyệt đơn thuốc điện tử, chữ ký số và quy trình phối hợp với nhà thuốc bệnh viện."
+            });
+            _notifications.Add(new NotificationRecord
+            {
+                Title = "Họp giao ban Khoa Tim Mạch tuần 22-28/05",
+                Level = "Khoa",
+                Sender = "Trưởng Khoa Tim Mạch",
+                Time = new DateTime(2026, 5, 21, 14, 0, 0),
+                Location = "Phòng họp Khoa Tim Mạch - Tầng 3",
+                IsRead = false,
+                Content = "Giao ban chuyên môn tuần mới, rà soát lịch trực, bàn giao các ca bệnh nặng và phân công hoàn tất hồ sơ bệnh án trước đợt kiểm tra chất lượng."
+            });
+            _notifications.Add(new NotificationRecord
+            {
+                Title = "Tập huấn phác đồ điều trị suy tim cập nhật 2026",
+                Level = "Khoa",
+                Sender = "Trưởng Khoa Tim Mạch",
+                Time = new DateTime(2026, 5, 20, 9, 0, 0),
+                Location = "Phòng đào tạo - Tầng 5",
+                IsRead = false,
+                Content = "Khoa tổ chức tập huấn phác đồ điều trị suy tim cập nhật theo hướng dẫn mới. Đề nghị bác sĩ chuẩn bị câu hỏi lâm sàng và đọc tài liệu trước khi tham dự."
+            });
+            _notifications.Add(new NotificationRecord
+            {
+                Title = "Họp bảo mật tài khoản và đổi mật khẩu định kỳ",
+                Level = "Cơ sở y tế",
+                Sender = "Phòng CNTT",
+                Time = new DateTime(2026, 5, 20, 15, 30, 0),
+                Location = "Phòng họp trực tuyến MS Teams",
+                IsRead = true,
+                Content = "Phòng CNTT nhắc lại quy định đổi mật khẩu định kỳ 90 ngày, cách xử lý tài khoản bị khóa và các yêu cầu bảo mật khi truy cập hệ thống bệnh viện."
+            });
+            _notifications.Add(new NotificationRecord
+            {
+                Title = "Họp tổng kết hoạt động chuyên môn tháng 5",
+                Level = "Cơ sở y tế",
+                Sender = "Phòng Kế hoạch Tổng hợp",
+                Time = new DateTime(2026, 5, 14, 14, 0, 0),
+                Location = "Hội trường B",
+                IsRead = true,
+                Content = "Tổng kết hoạt động khám chữa bệnh, rà soát chỉ số hoàn thành hồ sơ bệnh án và triển khai kế hoạch chuyên môn tháng tiếp theo."
+            });
+        }
+
+        private void ApplyFilters()
+        {
+            IEnumerable<NotificationRecord> query = _notifications;
+            string keyword = txtSearch.Text.Trim().ToLowerInvariant();
+            string level = cmbLevel.SelectedItem == null ? "Tất cả cấp" : cmbLevel.SelectedItem.ToString();
+            string status = cmbStatus.SelectedItem == null ? "Tất cả trạng thái" : cmbStatus.SelectedItem.ToString();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(n =>
+                    n.Title.ToLowerInvariant().Contains(keyword) ||
+                    n.Content.ToLowerInvariant().Contains(keyword) ||
+                    n.Location.ToLowerInvariant().Contains(keyword) ||
+                    n.Sender.ToLowerInvariant().Contains(keyword));
+            }
+
+            if (level != "Tất cả cấp")
+            {
+                query = query.Where(n => n.Level == level);
+            }
+
+            if (status == "Chưa đọc")
+            {
+                query = query.Where(n => !n.IsRead);
+            }
+            else if (status == "Đã đọc")
+            {
+                query = query.Where(n => n.IsRead);
+            }
+
+            DateTime fromDate;
+            DateTime toDate;
+            GetDateRange(out fromDate, out toDate);
+            query = query.Where(n => n.Time.Date >= fromDate.Date && n.Time.Date <= toDate.Date);
+
+            List<NotificationRecord> filtered = query.OrderByDescending(n => n.Time).ToList();
+            RenderCards(filtered);
+            lblResultCount.Text = "Hiển thị " + filtered.Count + " thông báo";
+        }
+
+        private void GetDateRange(out DateTime fromDate, out DateTime toDate)
+        {
+            DateTime maxDate = _notifications.Count == 0 ? DateTime.Today : _notifications.Max(n => n.Time.Date);
+            string mode = cmbDateRange.SelectedItem == null ? "Tháng này" : cmbDateRange.SelectedItem.ToString();
+
+            if (mode == "Tất cả")
+            {
+                fromDate = DateTime.MinValue;
+                toDate = DateTime.MaxValue;
+                return;
+            }
+
+            if (mode == "Hôm nay")
+            {
+                fromDate = maxDate;
+                toDate = maxDate;
+                return;
+            }
+
+            if (mode == "7 ngày gần đây")
+            {
+                fromDate = maxDate.AddDays(-6);
+                toDate = maxDate;
+                return;
+            }
+
+            fromDate = new DateTime(maxDate.Year, maxDate.Month, 1);
+            toDate = fromDate.AddMonths(1).AddDays(-1);
+        }
+
+        private void RenderCards(List<NotificationRecord> records)
+        {
+            flpNotificationList.SuspendLayout();
+            flpNotificationList.Controls.Clear();
+
+            if (records.Count == 0)
+            {
+                flpNotificationList.Controls.Add(new Label
+                {
+                    AutoSize = false,
+                    Width = Math.Max(400, flpNotificationList.ClientSize.Width - 28),
+                    Height = 90,
+                    Text = "Không tìm thấy thông báo phù hợp.",
+                    Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(122, 149, 137),
+                    TextAlign = ContentAlignment.MiddleCenter
+                });
+                flpNotificationList.ResumeLayout();
+                return;
+            }
+
+            foreach (NotificationRecord record in records)
+            {
+                flpNotificationList.Controls.Add(CreateNotificationCard(record));
+            }
+
+            flpNotificationList.ResumeLayout();
+            BeginInvoke(new Action(ResizeCards));
+        }
+
+        private Guna2Panel CreateNotificationCard(NotificationRecord record)
+        {
+            int cardWidth = GetCardWidth();
+            Color accent = record.IsImportant ? Color.FromArgb(217, 79, 61) : Color.FromArgb(15, 110, 86);
+            var card = new Guna2Panel
+            {
+                BorderColor = Color.FromArgb(218, 232, 226),
+                BorderRadius = 10,
+                BorderThickness = 1,
+                FillColor = record.IsRead ? Color.FromArgb(247, 249, 248) : Color.White,
+                Margin = new Padding(0, 0, 0, 12),
+                Size = new Size(cardWidth, 140),
+                Tag = record
+            };
+            card.ShadowDecoration.Enabled = !record.IsRead;
+            card.ShadowDecoration.Color = Color.FromArgb(226, 239, 234);
+            card.ShadowDecoration.Depth = 5;
+            card.MouseEnter += (s, e) => card.BorderColor = Color.FromArgb(26, 148, 112);
+            card.MouseLeave += (s, e) => card.BorderColor = Color.FromArgb(218, 232, 226);
+
+            var left = new Panel { BackColor = accent, Location = new Point(0, 0), Size = new Size(4, card.Height), Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom };
+            var lblLevel = new Label
+            {
+                BackColor = record.Level == "Cơ sở y tế" ? Color.FromArgb(253, 236, 234) : Color.FromArgb(230, 244, 240),
+                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                ForeColor = accent,
+                Location = new Point(24, 18),
+                Size = new Size(112, 26),
+                Text = record.Level.ToUpperInvariant(),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            var lblTitle = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(24, 48, 42),
+                Location = new Point(150, 16),
+                Size = new Size(cardWidth - 330, 35),
+                Text = record.Title
+            };
+            var lblMeta = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(122, 149, 137),
+                Location = new Point(150, 52),
+                Size = new Size(cardWidth - 330, 30),
+                Text = string.Format("{0} · {1:HH:mm dd/MM/yyyy} · {2}", record.Sender, record.Time, record.Location)
+            };
+            var lblBody = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 9F),
+                ForeColor = Color.FromArgb(61, 82, 73),
+                Location = new Point(24, 90),
+                Size = new Size(cardWidth - 210, 35),
+                Text = record.Content
+            };
+            var btnDetail = CreateActionButton("Xem chi tiết", Color.FromArgb(15, 110, 86), Color.White);
+            btnDetail.Location = new Point(cardWidth - 166, 72);
+            btnDetail.Size = new Size(134, 36);
+            btnDetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDetail.Click += (s, e) => OpenNotificationDetail(record);
+
+            card.Controls.Add(left);
+            card.Controls.Add(lblLevel);
+            card.Controls.Add(lblTitle);
+            card.Controls.Add(lblMeta);
+            card.Controls.Add(lblBody);
+            card.Controls.Add(btnDetail);
+            return card;
+        }
+
+        private Guna2Button CreateActionButton(string text, Color fill, Color fore)
+        {
+            var button = new Guna2Button
+            {
+                BorderRadius = 8,
+                Cursor = Cursors.Hand,
+                FillColor = fill,
+                ForeColor = fore,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Text = text
+            };
+            button.HoverState.FillColor = Color.FromArgb(26, 148, 112);
+            button.PressedColor = Color.FromArgb(10, 79, 61);
+            return button;
+        }
+
+        private void OpenNotificationDetail(NotificationRecord record)
+        {
+            using (var form = new frmNotificationDetail(record))
+            {
+                if (form.ShowDialog(FindForm()) == DialogResult.OK)
+                {
+                    ApplyFilters();
+                }
+            }
+        }
+
+        private int GetCardWidth()
+        {
+            return Math.Max(780, flpNotificationList.Width - flpNotificationList.Padding.Horizontal - 28);
+        }
+
+        private void ResizeCards()
+        {
+            int cardWidth = GetCardWidth();
+            foreach (Control control in flpNotificationList.Controls)
+            {
+                control.Width = cardWidth;
+            }
+        }
+
+        public class NotificationRecord
+        {
+            public string Title { get; set; }
+            public string Level { get; set; }
+            public string Sender { get; set; }
+            public DateTime Time { get; set; }
+            public string Location { get; set; }
+            public string Content { get; set; }
+            public bool IsRead { get; set; }
+            public bool IsImportant { get; set; }
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using HospitalX.GUI.PH2.BacSi;
+using Guna.UI2.WinForms;
+using HospitalX.GUI.PH2.BacSi;
 using System;
 using System.Windows.Forms;
 
@@ -10,7 +11,7 @@ namespace HospitalX.GUI.PH2
         {
             InitializeComponent();
             WireNavigationEvents();
-            LoadPage(new ucTongQuan(), "Bảng điều khiển");
+            LoadPage(CreateTongQuanPage(), "Bảng điều khiển");
             btnTongQuan.Checked = true;
         }
 
@@ -19,19 +20,70 @@ namespace HospitalX.GUI.PH2
         {
             btnTongQuan.Click += BtnTongQuan_Click;
             btnHSBA.Click += BtnHSBA_Click;
-            btnBN.Click += (s, e) => SetPageTitle("Bệnh nhân của tôi");
-            btnDT.Click += (s, e) => SetPageTitle("Đơn thuốc");
-            btnThongBao.Click += (s, e) => SetPageTitle("Thông báo");
-            btnHSCN.Click += (s, e) => SetPageTitle("Hồ sơ cá nhân");
+            btnBN.Click += BtnBN_Click;
+            btnDT.Click += BtnDT_Click;
+            btnThongBao.Click += BtnThongBao_Click;
+            btnHSCN.Click += BtnHSCN_Click;
+            btnLogout.Click += BtnLogout_Click;
         }
 
         private void BtnTongQuan_Click(object sender, EventArgs e)
         {
-            LoadPage(new ucTongQuan(), "Bảng điều khiển");
+            LoadPage(CreateTongQuanPage(), "Bảng điều khiển");
         }
 
         private void BtnHSBA_Click(object sender, EventArgs e)
         {
+            NavigateToHsbaPage();
+        }
+
+        private void BtnBN_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucBenhNhanCuaToi(), "Bệnh nhân của tôi");
+        }
+
+        private void BtnDT_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucDonThuoc(), "Đơn thuốc");
+        }
+
+        private void BtnThongBao_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucThongBao(), "Thông báo");
+        }
+
+        private void BtnHSCN_Click(object sender, EventArgs e)
+        {
+            LoadPage(new ucHSCN(), "Hồ sơ cá nhân");
+        }
+
+        private void BtnLogout_Click(object sender, EventArgs e)
+        {
+            using (var confirmDialog = new Guna2MessageDialog())
+            {
+                confirmDialog.Parent = this;
+                confirmDialog.Icon = MessageDialogIcon.Question;
+                confirmDialog.Buttons = MessageDialogButtons.YesNo;
+                confirmDialog.Caption = "Xác nhận đăng xuất";
+                confirmDialog.Text = "Bạn có chắc chắn muốn đăng xuất không?";
+
+                if (confirmDialog.Show() == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+            }
+        }
+
+        private ucTongQuan CreateTongQuanPage()
+        {
+            var page = new ucTongQuan();
+            page.ViewAllHsbaRequested += (s, e) => NavigateToHsbaPage();
+            return page;
+        }
+
+        private void NavigateToHsbaPage()
+        {
+            btnHSBA.Checked = true;
             LoadPage(new ucHSBA(), "Hồ sơ bệnh án");
         }
 
