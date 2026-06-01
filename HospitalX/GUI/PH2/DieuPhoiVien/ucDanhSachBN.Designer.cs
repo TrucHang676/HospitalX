@@ -106,7 +106,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblTableMeta.AutoSize = true;
             this.lblTableMeta.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblTableMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblTableMeta.Location = new System.Drawing.Point(23, 44);
+            this.lblTableMeta.Location = new System.Drawing.Point(48, 44);
             this.lblTableMeta.Name = "lblTableMeta";
             this.lblTableMeta.Size = new System.Drawing.Size(189, 20);
             this.lblTableMeta.TabIndex = 1;
@@ -117,7 +117,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblTableTitle.AutoSize = true;
             this.lblTableTitle.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold);
             this.lblTableTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTableTitle.Location = new System.Drawing.Point(20, 16);
+            this.lblTableTitle.Location = new System.Drawing.Point(48, 18);
             this.lblTableTitle.Name = "lblTableTitle";
             this.lblTableTitle.Size = new System.Drawing.Size(222, 25);
             this.lblTableTitle.TabIndex = 0;

@@ -858,6 +858,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             lblTableTitle.Text = "Danh sách bệnh nhân";
             lblTableTitle.Location = new Point(48, 18);
+            lblTableMeta.Location = new Point(48, 44);
 
             // Trigger initial resize calculation
             ucDanhSachBN_Resize(null, null);
