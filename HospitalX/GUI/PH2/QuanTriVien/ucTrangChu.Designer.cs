@@ -17,8 +17,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlRoot = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlRecent = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvRecent = new System.Windows.Forms.DataGridView();
@@ -26,15 +26,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.colEvent = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlRecentHeader = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblRecentSub = new System.Windows.Forms.Label();
             this.lblRecentTitle = new System.Windows.Forms.Label();
             this.pnlRight = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlTasks = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblTask4 = new System.Windows.Forms.Label();
-            this.lblTask3 = new System.Windows.Forms.Label();
-            this.lblTask2 = new System.Windows.Forms.Label();
-            this.lblTask1 = new System.Windows.Forms.Label();
-            this.lblTaskTitle = new System.Windows.Forms.Label();
             this.pnlSystem = new Guna.UI2.WinForms.Guna2Panel();
             this.lblInfo6 = new System.Windows.Forms.Label();
             this.lblInfo5 = new System.Windows.Forms.Label();
@@ -43,46 +36,40 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblInfo2 = new System.Windows.Forms.Label();
             this.lblInfo1 = new System.Windows.Forms.Label();
             this.lblSystemTitle = new System.Windows.Forms.Label();
-            this.pnlStats = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlUsers = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblUsersSub = new System.Windows.Forms.Label();
-            this.lblUsersValue = new System.Windows.Forms.Label();
-            this.lblUsersTitle = new System.Windows.Forms.Label();
-            this.pnlAudit = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblAuditSub = new System.Windows.Forms.Label();
-            this.lblAuditValue = new System.Windows.Forms.Label();
-            this.lblAuditTitle = new System.Windows.Forms.Label();
             this.pnlBackup = new Guna.UI2.WinForms.Guna2Panel();
             this.lblBackupSub = new System.Windows.Forms.Label();
             this.lblBackupValue = new System.Windows.Forms.Label();
             this.lblBackupTitle = new System.Windows.Forms.Label();
-            this.pnlWarn = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblWarnSub = new System.Windows.Forms.Label();
-            this.lblWarnValue = new System.Windows.Forms.Label();
-            this.lblWarnTitle = new System.Windows.Forms.Label();
-            this.pnlAlert = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblAlert = new System.Windows.Forms.Label();
+            this.pnlAudit = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblAuditValue = new System.Windows.Forms.Label();
+            this.lblAuditTitle = new System.Windows.Forms.Label();
+            this.pnlUsers = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblUsersValue = new System.Windows.Forms.Label();
+            this.lblUsersTitle = new System.Windows.Forms.Label();
+            this.pnlStats = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlWelcome = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblWelcomeAvatar = new System.Windows.Forms.Label();
+            this.lblWelcomeTitle = new System.Windows.Forms.Label();
             this.pnlRoot.SuspendLayout();
             this.pnlRecent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecent)).BeginInit();
             this.pnlRecentHeader.SuspendLayout();
             this.pnlRight.SuspendLayout();
-            this.pnlTasks.SuspendLayout();
             this.pnlSystem.SuspendLayout();
-            this.pnlStats.SuspendLayout();
-            this.pnlUsers.SuspendLayout();
-            this.pnlAudit.SuspendLayout();
             this.pnlBackup.SuspendLayout();
-            this.pnlWarn.SuspendLayout();
-            this.pnlAlert.SuspendLayout();
+            this.pnlAudit.SuspendLayout();
+            this.pnlUsers.SuspendLayout();
+            this.pnlWelcome.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlRoot
             // 
+            this.pnlRoot.Controls.Add(this.pnlWelcome);
             this.pnlRoot.Controls.Add(this.pnlRecent);
             this.pnlRoot.Controls.Add(this.pnlRight);
-            this.pnlRoot.Controls.Add(this.pnlStats);
-            this.pnlRoot.Controls.Add(this.pnlAlert);
+            this.pnlRoot.Controls.Add(this.pnlBackup);
+            this.pnlRoot.Controls.Add(this.pnlAudit);
+            this.pnlRoot.Controls.Add(this.pnlUsers);
             this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRoot.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(248)))));
             this.pnlRoot.Location = new System.Drawing.Point(0, 0);
@@ -102,7 +89,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRecent.Controls.Add(this.dgvRecent);
             this.pnlRecent.Controls.Add(this.pnlRecentHeader);
             this.pnlRecent.FillColor = System.Drawing.Color.White;
-            this.pnlRecent.Location = new System.Drawing.Point(20, 280);
+            this.pnlRecent.Location = new System.Drawing.Point(23, 259);
             this.pnlRecent.Name = "pnlRecent";
             this.pnlRecent.Size = new System.Drawing.Size(675, 486);
             this.pnlRecent.TabIndex = 4;
@@ -116,27 +103,27 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvRecent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvRecent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvRecent.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.dgvRecent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            this.dgvRecent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvRecent.ColumnHeadersHeight = 36;
             this.dgvRecent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colTime,
             this.colEvent,
             this.colLevel});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9.2F);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecent.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9.2F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
+            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecent.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvRecent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvRecent.EnableHeadersVisualStyles = false;
             this.dgvRecent.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
@@ -156,7 +143,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.colTime.HeaderText = "Thời gian";
             this.colTime.Name = "colTime";
             this.colTime.ReadOnly = true;
-            this.colTime.Width = 105;
+            this.colTime.Width = 170;
             // 
             // colEvent
             // 
@@ -170,30 +157,17 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.colLevel.HeaderText = "Mức độ";
             this.colLevel.Name = "colLevel";
             this.colLevel.ReadOnly = true;
-            this.colLevel.Width = 110;
+            this.colLevel.Width = 150;
             // 
             // pnlRecentHeader
             // 
-            this.pnlRecentHeader.Controls.Add(this.lblRecentSub);
             this.pnlRecentHeader.Controls.Add(this.lblRecentTitle);
             this.pnlRecentHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlRecentHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.pnlRecentHeader.FillColor = System.Drawing.Color.White;
             this.pnlRecentHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlRecentHeader.Name = "pnlRecentHeader";
             this.pnlRecentHeader.Size = new System.Drawing.Size(675, 62);
             this.pnlRecentHeader.TabIndex = 0;
-            // 
-            // lblRecentSub
-            // 
-            this.lblRecentSub.AutoSize = true;
-            this.lblRecentSub.BackColor = System.Drawing.Color.Transparent;
-            this.lblRecentSub.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblRecentSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblRecentSub.Location = new System.Drawing.Point(22, 36);
-            this.lblRecentSub.Name = "lblRecentSub";
-            this.lblRecentSub.Size = new System.Drawing.Size(247, 15);
-            this.lblRecentSub.TabIndex = 1;
-            this.lblRecentSub.Text = "Các thay đổi quan trọng trong phiên làm việc";
             // 
             // lblRecentTitle
             // 
@@ -211,87 +185,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.pnlRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlRight.Controls.Add(this.pnlTasks);
             this.pnlRight.Controls.Add(this.pnlSystem);
             this.pnlRight.FillColor = System.Drawing.Color.Transparent;
-            this.pnlRight.Location = new System.Drawing.Point(711, 280);
+            this.pnlRight.Location = new System.Drawing.Point(708, 259);
             this.pnlRight.Name = "pnlRight";
             this.pnlRight.Size = new System.Drawing.Size(397, 486);
             this.pnlRight.TabIndex = 5;
-            // 
-            // pnlTasks
-            // 
-            this.pnlTasks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlTasks.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlTasks.BorderRadius = 8;
-            this.pnlTasks.BorderThickness = 1;
-            this.pnlTasks.Controls.Add(this.lblTask4);
-            this.pnlTasks.Controls.Add(this.lblTask3);
-            this.pnlTasks.Controls.Add(this.lblTask2);
-            this.pnlTasks.Controls.Add(this.lblTask1);
-            this.pnlTasks.Controls.Add(this.lblTaskTitle);
-            this.pnlTasks.FillColor = System.Drawing.Color.White;
-            this.pnlTasks.Location = new System.Drawing.Point(0, 226);
-            this.pnlTasks.Name = "pnlTasks";
-            this.pnlTasks.Size = new System.Drawing.Size(397, 260);
-            this.pnlTasks.TabIndex = 1;
-            // 
-            // lblTask4
-            // 
-            this.lblTask4.BackColor = System.Drawing.Color.Transparent;
-            this.lblTask4.Font = new System.Drawing.Font("Segoe UI", 9.4F);
-            this.lblTask4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTask4.Location = new System.Drawing.Point(22, 190);
-            this.lblTask4.Name = "lblTask4";
-            this.lblTask4.Size = new System.Drawing.Size(350, 36);
-            this.lblTask4.TabIndex = 4;
-            this.lblTask4.Text = "Kiểm tra các thông báo OLS nhãn khẩn cấp chưa gửi.";
-            // 
-            // lblTask3
-            // 
-            this.lblTask3.BackColor = System.Drawing.Color.Transparent;
-            this.lblTask3.Font = new System.Drawing.Font("Segoe UI", 9.4F);
-            this.lblTask3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTask3.Location = new System.Drawing.Point(22, 145);
-            this.lblTask3.Name = "lblTask3";
-            this.lblTask3.Size = new System.Drawing.Size(350, 36);
-            this.lblTask3.TabIndex = 3;
-            this.lblTask3.Text = "Theo dõi 4 audit log thất bại hoặc trái quyền.";
-            // 
-            // lblTask2
-            // 
-            this.lblTask2.BackColor = System.Drawing.Color.Transparent;
-            this.lblTask2.Font = new System.Drawing.Font("Segoe UI", 9.4F);
-            this.lblTask2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTask2.Location = new System.Drawing.Point(22, 100);
-            this.lblTask2.Name = "lblTask2";
-            this.lblTask2.Size = new System.Drawing.Size(350, 36);
-            this.lblTask2.TabIndex = 2;
-            this.lblTask2.Text = "Xác nhận bản backup gần nhất trước khi phục hồi.";
-            // 
-            // lblTask1
-            // 
-            this.lblTask1.BackColor = System.Drawing.Color.Transparent;
-            this.lblTask1.Font = new System.Drawing.Font("Segoe UI", 9.4F);
-            this.lblTask1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTask1.Location = new System.Drawing.Point(22, 55);
-            this.lblTask1.Name = "lblTask1";
-            this.lblTask1.Size = new System.Drawing.Size(350, 36);
-            this.lblTask1.TabIndex = 1;
-            this.lblTask1.Text = "Duyệt cấu hình Standard Audit và Fine-grained Audit.";
-            // 
-            // lblTaskTitle
-            // 
-            this.lblTaskTitle.AutoSize = true;
-            this.lblTaskTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblTaskTitle.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
-            this.lblTaskTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblTaskTitle.Location = new System.Drawing.Point(20, 18);
-            this.lblTaskTitle.Name = "lblTaskTitle";
-            this.lblTaskTitle.Size = new System.Drawing.Size(134, 25);
-            this.lblTaskTitle.TabIndex = 0;
-            this.lblTaskTitle.Text = "Việc cần chú ý";
             // 
             // pnlSystem
             // 
@@ -310,7 +209,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlSystem.FillColor = System.Drawing.Color.White;
             this.pnlSystem.Location = new System.Drawing.Point(0, 0);
             this.pnlSystem.Name = "pnlSystem";
-            this.pnlSystem.Size = new System.Drawing.Size(397, 210);
+            this.pnlSystem.Size = new System.Drawing.Size(397, 486);
             this.pnlSystem.TabIndex = 0;
             // 
             // lblInfo6
@@ -319,7 +218,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblInfo6.BackColor = System.Drawing.Color.Transparent;
             this.lblInfo6.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
             this.lblInfo6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblInfo6.Location = new System.Drawing.Point(225, 158);
+            this.lblInfo6.Location = new System.Drawing.Point(304, 206);
             this.lblInfo6.Name = "lblInfo6";
             this.lblInfo6.Size = new System.Drawing.Size(70, 17);
             this.lblInfo6.TabIndex = 6;
@@ -331,7 +230,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblInfo5.BackColor = System.Drawing.Color.Transparent;
             this.lblInfo5.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
             this.lblInfo5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblInfo5.Location = new System.Drawing.Point(25, 158);
+            this.lblInfo5.Location = new System.Drawing.Point(25, 206);
             this.lblInfo5.Name = "lblInfo5";
             this.lblInfo5.Size = new System.Drawing.Size(85, 17);
             this.lblInfo5.TabIndex = 5;
@@ -343,7 +242,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblInfo4.BackColor = System.Drawing.Color.Transparent;
             this.lblInfo4.Font = new System.Drawing.Font("Segoe UI", 9.2F);
             this.lblInfo4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblInfo4.Location = new System.Drawing.Point(25, 122);
+            this.lblInfo4.Location = new System.Drawing.Point(25, 168);
             this.lblInfo4.Name = "lblInfo4";
             this.lblInfo4.Size = new System.Drawing.Size(117, 17);
             this.lblInfo4.TabIndex = 4;
@@ -355,7 +254,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblInfo3.BackColor = System.Drawing.Color.Transparent;
             this.lblInfo3.Font = new System.Drawing.Font("Segoe UI", 9.2F);
             this.lblInfo3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblInfo3.Location = new System.Drawing.Point(25, 95);
+            this.lblInfo3.Location = new System.Drawing.Point(25, 134);
             this.lblInfo3.Name = "lblInfo3";
             this.lblInfo3.Size = new System.Drawing.Size(135, 17);
             this.lblInfo3.TabIndex = 3;
@@ -367,7 +266,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblInfo2.BackColor = System.Drawing.Color.Transparent;
             this.lblInfo2.Font = new System.Drawing.Font("Segoe UI", 9.2F);
             this.lblInfo2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblInfo2.Location = new System.Drawing.Point(25, 68);
+            this.lblInfo2.Location = new System.Drawing.Point(25, 99);
             this.lblInfo2.Name = "lblInfo2";
             this.lblInfo2.Size = new System.Drawing.Size(133, 17);
             this.lblInfo2.TabIndex = 2;
@@ -379,7 +278,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblInfo1.BackColor = System.Drawing.Color.Transparent;
             this.lblInfo1.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
             this.lblInfo1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblInfo1.Location = new System.Drawing.Point(25, 42);
+            this.lblInfo1.Location = new System.Drawing.Point(25, 62);
             this.lblInfo1.Name = "lblInfo1";
             this.lblInfo1.Size = new System.Drawing.Size(108, 17);
             this.lblInfo1.TabIndex = 1;
@@ -397,122 +296,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblSystemTitle.TabIndex = 0;
             this.lblSystemTitle.Text = "Tổng quan CSDL";
             // 
-            // pnlStats
-            // 
-            this.pnlStats.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlStats.Controls.Add(this.pnlUsers);
-            this.pnlStats.Controls.Add(this.pnlAudit);
-            this.pnlStats.Controls.Add(this.pnlBackup);
-            this.pnlStats.Controls.Add(this.pnlWarn);
-            this.pnlStats.Location = new System.Drawing.Point(20, 150);
-            this.pnlStats.Name = "pnlStats";
-            this.pnlStats.Size = new System.Drawing.Size(1088, 106);
-            this.pnlStats.TabIndex = 3;
-            this.pnlStats.WrapContents = false;
-            // 
-            // pnlUsers
-            // 
-            this.pnlUsers.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlUsers.BorderRadius = 8;
-            this.pnlUsers.BorderThickness = 1;
-            this.pnlUsers.Controls.Add(this.lblUsersSub);
-            this.pnlUsers.Controls.Add(this.lblUsersValue);
-            this.pnlUsers.Controls.Add(this.lblUsersTitle);
-            this.pnlUsers.FillColor = System.Drawing.Color.White;
-            this.pnlUsers.Location = new System.Drawing.Point(0, 0);
-            this.pnlUsers.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
-            this.pnlUsers.Name = "pnlUsers";
-            this.pnlUsers.Size = new System.Drawing.Size(260, 96);
-            this.pnlUsers.TabIndex = 0;
-            // 
-            // lblUsersSub
-            // 
-            this.lblUsersSub.AutoSize = true;
-            this.lblUsersSub.BackColor = System.Drawing.Color.Transparent;
-            this.lblUsersSub.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblUsersSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblUsersSub.Location = new System.Drawing.Point(20, 68);
-            this.lblUsersSub.Name = "lblUsersSub";
-            this.lblUsersSub.Size = new System.Drawing.Size(109, 15);
-            this.lblUsersSub.TabIndex = 2;
-            this.lblUsersSub.Text = "+3 so với hôm qua";
-            // 
-            // lblUsersValue
-            // 
-            this.lblUsersValue.AutoSize = true;
-            this.lblUsersValue.BackColor = System.Drawing.Color.Transparent;
-            this.lblUsersValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblUsersValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblUsersValue.Location = new System.Drawing.Point(18, 28);
-            this.lblUsersValue.Name = "lblUsersValue";
-            this.lblUsersValue.Size = new System.Drawing.Size(69, 41);
-            this.lblUsersValue.TabIndex = 1;
-            this.lblUsersValue.Text = "124";
-            // 
-            // lblUsersTitle
-            // 
-            this.lblUsersTitle.AutoSize = true;
-            this.lblUsersTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblUsersTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
-            this.lblUsersTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblUsersTitle.Location = new System.Drawing.Point(20, 13);
-            this.lblUsersTitle.Name = "lblUsersTitle";
-            this.lblUsersTitle.Size = new System.Drawing.Size(146, 15);
-            this.lblUsersTitle.TabIndex = 0;
-            this.lblUsersTitle.Text = "TÀI KHOẢN HOẠT ĐỘNG";
-            // 
-            // pnlAudit
-            // 
-            this.pnlAudit.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlAudit.BorderRadius = 8;
-            this.pnlAudit.BorderThickness = 1;
-            this.pnlAudit.Controls.Add(this.lblAuditSub);
-            this.pnlAudit.Controls.Add(this.lblAuditValue);
-            this.pnlAudit.Controls.Add(this.lblAuditTitle);
-            this.pnlAudit.FillColor = System.Drawing.Color.White;
-            this.pnlAudit.Location = new System.Drawing.Point(274, 0);
-            this.pnlAudit.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
-            this.pnlAudit.Name = "pnlAudit";
-            this.pnlAudit.Size = new System.Drawing.Size(260, 96);
-            this.pnlAudit.TabIndex = 1;
-            // 
-            // lblAuditSub
-            // 
-            this.lblAuditSub.AutoSize = true;
-            this.lblAuditSub.BackColor = System.Drawing.Color.Transparent;
-            this.lblAuditSub.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblAuditSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblAuditSub.Location = new System.Drawing.Point(20, 68);
-            this.lblAuditSub.Name = "lblAuditSub";
-            this.lblAuditSub.Size = new System.Drawing.Size(137, 15);
-            this.lblAuditSub.TabIndex = 2;
-            this.lblAuditSub.Text = "8 thành công, 4 thất bại";
-            // 
-            // lblAuditValue
-            // 
-            this.lblAuditValue.AutoSize = true;
-            this.lblAuditValue.BackColor = System.Drawing.Color.Transparent;
-            this.lblAuditValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblAuditValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(64)))), ((int)(((byte)(175)))));
-            this.lblAuditValue.Location = new System.Drawing.Point(18, 28);
-            this.lblAuditValue.Name = "lblAuditValue";
-            this.lblAuditValue.Size = new System.Drawing.Size(52, 41);
-            this.lblAuditValue.TabIndex = 1;
-            this.lblAuditValue.Text = "12";
-            // 
-            // lblAuditTitle
-            // 
-            this.lblAuditTitle.AutoSize = true;
-            this.lblAuditTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblAuditTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
-            this.lblAuditTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblAuditTitle.Location = new System.Drawing.Point(20, 13);
-            this.lblAuditTitle.Name = "lblAuditTitle";
-            this.lblAuditTitle.Size = new System.Drawing.Size(129, 15);
-            this.lblAuditTitle.TabIndex = 0;
-            this.lblAuditTitle.Text = "AUDIT LOG HÔM NAY";
-            // 
             // pnlBackup
             // 
             this.pnlBackup.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
@@ -522,8 +305,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlBackup.Controls.Add(this.lblBackupValue);
             this.pnlBackup.Controls.Add(this.lblBackupTitle);
             this.pnlBackup.FillColor = System.Drawing.Color.White;
-            this.pnlBackup.Location = new System.Drawing.Point(548, 0);
-            this.pnlBackup.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
+            this.pnlBackup.Location = new System.Drawing.Point(771, 128);
+            this.pnlBackup.Margin = new System.Windows.Forms.Padding(100, 0, 14, 0);
             this.pnlBackup.Name = "pnlBackup";
             this.pnlBackup.Size = new System.Drawing.Size(260, 96);
             this.pnlBackup.TabIndex = 2;
@@ -564,84 +347,128 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblBackupTitle.TabIndex = 0;
             this.lblBackupTitle.Text = "SAO LƯU GẦN NHẤT";
             // 
-            // pnlWarn
+            // pnlAudit
             // 
-            this.pnlWarn.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlWarn.BorderRadius = 8;
-            this.pnlWarn.BorderThickness = 1;
-            this.pnlWarn.Controls.Add(this.lblWarnSub);
-            this.pnlWarn.Controls.Add(this.lblWarnValue);
-            this.pnlWarn.Controls.Add(this.lblWarnTitle);
-            this.pnlWarn.FillColor = System.Drawing.Color.White;
-            this.pnlWarn.Location = new System.Drawing.Point(822, 0);
-            this.pnlWarn.Margin = new System.Windows.Forms.Padding(0);
-            this.pnlWarn.Name = "pnlWarn";
-            this.pnlWarn.Size = new System.Drawing.Size(260, 96);
-            this.pnlWarn.TabIndex = 3;
+            this.pnlAudit.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlAudit.BorderRadius = 8;
+            this.pnlAudit.BorderThickness = 1;
+            this.pnlAudit.Controls.Add(this.lblAuditValue);
+            this.pnlAudit.Controls.Add(this.lblAuditTitle);
+            this.pnlAudit.FillColor = System.Drawing.Color.White;
+            this.pnlAudit.Location = new System.Drawing.Point(397, 128);
+            this.pnlAudit.Margin = new System.Windows.Forms.Padding(100, 0, 14, 0);
+            this.pnlAudit.Name = "pnlAudit";
+            this.pnlAudit.Size = new System.Drawing.Size(260, 96);
+            this.pnlAudit.TabIndex = 1;
             // 
-            // lblWarnSub
+            // lblAuditValue
             // 
-            this.lblWarnSub.AutoSize = true;
-            this.lblWarnSub.BackColor = System.Drawing.Color.Transparent;
-            this.lblWarnSub.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblWarnSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblWarnSub.Location = new System.Drawing.Point(20, 68);
-            this.lblWarnSub.Name = "lblWarnSub";
-            this.lblWarnSub.Size = new System.Drawing.Size(91, 15);
-            this.lblWarnSub.TabIndex = 2;
-            this.lblWarnSub.Text = "2 cảnh báo mới";
+            this.lblAuditValue.AutoSize = true;
+            this.lblAuditValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblAuditValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
+            this.lblAuditValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(64)))), ((int)(((byte)(175)))));
+            this.lblAuditValue.Location = new System.Drawing.Point(18, 28);
+            this.lblAuditValue.Name = "lblAuditValue";
+            this.lblAuditValue.Size = new System.Drawing.Size(52, 41);
+            this.lblAuditValue.TabIndex = 1;
+            this.lblAuditValue.Text = "12";
             // 
-            // lblWarnValue
+            // lblAuditTitle
             // 
-            this.lblWarnValue.AutoSize = true;
-            this.lblWarnValue.BackColor = System.Drawing.Color.Transparent;
-            this.lblWarnValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
-            this.lblWarnValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.lblWarnValue.Location = new System.Drawing.Point(18, 28);
-            this.lblWarnValue.Name = "lblWarnValue";
-            this.lblWarnValue.Size = new System.Drawing.Size(35, 41);
-            this.lblWarnValue.TabIndex = 1;
-            this.lblWarnValue.Text = "6";
+            this.lblAuditTitle.AutoSize = true;
+            this.lblAuditTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblAuditTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
+            this.lblAuditTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            this.lblAuditTitle.Location = new System.Drawing.Point(20, 13);
+            this.lblAuditTitle.Name = "lblAuditTitle";
+            this.lblAuditTitle.Size = new System.Drawing.Size(129, 15);
+            this.lblAuditTitle.TabIndex = 0;
+            this.lblAuditTitle.Text = "AUDIT LOG HÔM NAY";
             // 
-            // lblWarnTitle
+            // pnlUsers
             // 
-            this.lblWarnTitle.AutoSize = true;
-            this.lblWarnTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblWarnTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
-            this.lblWarnTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.lblWarnTitle.Location = new System.Drawing.Point(20, 13);
-            this.lblWarnTitle.Name = "lblWarnTitle";
-            this.lblWarnTitle.Size = new System.Drawing.Size(68, 15);
-            this.lblWarnTitle.TabIndex = 0;
-            this.lblWarnTitle.Text = "CẢNH BÁO";
+            this.pnlUsers.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlUsers.BorderRadius = 8;
+            this.pnlUsers.BorderThickness = 1;
+            this.pnlUsers.Controls.Add(this.lblUsersValue);
+            this.pnlUsers.Controls.Add(this.lblUsersTitle);
+            this.pnlUsers.FillColor = System.Drawing.Color.White;
+            this.pnlUsers.Location = new System.Drawing.Point(23, 128);
+            this.pnlUsers.Margin = new System.Windows.Forms.Padding(0, 0, 14, 0);
+            this.pnlUsers.Name = "pnlUsers";
+            this.pnlUsers.Size = new System.Drawing.Size(260, 96);
+            this.pnlUsers.TabIndex = 0;
             // 
-            // pnlAlert
+            // lblUsersValue
             // 
-            this.pnlAlert.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblUsersValue.AutoSize = true;
+            this.lblUsersValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblUsersValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
+            this.lblUsersValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblUsersValue.Location = new System.Drawing.Point(18, 28);
+            this.lblUsersValue.Name = "lblUsersValue";
+            this.lblUsersValue.Size = new System.Drawing.Size(69, 41);
+            this.lblUsersValue.TabIndex = 1;
+            this.lblUsersValue.Text = "124";
+            // 
+            // lblUsersTitle
+            // 
+            this.lblUsersTitle.AutoSize = true;
+            this.lblUsersTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblUsersTitle.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
+            this.lblUsersTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            this.lblUsersTitle.Location = new System.Drawing.Point(20, 13);
+            this.lblUsersTitle.Name = "lblUsersTitle";
+            this.lblUsersTitle.Size = new System.Drawing.Size(146, 15);
+            this.lblUsersTitle.TabIndex = 0;
+            this.lblUsersTitle.Text = "TÀI KHOẢN HOẠT ĐỘNG";
+            // 
+            // pnlStats
+            // 
+            this.pnlStats.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlAlert.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(230)))), ((int)(((byte)(138)))));
-            this.pnlAlert.BorderRadius = 8;
-            this.pnlAlert.BorderThickness = 1;
-            this.pnlAlert.Controls.Add(this.lblAlert);
-            this.pnlAlert.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(235)))));
-            this.pnlAlert.Location = new System.Drawing.Point(20, 86);
-            this.pnlAlert.Name = "pnlAlert";
-            this.pnlAlert.Size = new System.Drawing.Size(1088, 48);
-            this.pnlAlert.TabIndex = 2;
+            this.pnlStats.Enabled = false;
+            this.pnlStats.Location = new System.Drawing.Point(23, 38);
+            this.pnlStats.Name = "pnlStats";
+            this.pnlStats.Size = new System.Drawing.Size(1088, 106);
+            this.pnlStats.TabIndex = 3;
+            this.pnlStats.WrapContents = false;
             // 
-            // lblAlert
+            // pnlWelcome
             // 
-            this.lblAlert.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblAlert.BackColor = System.Drawing.Color.Transparent;
-            this.lblAlert.Font = new System.Drawing.Font("Segoe UI", 9.4F, System.Drawing.FontStyle.Bold);
-            this.lblAlert.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(64)))), ((int)(((byte)(14)))));
-            this.lblAlert.Location = new System.Drawing.Point(20, 14);
-            this.lblAlert.Name = "lblAlert";
-            this.lblAlert.Size = new System.Drawing.Size(1048, 20);
-            this.lblAlert.TabIndex = 0;
-            this.lblAlert.Text = "Cảnh báo: có 4 audit log thất bại cần kiểm tra và 1 bản backup mới đang chờ xác n" +
-    "hận.";
+            this.pnlWelcome.BackColor = System.Drawing.Color.Transparent;
+            this.pnlWelcome.BorderRadius = 14;
+            this.pnlWelcome.Controls.Add(this.lblWelcomeAvatar);
+            this.pnlWelcome.Controls.Add(this.lblWelcomeTitle);
+            this.pnlWelcome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(58)))), ((int)(((byte)(95)))));
+            this.pnlWelcome.Location = new System.Drawing.Point(26, 19);
+            this.pnlWelcome.Name = "pnlWelcome";
+            this.pnlWelcome.Size = new System.Drawing.Size(1079, 85);
+            this.pnlWelcome.TabIndex = 6;
+            // 
+            // lblWelcomeAvatar
+            // 
+            this.lblWelcomeAvatar.BackColor = System.Drawing.Color.SkyBlue;
+            this.lblWelcomeAvatar.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelcomeAvatar.ForeColor = System.Drawing.Color.White;
+            this.lblWelcomeAvatar.Location = new System.Drawing.Point(25, 18);
+            this.lblWelcomeAvatar.Name = "lblWelcomeAvatar";
+            this.lblWelcomeAvatar.Size = new System.Drawing.Size(59, 50);
+            this.lblWelcomeAvatar.TabIndex = 0;
+            this.lblWelcomeAvatar.Text = "TH";
+            this.lblWelcomeAvatar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblWelcomeTitle
+            // 
+            this.lblWelcomeTitle.AutoSize = true;
+            this.lblWelcomeTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblWelcomeTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelcomeTitle.ForeColor = System.Drawing.Color.White;
+            this.lblWelcomeTitle.Location = new System.Drawing.Point(103, 29);
+            this.lblWelcomeTitle.Name = "lblWelcomeTitle";
+            this.lblWelcomeTitle.Size = new System.Drawing.Size(205, 32);
+            this.lblWelcomeTitle.TabIndex = 1;
+            this.lblWelcomeTitle.Text = "Chào buổi sáng, ";
             // 
             // ucTrangChu
             // 
@@ -658,20 +485,16 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRecentHeader.ResumeLayout(false);
             this.pnlRecentHeader.PerformLayout();
             this.pnlRight.ResumeLayout(false);
-            this.pnlTasks.ResumeLayout(false);
-            this.pnlTasks.PerformLayout();
             this.pnlSystem.ResumeLayout(false);
             this.pnlSystem.PerformLayout();
-            this.pnlStats.ResumeLayout(false);
-            this.pnlUsers.ResumeLayout(false);
-            this.pnlUsers.PerformLayout();
-            this.pnlAudit.ResumeLayout(false);
-            this.pnlAudit.PerformLayout();
             this.pnlBackup.ResumeLayout(false);
             this.pnlBackup.PerformLayout();
-            this.pnlWarn.ResumeLayout(false);
-            this.pnlWarn.PerformLayout();
-            this.pnlAlert.ResumeLayout(false);
+            this.pnlAudit.ResumeLayout(false);
+            this.pnlAudit.PerformLayout();
+            this.pnlUsers.ResumeLayout(false);
+            this.pnlUsers.PerformLayout();
+            this.pnlWelcome.ResumeLayout(false);
+            this.pnlWelcome.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -679,32 +502,20 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         #endregion
 
         private Guna.UI2.WinForms.Guna2Panel pnlRoot;
-        private Guna.UI2.WinForms.Guna2Panel pnlAlert;
-        private System.Windows.Forms.Label lblAlert;
         private System.Windows.Forms.FlowLayoutPanel pnlStats;
         private Guna.UI2.WinForms.Guna2Panel pnlUsers;
-        private System.Windows.Forms.Label lblUsersSub;
         private System.Windows.Forms.Label lblUsersValue;
         private System.Windows.Forms.Label lblUsersTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlAudit;
-        private System.Windows.Forms.Label lblAuditSub;
         private System.Windows.Forms.Label lblAuditValue;
         private System.Windows.Forms.Label lblAuditTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlBackup;
         private System.Windows.Forms.Label lblBackupSub;
         private System.Windows.Forms.Label lblBackupValue;
         private System.Windows.Forms.Label lblBackupTitle;
-        private Guna.UI2.WinForms.Guna2Panel pnlWarn;
-        private System.Windows.Forms.Label lblWarnSub;
-        private System.Windows.Forms.Label lblWarnValue;
-        private System.Windows.Forms.Label lblWarnTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlRecent;
         private System.Windows.Forms.DataGridView dgvRecent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colEvent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLevel;
         private Guna.UI2.WinForms.Guna2Panel pnlRecentHeader;
-        private System.Windows.Forms.Label lblRecentSub;
         private System.Windows.Forms.Label lblRecentTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlRight;
         private Guna.UI2.WinForms.Guna2Panel pnlSystem;
@@ -715,11 +526,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private System.Windows.Forms.Label lblInfo2;
         private System.Windows.Forms.Label lblInfo1;
         private System.Windows.Forms.Label lblSystemTitle;
-        private Guna.UI2.WinForms.Guna2Panel pnlTasks;
-        private System.Windows.Forms.Label lblTask4;
-        private System.Windows.Forms.Label lblTask3;
-        private System.Windows.Forms.Label lblTask2;
-        private System.Windows.Forms.Label lblTask1;
-        private System.Windows.Forms.Label lblTaskTitle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEvent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLevel;
+        private Guna.UI2.WinForms.Guna2Panel pnlWelcome;
+        private System.Windows.Forms.Label lblWelcomeAvatar;
+        private System.Windows.Forms.Label lblWelcomeTitle;
     }
 }

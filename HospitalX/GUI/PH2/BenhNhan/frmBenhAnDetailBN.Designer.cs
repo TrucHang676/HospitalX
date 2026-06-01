@@ -273,6 +273,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // txtConclusion
             // 
+            this.txtConclusion.BackColor = System.Drawing.Color.Transparent;
             this.txtConclusion.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
             this.txtConclusion.BorderRadius = 6;
             this.txtConclusion.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -303,6 +304,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // txtTreatment
             // 
+            this.txtTreatment.BackColor = System.Drawing.Color.Transparent;
             this.txtTreatment.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
             this.txtTreatment.BorderRadius = 6;
             this.txtTreatment.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -333,6 +335,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // txtDiagnosis
             // 
+            this.txtDiagnosis.BackColor = System.Drawing.Color.Transparent;
             this.txtDiagnosis.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
             this.txtDiagnosis.BorderRadius = 6;
             this.txtDiagnosis.Cursor = System.Windows.Forms.Cursors.IBeam;

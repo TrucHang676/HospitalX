@@ -17,15 +17,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlRoot = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvSent = new System.Windows.Forms.DataGridView();
-            this.colSentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSentContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSentLabels = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSentPriority = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlHistoryHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.lblHistoryCount = new System.Windows.Forms.Label();
             this.lblHistoryTitle = new System.Windows.Forms.Label();
@@ -53,6 +49,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblContent = new System.Windows.Forms.Label();
             this.lblComposeTitle = new System.Windows.Forms.Label();
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
+            this.colSentTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSentContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSentLabels = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSentPriority = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlRoot.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSent)).BeginInit();
@@ -85,7 +85,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlHistory.Controls.Add(this.dgvSent);
             this.pnlHistory.Controls.Add(this.pnlHistoryHeader);
             this.pnlHistory.FillColor = System.Drawing.Color.White;
-            this.pnlHistory.Location = new System.Drawing.Point(480, 88);
+            this.pnlHistory.Location = new System.Drawing.Point(477, 35);
             this.pnlHistory.Name = "pnlHistory";
             this.pnlHistory.Size = new System.Drawing.Size(628, 678);
             this.pnlHistory.TabIndex = 2;
@@ -99,75 +99,46 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvSent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvSent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvSent.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.dgvSent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            this.dgvSent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSent.ColumnHeadersHeight = 38;
             this.dgvSent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colSentTime,
             this.colSentContent,
             this.colSentLabels,
             this.colSentPriority});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvSent.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvSent.Dock = System.Windows.Forms.DockStyle.Fill;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvSent.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvSent.EnableHeadersVisualStyles = false;
             this.dgvSent.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
-            this.dgvSent.Location = new System.Drawing.Point(0, 62);
+            this.dgvSent.Location = new System.Drawing.Point(3, 62);
             this.dgvSent.MultiSelect = false;
             this.dgvSent.Name = "dgvSent";
             this.dgvSent.ReadOnly = true;
             this.dgvSent.RowHeadersVisible = false;
             this.dgvSent.RowTemplate.Height = 58;
             this.dgvSent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSent.Size = new System.Drawing.Size(628, 616);
+            this.dgvSent.Size = new System.Drawing.Size(622, 613);
             this.dgvSent.TabIndex = 1;
-            // 
-            // colSentTime
-            // 
-            this.colSentTime.HeaderText = "Thời gian";
-            this.colSentTime.Name = "colSentTime";
-            this.colSentTime.ReadOnly = true;
-            this.colSentTime.Width = 112;
-            // 
-            // colSentContent
-            // 
-            this.colSentContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colSentContent.HeaderText = "Nội dung";
-            this.colSentContent.Name = "colSentContent";
-            this.colSentContent.ReadOnly = true;
-            // 
-            // colSentLabels
-            // 
-            this.colSentLabels.HeaderText = "Nhãn";
-            this.colSentLabels.Name = "colSentLabels";
-            this.colSentLabels.ReadOnly = true;
-            this.colSentLabels.Width = 90;
-            // 
-            // colSentPriority
-            // 
-            this.colSentPriority.HeaderText = "Ưu tiên";
-            this.colSentPriority.Name = "colSentPriority";
-            this.colSentPriority.ReadOnly = true;
-            this.colSentPriority.Width = 95;
             // 
             // pnlHistoryHeader
             // 
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryCount);
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryTitle);
             this.pnlHistoryHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHistoryHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.pnlHistoryHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlHistoryHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHistoryHeader.Name = "pnlHistoryHeader";
             this.pnlHistoryHeader.Size = new System.Drawing.Size(628, 62);
@@ -178,7 +149,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblHistoryCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHistoryCount.BackColor = System.Drawing.Color.Transparent;
             this.lblHistoryCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblHistoryCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            this.lblHistoryCount.ForeColor = System.Drawing.Color.White;
             this.lblHistoryCount.Location = new System.Drawing.Point(442, 22);
             this.lblHistoryCount.Name = "lblHistoryCount";
             this.lblHistoryCount.Size = new System.Drawing.Size(162, 20);
@@ -191,8 +162,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblHistoryTitle.AutoSize = true;
             this.lblHistoryTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
-            this.lblHistoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblHistoryTitle.Location = new System.Drawing.Point(20, 18);
+            this.lblHistoryTitle.ForeColor = System.Drawing.Color.White;
+            this.lblHistoryTitle.Location = new System.Drawing.Point(3, 17);
             this.lblHistoryTitle.Name = "lblHistoryTitle";
             this.lblHistoryTitle.Size = new System.Drawing.Size(163, 25);
             this.lblHistoryTitle.TabIndex = 0;
@@ -205,7 +176,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLeft.Controls.Add(this.pnlLabels);
             this.pnlLeft.Controls.Add(this.pnlCompose);
             this.pnlLeft.FillColor = System.Drawing.Color.Transparent;
-            this.pnlLeft.Location = new System.Drawing.Point(20, 88);
+            this.pnlLeft.Location = new System.Drawing.Point(23, 35);
             this.pnlLeft.Name = "pnlLeft";
             this.pnlLeft.Size = new System.Drawing.Size(444, 678);
             this.pnlLeft.TabIndex = 1;
@@ -255,14 +226,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // chkT7
             // 
-            this.chkT7.AutoSize = false;
+            this.chkT7.BackColor = System.Drawing.Color.Transparent;
             this.chkT7.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT7.CheckedState.BorderRadius = 3;
             this.chkT7.CheckedState.BorderThickness = 1;
             this.chkT7.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkT7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT7.Location = new System.Drawing.Point(226, 216);
+            this.chkT7.Location = new System.Drawing.Point(20, 204);
             this.chkT7.Name = "chkT7";
             this.chkT7.Size = new System.Drawing.Size(194, 32);
             this.chkT7.TabIndex = 9;
@@ -271,18 +242,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT7.UncheckedState.BorderRadius = 3;
             this.chkT7.UncheckedState.BorderThickness = 1;
             this.chkT7.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkT7.UseVisualStyleBackColor = false;
             this.chkT7.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT6
             // 
-            this.chkT6.AutoSize = false;
+            this.chkT6.BackColor = System.Drawing.Color.Transparent;
             this.chkT6.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT6.CheckedState.BorderRadius = 3;
             this.chkT6.CheckedState.BorderThickness = 1;
             this.chkT6.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkT6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT6.Location = new System.Drawing.Point(24, 216);
+            this.chkT6.Location = new System.Drawing.Point(230, 166);
             this.chkT6.Name = "chkT6";
             this.chkT6.Size = new System.Drawing.Size(190, 32);
             this.chkT6.TabIndex = 8;
@@ -291,18 +263,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT6.UncheckedState.BorderRadius = 3;
             this.chkT6.UncheckedState.BorderThickness = 1;
             this.chkT6.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkT6.UseVisualStyleBackColor = false;
             this.chkT6.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT5
             // 
-            this.chkT5.AutoSize = false;
+            this.chkT5.BackColor = System.Drawing.Color.Transparent;
             this.chkT5.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT5.CheckedState.BorderRadius = 3;
             this.chkT5.CheckedState.BorderThickness = 1;
             this.chkT5.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkT5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT5.Location = new System.Drawing.Point(226, 178);
+            this.chkT5.Location = new System.Drawing.Point(20, 166);
             this.chkT5.Name = "chkT5";
             this.chkT5.Size = new System.Drawing.Size(194, 32);
             this.chkT5.TabIndex = 7;
@@ -311,18 +284,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT5.UncheckedState.BorderRadius = 3;
             this.chkT5.UncheckedState.BorderThickness = 1;
             this.chkT5.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkT5.UseVisualStyleBackColor = false;
             this.chkT5.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT4
             // 
-            this.chkT4.AutoSize = false;
+            this.chkT4.BackColor = System.Drawing.Color.Transparent;
             this.chkT4.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT4.CheckedState.BorderRadius = 3;
             this.chkT4.CheckedState.BorderThickness = 1;
             this.chkT4.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkT4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT4.Location = new System.Drawing.Point(24, 178);
+            this.chkT4.Location = new System.Drawing.Point(230, 128);
             this.chkT4.Name = "chkT4";
             this.chkT4.Size = new System.Drawing.Size(190, 32);
             this.chkT4.TabIndex = 6;
@@ -331,18 +305,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT4.UncheckedState.BorderRadius = 3;
             this.chkT4.UncheckedState.BorderThickness = 1;
             this.chkT4.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkT4.UseVisualStyleBackColor = false;
             this.chkT4.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT3
             // 
-            this.chkT3.AutoSize = false;
+            this.chkT3.BackColor = System.Drawing.Color.Transparent;
             this.chkT3.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT3.CheckedState.BorderRadius = 3;
             this.chkT3.CheckedState.BorderThickness = 1;
             this.chkT3.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkT3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT3.Location = new System.Drawing.Point(226, 140);
+            this.chkT3.Location = new System.Drawing.Point(20, 128);
             this.chkT3.Name = "chkT3";
             this.chkT3.Size = new System.Drawing.Size(194, 32);
             this.chkT3.TabIndex = 5;
@@ -351,18 +326,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT3.UncheckedState.BorderRadius = 3;
             this.chkT3.UncheckedState.BorderThickness = 1;
             this.chkT3.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkT3.UseVisualStyleBackColor = false;
             this.chkT3.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT2
             // 
-            this.chkT2.AutoSize = false;
+            this.chkT2.BackColor = System.Drawing.Color.Transparent;
             this.chkT2.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT2.CheckedState.BorderRadius = 3;
             this.chkT2.CheckedState.BorderThickness = 1;
             this.chkT2.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkT2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT2.Location = new System.Drawing.Point(24, 140);
+            this.chkT2.Location = new System.Drawing.Point(230, 90);
             this.chkT2.Name = "chkT2";
             this.chkT2.Size = new System.Drawing.Size(190, 32);
             this.chkT2.TabIndex = 4;
@@ -371,18 +347,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT2.UncheckedState.BorderRadius = 3;
             this.chkT2.UncheckedState.BorderThickness = 1;
             this.chkT2.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkT2.UseVisualStyleBackColor = false;
             this.chkT2.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT1
             // 
-            this.chkT1.AutoSize = false;
+            this.chkT1.BackColor = System.Drawing.Color.Transparent;
             this.chkT1.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT1.CheckedState.BorderRadius = 3;
             this.chkT1.CheckedState.BorderThickness = 1;
             this.chkT1.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkT1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkT1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT1.Location = new System.Drawing.Point(226, 102);
+            this.chkT1.Location = new System.Drawing.Point(20, 90);
             this.chkT1.Name = "chkT1";
             this.chkT1.Size = new System.Drawing.Size(194, 32);
             this.chkT1.TabIndex = 3;
@@ -391,26 +368,28 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT1.UncheckedState.BorderRadius = 3;
             this.chkT1.UncheckedState.BorderThickness = 1;
             this.chkT1.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkT1.UseVisualStyleBackColor = false;
             this.chkT1.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkAll
             // 
-            this.chkAll.AutoSize = false;
+            this.chkAll.BackColor = System.Drawing.Color.Transparent;
             this.chkAll.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkAll.CheckedState.BorderRadius = 3;
             this.chkAll.CheckedState.BorderThickness = 1;
             this.chkAll.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.chkAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.chkAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkAll.Location = new System.Drawing.Point(24, 70);
+            this.chkAll.Location = new System.Drawing.Point(20, 58);
             this.chkAll.Name = "chkAll";
-            this.chkAll.Size = new System.Drawing.Size(396, 26);
+            this.chkAll.Size = new System.Drawing.Size(194, 26);
             this.chkAll.TabIndex = 2;
             this.chkAll.Text = "Chọn tất cả nhóm";
             this.chkAll.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
             this.chkAll.UncheckedState.BorderRadius = 3;
             this.chkAll.UncheckedState.BorderThickness = 1;
             this.chkAll.UncheckedState.FillColor = System.Drawing.Color.White;
+            this.chkAll.UseVisualStyleBackColor = false;
             this.chkAll.CheckedChanged += new System.EventHandler(this.chkAll_CheckedChanged);
             // 
             // lblSelectedCount
@@ -496,6 +475,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // txtLocation
             // 
+            this.txtLocation.BackColor = System.Drawing.Color.Transparent;
             this.txtLocation.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtLocation.BorderRadius = 6;
             this.txtLocation.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -523,8 +503,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // dtpTime
             // 
+            this.dtpTime.BackColor = System.Drawing.Color.Transparent;
             this.dtpTime.BorderRadius = 6;
             this.dtpTime.Checked = true;
+            this.dtpTime.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpTime.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dtpTime.FillColor = System.Drawing.Color.White;
             this.dtpTime.Font = new System.Drawing.Font("Segoe UI", 9.5F);
@@ -551,6 +533,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // txtContent
             // 
+            this.txtContent.BackColor = System.Drawing.Color.Transparent;
             this.txtContent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtContent.BorderRadius = 6;
             this.txtContent.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -583,7 +566,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblComposeTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblComposeTitle.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
             this.lblComposeTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblComposeTitle.Location = new System.Drawing.Point(20, 18);
+            this.lblComposeTitle.Location = new System.Drawing.Point(22, 17);
             this.lblComposeTitle.Name = "lblComposeTitle";
             this.lblComposeTitle.Size = new System.Drawing.Size(184, 25);
             this.lblComposeTitle.TabIndex = 0;
@@ -597,6 +580,34 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.msgDialog.Parent = null;
             this.msgDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
             this.msgDialog.Text = null;
+            // 
+            // colSentTime
+            // 
+            this.colSentTime.HeaderText = "Thời gian";
+            this.colSentTime.Name = "colSentTime";
+            this.colSentTime.ReadOnly = true;
+            this.colSentTime.Width = 150;
+            // 
+            // colSentContent
+            // 
+            this.colSentContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colSentContent.HeaderText = "Nội dung";
+            this.colSentContent.Name = "colSentContent";
+            this.colSentContent.ReadOnly = true;
+            // 
+            // colSentLabels
+            // 
+            this.colSentLabels.HeaderText = "Nhãn";
+            this.colSentLabels.Name = "colSentLabels";
+            this.colSentLabels.ReadOnly = true;
+            this.colSentLabels.Width = 90;
+            // 
+            // colSentPriority
+            // 
+            this.colSentPriority.HeaderText = "Ưu tiên";
+            this.colSentPriority.Name = "colSentPriority";
+            this.colSentPriority.ReadOnly = true;
+            this.colSentPriority.Width = 120;
             // 
             // ucThongBao
             // 
@@ -649,13 +660,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private System.Windows.Forms.Label lblLabelsTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlHistory;
         private System.Windows.Forms.DataGridView dgvSent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentLabels;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSentPriority;
         private Guna.UI2.WinForms.Guna2Panel pnlHistoryHeader;
         private System.Windows.Forms.Label lblHistoryCount;
         private System.Windows.Forms.Label lblHistoryTitle;
         private Guna.UI2.WinForms.Guna2MessageDialog msgDialog;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSentTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSentContent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSentLabels;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSentPriority;
     }
 }

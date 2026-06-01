@@ -46,7 +46,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             dtpTo.ValueChanged += FilterChanged;
             btnClear.Click += BtnClear_Click;
             btnEnableAudit.Click += BtnEnableAudit_Click;
-            btnExport.Click += BtnExport_Click;
             dgvLogs.CellContentClick += dgvLogs_CellContentClick;
             dgvLogs.CellPainting += dgvLogs_CellPainting;
         }
@@ -150,10 +149,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void RenderStats(List<AuditLogRecord> logs)
         {
-            lblTotalValue.Text = logs.Count.ToString();
-            lblSuccessValue.Text = logs.Count(log => log.Success).ToString();
-            lblFailValue.Text = logs.Count(log => !log.Success).ToString();
-            lblUpdateValue.Text = logs.Count(log => log.Action == "UPDATE").ToString();
             lblResultCount.Text = "Hiển thị " + logs.Count + " bản ghi kiểm toán";
         }
 

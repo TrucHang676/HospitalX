@@ -20,7 +20,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             pnlHeader.Height = 82;
             pnlBody.Location = new Point(0, 82);
             pnlBody.Size = new Size(700, 388);
-            btnClose.Location = new Point(650, 16);
+            btnExit.Location = new Point(650, 16);
 
             lblAuditId.BackColor = Color.Transparent;
             lblAuditId.Location = new Point(28, 15);

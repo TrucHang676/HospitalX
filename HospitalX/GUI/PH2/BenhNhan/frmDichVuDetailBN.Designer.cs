@@ -125,6 +125,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // txtResult
             // 
+            this.txtResult.BackColor = System.Drawing.Color.Transparent;
             this.txtResult.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
             this.txtResult.BorderRadius = 6;
             this.txtResult.Cursor = System.Windows.Forms.Cursors.IBeam;

@@ -125,6 +125,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // txtDiagnosis
             // 
+            this.txtDiagnosis.BackColor = System.Drawing.Color.Transparent;
             this.txtDiagnosis.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
             this.txtDiagnosis.BorderRadius = 6;
             this.txtDiagnosis.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -172,16 +173,16 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
             this.lblDate.Location = new System.Drawing.Point(222, 18);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(113, 15);
+            this.lblDate.Size = new System.Drawing.Size(137, 15);
             this.lblDate.TabIndex = 3;
-            this.lblDate.Text = "NGÀY ĐƠN THUỐC";
+            this.lblDate.Text = "NGÀY LẬP ĐƠN THUỐC";
             // 
             // lblCountValue
             // 
             this.lblCountValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
             this.lblCountValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblCountValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblCountValue.Location = new System.Drawing.Point(414, 38);
+            this.lblCountValue.Location = new System.Drawing.Point(415, 38);
             this.lblCountValue.Name = "lblCountValue";
             this.lblCountValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
             this.lblCountValue.Size = new System.Drawing.Size(158, 32);

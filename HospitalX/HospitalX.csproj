@@ -566,6 +566,9 @@
     <EmbeddedResource Include="GUI\PH2\BenhNhan\ucHSCN.resx">
       <DependentUpon>ucHSCN.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\frmAuditLogDetail.resx">
+      <DependentUpon>frmAuditLogDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucAudit.resx">
       <DependentUpon>ucAudit.cs</DependentUpon>
     </EmbeddedResource>
