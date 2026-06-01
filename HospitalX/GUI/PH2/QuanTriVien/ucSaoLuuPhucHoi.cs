@@ -19,6 +19,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         public ucSaoLuuPhucHoi()
         {
             InitializeComponent();
+            PolishStaticLayout();
             SeedData();
             WireEvents();
             RenderHistory();
@@ -35,11 +36,74 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             btnStartRestore.Click += BtnStartRestore_Click;
             chkFull.CheckedChanged += BackupTypeChanged;
             chkIncremental.CheckedChanged += BackupTypeChanged;
+            dgvHistory.CellPainting += dgvHistory_CellPainting;
+            flowRestoreCards.Resize += (s, e) => RenderRestoreCards();
 
             _backupTimer = new Timer { Interval = 180 };
             _backupTimer.Tick += BackupTimer_Tick;
             _restoreTimer = new Timer { Interval = 900 };
             _restoreTimer.Tick += RestoreTimer_Tick;
+        }
+
+        private void PolishStaticLayout()
+        {
+            SetTransparentLabels(this);
+
+            pnlRoot.Padding = new Padding(20, 14, 20, 16);
+            pnlAlert.Height = 58;
+            pnlTabs.Height = 48;
+            pnlBackupLeft.Width = 392;
+            pnlRestoreLeft.Width = 500;
+
+            pnlBackupProgress.Visible = true;
+            pnlBackupProgress.Location = new Point(26, 458);
+            pnlBackupProgress.Size = new Size(330, 82);
+            lblBackupPercent.Text = "Sẵn sàng";
+            lblBackupStatus.Text = "Chưa có tiến trình sao lưu đang chạy.";
+
+            dgvHistory.RowTemplate.Height = 44;
+            dgvHistory.ColumnHeadersHeight = 38;
+            dgvHistory.DefaultCellStyle.Font = new Font("Segoe UI", 9.2F);
+            dgvHistory.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
+            dgvHistory.Columns["colBackupType"].FillWeight = 62F;
+            dgvHistory.Columns["colBackupSource"].FillWeight = 72F;
+            dgvHistory.Columns["colBackupStatus"].FillWeight = 70F;
+
+            flowRestoreCards.BackColor = Color.FromArgb(247, 249, 248);
+            flowRestoreCards.Padding = new Padding(0, 0, 8, 0);
+
+            txtConsole.Size = new Size(492, 170);
+            txtConsole.Location = new Point(24, 386);
+            lblStep1.Location = new Point(26, 122);
+            lblStep2.Location = new Point(26, 158);
+            lblStep3.Location = new Point(26, 194);
+            lblStep4.Location = new Point(26, 230);
+            lblStep5.Location = new Point(26, 266);
+
+            btnStartRestore.Size = new Size(320, 42);
+            btnStartRestore.Location = new Point(24, 548);
+            btnStartRestore.FillColor = Color.FromArgb(220, 38, 38);
+            btnStartRestore.HoverState.FillColor = Color.FromArgb(185, 28, 28);
+
+            btnStartBackup.Size = new Size(210, 40);
+            btnDryRun.Size = new Size(112, 40);
+        }
+
+        private static void SetTransparentLabels(Control root)
+        {
+            foreach (Control control in root.Controls)
+            {
+                Label label = control as Label;
+                if (label != null)
+                {
+                    label.BackColor = Color.Transparent;
+                }
+
+                if (control.HasChildren)
+                {
+                    SetTransparentLabels(control);
+                }
+            }
         }
 
         private void SeedData()
@@ -215,7 +279,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BorderThickness = selected ? 2 : 1,
                 Cursor = Cursors.Hand,
                 FillColor = selected ? Color.FromArgb(230, 244, 240) : Color.White,
-                Height = 78,
+                Height = 72,
                 Margin = new Padding(0, 0, 0, 10),
                 Width = Math.Max(420, flowRestoreCards.ClientSize.Width - 24),
                 Tag = backup
@@ -227,7 +291,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BackColor = Color.Transparent,
                 Font = new Font("Segoe UI", 10F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(24, 48, 42),
-                Location = new Point(16, 13),
+                Location = new Point(16, 11),
                 Size = new Size(card.Width - 150, 22),
                 Text = backup.Id
             };
@@ -237,7 +301,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BackColor = Color.Transparent,
                 Font = new Font("Segoe UI", 8.8F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(122, 149, 137),
-                Location = new Point(16, 39),
+                Location = new Point(16, 37),
                 Size = new Size(card.Width - 150, 22),
                 Text = backup.Time.ToString("dd/MM/yyyy HH:mm") + " · " + backup.Type + " · VERIFIED"
             };
@@ -246,7 +310,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BackColor = Color.Transparent,
                 Font = new Font("Segoe UI", 11F, FontStyle.Bold),
                 ForeColor = accent,
-                Location = new Point(card.Width - 120, 15),
+                Location = new Point(card.Width - 120, 13),
                 Size = new Size(92, 22),
                 Text = backup.Size,
                 TextAlign = ContentAlignment.MiddleRight
@@ -256,7 +320,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BackColor = Color.Transparent,
                 Font = new Font("Segoe UI", 8.5F),
                 ForeColor = Color.FromArgb(122, 149, 137),
-                Location = new Point(card.Width - 120, 41),
+                Location = new Point(card.Width - 120, 38),
                 Size = new Size(92, 20),
                 Text = backup.Duration,
                 TextAlign = ContentAlignment.MiddleRight
@@ -337,6 +401,72 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             lblStep4.Text = "4. Recover archive log";
             lblStep5.Text = "5. OPEN RESETLOGS";
             lblStep1.ForeColor = lblStep2.ForeColor = lblStep3.ForeColor = lblStep4.ForeColor = lblStep5.ForeColor = Color.FromArgb(122, 149, 137);
+        }
+
+        private void dgvHistory_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            string columnName = dgvHistory.Columns[e.ColumnIndex].Name;
+            if (columnName != "colBackupType" && columnName != "colBackupSource" && columnName != "colBackupStatus")
+            {
+                return;
+            }
+
+            e.PaintBackground(e.CellBounds, true);
+            string text = Convert.ToString(e.Value);
+            Color back;
+            Color fore;
+
+            if (columnName == "colBackupType")
+            {
+                bool full = text == "FULL";
+                back = full ? Color.FromArgb(230, 244, 240) : Color.FromArgb(219, 234, 254);
+                fore = full ? Color.FromArgb(15, 110, 86) : Color.FromArgb(30, 64, 175);
+            }
+            else if (columnName == "colBackupSource")
+            {
+                bool manual = text == "MANUAL";
+                back = manual ? Color.FromArgb(237, 233, 254) : Color.FromArgb(241, 245, 249);
+                fore = manual ? Color.FromArgb(91, 33, 182) : Color.FromArgb(71, 85, 105);
+            }
+            else
+            {
+                bool ok = text == "OK";
+                back = ok ? Color.FromArgb(220, 252, 231) : Color.FromArgb(254, 226, 226);
+                fore = ok ? Color.FromArgb(22, 101, 52) : Color.FromArgb(185, 28, 28);
+            }
+
+            Rectangle badge = new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y + 10, Math.Min(e.CellBounds.Width - 20, 82), e.CellBounds.Height - 20);
+            PaintBadge(e.Graphics, badge, text, back, fore);
+            e.Handled = true;
+        }
+
+        private static void PaintBadge(Graphics graphics, Rectangle rect, string text, Color fill, Color fore)
+        {
+            using (System.Drawing.Drawing2D.GraphicsPath path = RoundedPath(rect, 7))
+            using (SolidBrush brush = new SolidBrush(fill))
+            {
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphics.FillPath(brush, path);
+            }
+
+            TextRenderer.DrawText(graphics, text, new Font("Segoe UI", 8.6F, FontStyle.Bold), rect, fore, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+        }
+
+        private static System.Drawing.Drawing2D.GraphicsPath RoundedPath(Rectangle rect, int radius)
+        {
+            int d = radius * 2;
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+            path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+            path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+            return path;
         }
 
         private void SetStepDone(int step, string text)

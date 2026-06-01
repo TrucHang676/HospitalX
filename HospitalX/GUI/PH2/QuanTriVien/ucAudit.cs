@@ -19,6 +19,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         public ucAudit()
         {
             InitializeComponent();
+            PolishStaticLayout();
         }
 
         private void ucAudit_Load(object sender, EventArgs e)
@@ -32,6 +33,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             SeedData();
             WireEvents();
             BindScenarios();
+            LayoutStatCards();
             ApplyFilters();
         }
 
@@ -48,6 +50,129 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             btnEnableAudit.Click += BtnEnableAudit_Click;
             btnExport.Click += BtnExport_Click;
             dgvLogs.CellContentClick += dgvLogs_CellContentClick;
+            dgvLogs.CellPainting += dgvLogs_CellPainting;
+            Resize += (s, e) => LayoutStatCards();
+        }
+
+        private void PolishStaticLayout()
+        {
+            SetTransparentLabels(this);
+
+            pnlRoot.Padding = new Padding(20, 16, 20, 16);
+            pnlFilter.Height = 112;
+            pnlMiddle.Height = 250;
+            pnlMiddle.Padding = new Padding(0, 12, 0, 12);
+            pnlScenario.Height = 136;
+            pnlLogsHeader.Height = 48;
+
+            pnlStats.WrapContents = false;
+            pnlStats.FlowDirection = FlowDirection.LeftToRight;
+            pnlStats.Height = 84;
+
+            StyleStatPanel(pnlTotal, lblTotalValue, lblTotalCaption, Color.FromArgb(15, 110, 86));
+            StyleStatPanel(pnlSuccess, lblSuccessValue, lblSuccessCaption, Color.FromArgb(22, 163, 74));
+            StyleStatPanel(pnlFail, lblFailValue, lblFailCaption, Color.FromArgb(220, 38, 38));
+            StyleStatPanel(pnlUpdate, lblUpdateValue, lblUpdateCaption, Color.FromArgb(30, 64, 175));
+
+            dgvLogs.RowTemplate.Height = 46;
+            dgvLogs.ColumnHeadersHeight = 38;
+            dgvLogs.DefaultCellStyle.Font = new Font("Segoe UI", 9.4F);
+            dgvLogs.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
+            dgvLogs.Columns["colDetail"].FillWeight = 245F;
+            dgvLogs.Columns["colAction"].FillWeight = 78F;
+            dgvLogs.Columns["colResult"].FillWeight = 90F;
+            dgvLogs.Columns["colDetailAction"].FillWeight = 56F;
+
+            dgvScenarios.RowTemplate.Height = 32;
+            dgvScenarios.ColumnHeadersHeight = 30;
+            dgvScenarios.DefaultCellStyle.Font = new Font("Segoe UI", 9F);
+            dgvScenarios.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
+            dgvScenarios.Columns["colScenarioName"].FillWeight = 170F;
+            dgvScenarios.Columns["colScenarioTarget"].FillWeight = 140F;
+
+            btnEnableAudit.Size = new Size(150, 32);
+            btnEnableAudit.Location = new Point(pnlScenarioHeader.Width - btnEnableAudit.Width - 18, 8);
+            btnEnableAudit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+
+            LayoutFilterControls();
+        }
+
+        private void LayoutFilterControls()
+        {
+            txtSearch.Location = new Point(20, 42);
+            txtSearch.Size = new Size(288, 36);
+            lblSearch.Location = new Point(20, 20);
+
+            cmbObject.Location = new Point(324, 42);
+            cmbObject.Size = new Size(152, 36);
+            lblObject.Location = new Point(324, 20);
+
+            cmbAction.Location = new Point(492, 42);
+            cmbAction.Size = new Size(124, 36);
+            lblAction.Location = new Point(492, 20);
+
+            cmbResult.Location = new Point(632, 42);
+            cmbResult.Size = new Size(132, 36);
+            lblResult.Location = new Point(632, 20);
+
+            dtpFrom.Location = new Point(20, 82);
+            dtpFrom.Size = new Size(132, 28);
+            lblFrom.Location = new Point(20, 64);
+
+            dtpTo.Location = new Point(168, 82);
+            dtpTo.Size = new Size(132, 28);
+            lblTo.Location = new Point(168, 64);
+
+            cmbSort.Location = new Point(324, 82);
+            cmbSort.Size = new Size(152, 28);
+            lblSort.Location = new Point(324, 64);
+
+            btnClear.Location = new Point(788, 42);
+            btnClear.Size = new Size(116, 36);
+            btnExport.Location = new Point(924, 42);
+            btnExport.Size = new Size(140, 36);
+        }
+
+        private void LayoutStatCards()
+        {
+            int gap = 12;
+            int width = Math.Max(210, (pnlStats.ClientSize.Width - gap * 3) / 4);
+            Guna2Panel[] cards = { pnlTotal, pnlSuccess, pnlFail, pnlUpdate };
+            for (int i = 0; i < cards.Length; i++)
+            {
+                cards[i].Margin = new Padding(i == 0 ? 0 : 0, 0, i == cards.Length - 1 ? 0 : gap, 0);
+                cards[i].Size = new Size(width, 76);
+            }
+        }
+
+        private void StyleStatPanel(Guna2Panel panel, Label valueLabel, Label captionLabel, Color accent)
+        {
+            panel.BorderRadius = 8;
+            panel.ShadowDecoration.Enabled = true;
+            panel.ShadowDecoration.Color = Color.FromArgb(226, 239, 234);
+            panel.ShadowDecoration.Depth = 4;
+            valueLabel.BackColor = Color.Transparent;
+            valueLabel.ForeColor = accent;
+            valueLabel.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            captionLabel.BackColor = Color.Transparent;
+            captionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        }
+
+        private static void SetTransparentLabels(Control root)
+        {
+            foreach (Control control in root.Controls)
+            {
+                Label label = control as Label;
+                if (label != null)
+                {
+                    label.BackColor = Color.Transparent;
+                }
+
+                if (control.HasChildren)
+                {
+                    SetTransparentLabels(control);
+                }
+            }
         }
 
         private void SeedData()
@@ -173,10 +298,112 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                     log.Success ? "Thành công" : "Thất bại",
                     "Xem");
                 dgvLogs.Rows[rowIndex].Tag = log;
-                dgvLogs.Rows[rowIndex].DefaultCellStyle.BackColor = log.Success ? Color.White : Color.FromArgb(255, 245, 245);
+                dgvLogs.Rows[rowIndex].DefaultCellStyle.BackColor = log.Success ? Color.White : Color.FromArgb(255, 247, 247);
             }
 
             dgvLogs.ClearSelection();
+        }
+
+        private void dgvLogs_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+            {
+                return;
+            }
+
+            string columnName = dgvLogs.Columns[e.ColumnIndex].Name;
+            if (columnName != "colAction" && columnName != "colResult" && columnName != "colDetailAction")
+            {
+                return;
+            }
+
+            e.PaintBackground(e.CellBounds, true);
+            string text = Convert.ToString(e.Value);
+
+            if (columnName == "colDetailAction")
+            {
+                Rectangle button = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y + 8, e.CellBounds.Width - 16, e.CellBounds.Height - 16);
+                PaintBadge(e.Graphics, button, "Xem", Color.White, Color.FromArgb(15, 110, 86), Color.FromArgb(196, 226, 216));
+                e.Handled = true;
+                return;
+            }
+
+            Color back;
+            Color fore;
+            if (columnName == "colResult")
+            {
+                bool success = text.Contains("Thành") || text.Contains("ThÃ");
+                back = success ? Color.FromArgb(220, 252, 231) : Color.FromArgb(254, 226, 226);
+                fore = success ? Color.FromArgb(22, 101, 52) : Color.FromArgb(185, 28, 28);
+            }
+            else
+            {
+                GetActionColors(text, out back, out fore);
+            }
+
+            Rectangle badge = new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y + 10, Math.Min(e.CellBounds.Width - 18, 86), e.CellBounds.Height - 20);
+            PaintBadge(e.Graphics, badge, text, back, fore, Color.Transparent);
+            e.Handled = true;
+        }
+
+        private static void GetActionColors(string action, out Color back, out Color fore)
+        {
+            if (action == "UPDATE")
+            {
+                back = Color.FromArgb(219, 234, 254);
+                fore = Color.FromArgb(30, 64, 175);
+            }
+            else if (action == "INSERT")
+            {
+                back = Color.FromArgb(220, 252, 231);
+                fore = Color.FromArgb(22, 101, 52);
+            }
+            else if (action == "DELETE")
+            {
+                back = Color.FromArgb(254, 226, 226);
+                fore = Color.FromArgb(185, 28, 28);
+            }
+            else if (action == "LOGIN")
+            {
+                back = Color.FromArgb(237, 233, 254);
+                fore = Color.FromArgb(91, 33, 182);
+            }
+            else
+            {
+                back = Color.FromArgb(241, 245, 249);
+                fore = Color.FromArgb(51, 65, 85);
+            }
+        }
+
+        private static void PaintBadge(Graphics graphics, Rectangle rect, string text, Color fill, Color fore, Color border)
+        {
+            using (System.Drawing.Drawing2D.GraphicsPath path = RoundedPath(rect, 7))
+            using (SolidBrush brush = new SolidBrush(fill))
+            {
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphics.FillPath(brush, path);
+                if (border != Color.Transparent)
+                {
+                    using (Pen pen = new Pen(border))
+                    {
+                        graphics.DrawPath(pen, path);
+                    }
+                }
+            }
+
+            TextRenderer.DrawText(graphics, text, new Font("Segoe UI", 8.6F, FontStyle.Bold), rect, fore, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+        }
+
+        private static System.Drawing.Drawing2D.GraphicsPath RoundedPath(Rectangle rect, int radius)
+        {
+            int d = radius * 2;
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+            path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+            path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+            return path;
         }
 
         private void FilterChanged(object sender, EventArgs e)
