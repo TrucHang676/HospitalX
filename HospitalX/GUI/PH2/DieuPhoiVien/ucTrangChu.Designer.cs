@@ -224,7 +224,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // colMaBN
             // 
             this.colMaBN.FillWeight = 14F;
-            this.colMaBN.HeaderText = "MÃ BN";
+            this.colMaBN.HeaderText = "MÃ HSBA";
             this.colMaBN.MinimumWidth = 6;
             this.colMaBN.Name = "colMaBN";
             this.colMaBN.ReadOnly = true;
@@ -232,7 +232,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // colHoTen
             // 
             this.colHoTen.FillWeight = 22F;
-            this.colHoTen.HeaderText = "HỌ VÀ TÊN";
+            this.colHoTen.HeaderText = "BỆNH NHÂN";
             this.colHoTen.MinimumWidth = 6;
             this.colHoTen.Name = "colHoTen";
             this.colHoTen.ReadOnly = true;
@@ -248,7 +248,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // colBacSi
             // 
             this.colBacSi.FillWeight = 19F;
-            this.colBacSi.HeaderText = "BÁC SĨ";
+            this.colBacSi.HeaderText = "DỊCH VỤ CẦN";
             this.colBacSi.MinimumWidth = 6;
             this.colBacSi.Name = "colBacSi";
             this.colBacSi.ReadOnly = true;
@@ -285,7 +285,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblPatientsTitle.Name = "lblPatientsTitle";
             this.lblPatientsTitle.Size = new System.Drawing.Size(300, 28);
             this.lblPatientsTitle.TabIndex = 0;
-            this.lblPatientsTitle.Text = "Bệnh nhân nhập viện hôm nay";
+            this.lblPatientsTitle.Text = "Hồ sơ cần phân công KTV";
             // 
             // ptbPatientsTitleIcon
             // 
@@ -430,7 +430,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblWorkloadTitle.Name = "lblWorkloadTitle";
             this.lblWorkloadTitle.Size = new System.Drawing.Size(176, 25);
             this.lblWorkloadTitle.TabIndex = 0;
-            this.lblWorkloadTitle.Text = "Tải công việc khoa";
+            this.lblWorkloadTitle.Text = "Tình trạng KTV";
             // 
             // ptbWorkloadTitleIcon
             // 
@@ -635,7 +635,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi4Cap.Name = "lblKpi4Cap";
             this.lblKpi4Cap.Size = new System.Drawing.Size(227, 34);
             this.lblKpi4Cap.TabIndex = 1;
-            this.lblKpi4Cap.Text = "DỊCH VỤ HOÀN THÀNH";
+            this.lblKpi4Cap.Text = "HOÀN THÀNH HÔM NAY";
             // 
             // ptbKpi4
             // 
@@ -748,7 +748,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi2Val.Name = "lblKpi2Val";
             this.lblKpi2Val.Size = new System.Drawing.Size(64, 50);
             this.lblKpi2Val.TabIndex = 2;
-            this.lblKpi2Val.Text = "23";
+            this.lblKpi2Val.Text = "18";
             // 
             // lblKpi2Cap
             // 
@@ -759,7 +759,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi2Cap.Name = "lblKpi2Cap";
             this.lblKpi2Cap.Size = new System.Drawing.Size(227, 34);
             this.lblKpi2Cap.TabIndex = 1;
-            this.lblKpi2Cap.Text = "HỒ SƠ ĐANG MỞ";
+            this.lblKpi2Cap.Text = "KTV ĐANG LÀM VIỆC";
             // 
             // ptbKpi2
             // 
@@ -799,7 +799,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi1Sub.Name = "lblKpi1Sub";
             this.lblKpi1Sub.Size = new System.Drawing.Size(146, 19);
             this.lblKpi1Sub.TabIndex = 3;
-            this.lblKpi1Sub.Text = "↓ 12% so với hôm qua";
+            this.lblKpi1Sub.Text = "Cần xử lý ngay";
             // 
             // lblKpi1Val
             // 
@@ -811,7 +811,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi1Val.Name = "lblKpi1Val";
             this.lblKpi1Val.Size = new System.Drawing.Size(64, 50);
             this.lblKpi1Val.TabIndex = 2;
-            this.lblKpi1Val.Text = "48";
+            this.lblKpi1Val.Text = "12";
             // 
             // lblKpi1Cap
             // 
@@ -822,7 +822,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi1Cap.Name = "lblKpi1Cap";
             this.lblKpi1Cap.Size = new System.Drawing.Size(227, 34);
             this.lblKpi1Cap.TabIndex = 1;
-            this.lblKpi1Cap.Text = "BỆNH NHÂN HÔM NAY";
+            this.lblKpi1Cap.Text = "HSBA CẦN PHÂN CÔNG";
             // 
             // ptbKpi1
             // 

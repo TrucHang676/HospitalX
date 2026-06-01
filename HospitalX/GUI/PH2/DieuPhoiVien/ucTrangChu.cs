@@ -1,6 +1,7 @@
 using Guna.UI2.WinForms;
 using HospitalX.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -46,6 +47,17 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private readonly Label[] _kpiCaps;
         private readonly Label[] _kpiVals;
         private readonly Label[] _kpiSubs;
+
+        public class DashboardPatientRecord
+        {
+            public string MaHsba { get; set; }
+            public string TenBenhNhan { get; set; }
+            public string Khoa { get; set; }
+            public string DichVuCan { get; set; }
+            public string TrangThai { get; set; }
+        }
+
+        private List<DashboardPatientRecord> _allPatientsData = new List<DashboardPatientRecord>();
 
         public ucTrangChu()
         {
@@ -139,8 +151,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 _kpiSubs[i].Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             }
 
-            lblKpi1Sub.Text = "↑ 12% so với hôm qua";
-            lblKpi1Sub.ForeColor = KpiTrendGreen;
+            lblKpi1Sub.Text = "Cần xử lý ngay";
+            lblKpi1Sub.ForeColor = Color.FromArgb(229, 57, 53);
             lblKpi2Sub.ForeColor = KpiTrendGreen;
             lblKpi4Sub.ForeColor = KpiTrendGreen;
             lblKpi3Sub.ForeColor = Color.FromArgb(229, 57, 53);
@@ -274,7 +286,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ptbQuickTitleIcon.Image = DpvAssets.Load(11);
             ptbWorkloadTitleIcon.Image = DpvAssets.Load(14);
 
-            // Cấu hình icon "Hoạt động gần đây" bằng icon reminder.png (nếu chưa có)
+            // Cập nhật tiêu đề bảng HSBA cho phù hợp với vai trò điều phối viên
+            lblPatientsTitle.Text = "Hồ sơ cần phân công KTV";
             lblActivityTitle.Text = "Hoạt động gần đây";
             lblActivityTitle.Location = new Point(64, 20); // Dịch chuyển sang phải nhường chỗ cho icon
 
@@ -365,10 +378,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlWorkloadDivider.Size = new Size(barW, 1);
 
             int y = SectionHeaderHeight + 8;
-            y = PlaceWorkloadRow(lblPb1, pbTimMach, "Tim mạch", "14/20", y, barW);
-            y = PlaceWorkloadRow(lblPb2, pbNoiTongQuat, "Nội tổng quát", "18/20", y, barW);
-            y = PlaceWorkloadRow(lblPb3, pbChinhHinh, "Chỉnh hình", "8/15", y, barW);
-            y = PlaceWorkloadRow(lblPb4, pbThanKinh, "Thần kinh", "11/15", y, barW);
+            y = PlaceWorkloadRow(lblPb1, pbTimMach, "KTV Tim mạch", "6/8", y, barW);
+            y = PlaceWorkloadRow(lblPb2, pbNoiTongQuat, "KTV Nội tổng quát", "5/6", y, barW);
+            y = PlaceWorkloadRow(lblPb3, pbChinhHinh, "KTV Chỉnh hình", "3/5", y, barW);
+            y = PlaceWorkloadRow(lblPb4, pbThanKinh, "KTV Thần kinh", "4/5", y, barW);
             _ = panelHeight;
         }
 
@@ -507,21 +520,48 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvPatients.ColumnHeaderMouseClick += dgvPatients_ColumnHeaderMouseClick;
             dgvPatients.CellClick += dgvPatients_CellClick;
 
-            if (dgvPatients.Rows.Count > 0)
+            if (_allPatientsData.Count == 0)
             {
-                dgvPatients.ClearSelection();
-                dgvPatients.CurrentCell = null;
-                return;
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0156", TenBenhNhan = "Nguyễn Văn An", Khoa = "Tim mạch", DichVuCan = "Siêu âm tim", TrangThai = "Chờ phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0157", TenBenhNhan = "Trần Thị Bích", Khoa = "Nội tổng quát", DichVuCan = "Xét nghiệm máu", TrangThai = "Đã phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0158", TenBenhNhan = "Phạm Quốc Hùng", Khoa = "Chỉnh hình", DichVuCan = "Chụp X-quang", TrangThai = "Chờ phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0159", TenBenhNhan = "Lê Thị Mai", Khoa = "Thần kinh", DichVuCan = "Điện não đồ", TrangThai = "Hoàn thành" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0160", TenBenhNhan = "Võ Minh Tuấn", Khoa = "Tim mạch", DichVuCan = "Holter ECG", TrangThai = "Đã phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0161", TenBenhNhan = "Đinh Công Sơn", Khoa = "Tim mạch", DichVuCan = "MRI tim", TrangThai = "Chờ phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0162", TenBenhNhan = "Ngô Thị Hằng", Khoa = "Nội tổng quát", DichVuCan = "Xét nghiệm máu", TrangThai = "Hoàn thành" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0163", TenBenhNhan = "Phan Thanh Bình", Khoa = "Chỉnh hình", DichVuCan = "Chụp CT scan", TrangThai = "Chờ phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0164", TenBenhNhan = "Lâm Kiến Quốc", Khoa = "Thần kinh", DichVuCan = "Chụp MRI não", TrangThai = "Chờ phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0165", TenBenhNhan = "Hoàng Xuân Hùng", Khoa = "Tim mạch", DichVuCan = "Điện tâm đồ", TrangThai = "Đã phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0166", TenBenhNhan = "Nguyễn Thị Đào", Khoa = "Nội tổng quát", DichVuCan = "Siêu âm bụng", TrangThai = "Hoàn thành" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0167", TenBenhNhan = "Đặng Minh Triết", Khoa = "Chỉnh hình", DichVuCan = "Nội soi khớp", TrangThai = "Chờ phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0168", TenBenhNhan = "Bùi Mỹ Nhân", Khoa = "Thần kinh", DichVuCan = "Điện cơ EMG", TrangThai = "Đã phân công" });
+                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0169", TenBenhNhan = "Lê Hoàng Nam", Khoa = "Tim mạch", DichVuCan = "Siêu âm tim Doppler", TrangThai = "Chờ phân công" });
             }
 
-            dgvPatients.Rows.Add("BN240001", "Nguyễn Văn An", "Tim mạch", "BS. Minh Tuấn", "Đang điều trị");
-            dgvPatients.Rows.Add("BN240002", "Trần Thị Bích", "Nội tổng quát", "BS. Lan Hương", "Chờ xét nghiệm");
-            dgvPatients.Rows.Add("BN240003", "Phạm Quốc Hùng", "Chỉnh hình", "BS. Đức Anh", "Cần điều phối KTV");
-            dgvPatients.Rows.Add("BN240004", "Lê Thị Mai", "Thần kinh", "BS. Trúc Hằng", "Chờ xuất viện");
-            dgvPatients.Rows.Add("BN240005", "Võ Minh Tuấn", "Tim mạch", "BS. Minh Tuấn", "Đang điều trị");
+            dgvPatients.ScrollBars = ScrollBars.Vertical;
+            RenderAllData();
+        }
+
+        private void RenderAllData()
+        {
+            dgvPatients.Rows.Clear();
+            foreach (var record in _allPatientsData)
+            {
+                dgvPatients.Rows.Add(record.MaHsba, record.TenBenhNhan, record.Khoa, record.DichVuCan, record.TrangThai);
+            }
+            
             dgvPatients.ClearSelection();
             dgvPatients.CurrentCell = null;
             UpdateStatusColumnMinWidth();
+        }
+
+        /// <summary>
+        /// Nạp dữ liệu thật từ cơ sở dữ liệu để tự động hiển thị và hỗ trợ cuộn dọc.
+        /// </summary>
+        public void SetPatientsData(List<DashboardPatientRecord> data)
+        {
+            _allPatientsData = data ?? new List<DashboardPatientRecord>();
+            RenderAllData();
         }
 
         /// <summary>Gọi sau khi bind dữ liệu thật vào bảng để căn lại cột trạng thái.</summary>
@@ -563,11 +603,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void ApplyPatientColumnWeights()
         {
-            colMaBN.FillWeight = 13F;
-            colHoTen.FillWeight = 21F;
-            colKhoa.FillWeight = 19F;
+            colMaBN.FillWeight = 15F;
+            colHoTen.FillWeight = 20F;
+            colKhoa.FillWeight = 17F;
             colBacSi.FillWeight = 18F;
-            colStatus.FillWeight = 31F;
+            colStatus.FillWeight = 30F;
             colStatus.MinimumWidth = StatusColumnMinWidth;
         }
 
@@ -637,10 +677,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void SetupWorkloadBars()
         {
-            SetWorkload(pbTimMach, 14, 20, Color.FromArgb(15, 110, 86));
-            SetWorkload(pbNoiTongQuat, 18, 20, Color.FromArgb(255, 167, 38));
-            SetWorkload(pbChinhHinh, 8, 15, Color.FromArgb(15, 110, 86));
-            SetWorkload(pbThanKinh, 11, 15, Color.FromArgb(0, 150, 136));
+            SetWorkload(pbTimMach, 6, 8, Color.FromArgb(255, 167, 38));
+            SetWorkload(pbNoiTongQuat, 5, 6, Color.FromArgb(229, 57, 53));
+            SetWorkload(pbChinhHinh, 3, 5, Color.FromArgb(15, 110, 86));
+            SetWorkload(pbThanKinh, 4, 5, Color.FromArgb(0, 150, 136));
         }
 
         private static void SetWorkload(Guna2ProgressBar bar, int current, int max, Color color)
@@ -850,19 +890,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dot = fore;
             switch (status)
             {
-                case "Đang điều trị":
-                    back = Color.FromArgb(230, 244, 240);
-                    fore = dot = Color.FromArgb(15, 110, 86);
-                    break;
-                case "Chờ xét nghiệm":
-                    back = Color.FromArgb(255, 244, 220);
-                    fore = dot = Color.FromArgb(230, 126, 34);
-                    break;
-                case "Cần điều phối KTV":
+                case "Chờ phân công":
                     back = Color.FromArgb(253, 236, 234);
                     fore = dot = Color.FromArgb(229, 57, 53);
                     break;
-                case "Chờ xuất viện":
+                case "Đã phân công":
+                    back = Color.FromArgb(230, 244, 240);
+                    fore = dot = Color.FromArgb(15, 110, 86);
+                    break;
+                case "Hoàn thành":
                     back = Color.FromArgb(227, 242, 253);
                     fore = dot = Color.FromArgb(25, 118, 210);
                     break;
@@ -872,7 +908,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void btnViewAllPatients_Click(object sender, EventArgs e)
         {
             if (FindForm() is Main_DPV dlg)
-                ShowInfo(dlg, "Danh sách đầy đủ bệnh nhân nhập viện hôm nay sẽ mở ở màn hình quản lý.");
+                dlg.NavigateToDieuPhoiKTV();
         }
 
         private void btnViewAllActivity_Click(object sender, EventArgs e)
@@ -883,11 +919,25 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void btnQuick_Click(object sender, EventArgs e)
         {
-            if (FindForm() is Main_DPV dlg)
+            if (!(FindForm() is Main_DPV dlg)) return;
+
+            var btn = (Guna2Button)sender;
+            string action = btn.Tag is object[] tag && tag.Length > 0 ? tag[0].ToString() : string.Empty;
+
+            switch (action)
             {
-                var btn = (Guna2Button)sender;
-                string action = btn.Tag is object[] tag && tag.Length > 0 ? tag[0].ToString() : btn.Name;
-                ShowInfo(dlg, "Thao tác: " + action);
+                case "Thêm bệnh nhân":
+                    dlg.NavigateToThemSuaBN();
+                    break;
+                case "Tạo HSBA":
+                    dlg.NavigateToTaoHSBA();
+                    break;
+                case "Phân công KTV":
+                    dlg.NavigateToDieuPhoiKTV();
+                    break;
+                case "Thông báo":
+                    dlg.ShowMessage("Chức năng \"Thông báo nội bộ\" đang được phát triển.", "Thông báo");
+                    break;
             }
         }
 
