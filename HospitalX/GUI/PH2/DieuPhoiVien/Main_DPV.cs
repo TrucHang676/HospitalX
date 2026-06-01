@@ -111,7 +111,7 @@ namespace HospitalX.GUI.PH2
 
         private static void StyleNavButton(Guna2Button btn)
         {
-            btn.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            btn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             btn.ForeColor = Color.Silver;
             btn.BorderRadius = 8;
             btn.CustomBorderThickness = new Padding(8, 0, 0, 0);
@@ -248,8 +248,8 @@ namespace HospitalX.GUI.PH2
 
         private void StyleAvatarAndVpdBadge()
         {
-            // Set BackColor to Transparent to prevent default square background drawing
-            lblAvatarIni.BackColor = Color.Transparent;
+            ptbAdmin.Image = DpvAssets.Load("female_doctor.png");
+            ptbAdmin.SizeMode = PictureBoxSizeMode.Zoom;
             lblVpdBadge.BackColor = Color.Transparent;
 
             // Căn chỉnh vị trí nhãn VPD sát với chữ "Điều phối viên"
@@ -259,28 +259,6 @@ namespace HospitalX.GUI.PH2
                 int roleTextWidth = (int)Math.Ceiling(size.Width);
                 lblVpdBadge.Location = new Point(lblRole.Left + roleTextWidth + 6, lblRole.Top - 3);
             }
-
-            // Vẽ bo tròn và đổi màu cho ô LH
-            lblAvatarIni.Paint += (s, e) =>
-            {
-                var lbl = (Label)s;
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                using (var bgBrush = new SolidBrush(pnlSidebar.BackColor))
-                {
-                    e.Graphics.FillRectangle(bgBrush, lbl.ClientRectangle);
-                }
-
-                Color avatarColor = Color.FromArgb(20, 115, 93); // Teal đậm đẹp
-                using (var path = GetRoundedPath(lbl.ClientRectangle, 10))
-                using (var brush = new SolidBrush(avatarColor))
-                {
-                    e.Graphics.FillPath(brush, path);
-                }
-
-                TextRenderer.DrawText(e.Graphics, lbl.Text, lbl.Font, lbl.ClientRectangle, lbl.ForeColor,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            };
 
             // Vẽ bo tròn và đổi màu cho ô VPD
             lblVpdBadge.Paint += (s, e) =>
@@ -390,6 +368,11 @@ namespace HospitalX.GUI.PH2
         }
 
         private void btnDanhSachBN_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblRole_Click(object sender, EventArgs e)
         {
 
         }
