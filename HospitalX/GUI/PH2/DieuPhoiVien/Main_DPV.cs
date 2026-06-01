@@ -31,7 +31,7 @@ namespace HospitalX.GUI.PH2
 
         private void ApplySharedBranding()
         {
-            var rm = new ComponentResourceManager(typeof(Main_BS));
+            var rm = new ComponentResourceManager(typeof(Main_BN));
             ptbChuThap.Image = (Image)rm.GetObject("ptbChuThap.Image");
             btnLogout.Image = (Image)rm.GetObject("btnLogout.Image");
         }
@@ -126,14 +126,23 @@ namespace HospitalX.GUI.PH2
 
         private void ApplySidebarIcons()
         {
-            const int iconSize = 32;
-            DpvAssets.ApplyButtonImage(btnDashboard, 1, iconSize);
-            DpvAssets.ApplyButtonImage(btnDanhSachBN, 2, iconSize);
-            DpvAssets.ApplyButtonImage(btnThemSuaBN, 3, iconSize);
-            DpvAssets.ApplyButtonImage(btnTaoHSBA, 4, iconSize);
-            DpvAssets.ApplyButtonImage(btnDieuPhoiKTV, 5, iconSize);
-            DpvAssets.ApplyButtonImage(btnThongBaoNoiBo, 6, iconSize);
-            DpvAssets.ApplyButtonImage(btnHoSoCaNhan, 7, iconSize);
+            const int iconSize = 24;
+            SetButtonIcons(btnDashboard, "house.png", "house (1).png", iconSize);
+            SetButtonIcons(btnDanhSachBN, "dpv_2_black.png", "dpv_2.png", iconSize);
+            SetButtonIcons(btnThemSuaBN, "pencil.png", "pencil (1).png", iconSize);
+            SetButtonIcons(btnTaoHSBA, "medical-record (1).png", "medical-record.png", iconSize);
+            SetButtonIcons(btnDieuPhoiKTV, "setting.png", "setting (1).png", iconSize);
+            SetButtonIcons(btnThongBaoNoiBo, "notification.png", "notification (1).png", iconSize);
+            SetButtonIcons(btnHoSoCaNhan, "user (1).png", "user (2).png", iconSize);
+        }
+
+        private void SetButtonIcons(Guna2Button button, string normalIcon, string checkedIcon, int size)
+        {
+            button.Image = DpvAssets.Load(normalIcon);
+            button.CheckedState.Image = DpvAssets.Load(checkedIcon);
+            button.ImageSize = new Size(size, size);
+            button.ImageOffset = new Point(8, 0);
+            button.TextOffset = new Point(8, 0);
         }
 
         private void WireNavigationEvents()
@@ -142,7 +151,7 @@ namespace HospitalX.GUI.PH2
             btnDanhSachBN.Click += (s, e) => NavigateToDanhSachBN();
             btnThemSuaBN.Click += (s, e) => NavigateToThemSuaBN();
             btnTaoHSBA.Click += (s, e) => NavigateToTaoHSBA();
-            btnDieuPhoiKTV.Click += (s, e) => ShowComingSoon(btnDieuPhoiKTV, "Điều phối kỹ thuật viên");
+            btnDieuPhoiKTV.Click += (s, e) => NavigateToDieuPhoiKTV();
             btnThongBaoNoiBo.Click += (s, e) => ShowComingSoon(btnThongBaoNoiBo, "Thông báo nội bộ");
             btnHoSoCaNhan.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
             btnLogout.Click += BtnLogout_Click;
@@ -172,6 +181,12 @@ namespace HospitalX.GUI.PH2
         {
             LoadPage(new ucTaoHSBA(), "Tạo hồ sơ bệnh án", "/ HSBA");
             btnTaoHSBA.Checked = true;
+        }
+
+        public void NavigateToDieuPhoiKTV()
+        {
+            LoadPage(new ucDieuPhoiKTV(), "Điều phối kỹ thuật viên", "/ HSBA_DV");
+            btnDieuPhoiKTV.Checked = true;
         }
 
         private void LoadPage(UserControl control, string title, string breadcrumb)
@@ -232,7 +247,6 @@ namespace HospitalX.GUI.PH2
             // Set BackColor to Transparent to prevent default square background drawing
             lblAvatarIni.BackColor = Color.Transparent;
             lblVpdBadge.BackColor = Color.Transparent;
-            lblBadgeNotif.BackColor = Color.Transparent;
 
             // Căn chỉnh vị trí nhãn VPD sát với chữ "Điều phối viên"
             using (Graphics g = lblRole.CreateGraphics())
@@ -241,38 +255,6 @@ namespace HospitalX.GUI.PH2
                 int roleTextWidth = (int)Math.Ceiling(size.Width);
                 lblVpdBadge.Location = new Point(lblRole.Left + roleTextWidth + 6, lblRole.Top - 3);
             }
-
-            // Chuyển lblBadgeNotif thành control con của btnThongBaoNoiBo để tránh lỗi đường viền cắt của WinForms khi hover
-            pnlSidebar.Controls.Remove(lblBadgeNotif);
-            btnThongBaoNoiBo.Controls.Add(lblBadgeNotif);
-
-            lblBadgeNotif.Size = new Size(20, 20); // Thu nhỏ lại thành hình tròn 20x20
-            lblBadgeNotif.Location = new Point(btnThongBaoNoiBo.Width - 36, (btnThongBaoNoiBo.Height - 20) / 2);
-            lblBadgeNotif.BringToFront();
-
-            lblBadgeNotif.Paint += (s, e) =>
-            {
-                var lbl = (Label)s;
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                Color badgeColor = Color.FromArgb(221, 82, 53); // Màu đỏ cam cam dịu mắt
-                using (var brush = new SolidBrush(badgeColor))
-                {
-                    e.Graphics.FillEllipse(brush, 0, 0, lbl.Width, lbl.Height);
-                }
-
-                // Vẽ số 4 chính xác ở tâm hình tròn
-                using (var font = new Font("Segoe UI", 7.5F, FontStyle.Bold))
-                using (var sf = new StringFormat
-                {
-                    Alignment = StringAlignment.Center,
-                    LineAlignment = StringAlignment.Center
-                })
-                {
-                    e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
-                    e.Graphics.DrawString(lbl.Text, font, Brushes.White, lbl.ClientRectangle, sf);
-                }
-            };
 
             // Vẽ bo tròn và đổi màu cho ô LH
             lblAvatarIni.Paint += (s, e) =>
@@ -396,6 +378,11 @@ namespace HospitalX.GUI.PH2
             path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
             path.CloseFigure();
             return path;
+        }
+
+        private void pnlSidebar_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

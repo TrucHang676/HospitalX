@@ -475,8 +475,8 @@ namespace HospitalX.GUI.PH2.BacSi
             Color border = isHsba ? Color.FromArgb(196, 226, 216) : Color.FromArgb(218, 232, 226);
 
             Rectangle badge = new Rectangle(
-                e.CellBounds.X + (e.CellBounds.Width - 42) / 2,
-                e.CellBounds.Y + (e.CellBounds.Height - 30) / 2,
+                e.CellBounds.X + (e.CellBounds.Width - 70) / 2,
+                e.CellBounds.Y + (e.CellBounds.Height - 26) / 2,
                 42,
                 30);
 
@@ -495,7 +495,7 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             string columnName = dgvPatients.Columns[e.ColumnIndex].Name;
             bool center = columnName == "colAge";
-            Rectangle textRect = new Rectangle(e.CellBounds.X + 16, e.CellBounds.Y, e.CellBounds.Width - 28, e.CellBounds.Height);
+            Rectangle textRect = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y, e.CellBounds.Width - 28, e.CellBounds.Height);
             TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis;
             flags |= center ? TextFormatFlags.HorizontalCenter : TextFormatFlags.Left;
 

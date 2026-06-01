@@ -60,7 +60,6 @@
             this.colHsbaId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPatient = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAction = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlWelcome.SuspendLayout();
             this.pnlKpiHsba.SuspendLayout();
@@ -370,6 +369,8 @@
             // 
             // pnlRecent
             // 
+            this.pnlRecent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlRecent.BackColor = System.Drawing.Color.Transparent;
             this.pnlRecent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlRecent.BorderRadius = 12;
@@ -381,8 +382,6 @@
             this.pnlRecent.FillColor = System.Drawing.Color.White;
             this.pnlRecent.Location = new System.Drawing.Point(24, 342);
             this.pnlRecent.Name = "pnlRecent";
-            this.pnlRecent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlRecent.Size = new System.Drawing.Size(1080, 430);
             this.pnlRecent.TabIndex = 5;
             // 
@@ -412,6 +411,7 @@
             // 
             // btnViewAll
             // 
+            this.btnViewAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnViewAll.BackColor = System.Drawing.Color.Transparent;
             this.btnViewAll.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnViewAll.BorderRadius = 8;
@@ -427,7 +427,6 @@
             this.btnViewAll.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnViewAll.Location = new System.Drawing.Point(932, 26);
             this.btnViewAll.Name = "btnViewAll";
-            this.btnViewAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnViewAll.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnViewAll.Size = new System.Drawing.Size(112, 34);
             this.btnViewAll.TabIndex = 2;
@@ -451,7 +450,6 @@
             this.colHsbaId,
             this.colPatient,
             this.colDate,
-            this.colStatus,
             this.colAction});
             this.dgvRecentHsba.EnableHeadersVisualStyles = false;
             this.dgvRecentHsba.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
@@ -468,38 +466,31 @@
             // 
             // colHsbaId
             // 
+            this.colHsbaId.FillWeight = 13F;
             this.colHsbaId.HeaderText = "MÃ HSBA";
             this.colHsbaId.Name = "colHsbaId";
             this.colHsbaId.ReadOnly = true;
-            this.colHsbaId.FillWeight = 13F;
             // 
             // colPatient
             // 
+            this.colPatient.FillWeight = 34F;
             this.colPatient.HeaderText = "BỆNH NHÂN";
             this.colPatient.Name = "colPatient";
             this.colPatient.ReadOnly = true;
-            this.colPatient.FillWeight = 34F;
             // 
             // colDate
             // 
+            this.colDate.FillWeight = 16F;
             this.colDate.HeaderText = "NGÀY LẬP";
             this.colDate.Name = "colDate";
             this.colDate.ReadOnly = true;
-            this.colDate.FillWeight = 16F;
-            // 
-            // colStatus
-            // 
-            this.colStatus.HeaderText = "TRẠNG THÁI";
-            this.colStatus.Name = "colStatus";
-            this.colStatus.ReadOnly = true;
-            this.colStatus.FillWeight = 26F;
             // 
             // colAction
             // 
+            this.colAction.FillWeight = 11F;
             this.colAction.HeaderText = "THAO TÁC";
             this.colAction.Name = "colAction";
             this.colAction.ReadOnly = true;
-            this.colAction.FillWeight = 11F;
             // 
             // ucTongQuan
             // 
@@ -565,7 +556,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colHsbaId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPatient;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn colAction;
     }
 }
