@@ -1,6 +1,6 @@
-﻿namespace HospitalX.GUI.PH2
+namespace HospitalX.GUI.PH2
 {
-    partial class Main_BS
+    partial class Main_QTV
     {
         /// <summary>
         /// Required designer variable.
@@ -29,16 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_BS));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_QTV));
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnHSCN = new Guna.UI2.WinForms.Guna2Button();
             this.pnlLine1 = new Guna.UI2.WinForms.Guna2Separator();
             this.pnl2 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblTenBS = new System.Windows.Forms.Label();
-            this.lbl = new System.Windows.Forms.Label();
             this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.btnThongBao = new Guna.UI2.WinForms.Guna2Button();
             this.btnDT = new Guna.UI2.WinForms.Guna2Button();
             this.btnBN = new Guna.UI2.WinForms.Guna2Button();
             this.btnHSBA = new Guna.UI2.WinForms.Guna2Button();
@@ -75,11 +72,9 @@
             // 
             this.pnlSidebar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.pnlSidebar.Controls.Add(this.btnHSCN);
+            this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(58)))), ((int)(((byte)(95)))));
             this.pnlSidebar.Controls.Add(this.pnlLine1);
             this.pnlSidebar.Controls.Add(this.pnl2);
-            this.pnlSidebar.Controls.Add(this.btnThongBao);
             this.pnlSidebar.Controls.Add(this.btnDT);
             this.pnlSidebar.Controls.Add(this.btnBN);
             this.pnlSidebar.Controls.Add(this.btnHSBA);
@@ -90,41 +85,6 @@
             this.pnlSidebar.Name = "pnlSidebar";
             this.pnlSidebar.Size = new System.Drawing.Size(220, 850);
             this.pnlSidebar.TabIndex = 1;
-            // 
-            // btnHSCN
-            // 
-            this.btnHSCN.BackColor = System.Drawing.Color.Transparent;
-            this.btnHSCN.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(77)))), ((int)(((byte)(120)))));
-            this.btnHSCN.BorderRadius = 8;
-            this.btnHSCN.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
-            this.btnHSCN.CheckedState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnHSCN.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnHSCN.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnHSCN.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image")));
-            this.btnHSCN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnHSCN.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.btnHSCN.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnHSCN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnHSCN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnHSCN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnHSCN.FillColor = System.Drawing.Color.Transparent;
-            this.btnHSCN.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHSCN.ForeColor = System.Drawing.Color.Silver;
-            this.btnHSCN.HoverState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnHSCN.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
-            this.btnHSCN.Image = ((System.Drawing.Image)(resources.GetObject("btnHSCN.Image")));
-            this.btnHSCN.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnHSCN.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnHSCN.IndicateFocus = true;
-            this.btnHSCN.Location = new System.Drawing.Point(16, 486);
-            this.btnHSCN.Name = "btnHSCN";
-            this.btnHSCN.ShadowDecoration.BorderRadius = 8;
-            this.btnHSCN.ShadowDecoration.Depth = 3;
-            this.btnHSCN.Size = new System.Drawing.Size(190, 45);
-            this.btnHSCN.TabIndex = 19;
-            this.btnHSCN.Text = "HỒ SƠ CÁ NHÂN";
-            this.btnHSCN.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnHSCN.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // pnlLine1
             // 
@@ -139,7 +99,6 @@
             // 
             this.pnl2.BorderColor = System.Drawing.Color.WhiteSmoke;
             this.pnl2.Controls.Add(this.lblTenBS);
-            this.pnl2.Controls.Add(this.lbl);
             this.pnl2.Controls.Add(this.ptbAdmin);
             this.pnl2.CustomBorderColor = System.Drawing.Color.WhiteSmoke;
             this.pnl2.Location = new System.Drawing.Point(1, 75);
@@ -151,23 +110,12 @@
             // 
             this.lblTenBS.AutoSize = true;
             this.lblTenBS.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenBS.ForeColor = System.Drawing.Color.White;
+            this.lblTenBS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
             this.lblTenBS.Location = new System.Drawing.Point(61, 29);
             this.lblTenBS.Name = "lblTenBS";
-            this.lblTenBS.Size = new System.Drawing.Size(84, 15);
+            this.lblTenBS.Size = new System.Drawing.Size(48, 15);
             this.lblTenBS.TabIndex = 9;
-            this.lblTenBS.Text = "BS. Trúc Hằng";
-            // 
-            // lbl
-            // 
-            this.lbl.AutoSize = true;
-            this.lbl.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbl.Location = new System.Drawing.Point(63, 14);
-            this.lbl.Name = "lbl";
-            this.lbl.Size = new System.Drawing.Size(100, 12);
-            this.lbl.TabIndex = 8;
-            this.lbl.Text = "Chuyên khoa thần kinh";
+            this.lblTenBS.Text = "ADMIN";
             // 
             // ptbAdmin
             // 
@@ -184,41 +132,6 @@
             this.ptbAdmin.TabStop = false;
             this.ptbAdmin.UseTransparentBackground = true;
             // 
-            // btnThongBao
-            // 
-            this.btnThongBao.BackColor = System.Drawing.Color.Transparent;
-            this.btnThongBao.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(77)))), ((int)(((byte)(120)))));
-            this.btnThongBao.BorderRadius = 8;
-            this.btnThongBao.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
-            this.btnThongBao.CheckedState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnThongBao.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnThongBao.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnThongBao.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image1")));
-            this.btnThongBao.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnThongBao.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.btnThongBao.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnThongBao.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnThongBao.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnThongBao.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnThongBao.FillColor = System.Drawing.Color.Transparent;
-            this.btnThongBao.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnThongBao.ForeColor = System.Drawing.Color.Silver;
-            this.btnThongBao.HoverState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnThongBao.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
-            this.btnThongBao.Image = ((System.Drawing.Image)(resources.GetObject("btnThongBao.Image")));
-            this.btnThongBao.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnThongBao.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnThongBao.IndicateFocus = true;
-            this.btnThongBao.Location = new System.Drawing.Point(16, 426);
-            this.btnThongBao.Name = "btnThongBao";
-            this.btnThongBao.ShadowDecoration.BorderRadius = 8;
-            this.btnThongBao.ShadowDecoration.Depth = 3;
-            this.btnThongBao.Size = new System.Drawing.Size(190, 45);
-            this.btnThongBao.TabIndex = 18;
-            this.btnThongBao.Text = "THÔNG BÁO";
-            this.btnThongBao.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnThongBao.TextOffset = new System.Drawing.Point(15, 0);
-            // 
             // btnDT
             // 
             this.btnDT.BackColor = System.Drawing.Color.Transparent;
@@ -228,7 +141,7 @@
             this.btnDT.CheckedState.CustomBorderColor = System.Drawing.Color.White;
             this.btnDT.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
             this.btnDT.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnDT.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image2")));
+            this.btnDT.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image")));
             this.btnDT.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDT.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.btnDT.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
@@ -251,7 +164,7 @@
             this.btnDT.ShadowDecoration.Depth = 3;
             this.btnDT.Size = new System.Drawing.Size(190, 45);
             this.btnDT.TabIndex = 17;
-            this.btnDT.Text = "ĐƠN THUỐC";
+            this.btnDT.Text = "BACKUP vs RESTORE";
             this.btnDT.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDT.TextOffset = new System.Drawing.Point(8, 0);
             // 
@@ -264,7 +177,7 @@
             this.btnBN.CheckedState.CustomBorderColor = System.Drawing.Color.White;
             this.btnBN.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
             this.btnBN.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnBN.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image3")));
+            this.btnBN.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image1")));
             this.btnBN.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBN.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.btnBN.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
@@ -287,9 +200,9 @@
             this.btnBN.ShadowDecoration.Depth = 3;
             this.btnBN.Size = new System.Drawing.Size(190, 45);
             this.btnBN.TabIndex = 16;
-            this.btnBN.Text = "BỆNH NHÂN CỦA TÔI";
+            this.btnBN.Text = "AUDIT LOG";
             this.btnBN.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnBN.TextOffset = new System.Drawing.Point(10, 0);
+            this.btnBN.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // btnHSBA
             // 
@@ -300,7 +213,7 @@
             this.btnHSBA.CheckedState.CustomBorderColor = System.Drawing.Color.White;
             this.btnHSBA.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
             this.btnHSBA.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnHSBA.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image4")));
+            this.btnHSBA.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image2")));
             this.btnHSBA.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHSBA.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.btnHSBA.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
@@ -323,7 +236,7 @@
             this.btnHSBA.ShadowDecoration.Depth = 3;
             this.btnHSBA.Size = new System.Drawing.Size(190, 45);
             this.btnHSBA.TabIndex = 15;
-            this.btnHSBA.Text = "HỒ SƠ BỆNH ÁN";
+            this.btnHSBA.Text = "THÔNG BÁO";
             this.btnHSBA.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHSBA.TextOffset = new System.Drawing.Point(8, 0);
             // 
@@ -362,7 +275,7 @@
             this.btnTongQuan.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
             this.btnTongQuan.CheckedState.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTongQuan.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnTongQuan.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image5")));
+            this.btnTongQuan.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image3")));
             this.btnTongQuan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTongQuan.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.btnTongQuan.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
@@ -479,8 +392,8 @@
             this.btnExit.CustomIconSize = 20F;
             this.btnExit.FillColor = System.Drawing.Color.Transparent;
             this.btnExit.ForeColor = System.Drawing.Color.Black;
-            this.btnExit.HoverState.FillColor = System.Drawing.Color.DarkSeaGreen;
-            this.btnExit.IconColor = System.Drawing.Color.DarkGreen;
+            this.btnExit.HoverState.FillColor = System.Drawing.Color.LightBlue;
+            this.btnExit.IconColor = System.Drawing.Color.CornflowerBlue;
             this.btnExit.Location = new System.Drawing.Point(1080, 17);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(33, 32);
@@ -508,11 +421,11 @@
             this.pnlContent.Size = new System.Drawing.Size(1128, 782);
             this.pnlContent.TabIndex = 3;
             // 
-            // Main_BS
+            // Main_QTV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(248)))));
             this.ClientSize = new System.Drawing.Size(1350, 850);
             this.Controls.Add(this.pnlContent);
             this.Controls.Add(this.pnlTopbar);
@@ -520,9 +433,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "Main_BS";
+            this.Name = "Main_QTV";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Main_BS";
+            this.Text = "Main_QTV";
             this.pnlSidebar.ResumeLayout(false);
             this.pnl2.ResumeLayout(false);
             this.pnl2.PerformLayout();
@@ -546,7 +459,6 @@
         private System.Windows.Forms.Label lblTenBS;
         private System.Windows.Forms.Label lbl;
         private Guna.UI2.WinForms.Guna2PictureBox ptbAdmin;
-        private Guna.UI2.WinForms.Guna2Button btnThongBao;
         private Guna.UI2.WinForms.Guna2Button btnDT;
         private Guna.UI2.WinForms.Guna2Button btnBN;
         private Guna.UI2.WinForms.Guna2Button btnHSBA;
@@ -562,6 +474,5 @@
         private Guna.UI2.WinForms.Guna2ControlBox btnExit;
         private System.Windows.Forms.Label lblPageTitle;
         private System.Windows.Forms.Panel pnlContent;
-        private Guna.UI2.WinForms.Guna2Button btnHSCN;
     }
 }

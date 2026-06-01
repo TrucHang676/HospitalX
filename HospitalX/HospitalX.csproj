@@ -184,6 +184,67 @@
     <Compile Include="GUI\PH2\BacSi\ucTongQuan.Designer.cs">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\Main_BN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\Main_BN.Designer.cs">
+      <DependentUpon>Main_BN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\PatientMedicalRecord.cs" />
+    <Compile Include="GUI\PH2\BenhNhan\frmBenhAnDetailBN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmBenhAnDetailBN.Designer.cs">
+      <DependentUpon>frmBenhAnDetailBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmDichVuDetailBN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmDichVuDetailBN.Designer.cs">
+      <DependentUpon>frmDichVuDetailBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmDonThuocDetailBN.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmDonThuocDetailBN.Designer.cs">
+      <DependentUpon>frmDonThuocDetailBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucBenhAnBN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucBenhAnBN.Designer.cs">
+      <DependentUpon>ucBenhAnBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucDichVuBN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucDichVuBN.Designer.cs">
+      <DependentUpon>ucDichVuBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucDonThuocBN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucDonThuocBN.Designer.cs">
+      <DependentUpon>ucDonThuocBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucHSCN.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\ucHSCN.Designer.cs">
+      <DependentUpon>ucHSCN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\Audit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\Audit.Designer.cs">
+      <DependentUpon>Audit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\Main_QTV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\Main_QTV.Designer.cs">
+      <DependentUpon>Main_QTV.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\DieuPhoiVien\DpvAssets.cs" />
     <Compile Include="GUI\PH2\DieuPhoiVien\Main_DPV.cs">
       <SubType>Form</SubType>
@@ -238,6 +299,24 @@
     </Compile>
     <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.Designer.cs">
       <DependentUpon>frmChiTietBN.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.Designer.cs">
+      <DependentUpon>ucSaoLuuPhucHoi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\ucThongBao.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\ucThongBao.Designer.cs">
+      <DependentUpon>ucThongBao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\ucTrangChu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\QuanTriVien\ucTrangChu.Designer.cs">
+      <DependentUpon>ucTrangChu.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\GraphicsHelper.cs" />
     <Compile Include="Program.cs" />
@@ -383,6 +462,36 @@
     <EmbeddedResource Include="GUI\PH2\BacSi\ucTongQuan.resx">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\Main_BN.resx">
+      <DependentUpon>Main_BN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\frmBenhAnDetailBN.resx">
+      <DependentUpon>frmBenhAnDetailBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\frmDichVuDetailBN.resx">
+      <DependentUpon>frmDichVuDetailBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\frmDonThuocDetailBN.resx">
+      <DependentUpon>frmDonThuocDetailBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\ucBenhAnBN.resx">
+      <DependentUpon>ucBenhAnBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\ucDichVuBN.resx">
+      <DependentUpon>ucDichVuBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\ucDonThuocBN.resx">
+      <DependentUpon>ucDonThuocBN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\ucHSCN.resx">
+      <DependentUpon>ucHSCN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\Audit.resx">
+      <DependentUpon>Audit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\Main_QTV.resx">
+      <DependentUpon>Main_QTV.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\Main_DPV.resx">
       <DependentUpon>Main_DPV.cs</DependentUpon>
     </EmbeddedResource>
@@ -409,6 +518,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucDieuPhoiKTV.resx">
       <DependentUpon>ucDieuPhoiKTV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.resx">
+      <DependentUpon>ucSaoLuuPhucHoi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucThongBao.resx">
+      <DependentUpon>ucThongBao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucTrangChu.resx">
+      <DependentUpon>ucTrangChu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>

@@ -31,7 +31,7 @@ namespace HospitalX.GUI.PH2
 
         private void ApplySharedBranding()
         {
-            var rm = new ComponentResourceManager(typeof(Main_BS));
+            var rm = new ComponentResourceManager(typeof(Main_BN));
             ptbChuThap.Image = (Image)rm.GetObject("ptbChuThap.Image");
             btnLogout.Image = (Image)rm.GetObject("btnLogout.Image");
         }
