@@ -103,6 +103,58 @@
     <Compile Include="GUI\PH2\BacSi\Main_BS.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\KtvData.cs" />
+    <Compile Include="GUI\PH2\KyThuatVien\KtvTheme.cs" />
+    <Compile Include="GUI\PH2\KyThuatVien\Main_KTV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\Main_KTV.Designer.cs">
+      <DependentUpon>Main_KTV.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvDashboard.Designer.cs">
+      <DependentUpon>ucKtvDashboard.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvDichVu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvDichVu.Designer.cs">
+      <DependentUpon>ucKtvDichVu.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\frmKtvServiceDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvHoSo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvHoSo.Designer.cs">
+      <DependentUpon>ucKtvHoSo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\frmKtvEditProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\frmKtvEditProfile.Designer.cs">
+      <DependentUpon>frmKtvEditProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvKetQua.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvKetQua.Designer.cs">
+      <DependentUpon>ucKtvKetQua.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvThongBao.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\ucKtvThongBao.Designer.cs">
+      <DependentUpon>ucKtvThongBao.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </Compile>
     <Compile Include="GUI\PH2\BacSi\Main_BS.Designer.cs">
       <DependentUpon>Main_BS.cs</DependentUpon>
     </Compile>
@@ -243,6 +295,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\ucTongQuan.resx">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\Main_KTV.resx">
+      <DependentUpon>Main_KTV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\frmKtvEditProfile.resx">
+      <DependentUpon>frmKtvEditProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>

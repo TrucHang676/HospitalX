@@ -1,0 +1,55 @@
+1 số lưu ý!!!
+1. Làm Designer-native 
+- Những phần layout cố định nên code trong file .Designer.cs bằng control thật.
+- Tránh tạo toàn bộ UI bằng code runtime nếu sau này muốn mở Visual Studio Designer để chỉnh.
+- Với danh sách động như card/list/table, có thể render bằng code, nhưng nếu muốn chỉnh card bằng Designer thì nên tách card thành UserControl riêng.
+
+2. Dùng đúng style của project
+- Tham khảo màu, font, button, panel, border radius từ form/main hiện có.
+- Nếu project dùng Guna2 thì tiếp tục dùng Guna2 cho đồng bộ.
+- Nút popup/form nên dùng Guna2BorderlessForm nếu các form khác đang dùng.
+- Nút đóng popup nên dùng Guna2ControlBox, không tự làm nút X bằng Button thường nếu form chính đang dùng ControlBox.
+
+3. Giao diện popup là một form
+- Không nhồi nhiều thông tin vào một Label dài.
+- Các thông tin như Ngày sinh, CCCD, Địa chỉ, Trạng thái... nên tách thành từng label/value riêng hoặc từng panel nhỏ để dễ chỉnh Designer.
+- TextBox/RichTextBox dùng cho phần cần sửa, ví dụ chẩn đoán, điều trị, kết luận.
+- Popup nên đủ rộng, thoáng, tránh text bị sát/đè.
+- Header popup nên rõ: tiêu đề, tên đối tượng, mã hồ sơ/mã phiếu, nút đóng.
+
+4. Button phải đủ trạng thái
+Với các button, nhớ set đủ:
+- FillColor
+- ForeColor
+- HoverState.FillColor
+- HoverState.ForeColor
+- PressedColor
+- DisabledState.FillColor
+- DisabledState.ForeColor
+- CheckedState nếu là nút chọn trạng thái/menu
+
+5. Button phải đủ rộng
+- Không để nút bị cắt chữ.
+- Ví dụ “Xem chi tiết”, “Thêm dịch vụ”, “Thêm đơn thuốc” phải đủ width.
+- Các nút cùng nhóm phải thẳng hàng, cố định vị trí, không nhảy sau khi mở/đóng popup.
+
+6. Danh sách/card động
+- Nếu render card bằng code thì phải tính layout lại khi resize.
+- Sau khi filter/search/sort hoặc đóng popup mà render lại danh sách, nút/control trong card không được nhảy vị trí.
+- Nên có hàm LayoutCard() hoặc tương tự để set vị trí nhất quán.
+
+7. Search/filter/sort phải chạy thật
+- Nếu giao diện có ô tìm kiếm, combo lọc, sort thì code luôn chức năng thật.
+- Search nên hỗ trợ mã, tên, và nếu có tiếng Việt thì nên bỏ dấu khi tìm.
+- Filter ngày nên xử lý đúng from/to date.
+- Sort mới nhất/cũ nhất phải update danh sách thật.
+
+8. Font và encoding tiếng Việt
+- File .cs/.Designer.cs nên lưu UTF-8.
+- Nếu thấy chữ lỗi kiểu “Nguyá»…n” thì đang lỗi encoding, phải sửa ngay.
+- Dùng Segoe UI cho WinForms nếu project đang dùng font này.
+
+9. DataGridView/List
+- DGV nên style header, row height, selection color.
+- Nếu dùng custom paint thì phải đảm bảo text không bị cắt.
+- Row/card phải đủ chiều cao, không để tên và dòng phụ sát nhau quá.
