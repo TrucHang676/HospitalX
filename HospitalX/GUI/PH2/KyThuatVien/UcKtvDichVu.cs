@@ -47,6 +47,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         public UcKtvDichVu()
         {
             InitializeComponent();
+
+            if (IsInDesigner())
+            {
+                return;
+            }
+
             BackColor = Color.FromArgb(244, 247, 250); // Sleek modern background matching doctor portal #F4F7FA
             DoubleBuffered = true;
             this.AutoScroll = false; // Disable page auto-scroll to fix horizontal scroll-wheel bug
@@ -67,11 +73,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             stripDots[0] = this.dotStat1;
             stripDots[1] = this.dotStat2;
             stripDots[2] = this.dotStat3;
-
-            if (IsInDesigner())
-            {
-                return;
-            }
 
             BuildControls();
             LoadRows();
@@ -101,6 +102,18 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // Timer cho slide drawer mượt mà
             tmrDrawer = new Timer { Interval = 15 };
             tmrDrawer.Tick += TmrDrawer_Tick; // Wire up tick handler!
+
+            if (!Controls.Contains(pnlOverlay))
+            {
+                Controls.Add(pnlOverlay);
+            }
+
+            if (!Controls.Contains(pnlDrawer))
+            {
+                Controls.Add(pnlDrawer);
+            }
+
+            pnlOverlay.Paint += PnlOverlay_Paint;
 
             // Set default selected index to "Tất cả trạng thái" (index 0)
             cboStatus.SelectedIndex = 0;

@@ -79,8 +79,7 @@ namespace HospitalX.GUI.PH2
             StyleNavButton(btnThongBaoNoiBo);
             StyleNavButton(btnHoSoCaNhan);
 
-            // Thu hẹp khoảng cách giữa "Thông báo nội bộ" và "Hồ sơ cá nhân" (khoảng cách 7px)
-            btnHoSoCaNhan.Location = new Point(btnHoSoCaNhan.Left, btnThongBaoNoiBo.Bottom + 7);
+
 
             StyleAvatarAndVpdBadge();
 
@@ -112,7 +111,7 @@ namespace HospitalX.GUI.PH2
 
         private static void StyleNavButton(Guna2Button btn)
         {
-            btn.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            btn.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             btn.ForeColor = Color.Silver;
             btn.BorderRadius = 8;
             btn.CustomBorderThickness = new Padding(8, 0, 0, 0);
@@ -142,7 +141,7 @@ namespace HospitalX.GUI.PH2
             button.CheckedState.Image = DpvAssets.Load(checkedIcon);
             button.ImageSize = new Size(size, size);
             button.ImageOffset = new Point(8, 0);
-            button.TextOffset = new Point(8, 0);
+            button.TextOffset = new Point(15, 0);
         }
 
         private void WireNavigationEvents()
@@ -170,9 +169,14 @@ namespace HospitalX.GUI.PH2
         }
 
         /// <summary>Navigate to "Thêm / Sửa bệnh nhân" tab. Called from child user controls.</summary>
-        public void NavigateToThemSuaBN()
+        public void NavigateToThemSuaBN(string patientId = null)
         {
-            LoadPage(new ucThemSuaBN(), "Thêm bệnh nhân mới", "/ BỆNH NHÂN");
+            var uc = new ucThemSuaBN();
+            if (!string.IsNullOrEmpty(patientId))
+            {
+                uc.PreloadPatient(patientId);
+            }
+            LoadPage(uc, "Thêm bệnh nhân mới", "/ BỆNH NHÂN");
             btnThemSuaBN.Checked = true;
         }
 
@@ -381,6 +385,11 @@ namespace HospitalX.GUI.PH2
         }
 
         private void pnlSidebar_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnDanhSachBN_Click(object sender, EventArgs e)
         {
 
         }

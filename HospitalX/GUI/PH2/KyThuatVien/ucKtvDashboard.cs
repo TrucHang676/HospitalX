@@ -1,6 +1,8 @@
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -56,12 +58,27 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // Đăng ký sự kiện Resize để tự động tính toán lại kích thước và vị trí các thẻ
             this.Resize += UcKtvDashboard_Resize;
 
+            if (IsInDesigner())
+            {
+                return;
+            }
+
             BuildControls();
             LoadData();
         }
 
+        private bool IsInDesigner()
+        {
+            string processName = Process.GetCurrentProcess().ProcessName;
+            return LicenseManager.UsageMode == LicenseUsageMode.Designtime
+                || DesignMode
+                || processName.Equals("devenv", StringComparison.OrdinalIgnoreCase)
+                || processName.Equals("XDesProc", StringComparison.OrdinalIgnoreCase);
+        }
+
         private void UcKtvDashboard_Resize(object sender, EventArgs e)
         {
+            if (IsInDesigner()) return;
             LayoutControls();
         }
 

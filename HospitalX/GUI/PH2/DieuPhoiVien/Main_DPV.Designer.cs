@@ -23,14 +23,11 @@ namespace HospitalX.GUI.PH2
             this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.btnHoSoCaNhan = new Guna.UI2.WinForms.Guna2Button();
             this.btnThongBaoNoiBo = new Guna.UI2.WinForms.Guna2Button();
-            this.lblGroupHeThong = new System.Windows.Forms.Label();
             this.btnDieuPhoiKTV = new Guna.UI2.WinForms.Guna2Button();
             this.btnTaoHSBA = new Guna.UI2.WinForms.Guna2Button();
             this.btnThemSuaBN = new Guna.UI2.WinForms.Guna2Button();
             this.btnDanhSachBN = new Guna.UI2.WinForms.Guna2Button();
-            this.lblGroupQuanLy = new System.Windows.Forms.Label();
             this.btnDashboard = new Guna.UI2.WinForms.Guna2Button();
-            this.lblGroupTongQuan = new System.Windows.Forms.Label();
             this.pnlLine1 = new Guna.UI2.WinForms.Guna2Separator();
             this.pnlProfile = new Guna.UI2.WinForms.Guna2Panel();
             this.lblVpdBadge = new System.Windows.Forms.Label();
@@ -81,14 +78,11 @@ namespace HospitalX.GUI.PH2
             this.pnlSidebar.Controls.Add(this.btnLogout);
             this.pnlSidebar.Controls.Add(this.btnHoSoCaNhan);
             this.pnlSidebar.Controls.Add(this.btnThongBaoNoiBo);
-            this.pnlSidebar.Controls.Add(this.lblGroupHeThong);
             this.pnlSidebar.Controls.Add(this.btnDieuPhoiKTV);
             this.pnlSidebar.Controls.Add(this.btnTaoHSBA);
             this.pnlSidebar.Controls.Add(this.btnThemSuaBN);
             this.pnlSidebar.Controls.Add(this.btnDanhSachBN);
-            this.pnlSidebar.Controls.Add(this.lblGroupQuanLy);
             this.pnlSidebar.Controls.Add(this.btnDashboard);
-            this.pnlSidebar.Controls.Add(this.lblGroupTongQuan);
             this.pnlSidebar.Controls.Add(this.pnlLine1);
             this.pnlSidebar.Controls.Add(this.pnlProfile);
             this.pnlSidebar.Controls.Add(this.pnlTopRight);
@@ -117,10 +111,10 @@ namespace HospitalX.GUI.PH2
             this.btnLogout.HoverState.FillColor = System.Drawing.Color.Maroon;
             this.btnLogout.HoverState.ForeColor = System.Drawing.Color.White;
             this.btnLogout.Image = ((System.Drawing.Image)(resources.GetObject("btnLogout.Image")));
-            this.btnLogout.Location = new System.Drawing.Point(14, 977);
+            this.btnLogout.Location = new System.Drawing.Point(8, 977);
             this.btnLogout.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(265, 47);
+            this.btnLogout.Size = new System.Drawing.Size(277, 47);
             this.btnLogout.TabIndex = 15;
             this.btnLogout.Text = "Đăng xuất";
             // 
@@ -139,14 +133,14 @@ namespace HospitalX.GUI.PH2
             this.btnHoSoCaNhan.Image = ((System.Drawing.Image)(resources.GetObject("btnHoSoCaNhan.Image")));
             this.btnHoSoCaNhan.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHoSoCaNhan.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnHoSoCaNhan.Location = new System.Drawing.Point(14, 635);
+            this.btnHoSoCaNhan.Location = new System.Drawing.Point(8, 628);
             this.btnHoSoCaNhan.Margin = new System.Windows.Forms.Padding(4);
             this.btnHoSoCaNhan.Name = "btnHoSoCaNhan";
-            this.btnHoSoCaNhan.Size = new System.Drawing.Size(265, 47);
+            this.btnHoSoCaNhan.Size = new System.Drawing.Size(277, 47);
             this.btnHoSoCaNhan.TabIndex = 14;
             this.btnHoSoCaNhan.Text = "HỒ SƠ CÁ NHÂN";
             this.btnHoSoCaNhan.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnHoSoCaNhan.TextOffset = new System.Drawing.Point(6, 0);
+            this.btnHoSoCaNhan.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // btnThongBaoNoiBo
             // 
@@ -163,26 +157,14 @@ namespace HospitalX.GUI.PH2
             this.btnThongBaoNoiBo.Image = ((System.Drawing.Image)(resources.GetObject("btnThongBaoNoiBo.Image")));
             this.btnThongBaoNoiBo.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnThongBaoNoiBo.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnThongBaoNoiBo.Location = new System.Drawing.Point(14, 581);
+            this.btnThongBaoNoiBo.Location = new System.Drawing.Point(8, 561);
             this.btnThongBaoNoiBo.Margin = new System.Windows.Forms.Padding(4);
             this.btnThongBaoNoiBo.Name = "btnThongBaoNoiBo";
-            this.btnThongBaoNoiBo.Size = new System.Drawing.Size(265, 47);
+            this.btnThongBaoNoiBo.Size = new System.Drawing.Size(277, 47);
             this.btnThongBaoNoiBo.TabIndex = 12;
             this.btnThongBaoNoiBo.Text = "THÔNG BÁO NỘI BỘ";
             this.btnThongBaoNoiBo.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnThongBaoNoiBo.TextOffset = new System.Drawing.Point(6, 0);
-            // 
-            // lblGroupHeThong
-            // 
-            this.lblGroupHeThong.AutoSize = true;
-            this.lblGroupHeThong.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
-            this.lblGroupHeThong.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(170)))), ((int)(((byte)(155)))));
-            this.lblGroupHeThong.Location = new System.Drawing.Point(14, 556);
-            this.lblGroupHeThong.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGroupHeThong.Name = "lblGroupHeThong";
-            this.lblGroupHeThong.Size = new System.Drawing.Size(76, 17);
-            this.lblGroupHeThong.TabIndex = 11;
-            this.lblGroupHeThong.Text = "HỆ THỐNG";
+            this.btnThongBaoNoiBo.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // btnDieuPhoiKTV
             // 
@@ -199,14 +181,14 @@ namespace HospitalX.GUI.PH2
             this.btnDieuPhoiKTV.Image = ((System.Drawing.Image)(resources.GetObject("btnDieuPhoiKTV.Image")));
             this.btnDieuPhoiKTV.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDieuPhoiKTV.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnDieuPhoiKTV.Location = new System.Drawing.Point(14, 489);
+            this.btnDieuPhoiKTV.Location = new System.Drawing.Point(8, 494);
             this.btnDieuPhoiKTV.Margin = new System.Windows.Forms.Padding(4);
             this.btnDieuPhoiKTV.Name = "btnDieuPhoiKTV";
-            this.btnDieuPhoiKTV.Size = new System.Drawing.Size(265, 47);
+            this.btnDieuPhoiKTV.Size = new System.Drawing.Size(277, 47);
             this.btnDieuPhoiKTV.TabIndex = 10;
             this.btnDieuPhoiKTV.Text = "ĐIỀU PHỐI KỸ THUẬT VIÊN";
             this.btnDieuPhoiKTV.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnDieuPhoiKTV.TextOffset = new System.Drawing.Point(6, 0);
+            this.btnDieuPhoiKTV.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // btnTaoHSBA
             // 
@@ -223,14 +205,14 @@ namespace HospitalX.GUI.PH2
             this.btnTaoHSBA.Image = ((System.Drawing.Image)(resources.GetObject("btnTaoHSBA.Image")));
             this.btnTaoHSBA.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnTaoHSBA.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnTaoHSBA.Location = new System.Drawing.Point(14, 435);
+            this.btnTaoHSBA.Location = new System.Drawing.Point(8, 427);
             this.btnTaoHSBA.Margin = new System.Windows.Forms.Padding(4);
             this.btnTaoHSBA.Name = "btnTaoHSBA";
-            this.btnTaoHSBA.Size = new System.Drawing.Size(265, 47);
+            this.btnTaoHSBA.Size = new System.Drawing.Size(277, 47);
             this.btnTaoHSBA.TabIndex = 9;
             this.btnTaoHSBA.Text = "TẠO HỒ SƠ BỆNH ÁN";
             this.btnTaoHSBA.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTaoHSBA.TextOffset = new System.Drawing.Point(6, 0);
+            this.btnTaoHSBA.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // btnThemSuaBN
             // 
@@ -247,14 +229,14 @@ namespace HospitalX.GUI.PH2
             this.btnThemSuaBN.Image = ((System.Drawing.Image)(resources.GetObject("btnThemSuaBN.Image")));
             this.btnThemSuaBN.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnThemSuaBN.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnThemSuaBN.Location = new System.Drawing.Point(14, 381);
+            this.btnThemSuaBN.Location = new System.Drawing.Point(8, 360);
             this.btnThemSuaBN.Margin = new System.Windows.Forms.Padding(4);
             this.btnThemSuaBN.Name = "btnThemSuaBN";
-            this.btnThemSuaBN.Size = new System.Drawing.Size(265, 47);
+            this.btnThemSuaBN.Size = new System.Drawing.Size(277, 47);
             this.btnThemSuaBN.TabIndex = 8;
             this.btnThemSuaBN.Text = "THÊM / SỬA BỆNH NHÂN";
             this.btnThemSuaBN.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnThemSuaBN.TextOffset = new System.Drawing.Point(6, 0);
+            this.btnThemSuaBN.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // btnDanhSachBN
             // 
@@ -271,26 +253,15 @@ namespace HospitalX.GUI.PH2
             this.btnDanhSachBN.Image = ((System.Drawing.Image)(resources.GetObject("btnDanhSachBN.Image")));
             this.btnDanhSachBN.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDanhSachBN.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnDanhSachBN.Location = new System.Drawing.Point(14, 327);
+            this.btnDanhSachBN.Location = new System.Drawing.Point(8, 293);
             this.btnDanhSachBN.Margin = new System.Windows.Forms.Padding(4);
             this.btnDanhSachBN.Name = "btnDanhSachBN";
-            this.btnDanhSachBN.Size = new System.Drawing.Size(265, 47);
+            this.btnDanhSachBN.Size = new System.Drawing.Size(277, 47);
             this.btnDanhSachBN.TabIndex = 7;
             this.btnDanhSachBN.Text = "DANH SÁCH BỆNH NHÂN";
             this.btnDanhSachBN.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnDanhSachBN.TextOffset = new System.Drawing.Point(6, 0);
-            // 
-            // lblGroupQuanLy
-            // 
-            this.lblGroupQuanLy.AutoSize = true;
-            this.lblGroupQuanLy.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
-            this.lblGroupQuanLy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(170)))), ((int)(((byte)(155)))));
-            this.lblGroupQuanLy.Location = new System.Drawing.Point(14, 302);
-            this.lblGroupQuanLy.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGroupQuanLy.Name = "lblGroupQuanLy";
-            this.lblGroupQuanLy.Size = new System.Drawing.Size(64, 17);
-            this.lblGroupQuanLy.TabIndex = 6;
-            this.lblGroupQuanLy.Text = "QUẢN LÝ";
+            this.btnDanhSachBN.TextOffset = new System.Drawing.Point(15, 0);
+            this.btnDanhSachBN.Click += new System.EventHandler(this.btnDanhSachBN_Click);
             // 
             // btnDashboard
             // 
@@ -307,26 +278,14 @@ namespace HospitalX.GUI.PH2
             this.btnDashboard.Image = ((System.Drawing.Image)(resources.GetObject("btnDashboard.Image")));
             this.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDashboard.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnDashboard.Location = new System.Drawing.Point(14, 235);
+            this.btnDashboard.Location = new System.Drawing.Point(8, 226);
             this.btnDashboard.Margin = new System.Windows.Forms.Padding(4);
             this.btnDashboard.Name = "btnDashboard";
-            this.btnDashboard.Size = new System.Drawing.Size(265, 47);
+            this.btnDashboard.Size = new System.Drawing.Size(277, 47);
             this.btnDashboard.TabIndex = 5;
             this.btnDashboard.Text = "DASHBOARD";
             this.btnDashboard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnDashboard.TextOffset = new System.Drawing.Point(6, 0);
-            // 
-            // lblGroupTongQuan
-            // 
-            this.lblGroupTongQuan.AutoSize = true;
-            this.lblGroupTongQuan.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
-            this.lblGroupTongQuan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(170)))), ((int)(((byte)(155)))));
-            this.lblGroupTongQuan.Location = new System.Drawing.Point(14, 210);
-            this.lblGroupTongQuan.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGroupTongQuan.Name = "lblGroupTongQuan";
-            this.lblGroupTongQuan.Size = new System.Drawing.Size(87, 17);
-            this.lblGroupTongQuan.TabIndex = 4;
-            this.lblGroupTongQuan.Text = "TỔNG QUAN";
+            this.btnDashboard.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // pnlLine1
             // 
@@ -556,7 +515,6 @@ namespace HospitalX.GUI.PH2
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bệnh viện X - Điều phối viên";
             this.pnlSidebar.ResumeLayout(false);
-            this.pnlSidebar.PerformLayout();
             this.pnlProfile.ResumeLayout(false);
             this.pnlProfile.PerformLayout();
             this.pnlTopRight.ResumeLayout(false);
@@ -585,14 +543,11 @@ namespace HospitalX.GUI.PH2
         private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Label lblVpdBadge;
         private Guna.UI2.WinForms.Guna2Separator pnlLine1;
-        private System.Windows.Forms.Label lblGroupTongQuan;
         private Guna.UI2.WinForms.Guna2Button btnDashboard;
-        private System.Windows.Forms.Label lblGroupQuanLy;
         private Guna.UI2.WinForms.Guna2Button btnDanhSachBN;
         private Guna.UI2.WinForms.Guna2Button btnThemSuaBN;
         private Guna.UI2.WinForms.Guna2Button btnTaoHSBA;
         private Guna.UI2.WinForms.Guna2Button btnDieuPhoiKTV;
-        private System.Windows.Forms.Label lblGroupHeThong;
         private Guna.UI2.WinForms.Guna2Button btnThongBaoNoiBo;
         private Guna.UI2.WinForms.Guna2Button btnHoSoCaNhan;
         private Guna.UI2.WinForms.Guna2Panel pnlTopbar;

@@ -16,8 +16,15 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private void InitializeComponent()
         {
             this.pnlHero = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblDesignerHeroTitle = new System.Windows.Forms.Label();
+            this.lblDesignerHeroSub = new System.Windows.Forms.Label();
             this.pnlFilter = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblDesignerFilterTitle = new System.Windows.Forms.Label();
+            this.txtDesignerSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.pnlToolbar = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnDesignerAll = new Guna.UI2.WinForms.Guna2Button();
+            this.btnDesignerUnread = new Guna.UI2.WinForms.Guna2Button();
+            this.btnDesignerUrgent = new Guna.UI2.WinForms.Guna2Button();
             this.pnlNotifScroll = new System.Windows.Forms.Panel();
             this.pnlToast = new Guna.UI2.WinForms.Guna2Panel();
             
@@ -27,6 +34,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.cardStat3 = new Guna.UI2.WinForms.Guna2Panel();
             this.cardStat4 = new Guna.UI2.WinForms.Guna2Panel();
 
+            this.pnlHero.SuspendLayout();
+            this.pnlFilter.SuspendLayout();
+            this.pnlToolbar.SuspendLayout();
             this.SuspendLayout();
 
             // 
@@ -37,6 +47,24 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlHero.Location = new System.Drawing.Point(28, 28);
             this.pnlHero.Size = new System.Drawing.Size(1072, 92);
             this.pnlHero.Name = "pnlHero";
+            this.pnlHero.Controls.Add(this.lblDesignerHeroTitle);
+            this.pnlHero.Controls.Add(this.lblDesignerHeroSub);
+
+            this.lblDesignerHeroTitle.AutoSize = true;
+            this.lblDesignerHeroTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblDesignerHeroTitle.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Bold);
+            this.lblDesignerHeroTitle.ForeColor = System.Drawing.Color.White;
+            this.lblDesignerHeroTitle.Location = new System.Drawing.Point(24, 18);
+            this.lblDesignerHeroTitle.Name = "lblDesignerHeroTitle";
+            this.lblDesignerHeroTitle.Text = "Trung tâm thông báo";
+
+            this.lblDesignerHeroSub.AutoSize = true;
+            this.lblDesignerHeroSub.BackColor = System.Drawing.Color.Transparent;
+            this.lblDesignerHeroSub.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblDesignerHeroSub.ForeColor = System.Drawing.Color.FromArgb(214, 239, 232);
+            this.lblDesignerHeroSub.Location = new System.Drawing.Point(26, 54);
+            this.lblDesignerHeroSub.Name = "lblDesignerHeroSub";
+            this.lblDesignerHeroSub.Text = "Theo dõi phân công, cảnh báo xét nghiệm và cập nhật nghiệp vụ.";
 
             // 
             // pnlFilter
@@ -48,6 +76,25 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlFilter.Location = new System.Drawing.Point(28, 138);
             this.pnlFilter.Size = new System.Drawing.Size(300, 600);
             this.pnlFilter.Name = "pnlFilter";
+            this.pnlFilter.Controls.Add(this.lblDesignerFilterTitle);
+            this.pnlFilter.Controls.Add(this.txtDesignerSearch);
+
+            this.lblDesignerFilterTitle.AutoSize = true;
+            this.lblDesignerFilterTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblDesignerFilterTitle.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
+            this.lblDesignerFilterTitle.ForeColor = System.Drawing.Color.FromArgb(24, 48, 42);
+            this.lblDesignerFilterTitle.Location = new System.Drawing.Point(20, 18);
+            this.lblDesignerFilterTitle.Name = "lblDesignerFilterTitle";
+            this.lblDesignerFilterTitle.Text = "Phân loại thông báo";
+
+            this.txtDesignerSearch.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
+            this.txtDesignerSearch.BorderRadius = 8;
+            this.txtDesignerSearch.FillColor = System.Drawing.Color.FromArgb(244, 247, 250);
+            this.txtDesignerSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtDesignerSearch.Location = new System.Drawing.Point(20, 52);
+            this.txtDesignerSearch.Name = "txtDesignerSearch";
+            this.txtDesignerSearch.PlaceholderText = "Tìm kiếm thông báo...";
+            this.txtDesignerSearch.Size = new System.Drawing.Size(260, 36);
 
             // 
             // pnlNotifScroll
@@ -68,6 +115,43 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlToolbar.Location = new System.Drawing.Point(0, 88);
             this.pnlToolbar.Size = new System.Drawing.Size(740, 52);
             this.pnlToolbar.Name = "pnlToolbar";
+            this.pnlToolbar.Controls.Add(this.btnDesignerAll);
+            this.pnlToolbar.Controls.Add(this.btnDesignerUnread);
+            this.pnlToolbar.Controls.Add(this.btnDesignerUrgent);
+
+            this.btnDesignerAll.BorderRadius = 16;
+            this.btnDesignerAll.FillColor = System.Drawing.Color.FromArgb(15, 110, 86);
+            this.btnDesignerAll.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
+            this.btnDesignerAll.ForeColor = System.Drawing.Color.White;
+            this.btnDesignerAll.Location = new System.Drawing.Point(14, 8);
+            this.btnDesignerAll.Name = "btnDesignerAll";
+            this.btnDesignerAll.Size = new System.Drawing.Size(104, 32);
+            this.btnDesignerAll.Text = "Tất cả";
+            this.btnDesignerAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+
+            this.btnDesignerUnread.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
+            this.btnDesignerUnread.BorderRadius = 16;
+            this.btnDesignerUnread.BorderThickness = 1;
+            this.btnDesignerUnread.FillColor = System.Drawing.Color.White;
+            this.btnDesignerUnread.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
+            this.btnDesignerUnread.ForeColor = System.Drawing.Color.FromArgb(74, 85, 104);
+            this.btnDesignerUnread.Location = new System.Drawing.Point(124, 8);
+            this.btnDesignerUnread.Name = "btnDesignerUnread";
+            this.btnDesignerUnread.Size = new System.Drawing.Size(104, 32);
+            this.btnDesignerUnread.Text = "Chưa đọc";
+            this.btnDesignerUnread.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+
+            this.btnDesignerUrgent.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
+            this.btnDesignerUrgent.BorderRadius = 16;
+            this.btnDesignerUrgent.BorderThickness = 1;
+            this.btnDesignerUrgent.FillColor = System.Drawing.Color.White;
+            this.btnDesignerUrgent.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
+            this.btnDesignerUrgent.ForeColor = System.Drawing.Color.FromArgb(74, 85, 104);
+            this.btnDesignerUrgent.Location = new System.Drawing.Point(234, 8);
+            this.btnDesignerUrgent.Name = "btnDesignerUrgent";
+            this.btnDesignerUrgent.Size = new System.Drawing.Size(104, 32);
+            this.btnDesignerUrgent.Text = "Khẩn cấp";
+            this.btnDesignerUrgent.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 
             // 
             // pnlToast
@@ -124,12 +208,24 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             this.Name = "ucKtvThongBao";
             this.Size = new System.Drawing.Size(1128, 782);
+            this.pnlHero.ResumeLayout(false);
+            this.pnlHero.PerformLayout();
+            this.pnlFilter.ResumeLayout(false);
+            this.pnlFilter.PerformLayout();
+            this.pnlToolbar.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
         private Guna.UI2.WinForms.Guna2Panel pnlHero;
+        private System.Windows.Forms.Label lblDesignerHeroTitle;
+        private System.Windows.Forms.Label lblDesignerHeroSub;
         private Guna.UI2.WinForms.Guna2Panel pnlFilter;
+        private System.Windows.Forms.Label lblDesignerFilterTitle;
+        private Guna.UI2.WinForms.Guna2TextBox txtDesignerSearch;
         private Guna.UI2.WinForms.Guna2Panel pnlToolbar;
+        private Guna.UI2.WinForms.Guna2Button btnDesignerAll;
+        private Guna.UI2.WinForms.Guna2Button btnDesignerUnread;
+        private Guna.UI2.WinForms.Guna2Button btnDesignerUrgent;
         private System.Windows.Forms.Panel pnlNotifScroll;
         private Guna.UI2.WinForms.Guna2Panel pnlToast;
         private Guna.UI2.WinForms.Guna2Panel cardStat1;

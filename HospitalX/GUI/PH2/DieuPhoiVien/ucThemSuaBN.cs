@@ -10,8 +10,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
     public partial class ucThemSuaBN : UserControl
     {
         private bool _isEditMode = false;
-        private Image _imgUpload = null;
-        private Image _imgDpv3 = null;
+        private string _preloadedPatientId = null;
+
+        public void PreloadPatient(string patientId)
+        {
+            _preloadedPatientId = patientId;
+        }
 
         [DllImport("user32.dll")]
         private static extern bool HideCaret(IntPtr hWnd);
@@ -25,12 +29,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void ucThemSuaBN_Load(object sender, EventArgs e)
         {
-            _imgUpload = DpvAssets.Load("picture.png"); // Upload icon
-            _imgDpv3 = DpvAssets.Load("dpv_3.png");     // Pencil icon
-
-            // Default Avatar
-            picAvatar.Image = DpvAssets.Load("user.png");
-
             // Prevent cursor caret from showing on read-only MaBN while keeping focus/glow
             txtMaBN.Enter += (s, ev) => HideCaret(txtMaBN.Handle);
             txtMaBN.GotFocus += (s, ev) => HideCaret(txtMaBN.Handle);
@@ -52,6 +50,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Handle resize
             this.Resize += (s, ev) => AdjustLayoutSizes();
             AdjustLayoutSizes();
+
+            if (!string.IsNullOrEmpty(_preloadedPatientId))
+            {
+                txtSearch.Text = _preloadedPatientId;
+                ExecuteSearch();
+            }
         }
 
         private void InitComboBoxes()
@@ -62,32 +66,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cboGioiTinh.Items.Add("Nữ");
             cboGioiTinh.SelectedIndex = 0;
 
-            cboNhomMau.Items.Clear();
-            cboNhomMau.Items.Add("-- Chọn --");
-            cboNhomMau.Items.Add("A");
-            cboNhomMau.Items.Add("B");
-            cboNhomMau.Items.Add("AB");
-            cboNhomMau.Items.Add("O");
-            cboNhomMau.SelectedIndex = 0;
-
-            cboKhoa.Items.Clear();
-            cboKhoa.Items.Add("-- Chọn khoa --");
-            cboKhoa.Items.Add("Tim mạch");
-            cboKhoa.Items.Add("Nội tổng quát");
-            cboKhoa.Items.Add("Chỉnh hình");
-            cboKhoa.Items.Add("Sản khoa");
-            cboKhoa.Items.Add("Thần kinh");
-            cboKhoa.Items.Add("Nhi khoa");
-            cboKhoa.SelectedIndex = 0;
-
-            cboHinhThuc.Items.Clear();
-            cboHinhThuc.Items.Add("Khám thường");
-            cboHinhThuc.Items.Add("Cấp cứu");
-            cboHinhThuc.Items.Add("Chuyển viện");
-            cboHinhThuc.SelectedIndex = 0;
-
             dtpNgaySinh.Value = new DateTime(1990, 1, 1);
-            dtpNgayNhap.Value = DateTime.Now;
         }
 
         private void ApplyButtonIcons()
@@ -106,22 +85,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnTabEdit.ImageOffset = new Point(0, 0);
             btnTabEdit.TextOffset = new Point(0, 0);
 
-            // Upload button
-            if (_imgUpload != null)
-            {
-                btnUpload.Image = _imgUpload;
-                btnUpload.ImageSize = new Size(20, 20);
-                btnUpload.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-                btnUpload.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-                btnUpload.ImageOffset = new Point(4, 0);
-                btnUpload.TextOffset = new Point(16, 0);
-                btnUpload.Text = "Tải ảnh lên";
-            }
-
             // Section Icons
             ptbBasicIcon.Image = DpvAssets.Load("dpv_7.png");
-            ptbContactIcon.Image = DpvAssets.Load("phone.png");
-            ptbTreatmentIcon.Image = DpvAssets.Load("medical-report.png");
+            ptbMedicalIcon.Image = DpvAssets.Load("medical-report.png");
 
             // Search button and magnifying glass in the search panel
             Image imgSearch = DpvAssets.Load("magnifying-glass.png");
@@ -137,18 +103,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 btnSearch.Text = "Tìm";
             }
 
-            // Save Draft button
-            Image imgDraft = DpvAssets.Load("save.png");
-            if (imgDraft != null)
-            {
-                btnDraft.Image = imgDraft;
-                btnDraft.ImageSize = new Size(20, 20);
-                btnDraft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-                btnDraft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-                btnDraft.ImageOffset = new Point(10, 0);
-                btnDraft.TextOffset = new Point(22, 0);
-            }
-
             // Save button icon
             Image imgSave = DpvAssets.Load("buttonTick.png");
             if (imgSave != null)
@@ -157,8 +111,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 btnSave.ImageSize = new Size(20, 20);
                 btnSave.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
                 btnSave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-                btnSave.ImageOffset = new Point(12, 0);
-                btnSave.TextOffset = new Point(24, 0);
+                btnSave.ImageOffset = new Point(16, 0);
+                btnSave.TextOffset = new Point(8, 0);
             }
         }
 
@@ -184,27 +138,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 pnlSearchCard.Visible = true;
                 txtSearch.Text = "";
 
-                // Clear all fields initially in edit mode to wait for search query to be clicked
-                txtHoDem.Text = "";
-                txtTen.Text = "";
-                txtMaBN.Text = "Tự động tạo";
-                dtpNgaySinh.Value = new DateTime(1990, 1, 1);
-                cboGioiTinh.SelectedIndex = 0;
-                cboNhomMau.SelectedIndex = 0;
-                txtCccd.Text = "";
-                txtBhyt.Text = "";
-                txtSdt.Text = "";
-                txtEmail.Text = "";
-                txtNguoiLienHe.Text = "";
-                txtDiaChi.Text = "";
-                cboKhoa.SelectedIndex = 0;
-                cboHinhThuc.SelectedIndex = 0;
-                dtpNgayNhap.Value = DateTime.Now;
-                txtLyDo.Text = "";
-                txtTienSu.Text = "";
-                picAvatar.Image = DpvAssets.Load("user.png");
-
+                // Clear all fields initially in edit mode to wait for search query
+                ClearAllFields();
                 btnSave.Text = "Lưu thay đổi";
+                btnSave.ImageOffset = new Point(16, 0);
+                btnSave.TextOffset = new Point(8, 0);
             }
             else
             {
@@ -224,30 +162,31 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 pnlSearchCard.Visible = false;
 
                 // Clear all fields
-                txtHoDem.Text = "";
-                txtTen.Text = "";
-                txtMaBN.Text = "Tự động tạo";
-                dtpNgaySinh.Value = new DateTime(1990, 1, 1);
-                cboGioiTinh.SelectedIndex = 0;
-                cboNhomMau.SelectedIndex = 0;
-                txtCccd.Text = "";
-                txtBhyt.Text = "";
-                txtSdt.Text = "";
-                txtEmail.Text = "";
-                txtNguoiLienHe.Text = "";
-                txtDiaChi.Text = "";
-                cboKhoa.SelectedIndex = 0;
-                cboHinhThuc.SelectedIndex = 0;
-                dtpNgayNhap.Value = DateTime.Now;
-                txtLyDo.Text = "";
-                txtTienSu.Text = "";
-                picAvatar.Image = DpvAssets.Load("user.png");
-
-                btnSave.Text = "Lưu bệnh nhân";
+                ClearAllFields();
+                btnSave.Text = "Thêm bệnh nhân";
+                btnSave.ImageOffset = new Point(14, 0);
+                btnSave.TextOffset = new Point(12, 0);
             }
 
             // Trigger dynamic co-sizing and positioning updates
             AdjustLayoutSizes();
+        }
+
+        private void ClearAllFields()
+        {
+            txtHoDem.Text = "";
+            txtTen.Text = "";
+            txtMaBN.Text = "Tự động tạo";
+            dtpNgaySinh.Value = new DateTime(1990, 1, 1);
+            cboGioiTinh.SelectedIndex = 0;
+            txtCccd.Text = "";
+            txtSoNha.Text = "";
+            txtTenDuong.Text = "";
+            txtQuanHuyen.Text = "";
+            txtTinhTP.Text = "";
+            txtTienSuBN.Text = "";
+            txtTienSuGD.Text = "";
+            txtDiUng.Text = "";
         }
 
         private void btnTabAdd_Click(object sender, EventArgs e)
@@ -311,47 +250,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 isValid = false;
                 MarkFieldInvalid(txtCccd);
-                errorMsg += "\n- CCCD / Hộ chiếu";
+                errorMsg += "\n- CCCD";
             }
             else
             {
                 ResetFieldStyle(txtCccd);
-            }
-
-            // Validate txtSdt
-            if (string.IsNullOrWhiteSpace(txtSdt.Text))
-            {
-                isValid = false;
-                MarkFieldInvalid(txtSdt);
-                errorMsg += "\n- Số điện thoại";
-            }
-            else
-            {
-                ResetFieldStyle(txtSdt);
-            }
-
-            // Validate txtDiaChi
-            if (string.IsNullOrWhiteSpace(txtDiaChi.Text))
-            {
-                isValid = false;
-                MarkFieldInvalid(txtDiaChi);
-                errorMsg += "\n- Địa chỉ thường trú";
-            }
-            else
-            {
-                ResetFieldStyle(txtDiaChi);
-            }
-
-            // Validate cboKhoa
-            if (cboKhoa.SelectedIndex == 0)
-            {
-                isValid = false;
-                MarkFieldInvalid(cboKhoa);
-                errorMsg += "\n- Khoa tiếp nhận";
-            }
-            else
-            {
-                ResetFieldStyle(cboKhoa);
             }
 
             if (!isValid)
@@ -370,9 +273,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
 
             // Successful save
-            string msg = _isEditMode 
-                ? $"Đã lưu thông tin thay đổi cho bệnh nhân {txtHoDem.Text.Trim()} {txtTen.Text.Trim()} thành công."
-                : $"Đã thêm mới bệnh nhân {txtHoDem.Text.Trim()} {txtTen.Text.Trim()} vào hệ thống thành công.";
+            string fullName = txtHoDem.Text.Trim() + " " + txtTen.Text.Trim();
+            string msg = _isEditMode
+                ? $"Đã lưu thông tin thay đổi cho bệnh nhân {fullName} thành công."
+                : $"Đã thêm mới bệnh nhân {fullName} vào hệ thống thành công.";
 
             if (this.guna2MessageDialog1 == null)
             {
@@ -391,13 +295,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void MarkFieldInvalid(Control control)
         {
             Color errorColor = Color.FromArgb(253, 114, 114);
-            
+
             if (control is Guna2TextBox txt)
             {
                 txt.BorderColor = errorColor;
                 txt.HoverState.BorderColor = errorColor;
                 txt.FocusedState.BorderColor = errorColor;
-                
+
                 txt.TextChanged -= Txt_TextChanged;
                 txt.TextChanged += Txt_TextChanged;
             }
@@ -406,7 +310,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 cbo.BorderColor = errorColor;
                 cbo.HoverState.BorderColor = errorColor;
                 cbo.FocusedState.BorderColor = errorColor;
-                
+
                 cbo.SelectedIndexChanged -= Cbo_SelectedIndexChanged;
                 cbo.SelectedIndexChanged += Cbo_SelectedIndexChanged;
             }
@@ -462,7 +366,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (targetWidth < 1350) targetWidth = 1350;
 
             pnlSegment.Width = targetWidth;
-            
+
             // Adjust search card co-size and dynamic position
             pnlSearchCard.Width = targetWidth;
             btnSearch.Left = targetWidth - 100 - 40; // width 100, right margin 40
@@ -471,19 +375,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (pnlSearchCard.Visible)
             {
                 pnlFormCard.Location = new Point(27, 190);
-                pnlFormCard.Size = new Size(targetWidth, 1220);
+                pnlFormCard.Size = new Size(targetWidth, 880);
             }
             else
             {
                 pnlFormCard.Location = new Point(27, 80);
-                pnlFormCard.Size = new Size(targetWidth, 1220);
+                pnlFormCard.Size = new Size(targetWidth, 880);
             }
 
             // Dynamically stretch footer and align buttons to the right
             pnlFormFooter.Width = targetWidth;
-            btnSave.Left = targetWidth - 180 - 40; // width 180, right margin 40
-            btnDraft.Left = btnSave.Left - 140 - 16; // width 140, gap 16
-            btnCancel.Left = btnDraft.Left - 140 - 16; // width 140, gap 16
+            int btnWidth = _isEditMode ? 180 : 200;
+            btnSave.Width = btnWidth;
+            btnSave.Left = targetWidth - btnWidth - 40; // right margin 40
+            btnCancel.Left = btnSave.Left - 140 - 16; // width 140, gap 16
 
             // Adjust dynamic sizes of footer straightener panels
             var flatTop = pnlFormCard.Controls["pnlFooterFlatTop"];
@@ -517,10 +422,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
              * Để kết nối với Cơ sở dữ liệu thật sau này, lập trình viên có thể thay thế
              * đoạn code bên dưới bằng một truy vấn SQL (ADO.NET, Entity Framework, Dapper, v.v.):
              * 
-             * string sql = "SELECT * FROM BenhNhan WHERE MaBN = @Query OR TenFullName LIKE @Query";
+             * string sql = "SELECT * FROM BenhNhan WHERE MaBN = @Query OR TenBN LIKE @Query";
              * using (SqlCommand cmd = new SqlCommand(sql, connection)) {
              *     cmd.Parameters.AddWithValue("@Query", "%" + query + "%");
-             *     // Đọc dữ liệu đầu ra và gán vào các thuộc tính tương ứng:
+             *     // Đọc dữ liệu đầu ra và gán vào các trường tương ứng:
              *     // txtHoDem.Text = reader["HoDem"].ToString();
              *     // txtTen.Text = reader["Ten"].ToString();
              *     // ...
@@ -528,55 +433,106 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
              * =========================================================================
              */
 
-            if (queryLower.Contains("cường") || queryLower.Contains("cuong") || queryLower.Contains("bn240046"))
+            // Make sure SharedPatients is initialized
+            PatientModel.InitializeSharedPatients();
+
+            PatientModel foundPatient = null;
+            foreach (var p in PatientModel.SharedPatients)
             {
-                // Tải thông tin chi tiết của Trần Thị Cường
-                txtHoDem.Text = "Trần Thị";
-                txtTen.Text = "Cường";
-                txtMaBN.Text = "BN240046";
-                dtpNgaySinh.Value = new DateTime(1980, 7, 11);
-                cboGioiTinh.SelectedIndex = 2; // Nữ
-                cboNhomMau.SelectedIndex = 1;  // A
-                txtCccd.Text = "079196657049";
-                txtBhyt.Text = "GD3-791966570";
-                txtSdt.Text = "0901234567";
-                txtEmail.Text = "cuong.tran@gmail.com";
-                txtNguoiLienHe.Text = "Nguyễn Văn Hùng (Chồng)";
-                txtDiaChi.Text = "123 Đường Ba Tháng Hai, Quận 10, TP. Hồ Chí Minh";
-                cboKhoa.SelectedIndex = 6;     // Nhi khoa
-                cboHinhThuc.SelectedIndex = 0; // Khám thường
-                dtpNgayNhap.Value = new DateTime(2026, 5, 24);
-                txtLyDo.Text = "Bé ho sốt kéo dài 3 ngày, muốn khám tổng quát.";
-                txtTienSu.Text = "Không có tiền sử dị ứng thuốc, gia đình khỏe mạnh.";
-                picAvatar.Image = DpvAssets.Load("female_doctor.png");
-                
-                found = true;
-                foundName = "Trần Thị Cường";
+                if (p == null) continue;
+                string pNameLower = p.Name != null ? p.Name.ToLower() : "";
+                string pIdLower = p.Id != null ? p.Id.ToLower() : "";
+                string pCccd = p.Cccd != null ? p.Cccd : "";
+
+                if (queryLower == pNameLower || queryLower == pIdLower || queryLower == pCccd)
+                {
+                    foundPatient = p;
+                    break;
+                }
             }
-            else if (queryLower.Contains("lan") || queryLower.Contains("bn260195"))
+
+            if (foundPatient != null)
             {
-                // Tải thông tin chi tiết của Phạm Thị Lan
-                txtHoDem.Text = "Phạm Thị";
-                txtTen.Text = "Lan";
-                txtMaBN.Text = "BN260195";
-                dtpNgaySinh.Value = new DateTime(1992, 10, 15);
-                cboGioiTinh.SelectedIndex = 2; // Nữ
-                cboNhomMau.SelectedIndex = 2;  // B
-                txtCccd.Text = "079192008472";
-                txtBhyt.Text = "GD3-791920084";
-                txtSdt.Text = "0987654321";
-                txtEmail.Text = "lan.pham@gmail.com";
-                txtNguoiLienHe.Text = "Phạm Văn Hải (Bố)";
-                txtDiaChi.Text = "456 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh";
-                cboKhoa.SelectedIndex = 2;     // Nội tổng quát
-                cboHinhThuc.SelectedIndex = 0; // Khám thường
-                dtpNgayNhap.Value = new DateTime(2026, 5, 24);
-                txtLyDo.Text = "Đau bụng vùng thượng vị kéo dài 2 ngày, kèm buồn nôn.";
-                txtTienSu.Text = "Không có tiền sử dị ứng thuốc, dạ dày nhẹ.";
-                picAvatar.Image = DpvAssets.Load("female_doctor.png");
+                // Split full name into HoDem and Ten
+                string fullName = foundPatient.Name.Trim();
+                int lastSpaceIndex = fullName.LastIndexOf(' ');
+                if (lastSpaceIndex > 0)
+                {
+                    txtHoDem.Text = fullName.Substring(0, lastSpaceIndex).Trim();
+                    txtTen.Text = fullName.Substring(lastSpaceIndex + 1).Trim();
+                }
+                else
+                {
+                    txtHoDem.Text = "";
+                    txtTen.Text = fullName;
+                }
+
+                txtMaBN.Text = foundPatient.Id;
+
+                // Parse Date of Birth
+                if (DateTime.TryParseExact(foundPatient.Dob, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dobDate))
+                {
+                    dtpNgaySinh.Value = dobDate;
+                }
+                else
+                {
+                    dtpNgaySinh.Value = new DateTime(1990, 1, 1);
+                }
+
+                // Map Gender (1: Nam, 2: Nữ)
+                if (foundPatient.Gender == "Nam")
+                {
+                    cboGioiTinh.SelectedIndex = 1;
+                }
+                else if (foundPatient.Gender == "Nữ")
+                {
+                    cboGioiTinh.SelectedIndex = 2;
+                }
+                else
+                {
+                    cboGioiTinh.SelectedIndex = 0;
+                }
+
+                txtCccd.Text = foundPatient.Cccd;
+
+                // Specific mock details for Trần Thị Cường to maintain consistency
+                if (foundPatient.Id == "BN240046")
+                {
+                    txtSoNha.Text = "123";
+                    txtTenDuong.Text = "Đường Ba Tháng Hai";
+                    txtQuanHuyen.Text = "Quận 10";
+                    txtTinhTP.Text = "TP. Hồ Chí Minh";
+                    txtTienSuBN.Text = "Viêm khớp dạng thấp, đã phẫu thuật ruột thừa năm 2015.";
+                    txtTienSuGD.Text = "Bố mắc tiểu đường type 2, mẹ có tiền sử cao huyết áp.";
+                    txtDiUng.Text = "Dị ứng Penicillin (phát ban da), Aspirin (khó thở).";
+                }
+                // Specific mock details for Phạm Thị Lan (updated with correct ID BN240002)
+                else if (foundPatient.Id == "BN240002")
+                {
+                    txtSoNha.Text = "456";
+                    txtTenDuong.Text = "Đường Nguyễn Huệ";
+                    txtQuanHuyen.Text = "Quận 1";
+                    txtTinhTP.Text = "TP. Hồ Chí Minh";
+                    txtTienSuBN.Text = "Viêm dạ dày mãn tính, đang điều trị từ 2023.";
+                    txtTienSuGD.Text = "Không có tiền sử bệnh đáng kể trong gia đình.";
+                    txtDiUng.Text = "Không có dị ứng thuốc đã biết.";
+                }
+                // Intelligent dynamically generated mock data for all other 46 patients on the list
+                else
+                {
+                    int uniqueHash = foundPatient.Id.GetHashCode();
+                    txtSoNha.Text = (100 + Math.Abs(uniqueHash % 900)).ToString();
+                    txtTenDuong.Text = foundPatient.Gender == "Nữ" ? "Đường Hai Bà Trưng" : "Đường Lê Lợi";
+                    txtQuanHuyen.Text = "Quận 1";
+                    txtTinhTP.Text = "TP. Hồ Chí Minh";
+
+                    txtTienSuBN.Text = "Theo dõi sức khỏe định kỳ tại chuyên khoa " + foundPatient.Khoa + ".";
+                    txtTienSuGD.Text = "Gia đình không có tiền sử bệnh di truyền hoặc cao huyết áp.";
+                    txtDiUng.Text = "Không ghi nhận dị ứng đối với các loại thuốc thông thường.";
+                }
 
                 found = true;
-                foundName = "Phạm Thị Lan";
+                foundName = foundPatient.Name;
             }
 
             if (found)
@@ -605,26 +561,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
                 guna2MessageDialog1.Caption = "Không tìm thấy";
                 guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
-                guna2MessageDialog1.Show($"Không tìm thấy bệnh nhân \"{query}\". Vui lòng thử tìm kiếm lại với 'Phạm Thị Lan' hoặc 'Trần Thị Cường'!");
-            }
-        }
-
-        private void btnUpload_Click(object sender, EventArgs e)
-        {
-            using (var ofd = new OpenFileDialog())
-            {
-                ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png";
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        picAvatar.Image = Image.FromFile(ofd.FileName);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Không thể tải ảnh: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
+                guna2MessageDialog1.Show($"Không tìm thấy bệnh nhân \"{query}\". Vui lòng nhập đúng và đầy đủ Họ tên, Mã BN hoặc CCCD (Ví dụ: 'Trần Thị Cường', 'BN240046' hoặc '079196657049') để tìm kiếm!");
             }
         }
 
@@ -639,16 +576,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlSearchCard.BorderColor = tealTheme; // Green accent border
             pnlSearchCard.BorderThickness = 2; // Thicker border
             pnlSearchCard.FillColor = Color.FromArgb(230, 244, 240); // Soft beautiful warm green-teal tint highlight background
-            
+
             // Highlight Search Textbox
             txtSearch.BorderColor = tealTheme;
             txtSearch.BorderThickness = 1;
             txtSearch.FillColor = Color.White;
             txtSearch.HoverState.BorderColor = Color.FromArgb(10, 79, 61);
             txtSearch.FocusedState.BorderColor = Color.FromArgb(10, 79, 61);
-            txtSearch.PlaceholderText = "Nhập mã BN hoặc họ tên";
+            txtSearch.PlaceholderText = "Nhập mã BN, họ tên hoặc CCCD";
             txtSearch.PlaceholderForeColor = Color.FromArgb(180, 195, 188);
-            
+
             // Highlight Search Label
             lblSearchTitle.ForeColor = tealTheme;
 
@@ -664,26 +601,25 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlFooterFlatTop.BorderThickness = 0;
             pnlFooterFlatTop.FillColor = Color.FromArgb(244, 247, 246); // Same grey background
             pnlFooterFlatTop.BackColor = Color.Transparent;
-            pnlFooterFlatTop.Location = new Point(0, 1100);
+            pnlFooterFlatTop.Location = new Point(0, 800);
             pnlFooterFlatTop.Size = new Size(pnlFormFooter.Width, 12);
-            
+
             // Create a dynamic straight horizontal divider line
             Panel pnlFooterDivider = new Panel();
             pnlFooterDivider.Name = "pnlFooterDivider";
             pnlFooterDivider.BackColor = borderGray;
-            pnlFooterDivider.Location = new Point(0, 1100);
+            pnlFooterDivider.Location = new Point(0, 800);
             pnlFooterDivider.Size = new Size(pnlFormFooter.Width, 1);
-            
+
             // Add them to pnlFormCard
             pnlFormCard.Controls.Add(pnlFooterFlatTop);
             pnlFormCard.Controls.Add(pnlFooterDivider);
-            
+
             // Bring them to front so they draw on top of pnlFormFooter
             pnlFooterFlatTop.BringToFront();
             pnlFooterDivider.BringToFront();
 
             // Configure Tab Buttons (No Icons, Native Radio Checked States)
-
             btnTabAdd.CheckedState.FillColor = tealTheme;
             btnTabAdd.CheckedState.ForeColor = Color.White;
             btnTabAdd.CheckedState.BorderColor = tealTheme;
@@ -692,43 +628,38 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnTabEdit.CheckedState.ForeColor = Color.White;
             btnTabEdit.CheckedState.BorderColor = tealTheme;
 
-            // Configure labels
+            // Configure labels - Section 1: Basic Info
             ConfigureLabelStyle(lblHoDem, "HỌ VÀ ĐỆM *");
             ConfigureLabelStyle(lblTen, "TÊN *");
             ConfigureLabelStyle(lblMaBN, "MÃ BỆNH NHÂN");
             ConfigureLabelStyle(lblNgaySinh, "NGÀY SINH *");
             ConfigureLabelStyle(lblGioiTinh, "GIỚI TÍNH *");
-            ConfigureLabelStyle(lblNhomMau, "NHÓM MÁU");
-            ConfigureLabelStyle(lblCccd, "CCCD / HỘ CHIẾU *");
-            ConfigureLabelStyle(lblBhyt, "SỐ BẢO HIỂM Y TẾ");
-            ConfigureLabelStyle(lblSdt, "SỐ ĐIỆN THOẠI *");
-            ConfigureLabelStyle(lblEmail, "EMAIL");
-            ConfigureLabelStyle(lblNguoiLienHe, "NGƯỜI LIÊN LẠC KHẨN CẤP");
-            ConfigureLabelStyle(lblDiaChi, "ĐỊA CHỈ THƯỜNG TRÚ *");
-            ConfigureLabelStyle(lblKhoa, "KHOA TIẾP NHẬN *");
-            ConfigureLabelStyle(lblHinhThuc, "HÌNH THỨC VÀO VIỆN");
-            ConfigureLabelStyle(lblNgayNhap, "NGÀY NHẬP VIỆN");
-            ConfigureLabelStyle(lblLyDo, "LÝ DO NHẬP VIỆN / TRIỆU CHỨNG BAN ĐẦU");
-            ConfigureLabelStyle(lblTienSu, "TIỀN SỬ BỆNH / DỊ ỨNG THUỐC");
+            ConfigureLabelStyle(lblCccd, "CCCD *");
+            ConfigureLabelStyle(lblSoNha, "SỐ NHÀ");
+            ConfigureLabelStyle(lblTenDuong, "TÊN ĐƯỜNG");
+            ConfigureLabelStyle(lblQuanHuyen, "QUẬN / HUYỆN");
+            ConfigureLabelStyle(lblTinhTP, "TỈNH / THÀNH PHỐ");
+
+            // Configure labels - Section 2: Medical History
+            ConfigureLabelStyle(lblTienSuBN, "TIỀN SỬ BỆNH");
+            ConfigureLabelStyle(lblTienSuGD, "TIỀN SỬ BỆNH GIA ĐÌNH");
+            ConfigureLabelStyle(lblDiUng, "DỊ ỨNG THUỐC");
 
             // Configure TextBoxes
             ConfigureTextBoxStyle(txtHoDem, false);
             ConfigureTextBoxStyle(txtTen, false);
             ConfigureTextBoxStyle(txtMaBN, true);
             ConfigureTextBoxStyle(txtCccd, false);
-            ConfigureTextBoxStyle(txtBhyt, false);
-            ConfigureTextBoxStyle(txtSdt, false);
-            ConfigureTextBoxStyle(txtEmail, false);
-            ConfigureTextBoxStyle(txtNguoiLienHe, false);
-            ConfigureTextBoxStyle(txtDiaChi, false);
-            ConfigureTextBoxStyle(txtLyDo, false);
-            ConfigureTextBoxStyle(txtTienSu, false);
+            ConfigureTextBoxStyle(txtSoNha, false);
+            ConfigureTextBoxStyle(txtTenDuong, false);
+            ConfigureTextBoxStyle(txtQuanHuyen, false);
+            ConfigureTextBoxStyle(txtTinhTP, false);
+            ConfigureTextBoxStyle(txtTienSuBN, false);
+            ConfigureTextBoxStyle(txtTienSuGD, false);
+            ConfigureTextBoxStyle(txtDiUng, false);
 
             // Configure ComboBoxes
             ConfigureComboBoxStyle(cboGioiTinh);
-            ConfigureComboBoxStyle(cboNhomMau);
-            ConfigureComboBoxStyle(cboKhoa);
-            ConfigureComboBoxStyle(cboHinhThuc);
 
             // Setup Placeholders
             txtHoDem.PlaceholderText = "Ví dụ: Nguyễn Văn";

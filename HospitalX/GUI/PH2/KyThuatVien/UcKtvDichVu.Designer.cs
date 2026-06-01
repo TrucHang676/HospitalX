@@ -512,7 +512,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlOverlay.Size = new System.Drawing.Size(1504, 962);
             this.pnlOverlay.TabIndex = 8;
             this.pnlOverlay.Visible = false;
-            this.pnlOverlay.Paint += new System.Windows.Forms.PaintEventHandler(this.PnlOverlay_Paint);
             // 
             // pnlDrawer
             // 
@@ -527,8 +526,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
-            this.Controls.Add(this.pnlDrawer);
-            this.Controls.Add(this.pnlOverlay);
             this.Controls.Add(this.pnlTableCard);
             this.Controls.Add(this.cardStat4);
             this.Controls.Add(this.cardStat3);
