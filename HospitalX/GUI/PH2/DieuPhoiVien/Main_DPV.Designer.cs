@@ -33,7 +33,7 @@ namespace HospitalX.GUI.PH2
             this.lblVpdBadge = new System.Windows.Forms.Label();
             this.lblRole = new System.Windows.Forms.Label();
             this.lblTenDPV = new System.Windows.Forms.Label();
-            this.lblAvatarIni = new System.Windows.Forms.Label();
+            this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
             this.pnlTopRight = new Guna.UI2.WinForms.Guna2Panel();
             this.lblHospital = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.pnlLine2 = new Guna.UI2.WinForms.Guna2Separator();
@@ -47,6 +47,7 @@ namespace HospitalX.GUI.PH2
             this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlSidebar.SuspendLayout();
             this.pnlProfile.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).BeginInit();
             this.pnlTopRight.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).BeginInit();
@@ -133,7 +134,7 @@ namespace HospitalX.GUI.PH2
             this.btnHoSoCaNhan.Image = ((System.Drawing.Image)(resources.GetObject("btnHoSoCaNhan.Image")));
             this.btnHoSoCaNhan.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHoSoCaNhan.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnHoSoCaNhan.Location = new System.Drawing.Point(8, 628);
+            this.btnHoSoCaNhan.Location = new System.Drawing.Point(8, 631);
             this.btnHoSoCaNhan.Margin = new System.Windows.Forms.Padding(4);
             this.btnHoSoCaNhan.Name = "btnHoSoCaNhan";
             this.btnHoSoCaNhan.Size = new System.Drawing.Size(277, 47);
@@ -157,7 +158,7 @@ namespace HospitalX.GUI.PH2
             this.btnThongBaoNoiBo.Image = ((System.Drawing.Image)(resources.GetObject("btnThongBaoNoiBo.Image")));
             this.btnThongBaoNoiBo.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnThongBaoNoiBo.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnThongBaoNoiBo.Location = new System.Drawing.Point(8, 561);
+            this.btnThongBaoNoiBo.Location = new System.Drawing.Point(8, 564);
             this.btnThongBaoNoiBo.Margin = new System.Windows.Forms.Padding(4);
             this.btnThongBaoNoiBo.Name = "btnThongBaoNoiBo";
             this.btnThongBaoNoiBo.Size = new System.Drawing.Size(277, 47);
@@ -181,7 +182,7 @@ namespace HospitalX.GUI.PH2
             this.btnDieuPhoiKTV.Image = ((System.Drawing.Image)(resources.GetObject("btnDieuPhoiKTV.Image")));
             this.btnDieuPhoiKTV.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDieuPhoiKTV.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnDieuPhoiKTV.Location = new System.Drawing.Point(8, 494);
+            this.btnDieuPhoiKTV.Location = new System.Drawing.Point(8, 497);
             this.btnDieuPhoiKTV.Margin = new System.Windows.Forms.Padding(4);
             this.btnDieuPhoiKTV.Name = "btnDieuPhoiKTV";
             this.btnDieuPhoiKTV.Size = new System.Drawing.Size(277, 47);
@@ -205,7 +206,7 @@ namespace HospitalX.GUI.PH2
             this.btnTaoHSBA.Image = ((System.Drawing.Image)(resources.GetObject("btnTaoHSBA.Image")));
             this.btnTaoHSBA.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnTaoHSBA.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnTaoHSBA.Location = new System.Drawing.Point(8, 427);
+            this.btnTaoHSBA.Location = new System.Drawing.Point(8, 430);
             this.btnTaoHSBA.Margin = new System.Windows.Forms.Padding(4);
             this.btnTaoHSBA.Name = "btnTaoHSBA";
             this.btnTaoHSBA.Size = new System.Drawing.Size(277, 47);
@@ -229,7 +230,7 @@ namespace HospitalX.GUI.PH2
             this.btnThemSuaBN.Image = ((System.Drawing.Image)(resources.GetObject("btnThemSuaBN.Image")));
             this.btnThemSuaBN.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnThemSuaBN.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnThemSuaBN.Location = new System.Drawing.Point(8, 360);
+            this.btnThemSuaBN.Location = new System.Drawing.Point(8, 363);
             this.btnThemSuaBN.Margin = new System.Windows.Forms.Padding(4);
             this.btnThemSuaBN.Name = "btnThemSuaBN";
             this.btnThemSuaBN.Size = new System.Drawing.Size(277, 47);
@@ -253,7 +254,7 @@ namespace HospitalX.GUI.PH2
             this.btnDanhSachBN.Image = ((System.Drawing.Image)(resources.GetObject("btnDanhSachBN.Image")));
             this.btnDanhSachBN.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDanhSachBN.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnDanhSachBN.Location = new System.Drawing.Point(8, 293);
+            this.btnDanhSachBN.Location = new System.Drawing.Point(8, 296);
             this.btnDanhSachBN.Margin = new System.Windows.Forms.Padding(4);
             this.btnDanhSachBN.Name = "btnDanhSachBN";
             this.btnDanhSachBN.Size = new System.Drawing.Size(277, 47);
@@ -278,7 +279,7 @@ namespace HospitalX.GUI.PH2
             this.btnDashboard.Image = ((System.Drawing.Image)(resources.GetObject("btnDashboard.Image")));
             this.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDashboard.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnDashboard.Location = new System.Drawing.Point(8, 226);
+            this.btnDashboard.Location = new System.Drawing.Point(8, 229);
             this.btnDashboard.Margin = new System.Windows.Forms.Padding(4);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(277, 47);
@@ -289,8 +290,9 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLine1
             // 
-            this.pnlLine1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(120)))), ((int)(((byte)(103)))));
-            this.pnlLine1.Location = new System.Drawing.Point(0, 194);
+            this.pnlLine1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.pnlLine1.FillThickness = 5;
+            this.pnlLine1.Location = new System.Drawing.Point(0, 166);
             this.pnlLine1.Margin = new System.Windows.Forms.Padding(4);
             this.pnlLine1.Name = "pnlLine1";
             this.pnlLine1.Size = new System.Drawing.Size(293, 1);
@@ -301,12 +303,12 @@ namespace HospitalX.GUI.PH2
             this.pnlProfile.Controls.Add(this.lblVpdBadge);
             this.pnlProfile.Controls.Add(this.lblRole);
             this.pnlProfile.Controls.Add(this.lblTenDPV);
-            this.pnlProfile.Controls.Add(this.lblAvatarIni);
+            this.pnlProfile.Controls.Add(this.ptbAdmin);
             this.pnlProfile.FillColor = System.Drawing.Color.Transparent;
-            this.pnlProfile.Location = new System.Drawing.Point(0, 84);
+            this.pnlProfile.Location = new System.Drawing.Point(1, 92);
             this.pnlProfile.Margin = new System.Windows.Forms.Padding(4);
             this.pnlProfile.Name = "pnlProfile";
-            this.pnlProfile.Size = new System.Drawing.Size(293, 110);
+            this.pnlProfile.Size = new System.Drawing.Size(293, 65);
             this.pnlProfile.TabIndex = 1;
             // 
             // lblVpdBadge
@@ -314,10 +316,10 @@ namespace HospitalX.GUI.PH2
             this.lblVpdBadge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(213)))), ((int)(((byte)(79)))));
             this.lblVpdBadge.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
             this.lblVpdBadge.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lblVpdBadge.Location = new System.Drawing.Point(200, 59);
+            this.lblVpdBadge.Location = new System.Drawing.Point(180, 16);
             this.lblVpdBadge.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblVpdBadge.Name = "lblVpdBadge";
-            this.lblVpdBadge.Size = new System.Drawing.Size(48, 22);
+            this.lblVpdBadge.Size = new System.Drawing.Size(38, 16);
             this.lblVpdBadge.TabIndex = 3;
             this.lblVpdBadge.Text = "VPD";
             this.lblVpdBadge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -327,37 +329,39 @@ namespace HospitalX.GUI.PH2
             this.lblRole.AutoSize = true;
             this.lblRole.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRole.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblRole.Location = new System.Drawing.Point(104, 62);
+            this.lblRole.Location = new System.Drawing.Point(84, 17);
             this.lblRole.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRole.Name = "lblRole";
             this.lblRole.Size = new System.Drawing.Size(87, 15);
             this.lblRole.TabIndex = 2;
             this.lblRole.Text = "Điều phối viên";
+            this.lblRole.Click += new System.EventHandler(this.lblRole_Click);
             // 
             // lblTenDPV
             // 
             this.lblTenDPV.AutoSize = true;
             this.lblTenDPV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenDPV.ForeColor = System.Drawing.Color.White;
-            this.lblTenDPV.Location = new System.Drawing.Point(104, 32);
+            this.lblTenDPV.Location = new System.Drawing.Point(81, 36);
             this.lblTenDPV.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTenDPV.Name = "lblTenDPV";
             this.lblTenDPV.Size = new System.Drawing.Size(120, 20);
             this.lblTenDPV.TabIndex = 1;
             this.lblTenDPV.Text = "Lê Hoài Thương";
             // 
-            // lblAvatarIni
+            // ptbAdmin
             // 
-            this.lblAvatarIni.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(120)))), ((int)(((byte)(103)))));
-            this.lblAvatarIni.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblAvatarIni.ForeColor = System.Drawing.Color.White;
-            this.lblAvatarIni.Location = new System.Drawing.Point(24, 25);
-            this.lblAvatarIni.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblAvatarIni.Name = "lblAvatarIni";
-            this.lblAvatarIni.Size = new System.Drawing.Size(64, 59);
-            this.lblAvatarIni.TabIndex = 0;
-            this.lblAvatarIni.Text = "LH";
-            this.lblAvatarIni.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ptbAdmin.BackColor = System.Drawing.Color.Transparent;
+            this.ptbAdmin.FillColor = System.Drawing.Color.Transparent;
+            this.ptbAdmin.Image = ((System.Drawing.Image)(resources.GetObject("ptbAdmin.Image")));
+            this.ptbAdmin.ImageRotate = 0F;
+            this.ptbAdmin.Location = new System.Drawing.Point(24, 12);
+            this.ptbAdmin.Name = "ptbAdmin";
+            this.ptbAdmin.Size = new System.Drawing.Size(48, 44);
+            this.ptbAdmin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbAdmin.TabIndex = 0;
+            this.ptbAdmin.TabStop = false;
+            this.ptbAdmin.UseTransparentBackground = true;
             // 
             // pnlTopRight
             // 
@@ -369,7 +373,7 @@ namespace HospitalX.GUI.PH2
             this.pnlTopRight.Location = new System.Drawing.Point(0, 0);
             this.pnlTopRight.Margin = new System.Windows.Forms.Padding(4);
             this.pnlTopRight.Name = "pnlTopRight";
-            this.pnlTopRight.Size = new System.Drawing.Size(293, 84);
+            this.pnlTopRight.Size = new System.Drawing.Size(293, 86);
             this.pnlTopRight.TabIndex = 0;
             // 
             // lblHospital
@@ -377,7 +381,7 @@ namespace HospitalX.GUI.PH2
             this.lblHospital.BackColor = System.Drawing.Color.Transparent;
             this.lblHospital.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHospital.ForeColor = System.Drawing.Color.Lime;
-            this.lblHospital.Location = new System.Drawing.Point(91, 25);
+            this.lblHospital.Location = new System.Drawing.Point(88, 26);
             this.lblHospital.Margin = new System.Windows.Forms.Padding(4);
             this.lblHospital.Name = "lblHospital";
             this.lblHospital.Size = new System.Drawing.Size(100, 15);
@@ -386,8 +390,9 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLine2
             // 
-            this.pnlLine2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(120)))), ((int)(((byte)(103)))));
-            this.pnlLine2.Location = new System.Drawing.Point(0, 83);
+            this.pnlLine2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.pnlLine2.FillThickness = 5;
+            this.pnlLine2.Location = new System.Drawing.Point(0, 80);
             this.pnlLine2.Margin = new System.Windows.Forms.Padding(4);
             this.pnlLine2.Name = "pnlLine2";
             this.pnlLine2.Size = new System.Drawing.Size(293, 1);
@@ -398,7 +403,7 @@ namespace HospitalX.GUI.PH2
             this.lblQTCSDLBV.BackColor = System.Drawing.Color.Transparent;
             this.lblQTCSDLBV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblQTCSDLBV.ForeColor = System.Drawing.Color.White;
-            this.lblQTCSDLBV.Location = new System.Drawing.Point(91, 44);
+            this.lblQTCSDLBV.Location = new System.Drawing.Point(87, 44);
             this.lblQTCSDLBV.Margin = new System.Windows.Forms.Padding(4);
             this.lblQTCSDLBV.Name = "lblQTCSDLBV";
             this.lblQTCSDLBV.Size = new System.Drawing.Size(86, 22);
@@ -407,12 +412,12 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLogo
             // 
-            this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
+            this.pnlLogo.BorderColor = System.Drawing.Color.Green;
             this.pnlLogo.BorderRadius = 25;
             this.pnlLogo.BorderThickness = 1;
             this.pnlLogo.Controls.Add(this.ptbChuThap);
             this.pnlLogo.FillColor = System.Drawing.Color.White;
-            this.pnlLogo.Location = new System.Drawing.Point(13, 10);
+            this.pnlLogo.Location = new System.Drawing.Point(11, 7);
             this.pnlLogo.Margin = new System.Windows.Forms.Padding(4);
             this.pnlLogo.Name = "pnlLogo";
             this.pnlLogo.Size = new System.Drawing.Size(61, 57);
@@ -517,6 +522,7 @@ namespace HospitalX.GUI.PH2
             this.pnlSidebar.ResumeLayout(false);
             this.pnlProfile.ResumeLayout(false);
             this.pnlProfile.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).EndInit();
             this.pnlTopRight.ResumeLayout(false);
             this.pnlTopRight.PerformLayout();
             this.pnlLogo.ResumeLayout(false);
@@ -538,7 +544,7 @@ namespace HospitalX.GUI.PH2
         private Guna.UI2.WinForms.Guna2Panel pnlLogo;
         private Guna.UI2.WinForms.Guna2PictureBox ptbChuThap;
         private Guna.UI2.WinForms.Guna2Panel pnlProfile;
-        private System.Windows.Forms.Label lblAvatarIni;
+        private Guna.UI2.WinForms.Guna2PictureBox ptbAdmin;
         private System.Windows.Forms.Label lblTenDPV;
         private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Label lblVpdBadge;
