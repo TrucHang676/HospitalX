@@ -11,7 +11,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         {
             _record = record;
             InitializeComponent();
-            PolishLayout();
             BindData();
         }
 

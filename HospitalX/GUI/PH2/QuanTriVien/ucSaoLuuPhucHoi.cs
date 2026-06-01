@@ -19,7 +19,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         public ucSaoLuuPhucHoi()
         {
             InitializeComponent();
-            PolishStaticLayout();
             SeedData();
             WireEvents();
             RenderHistory();
@@ -37,7 +36,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             chkFull.CheckedChanged += BackupTypeChanged;
             chkIncremental.CheckedChanged += BackupTypeChanged;
             dgvHistory.CellPainting += dgvHistory_CellPainting;
-            flowRestoreCards.Resize += (s, e) => RenderRestoreCards();
 
             _backupTimer = new Timer { Interval = 180 };
             _backupTimer.Tick += BackupTimer_Tick;
