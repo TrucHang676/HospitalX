@@ -53,8 +53,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             if (!string.IsNullOrEmpty(_preloadedPatientId))
             {
+                SetMode(true); // Switch directly to Edit Mode!
                 txtSearch.Text = _preloadedPatientId;
-                ExecuteSearch();
+                ExecuteSearch(true); // Load silently without showing redundant confirmation dialog
             }
         }
 
@@ -143,6 +144,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 btnSave.Text = "Lưu thay đổi";
                 btnSave.ImageOffset = new Point(16, 0);
                 btnSave.TextOffset = new Point(8, 0);
+                UpdateMainFormHeader("Sửa thông tin bệnh nhân");
             }
             else
             {
@@ -166,10 +168,27 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 btnSave.Text = "Thêm bệnh nhân";
                 btnSave.ImageOffset = new Point(14, 0);
                 btnSave.TextOffset = new Point(12, 0);
+                UpdateMainFormHeader("Thêm bệnh nhân mới");
             }
 
             // Trigger dynamic co-sizing and positioning updates
             AdjustLayoutSizes();
+        }
+
+        private void UpdateMainFormHeader(string title)
+        {
+            var form = this.FindForm();
+            if (form == null) return;
+
+            var main = form as Main_DPV;
+            if (main != null)
+            {
+                var controls = main.Controls.Find("lblHeaderTitle", true);
+                if (controls.Length > 0 && controls[0] is Label lbl)
+                {
+                    lbl.Text = title;
+                }
+            }
         }
 
         private void ClearAllFields()
@@ -403,7 +422,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
         }
 
-        private void ExecuteSearch()
+        private void ExecuteSearch(bool silent = false)
         {
             string query = txtSearch.Text.Trim();
             if (string.IsNullOrWhiteSpace(query))
@@ -539,16 +558,19 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 btnSave.Text = "Lưu thay đổi";
 
-                if (this.guna2MessageDialog1 == null)
+                if (!silent)
                 {
-                    this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
+                    if (this.guna2MessageDialog1 == null)
+                    {
+                        this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
+                    }
+                    guna2MessageDialog1.Parent = this.FindForm();
+                    guna2MessageDialog1.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
+                    guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                    guna2MessageDialog1.Caption = "Tìm thấy bệnh nhân";
+                    guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
+                    guna2MessageDialog1.Show($"Đã tìm thấy và tải thông tin bệnh nhân \"{foundName}\" thành công.");
                 }
-                guna2MessageDialog1.Parent = this.FindForm();
-                guna2MessageDialog1.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
-                guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
-                guna2MessageDialog1.Caption = "Tìm thấy bệnh nhân";
-                guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
-                guna2MessageDialog1.Show($"Đã tìm thấy và tải thông tin bệnh nhân \"{foundName}\" thành công.");
             }
             else
             {

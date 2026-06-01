@@ -176,7 +176,7 @@ namespace HospitalX.GUI.PH2
             {
                 uc.PreloadPatient(patientId);
             }
-            LoadPage(uc, "Thêm bệnh nhân mới", "/ BỆNH NHÂN");
+            LoadPage(uc, string.IsNullOrEmpty(patientId) ? "Thêm bệnh nhân mới" : "Sửa thông tin bệnh nhân", "/ BỆNH NHÂN");
             btnThemSuaBN.Checked = true;
         }
 

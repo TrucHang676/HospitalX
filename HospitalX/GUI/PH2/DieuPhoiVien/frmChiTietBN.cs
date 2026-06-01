@@ -114,8 +114,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (imgEdit != null)
             {
                 btnEdit.Image = imgEdit;
-                btnEdit.ImageSize = new Size(20, 20);
-                btnEdit.ImageOffset = new Point(0, 0);
+                btnEdit.ImageSize = new Size(22, 22);
+                btnEdit.ImageOffset = new Point(0, 1);
                 btnEdit.TextOffset = new Point(0, 0);
             }
         }

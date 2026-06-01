@@ -636,6 +636,19 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Setup table header buttons anchor
             btnSelectAll.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
+            // Setup Select All button with image instead of unicode character
+            Image imgSelectAll = DpvAssets.Load("buttonTick.png");
+            if (imgSelectAll != null)
+            {
+                btnSelectAll.Image = imgSelectAll;
+                btnSelectAll.ImageSize = new Size(16, 16);
+                btnSelectAll.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+                btnSelectAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+                btnSelectAll.ImageOffset = new Point(8, 0);
+                btnSelectAll.TextOffset = new Point(12, 0);
+            }
+            btnSelectAll.Text = "Chọn tất cả";
+
             // Setup Table Title Icon (replacing unicode emoji)
             var ptbTableTitleIcon = new Guna.UI2.WinForms.Guna2PictureBox();
             ptbTableTitleIcon.Image = DpvAssets.Load("dpv_2.png");
