@@ -726,11 +726,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
         }
 
-        // Keep overlay click handler since it's still wired in Designer
-        private void pnlModalOverlay_Click(object sender, EventArgs e)
-        {
-            pnlModalOverlay.Visible = false;
-        }
+
 
         // Helpers
         private static int MeasureStatusPillWidth(Graphics g, string text, int maxWidth)

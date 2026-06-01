@@ -54,13 +54,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnChipPending = new Guna.UI2.WinForms.Guna2Button();
             this.btnChipActive = new Guna.UI2.WinForms.Guna2Button();
             this.btnChipAll = new Guna.UI2.WinForms.Guna2Button();
-            this.pnlModalOverlay = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlModal = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlScroll.SuspendLayout();
             this.pnlTableCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPatients)).BeginInit();
             this.pnlFilterBar.SuspendLayout();
-            this.pnlModalOverlay.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlScroll
@@ -591,36 +588,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnChipAll.Text = "Tất cả (48)";
             this.btnChipAll.Click += new System.EventHandler(this.btnChip_Click);
             // 
-            // pnlModalOverlay
-            // 
-            this.pnlModalOverlay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.pnlModalOverlay.Controls.Add(this.pnlModal);
-            this.pnlModalOverlay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlModalOverlay.Location = new System.Drawing.Point(0, 0);
-            this.pnlModalOverlay.Name = "pnlModalOverlay";
-            this.pnlModalOverlay.Size = new System.Drawing.Size(1453, 958);
-            this.pnlModalOverlay.TabIndex = 1;
-            this.pnlModalOverlay.Visible = false;
-            this.pnlModalOverlay.Click += new System.EventHandler(this.pnlModalOverlay_Click);
-            // 
-            // pnlModal — content is built programmatically in SetupModal()
-            // 
-            this.pnlModal.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlModal.BorderRadius = 16;
-            this.pnlModal.BorderThickness = 1;
-            this.pnlModal.FillColor = System.Drawing.Color.White;
-            this.pnlModal.Location = new System.Drawing.Point(466, 259);
-            this.pnlModal.Name = "pnlModal";
-            this.pnlModal.Size = new System.Drawing.Size(520, 440);
-            this.pnlModal.TabIndex = 0;
-            // 
 
             // 
             // ucDanhSachBN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.pnlModalOverlay);
             this.Controls.Add(this.pnlScroll);
             this.Name = "ucDanhSachBN";
             this.Size = new System.Drawing.Size(1453, 958);
@@ -631,7 +604,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ((System.ComponentModel.ISupportInitialize)(this.dgvPatients)).EndInit();
             this.pnlFilterBar.ResumeLayout(false);
             this.pnlFilterBar.PerformLayout();
-            this.pnlModalOverlay.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -665,8 +637,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Guna.UI2.WinForms.Guna2Button btnChipPending;
         private Guna.UI2.WinForms.Guna2Button btnChipActive;
         private Guna.UI2.WinForms.Guna2Button btnChipAll;
-        private Guna.UI2.WinForms.Guna2Panel pnlModalOverlay;
-        private Guna.UI2.WinForms.Guna2Panel pnlModal;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colCheck;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaBN;
         private System.Windows.Forms.DataGridViewTextBoxColumn colHoTen;
