@@ -10,6 +10,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
     public partial class ucThemSuaBN : UserControl
     {
         private bool _isEditMode = false;
+        private string _preloadedPatientId = null;
+
+        public void PreloadPatient(string patientId)
+        {
+            _preloadedPatientId = patientId;
+        }
 
         [DllImport("user32.dll")]
         private static extern bool HideCaret(IntPtr hWnd);
@@ -44,6 +50,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Handle resize
             this.Resize += (s, ev) => AdjustLayoutSizes();
             AdjustLayoutSizes();
+
+            if (!string.IsNullOrEmpty(_preloadedPatientId))
+            {
+                txtSearch.Text = _preloadedPatientId;
+                ExecuteSearch();
+            }
         }
 
         private void InitComboBoxes()

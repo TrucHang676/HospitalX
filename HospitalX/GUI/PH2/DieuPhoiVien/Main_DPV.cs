@@ -169,9 +169,14 @@ namespace HospitalX.GUI.PH2
         }
 
         /// <summary>Navigate to "Thêm / Sửa bệnh nhân" tab. Called from child user controls.</summary>
-        public void NavigateToThemSuaBN()
+        public void NavigateToThemSuaBN(string patientId = null)
         {
-            LoadPage(new ucThemSuaBN(), "Thêm bệnh nhân mới", "/ BỆNH NHÂN");
+            var uc = new ucThemSuaBN();
+            if (!string.IsNullOrEmpty(patientId))
+            {
+                uc.PreloadPatient(patientId);
+            }
+            LoadPage(uc, "Thêm bệnh nhân mới", "/ BỆNH NHÂN");
             btnThemSuaBN.Checked = true;
         }
 

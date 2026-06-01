@@ -29,7 +29,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private int cboSortSelectedIndex = 0;
         private Image _imgEyeOpen = null;
         private Image _imgDpv3 = null;
-        private Image _imgBin = null;
         private int _hoveredButtonIndex = -1;
         private int _hoveredButtonRowIndex = -1;
         private bool _isAllSelectedToggle = false;
@@ -45,7 +44,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             _imgEyeOpen = DpvAssets.Load("eye_open.png");
             _imgDpv3 = DpvAssets.Load("dpv_3.png");
-            _imgBin = DpvAssets.Load("bin.png");
 
             InitMockData();
             SetupPatientGrid();
@@ -64,36 +62,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             PatientModel.InitializeSharedPatients();
             _allPatients.Clear();
             _allPatients.AddRange(PatientModel.SharedPatients);
-            UpdateChipCounts();
-        }
-
-        private void UpdateChipCounts()
-        {
-            int total = _allPatients.Count;
-            int active = _allPatients.Count(p => p.Status == "active");
-            int pending = _allPatients.Count(p => p.Status == "pending");
-            int urgent = _allPatients.Count(p => p.Status == "urgent");
-
-            btnChipAll.Text = $"Tất cả ({total})";
-            btnChipActive.Text = $"Đang điều trị ({active})";
-            btnChipPending.Text = $"Chờ xử lý ({pending})";
-            btnChipUrgent.Text = $"Cần điều phối KTV ({urgent})";
-
-            UpdateChipStyles();
         }
 
         private void InitComboBoxes()
         {
-            cboKhoa.Items.Clear();
-            cboKhoa.Items.Add("Tất cả khoa");
-            cboKhoa.Items.Add("Tim mạch");
-            cboKhoa.Items.Add("Nội tổng quát");
-            cboKhoa.Items.Add("Chỉnh hình");
-            cboKhoa.Items.Add("Sản khoa");
-            cboKhoa.Items.Add("Thần kinh");
-            cboKhoa.Items.Add("Nhi khoa");
-            cboKhoa.SelectedIndex = 0;
-
             cboGioiTinh.Items.Clear();
             cboGioiTinh.Items.Add("Tất cả");
             cboGioiTinh.Items.Add("Nam");
@@ -101,14 +73,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cboGioiTinh.SelectedIndex = 0;
 
             cboSortSelectedIndex = 0; // Mới nhất
-
-            dtpFrom.Format = DateTimePickerFormat.Custom;
-            dtpFrom.CustomFormat = "MM/dd/yyyy";
-            dtpTo.Format = DateTimePickerFormat.Custom;
-            dtpTo.CustomFormat = "MM/dd/yyyy";
-
-            dtpFrom.Value = new DateTime(2026, 5, 1);
-            dtpTo.Value = new DateTime(2026, 5, 24);
         }
 
         private void SetupPatientGrid()
@@ -136,7 +100,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvPatients.DefaultCellStyle.BackColor = Color.White;
             dgvPatients.DefaultCellStyle.SelectionBackColor = RowHoverBack;
             dgvPatients.DefaultCellStyle.SelectionForeColor = Color.FromArgb(61, 82, 73);
-            dgvPatients.DefaultCellStyle.Padding = new Padding(12, 0, 8, 0);
+            dgvPatients.DefaultCellStyle.Padding = new Padding(12, 4, 8, 4);
+            dgvPatients.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
             dgvPatients.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
             dgvPatients.RowsDefaultCellStyle.BackColor = Color.White;
@@ -147,14 +112,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvPatients.ShowCellToolTips = false;
 
             colCheck.Width = 40;
-            colMaBN.FillWeight = 12F;
-            colHoTen.FillWeight = 18F;
-            colDob.FillWeight = 12F;
-            colGioiTinh.FillWeight = 10F;
-            colKhoa.FillWeight = 14F;
-            colBacSi.FillWeight = 14F;
-            colDate.FillWeight = 14F;
-            colStatus.FillWeight = 16F;
+            colMaBN.FillWeight = 8F;
+            colHoTen.FillWeight = 16F;
+            colDob.FillWeight = 10F;
+            colGioiTinh.FillWeight = 8F;
+            colCccd.FillWeight = 12F;
+            colSoNha.FillWeight = 6F;
+            colTenDuong.FillWeight = 14F;
+            colQuanHuyen.FillWeight = 12F;
+            colTinhTP.FillWeight = 10F;
             colThaoTac.Width = 180;
 
             foreach (DataGridViewColumn col in dgvPatients.Columns)
@@ -177,11 +143,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void ApplyFilter()
         {
             string query = RemoveDiacritics(txtSearch.Text.Trim());
-            string selectedKhoa = cboKhoa.SelectedIndex > 0 ? cboKhoa.SelectedItem.ToString() : null;
             string selectedGender = cboGioiTinh.SelectedIndex > 0 ? cboGioiTinh.SelectedItem.ToString() : null;
-
-            DateTime fromDate = dtpFrom.Value.Date;
-            DateTime toDate = dtpTo.Value.Date;
 
             _filteredPatients = _allPatients.Where(p =>
             {
@@ -191,24 +153,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                                      RemoveDiacritics(p.Id).Contains(query) ||
                                      RemoveDiacritics(p.Cccd).Contains(query);
 
-                // Department condition
-                bool matchesKhoa = selectedKhoa == null || p.Khoa == selectedKhoa;
-
                 // Gender condition
                 bool matchesGender = selectedGender == null || p.Gender == selectedGender;
 
-                // Date condition
-                DateTime pDate;
-                bool matchesDate = false;
-                if (DateTime.TryParseExact(p.Date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out pDate))
-                {
-                    matchesDate = pDate >= fromDate && pDate <= toDate;
-                }
-
-                // Tab Status condition
-                bool matchesStatus = _activeChipStatus == "all" || p.Status == _activeChipStatus;
-
-                return matchesSearch && matchesKhoa && matchesGender && matchesDate && matchesStatus;
+                return matchesSearch && matchesGender;
             }).ToList();
 
             // Sort
@@ -217,7 +165,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 _filteredPatients = _filteredPatients.OrderByDescending(p =>
                 {
                     DateTime d;
-                    return DateTime.TryParseExact(p.Date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out d) ? d : DateTime.MinValue;
+                    return DateTime.TryParseExact(p.Dob, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out d) ? d : DateTime.MinValue;
                 }).ThenByDescending(p => p.Id).ToList();
             }
             else // Oldest
@@ -225,7 +173,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 _filteredPatients = _filteredPatients.OrderBy(p =>
                 {
                     DateTime d;
-                    return DateTime.TryParseExact(p.Date, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out d) ? d : DateTime.MaxValue;
+                    return DateTime.TryParseExact(p.Dob, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out d) ? d : DateTime.MaxValue;
                 }).ThenBy(p => p.Id).ToList();
             }
 
@@ -250,7 +198,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             foreach (var p in pageItems)
             {
-                dgvPatients.Rows.Add(false, p.Id, p.Name, p.Dob, p.Gender, p.Khoa, p.Bs, p.Date, p.StatusLabel, "");
+                dgvPatients.Rows.Add(false, p.Id, p.Name, p.Dob, p.Gender, p.Cccd, p.SoNha, p.TenDuong, p.QuanHuyen, p.TinhTP, "");
             }
 
             lblTableMeta.Text = $"Hiển thị {pageItems.Count} / {_filteredPatients.Count} bệnh nhân";
@@ -279,24 +227,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
         }
 
-        private void btnChip_Click(object sender, EventArgs e)
-        {
-            var btn = (Guna2Button)sender;
-            btnChipAll.Checked = false;
-            btnChipActive.Checked = false;
-            btnChipPending.Checked = false;
-            btnChipUrgent.Checked = false;
-            btn.Checked = true;
-
-            if (btn == btnChipAll) _activeChipStatus = "all";
-            else if (btn == btnChipActive) _activeChipStatus = "active";
-            else if (btn == btnChipPending) _activeChipStatus = "pending";
-            else if (btn == btnChipUrgent) _activeChipStatus = "urgent";
-
-            UpdateChipStyles();
-            ApplyFilter();
-        }
-
         private void Filter_Changed(object sender, EventArgs e)
         {
             ApplyFilter();
@@ -305,24 +235,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void btnReset_Click(object sender, EventArgs e)
         {
             txtSearch.Text = "";
-            cboKhoa.SelectedIndex = 0;
             cboGioiTinh.SelectedIndex = 0;
             cboSortSelectedIndex = 0;
-            dtpFrom.Value = new DateTime(2026, 5, 1);
-            dtpTo.Value = new DateTime(2026, 5, 24);
-
-            btnChipAll.Checked = true;
-            btnChipActive.Checked = false;
-            btnChipPending.Checked = false;
-            btnChipUrgent.Checked = false;
-            _activeChipStatus = "all";
-
             ApplyFilter();
-        }
-
-        private void btnExcel_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Chức năng xuất excel đang được phát triển.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnSelectAll_Click(object sender, EventArgs e)
@@ -331,50 +246,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             foreach (DataGridViewRow row in dgvPatients.Rows)
             {
                 row.Cells[colCheck.Index].Value = _isAllSelectedToggle;
-            }
-        }
-
-        private void btnDeleteSelected_Click(object sender, EventArgs e)
-        {
-            var selectedIds = new List<string>();
-            foreach (DataGridViewRow row in dgvPatients.Rows)
-            {
-                if (Convert.ToBoolean(row.Cells[colCheck.Index].Value))
-                {
-                    selectedIds.Add(Convert.ToString(row.Cells[colMaBN.Index].Value));
-                }
-            }
-
-            if (selectedIds.Count == 0)
-            {
-                MessageBox.Show("Vui lòng chọn ít nhất một bệnh nhân để thực hiện thao tác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Special case: If user selected ALL rows in the current view, uncheck all of them instead of deleting.
-            if (selectedIds.Count == dgvPatients.Rows.Count && dgvPatients.Rows.Count > 0)
-            {
-                foreach (DataGridViewRow row in dgvPatients.Rows)
-                {
-                    row.Cells[colCheck.Index].Value = false;
-                }
-                _isAllSelectedToggle = false;
-                return;
-            }
-
-            // Normal case: Delete selected patients
-            var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa {selectedIds.Count} bệnh nhân đã chọn không?", 
-                "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                foreach (var id in selectedIds)
-                {
-                    var p = _allPatients.FirstOrDefault(x => x.Id == id);
-                    if (p != null) _allPatients.Remove(p);
-                }
-                UpdateChipCounts();
-                ApplyFilter();
-                MessageBox.Show($"Đã xóa {selectedIds.Count} bệnh nhân thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -420,34 +291,17 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 using (var boldFont = new Font(dgvPatients.DefaultCellStyle.Font, FontStyle.Bold))
                 {
+                    Size proposedSizeName = new Size(cell.Width - 18, cell.Height);
+                    Size textSizeName = TextRenderer.MeasureText(value, boldFont, proposedSizeName, TextFormatFlags.Left | TextFormatFlags.WordBreak);
+                    int textYName = cell.Y + (cell.Height - textSizeName.Height) / 2;
+                    if (textYName < cell.Y) textYName = cell.Y;
+
+                    Rectangle textRectName = new Rectangle(cell.X + 14, textYName, cell.Width - 18, textSizeName.Height);
                     TextRenderer.DrawText(e.Graphics, value, boldFont,
-                        new Rectangle(cell.X + 14, cell.Y, cell.Width - 18, cell.Height),
+                        textRectName,
                         Color.FromArgb(24, 48, 42),
-                        TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                        TextFormatFlags.Left | TextFormatFlags.WordBreak);
                 }
-                e.Handled = true;
-                return;
-            }
-
-            if (e.ColumnIndex == colStatus.Index)
-            {
-                GetStatusColors(value, out Color back, out Color fore, out Color dot);
-                int maxPillW = cell.Width - 16;
-                int pillWidth = MeasureStatusPillWidth(e.Graphics, value, maxPillW);
-                Rectangle pill = new Rectangle(cell.X + 12, cell.Y + (cell.Height - 30) / 2, pillWidth, 30);
-                
-                using (var brush = new SolidBrush(back))
-                    e.Graphics.FillRoundedRectangle(brush, pill, 14);
-
-                using (var brush = new SolidBrush(dot))
-                    e.Graphics.FillEllipse(brush, pill.X + 12, pill.Y + 11, 7, 7);
-
-                var textFlags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding;
-                if (pillWidth < MeasureStatusPillWidth(e.Graphics, value, int.MaxValue))
-                    textFlags |= TextFormatFlags.EndEllipsis;
-
-                TextRenderer.DrawText(e.Graphics, value, StatusFont,
-                    new Rectangle(pill.X + 24, pill.Y, pill.Width - 28, pill.Height), fore, textFlags);
                 e.Handled = true;
                 return;
             }
@@ -499,7 +353,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
                 if (_imgDpv3 != null)
                 {
-                    int iconSize = 20; // Increased icon size from 16 to 20 for better visibility
+                    int iconSize = 20;
                     int iconY2 = btnY + (btnH - iconSize) / 2;
                     int iconX2 = rect2.X + 5;
                     e.Graphics.DrawImage(_imgDpv3, new Rectangle(iconX2, iconY2, iconSize, iconSize));
@@ -507,61 +361,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 Rectangle rectText2 = new Rectangle(rect2.X + 29, rect2.Y, rect2.Width - 33, rect2.Height);
                 TextRenderer.DrawText(e.Graphics, "Sửa", dgvPatients.DefaultCellStyle.Font, rectText2, fore2, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
 
-                // Button 3: Xóa (185 to 217)
-                bool hover3 = (e.RowIndex == _hoveredButtonRowIndex) && (_hoveredButtonIndex == 3);
-                Rectangle rect3 = new Rectangle(cell.X + 185, btnY, 32, btnH);
-                Color border3 = hover3 ? Color.FromArgb(224, 92, 58) : Color.FromArgb(218, 232, 226);
-                Color back3 = hover3 ? Color.FromArgb(254, 233, 230) : bg;
-                Color fore3 = Color.FromArgb(168, 42, 20);
-
-                using (var bBrush = new SolidBrush(back3))
-                    e.Graphics.FillRoundedRectangle(bBrush, rect3, 6);
-                using (var pen = new Pen(border3))
-                    e.Graphics.DrawRoundedRectangle(pen, rect3, 6);
-
-                if (_imgBin != null)
-                {
-                    int iconSize = 16;
-                    int iconY3 = btnY + (btnH - iconSize) / 2;
-                    int iconX3 = rect3.X + (rect3.Width - iconSize) / 2;
-                    e.Graphics.DrawImage(_imgBin, new Rectangle(iconX3, iconY3, iconSize, iconSize));
-                }
-                else
-                {
-                    // Fallback to custom GDI+ drawing if image fails to load
-                    int tW = 12;
-                    int tH = 14;
-                    int tX = rect3.X + (rect3.Width - tW) / 2;
-                    int tY = rect3.Y + (rect3.Height - tH) / 2;
-
-                    using (var pen = new Pen(fore3, 1.5F))
-                    {
-                        // Lid horizontal line
-                        e.Graphics.DrawLine(pen, tX - 1, tY + 2, tX + tW + 1, tY + 2);
-                        // Lid handle (top loop)
-                        e.Graphics.DrawLine(pen, tX + 3, tY + 2, tX + 3, tY);
-                        e.Graphics.DrawLine(pen, tX + 3, tY, tX + tW - 3, tY);
-                        e.Graphics.DrawLine(pen, tX + tW - 3, tY, tX + tW - 3, tY + 2);
-
-                        // Body outline
-                        e.Graphics.DrawLine(pen, tX + 1, tY + 2, tX + 2, tY + tH);
-                        e.Graphics.DrawLine(pen, tX + tW - 1, tY + 2, tX + tW - 2, tY + tH);
-                        e.Graphics.DrawLine(pen, tX + 2, tY + tH, tX + tW - 2, tY + tH);
-
-                        // Inner vertical lines
-                        e.Graphics.DrawLine(pen, tX + 4, tY + 5, tX + 4, tY + tH - 3);
-                        e.Graphics.DrawLine(pen, tX + tW - 4, tY + 5, tX + tW - 4, tY + tH - 3);
-                    }
-                }
-
                 return;
             }
 
             // Normal columns
+            Size proposedSize = new Size(cell.Width - 18, cell.Height);
+            Size textSize = TextRenderer.MeasureText(value, dgvPatients.DefaultCellStyle.Font, proposedSize, TextFormatFlags.Left | TextFormatFlags.WordBreak);
+            int textY = cell.Y + (cell.Height - textSize.Height) / 2;
+            if (textY < cell.Y) textY = cell.Y;
+
+            Rectangle textRect = new Rectangle(cell.X + 14, textY, cell.Width - 18, textSize.Height);
             TextRenderer.DrawText(e.Graphics, value, dgvPatients.DefaultCellStyle.Font,
-                new Rectangle(cell.X + 14, cell.Y, cell.Width - 18, cell.Height),
+                textRect,
                 Color.FromArgb(61, 82, 73),
-                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                TextFormatFlags.Left | TextFormatFlags.WordBreak);
             e.Handled = true;
         }
 
@@ -593,7 +406,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 {
                     if (rx >= 10 && rx <= 95) currentBtnIdx = 1;
                     else if (rx >= 105 && rx <= 175) currentBtnIdx = 2;
-                    else if (rx >= 185 && rx <= 217) currentBtnIdx = 3;
                 }
 
                 if (currentBtnIdx != _hoveredButtonIndex || hit.RowIndex != _hoveredButtonRowIndex)
@@ -674,27 +486,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     var mainEdit = this.FindForm() as Main_DPV;
                     if (mainEdit != null)
                     {
-                        mainEdit.NavigateToThemSuaBN();
+                        mainEdit.NavigateToThemSuaBN(patient.Id);
                     }
                 }
-                // Click third button: Xóa (X bounds inside cell: 185 to 217)
-                else if (relativeX >= 185 && relativeX <= 217)
-                {
-                    ShowDeleteConfirm(patient);
-                }
-            }
-        }
-
-        private void ShowDeleteConfirm(PatientModel p)
-        {
-            var result = MessageBox.Show($"Bạn có chắc chắn muốn xóa bệnh nhân {p.Name} ({p.Id}) không?", 
-                "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                _allPatients.Remove(p);
-                UpdateChipCounts();
-                ApplyFilter();
-                MessageBox.Show($"Đã xóa bệnh nhân {p.Name} thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -715,7 +509,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     case frmChiTietBN.ActionResult.EditPatient:
                         var mainEdit = this.FindForm() as Main_DPV;
                         if (mainEdit != null)
-                            mainEdit.NavigateToThemSuaBN();
+                            mainEdit.NavigateToThemSuaBN(p.Id);
                         break;
                     case frmChiTietBN.ActionResult.ViewHSBA:
                         var mainHsba = this.FindForm() as Main_DPV;
@@ -787,50 +581,45 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnReset.ImageSize = new Size(16, 16);
             btnReset.ImageOffset = new Point(0, 0);
 
-            btnExcel.Anchor = AnchorStyles.Top | AnchorStyles.Left;
-            btnExcel.Text = "Xuất Excel";
-            btnExcel.Image = DpvAssets.Load("spreadsheet.png");
-            btnExcel.ImageSize = new Size(16, 16);
-            btnExcel.ImageOffset = new Point(0, 0);
-
-            // Setup DateTimePickers style (RightToLeft to No, so the calendar icon is on the right)
-            dtpFrom.RightToLeft = RightToLeft.No;
-            dtpTo.RightToLeft = RightToLeft.No;
 
             // Setup proper column widths & minimum widths to prevent any value clipping
             colCheck.Width = 40;
             colCheck.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
-            colMaBN.MinimumWidth = 100;
+            colMaBN.MinimumWidth = 80;
             colMaBN.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             colHoTen.MinimumWidth = 160;
             colHoTen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colDob.MinimumWidth = 110;
+            colDob.MinimumWidth = 100;
             colDob.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colGioiTinh.MinimumWidth = 90;
+            colGioiTinh.MinimumWidth = 80;
             colGioiTinh.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colKhoa.MinimumWidth = 130;
-            colKhoa.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colCccd.MinimumWidth = 120;
+            colCccd.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colBacSi.MinimumWidth = 140;
-            colBacSi.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colSoNha.MinimumWidth = 65;
+            colSoNha.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colDate.MinimumWidth = 130;
-            colDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colTenDuong.MinimumWidth = 150;
+            colTenDuong.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colStatus.MinimumWidth = 170;
-            colStatus.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colQuanHuyen.MinimumWidth = 130;
+            colQuanHuyen.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colThaoTac.Width = 220;
+            colTinhTP.MinimumWidth = 110;
+            colTinhTP.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            colThaoTac.Width = 180;
             colThaoTac.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
             // Set grid default style to clean sans-serif
             dgvPatients.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             dgvPatients.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvPatients.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
             // Add bottom spacer inside pnlScroll to ensure correct scroll margin at the bottom of the page
             var pnlBottomSpacer = new Panel();
@@ -845,7 +634,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             txtSearch.IconLeftOffset = new Point(10, 0);
 
             // Setup table header buttons anchor
-            btnDeleteSelected.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnSelectAll.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
             // Setup Table Title Icon (replacing unicode emoji)
@@ -1021,61 +809,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 pnlPagination.Location = new Point(pnlTableCard.Width - pnlPagination.Width - 21, pnlTableCard.Height - pnlPagination.Height - 15);
             }
 
-            // Position buttons consecutively with a balanced 12px gap from the "Đến ngày" date picker
+            // Position btnReset on the right side of pnlFilterBar
             btnReset.Width = 110;
-            btnReset.Location = new Point(dtpTo.Right + 12, 44);
+            btnReset.Location = new Point(pnlFilterBar.Width - btnReset.Width - 21, 34);
 
-            btnExcel.Width = 130;
-            btnExcel.Location = new Point(btnReset.Right + 12, 44);
-
-            // Dynamically position table card buttons on the top right
-            btnDeleteSelected.Width = 165;
-            btnDeleteSelected.Location = new Point(pnlTableCard.Width - btnDeleteSelected.Width - 21, 15);
-
+            // Dynamically position select all button on the top right
             btnSelectAll.Width = 150;
-            btnSelectAll.Location = new Point(btnDeleteSelected.Left - btnSelectAll.Width - 12, 15);
-        }
-
-        private void UpdateChipStyles()
-        {
-            // Reset all to standard outline styles
-            btnChipAll.FillColor = Color.White;
-            btnChipAll.ForeColor = Color.FromArgb(15, 110, 86);
-            btnChipAll.BorderColor = Color.FromArgb(15, 110, 86);
-            btnChipAll.BorderThickness = 1;
-            btnChipAll.BorderRadius = 18;
-
-            btnChipActive.FillColor = Color.FromArgb(232, 248, 241); // #E8F8F1
-            btnChipActive.ForeColor = Color.FromArgb(26, 122, 74); // #1A7A4A
-            btnChipActive.BorderColor = Color.FromArgb(26, 122, 74);
-            btnChipActive.BorderThickness = 1;
-            btnChipActive.BorderRadius = 18;
-
-            btnChipPending.FillColor = Color.FromArgb(255, 247, 230); // #FFF7E6
-            btnChipPending.ForeColor = Color.FromArgb(176, 118, 0); // #B07600
-            btnChipPending.BorderColor = Color.FromArgb(176, 118, 0);
-            btnChipPending.BorderThickness = 1;
-            btnChipPending.BorderRadius = 18;
-
-            btnChipUrgent.FillColor = Color.FromArgb(254, 233, 230); // #FEE9E6
-            btnChipUrgent.ForeColor = Color.FromArgb(168, 42, 20); // #A82A14
-            btnChipUrgent.BorderColor = Color.FromArgb(224, 92, 58); // #E05C3A (var(--accent2))
-            btnChipUrgent.BorderThickness = 1;
-            btnChipUrgent.BorderRadius = 18;
-
-            // Style the currently active selected chip as solid teal
-            Guna2Button activeBtn = null;
-            if (_activeChipStatus == "all") activeBtn = btnChipAll;
-            else if (_activeChipStatus == "active") activeBtn = btnChipActive;
-            else if (_activeChipStatus == "pending") activeBtn = btnChipPending;
-            else if (_activeChipStatus == "urgent") activeBtn = btnChipUrgent;
-
-            if (activeBtn != null)
-            {
-                activeBtn.FillColor = Color.FromArgb(15, 110, 86); // var(--teal)
-                activeBtn.ForeColor = Color.White;
-                activeBtn.BorderColor = Color.FromArgb(15, 110, 86);
-            }
+            btnSelectAll.Location = new Point(pnlTableCard.Width - btnSelectAll.Width - 21, 15);
         }
 
         private static string RemoveDiacritics(string text)
@@ -1113,16 +853,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Initial 10 patients from HTML template
             var seed = new System.Collections.Generic.List<PatientModel>
             {
-                new PatientModel { Id = "BN240001", Name = "Nguyễn Văn An", Dob = "15/03/1978", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "24/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079204001234" },
-                new PatientModel { Id = "BN240002", Name = "Phạm Thị Lan", Dob = "22/07/1985", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "24/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079285002345" },
-                new PatientModel { Id = "BN240003", Name = "Hoàng Đức Nam", Dob = "09/11/1990", Gender = "Nam", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "23/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079290003456" },
-                new PatientModel { Id = "BN240004", Name = "Trần Thị Mai", Dob = "30/01/1996", Gender = "Nữ", Khoa = "Sản khoa", Bs = "BS. Võ Thu", Date = "23/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079296004567" },
-                new PatientModel { Id = "BN240005", Name = "Lê Văn Hải", Dob = "12/06/1972", Gender = "Nam", Khoa = "Thần kinh", Bs = "BS. Phạm Sơn", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079272005678" },
-                new PatientModel { Id = "BN240006", Name = "Vũ Thị Bích", Dob = "07/09/2000", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079200006789" },
-                new PatientModel { Id = "BN240007", Name = "Đinh Công Sơn", Dob = "14/04/1965", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "21/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079265007890" },
-                new PatientModel { Id = "BN240008", Name = "Ngô Thị Hằng", Dob = "28/12/1982", Gender = "Nữ", Khoa = "Nhi khoa", Bs = "BS. Hồ Linh", Date = "21/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079282008901" },
-                new PatientModel { Id = "BN240009", Name = "Lương Minh Châu", Dob = "05/02/1958", Gender = "Nam", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "20/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079258009012" },
-                new PatientModel { Id = "BN240010", Name = "Đặng Thị Yến", Dob = "19/08/1993", Gender = "Nữ", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "20/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079293010123" }
+                new PatientModel { Id = "BN240001", Name = "Nguyễn Văn An", Dob = "15/03/1978", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "24/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079204001234", SoNha = "78", TenDuong = "Đường Nguyễn Chí Thanh", QuanHuyen = "Quận 5", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Tăng huyết áp nhẹ, đang điều trị thuốc.", TienSuGD = "Bố có tiền sử bệnh tim mạch.", DiUng = "Không ghi nhận dị ứng thuốc." },
+                new PatientModel { Id = "BN240002", Name = "Phạm Thị Lan", Dob = "22/07/1985", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "24/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079285002345", SoNha = "456", TenDuong = "Đường Nguyễn Huệ", QuanHuyen = "Quận 1", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Viêm dạ dày mãn tính, đang điều trị từ 2023.", TienSuGD = "Không có tiền sử bệnh đáng kể trong gia đình.", DiUng = "Không có dị ứng thuốc đã biết." },
+                new PatientModel { Id = "BN240003", Name = "Hoàng Đức Nam", Dob = "09/11/1990", Gender = "Nam", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "23/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079290003456", SoNha = "142", TenDuong = "Đường Cách Mạng Tháng Tám", QuanHuyen = "Quận 3", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Khỏe mạnh, chưa phát hiện bệnh lý mãn tính.", TienSuGD = "Không có tiền sử bệnh di truyền.", DiUng = "Dị ứng phấn hoa." },
+                new PatientModel { Id = "BN240004", Name = "Trần Thị Mai", Dob = "30/01/1996", Gender = "Nữ", Khoa = "Sản khoa", Bs = "BS. Võ Thu", Date = "23/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079296004567", SoNha = "88", TenDuong = "Đường Hoàng Văn Thụ", QuanHuyen = "Quận Tân Bình", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Mang thai tuần thứ 32, theo dõi thai sản định kỳ.", TienSuGD = "Gia đình bình thường.", DiUng = "Không dị ứng thuốc." },
+                new PatientModel { Id = "BN240005", Name = "Lê Văn Hải", Dob = "12/06/1972", Gender = "Nam", Khoa = "Thần kinh", Bs = "BS. Phạm Sơn", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079272005678", SoNha = "204", TenDuong = "Đường Võ Văn Kiệt", QuanHuyen = "Quận 1", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Tiền sử chấn thương sọ não nhẹ năm 2020, đã hồi phục hoàn toàn.", TienSuGD = "Mẹ bị đái tháo đường.", DiUng = "Không." },
+                new PatientModel { Id = "BN240006", Name = "Vũ Thị Bích", Dob = "07/09/2000", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079200006789", SoNha = "15", TenDuong = "Đường Trần Hưng Đạo", QuanHuyen = "Quận 1", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Hen phế quản thể nhẹ, có thuốc xịt dự phòng.", TienSuGD = "Bố đẻ bị hen phế quản.", DiUng = "Dị ứng Aspirin." },
+                new PatientModel { Id = "BN240007", Name = "Đinh Công Sơn", Dob = "14/04/1965", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "21/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079265007890", SoNha = "312", TenDuong = "Đường Lê Hồng Phong", QuanHuyen = "Quận 10", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Rung nhĩ mãn tính, đang uống thuốc chống đông.", TienSuGD = "Bố đẻ tai biến mạch máu não.", DiUng = "Không có." },
+                new PatientModel { Id = "BN240008", Name = "Ngô Thị Hằng", Dob = "28/12/1982", Gender = "Nữ", Khoa = "Nhi khoa", Bs = "BS. Hồ Linh", Date = "21/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079282008901", SoNha = "42", TenDuong = "Đường Phạm Thế Hiển", QuanHuyen = "Quận 8", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Viêm họng cấp tính, theo dõi dị ứng.", TienSuGD = "Không.", DiUng = "Không." },
+                new PatientModel { Id = "BN240009", Name = "Lương Minh Châu", Dob = "05/02/1958", Gender = "Nam", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "20/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079258009012", SoNha = "99", TenDuong = "Đường Lý Thường Kiệt", QuanHuyen = "Quận Tân Bình", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Bệnh phổi tắc nghẽn mãn tính (COPD).", TienSuGD = "Không ghi nhận.", DiUng = "Không dị ứng thuốc." },
+                new PatientModel { Id = "BN240010", Name = "Đặng Thị Yến", Dob = "19/08/1993", Gender = "Nữ", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "20/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079293010123", SoNha = "50", TenDuong = "Đường Điện Biên Phủ", QuanHuyen = "Quận Bình Thạnh", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Suy tĩnh mạch chi dưới, đang điều trị nội khoa.", TienSuGD = "Mẹ bị suy tĩnh mạch sâu.", DiUng = "Dị ứng Penicillin." }
             };
 
             SharedPatients.AddRange(seed);
@@ -1154,6 +894,30 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 string date = $"{rand.Next(1, 25):D2}/05/2026";
                 string cccd = $"079{rand.Next(100, 300):D3}{rand.Next(100000, 999999):D6}";
 
+                // Specific mock details for Trần Thị Cường to maintain consistency
+                string soNha, tenDuong, quanHuyen, tinhTP, tienSuBN, tienSuGD, diUng;
+                if (id == "BN240046" || name.ToLower().Contains("cường"))
+                {
+                    soNha = "123";
+                    tenDuong = "Đường Ba Tháng Hai";
+                    quanHuyen = "Quận 10";
+                    tinhTP = "TP. Hồ Chí Minh";
+                    tienSuBN = "Viêm khớp dạng thấp, đã phẫu thuật ruột thừa năm 2015.";
+                    tienSuGD = "Bố mắc tiểu đường type 2, mẹ có tiền sử cao huyết áp.";
+                    diUng = "Dị ứng Penicillin (phát ban da), Aspirin (khó thở).";
+                }
+                else
+                {
+                    int uniqueHash = id.GetHashCode();
+                    soNha = (100 + Math.Abs(uniqueHash % 900)).ToString();
+                    tenDuong = gender == "Nữ" ? "Đường Hai Bà Trưng" : "Đường Lê Lợi";
+                    quanHuyen = "Quận 1";
+                    tinhTP = "TP. Hồ Chí Minh";
+                    tienSuBN = "Theo dõi sức khỏe định kỳ tại chuyên khoa " + dept + ".";
+                    tienSuGD = "Gia đình không có tiền sử bệnh di truyền hoặc cao huyết áp.";
+                    diUng = "Không ghi nhận dị ứng đối với các loại thuốc thông thường.";
+                }
+
                 SharedPatients.Add(new PatientModel
                 {
                     Id = id,
@@ -1165,7 +929,14 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     Date = date,
                     Status = status,
                     StatusLabel = statusLabel,
-                    Cccd = cccd
+                    Cccd = cccd,
+                    SoNha = soNha,
+                    TenDuong = tenDuong,
+                    QuanHuyen = quanHuyen,
+                    TinhTP = tinhTP,
+                    TienSuBN = tienSuBN,
+                    TienSuGD = tienSuGD,
+                    DiUng = diUng
                 });
             }
         }
@@ -1180,5 +951,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         public string Status { get; set; }
         public string StatusLabel { get; set; }
         public string Cccd { get; set; }
+        public string SoNha { get; set; }
+        public string TenDuong { get; set; }
+        public string QuanHuyen { get; set; }
+        public string TinhTP { get; set; }
+        public string TienSuBN { get; set; }
+        public string TienSuGD { get; set; }
+        public string DiUng { get; set; }
     }
 }
