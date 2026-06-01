@@ -1,6 +1,8 @@
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -84,6 +86,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             cardStats[2] = this.cardStat3;
             cardStats[3] = this.cardStat4;
 
+            if (IsInDesigner())
+            {
+                return;
+            }
+
             BuildBaseStructure();
             BuildModals(); // Only builds the Password Change modal now
 
@@ -91,13 +98,24 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.Load += UcKtvHoSo_Load;
         }
 
+        private bool IsInDesigner()
+        {
+            string processName = Process.GetCurrentProcess().ProcessName;
+            return LicenseManager.UsageMode == LicenseUsageMode.Designtime
+                || DesignMode
+                || processName.Equals("devenv", StringComparison.OrdinalIgnoreCase)
+                || processName.Equals("XDesProc", StringComparison.OrdinalIgnoreCase);
+        }
+
         private void UcKtvHoSo_Load(object sender, EventArgs e)
         {
+            if (IsInDesigner()) return;
             LayoutControls();
         }
 
         private void UcKtvHoSo_Resize(object sender, EventArgs e)
         {
+            if (IsInDesigner()) return;
             LayoutControls();
         }
 

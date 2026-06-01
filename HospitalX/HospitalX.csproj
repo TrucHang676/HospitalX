@@ -130,13 +130,6 @@
       <DependentUpon>UcKtvDichVu.cs</DependentUpon>
       <SubType>Designer</SubType>
     </Compile>
-    <Compile Include="GUI\PH2\KyThuatVien\ucKtvFilter.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GUI\PH2\KyThuatVien\ucKtvFilter.Designer.cs">
-      <DependentUpon>ucKtvFilter.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </Compile>
     <Compile Include="GUI\PH2\KyThuatVien\frmKtvServiceDetail.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -605,9 +598,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\UcKtvDichVu.resx">
       <DependentUpon>UcKtvDichVu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvFilter.resx">
-      <DependentUpon>ucKtvFilter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvKetQua.resx">
       <DependentUpon>ucKtvKetQua.cs</DependentUpon>
