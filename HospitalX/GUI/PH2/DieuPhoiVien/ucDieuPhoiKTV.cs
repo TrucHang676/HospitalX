@@ -68,9 +68,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private readonly List<Technician> _ktvs = new List<Technician>();
         
         private int _selectedRequestIndex = 2; // Default to DV-2026-0023
-        private int _selectedKtvIndex = -1;
 
         // Pagination controls & settings
+        private FlowLayoutPanel pnlPagination;
+        private readonly List<Guna2Button> _pageButtons = new List<Guna2Button>();
         private Guna2Button btnPrevPage;
         private Guna2Button btnNextPage;
         private Label lblPageInfo;
@@ -100,9 +101,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             base.OnLoad(e);
 
-            // Remove columns that are not defined in requirements
-            dgvRequests.Columns.Remove(colMaDV);
-            dgvRequests.Columns.Remove(colUuTien);
+            // Hide columns that are not defined in requirements
+            colMaDV.Visible = false;
+            colUuTien.Visible = false;
 
             // Reset grid anchors to avoid bounds conflicts during custom resize layout
             dgvRequests.Anchor = AnchorStyles.Top | AnchorStyles.Left;
@@ -121,17 +122,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblRequestTitle.Location = new Point(48, 18);
             lblRequestTitle.Text = "Danh sách yêu cầu dịch vụ hỗ trợ chẩn đoán";
             lblRequestSub.Location = new Point(48, 44);
-
-            // Hide scheduling elements not defined in requirements (e.g. appointment slots/notes)
-            pnlTimeSlots.Visible = false;
-            lblTimeSlotsTitle.Visible = false;
-            txtNotes.Visible = false;
-            lblNotesTitle.Visible = false;
-
-            InitializePaginationControls();
+            SetupPaginationControls();
             ConfigureStyles();
             ApplyFilter();
-            RenderTechnicianList();
             SelectRequest(_selectedRequestIndex);
 
             // Wire event handlers
@@ -139,7 +132,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvRequests.CellPainting += DgvRequests_CellPainting;
             dgvRequests.MouseMove += DgvRequests_MouseMove;
             dgvRequests.MouseLeave += DgvRequests_MouseLeave;
-            btnConfirm.Click += BtnConfirm_Click;
             cboServiceType.SelectedIndexChanged += FilterChanged;
             cboStatus.SelectedIndexChanged += FilterChanged;
 
@@ -147,52 +139,151 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             LayoutPanels();
         }
 
-        private void InitializePaginationControls()
+        private void SetupPaginationControls()
         {
-            btnPrevPage = new Guna2Button
-            {
-                Size = new Size(36, 36), // Updated to 36x36
-                BorderRadius = 6,
-                BorderThickness = 1,
-                BorderColor = ColorBorder,
-                FillColor = Color.White,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                ForeColor = ColorTextSecondary,
-                Text = "‹",
-                Cursor = Cursors.Hand
-            };
-            btnPrevPage.HoverState.FillColor = ColorTeal;
-            btnPrevPage.HoverState.ForeColor = Color.White;
-            btnPrevPage.Click += BtnPrevPage_Click;
+            // Remove legacy additions
+            pnlServiceRequests.Controls.Remove(lblPageInfo);
+            pnlServiceRequests.Controls.Remove(btnPrevPage);
+            pnlServiceRequests.Controls.Remove(btnNextPage);
 
-            btnNextPage = new Guna2Button
+            pnlPagination = new FlowLayoutPanel
             {
-                Size = new Size(36, 36), // Updated to 36x36
-                BorderRadius = 6,
-                BorderThickness = 1,
-                BorderColor = ColorBorder,
-                FillColor = Color.White,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                ForeColor = ColorTextSecondary,
-                Text = "›",
-                Cursor = Cursors.Hand
+                Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
+                Size = new Size(400, 40),
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                BackColor = Color.Transparent
             };
-            btnNextPage.HoverState.FillColor = ColorTeal;
-            btnNextPage.HoverState.ForeColor = Color.White;
-            btnNextPage.Click += BtnNextPage_Click;
 
             lblPageInfo = new Label
             {
-                AutoSize = true, // AutoSize to prevent clipping of text width
-                Font = new Font("Segoe UI", 9F, FontStyle.Regular),
-                ForeColor = Color.FromArgb(122, 149, 137), // #7A9A90
-                TextAlign = ContentAlignment.MiddleRight,
-                Text = "Trang 1 / 1"
+                AutoSize = false,
+                Size = new Size(90, 36),
+                Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                ForeColor = ColorTextMuted,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 2, 8, 2)
             };
 
-            pnlServiceRequests.Controls.Add(btnPrevPage);
-            pnlServiceRequests.Controls.Add(btnNextPage);
-            pnlServiceRequests.Controls.Add(lblPageInfo);
+            btnPrevPage = new Guna2Button();
+            StylePageButton(btnPrevPage, "<");
+            btnPrevPage.Click += BtnPrevPage_Click;
+
+            btnNextPage = new Guna2Button();
+            StylePageButton(btnNextPage, ">");
+            btnNextPage.Click += BtnNextPage_Click;
+
+            pnlPagination.Controls.Add(lblPageInfo);
+            pnlPagination.Controls.Add(btnPrevPage);
+
+            _pageButtons.Clear();
+            for (int i = 0; i < 5; i++)
+            {
+                var btn = new Guna2Button();
+                StylePageButton(btn, "");
+                btn.Click += (s, e) => {
+                    if (s is Guna2Button clickBtn && int.TryParse(clickBtn.Text, out int pageNum))
+                    {
+                        ChangePage(pageNum);
+                    }
+                };
+                _pageButtons.Add(btn);
+                pnlPagination.Controls.Add(btn);
+            }
+
+            pnlPagination.Controls.Add(btnNextPage);
+            pnlServiceRequests.Controls.Add(pnlPagination);
+        }
+
+        private void StylePageButton(Guna2Button btn, string text)
+        {
+            btn.Size = new Size(36, 36);
+            btn.Margin = new Padding(3, 2, 3, 2);
+            btn.BorderRadius = 6;
+            btn.BorderThickness = 1;
+            btn.BorderColor = ColorBorder;
+            btn.FillColor = Color.Transparent;
+            
+            if (text == "<" || text == ">")
+            {
+                btn.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            }
+            else
+            {
+                btn.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            }
+            
+            btn.ForeColor = ColorTextSecondary;
+            btn.Text = text;
+            btn.Cursor = Cursors.Hand;
+
+            btn.DisabledState.FillColor = Color.Transparent;
+            btn.DisabledState.BorderColor = ColorBorder;
+            btn.DisabledState.ForeColor = Color.FromArgb(180, 200, 190);
+
+            btn.HoverState.FillColor = ColorTeal;
+            btn.HoverState.ForeColor = Color.White;
+            btn.HoverState.BorderColor = ColorTeal;
+        }
+
+        private void ChangePage(int page)
+        {
+            if (page >= 1 && page <= _totalPage)
+            {
+                _currentPage = page;
+                ApplyFilter();
+            }
+        }
+
+        private void UpdatePaginationUI()
+        {
+            if (_pageButtons == null || _pageButtons.Count < 5) return;
+
+            lblPageInfo.Text = $"Trang {_currentPage} / {_totalPage}";
+
+            // Calculate start page for sliding window to support arbitrary number of pages
+            int startPage = 1;
+            if (_totalPage > 5)
+            {
+                startPage = _currentPage - 2;
+                if (startPage < 1) startPage = 1;
+                if (startPage + 4 > _totalPage) startPage = _totalPage - 4;
+            }
+
+            // Toggle visibility, text, and selection for page buttons
+            for (int i = 0; i < 5; i++)
+            {
+                int pageNum = startPage + i;
+                var btn = _pageButtons[i];
+
+                if (pageNum <= _totalPage)
+                {
+                    btn.Visible = true;
+                    btn.Text = pageNum.ToString();
+                    if (pageNum == _currentPage)
+                    {
+                        btn.FillColor = ColorTeal;
+                        btn.ForeColor = Color.White;
+                        btn.BorderColor = ColorTeal;
+                    }
+                    else
+                    {
+                        btn.FillColor = Color.Transparent;
+                        btn.ForeColor = ColorTextSecondary;
+                        btn.BorderColor = ColorBorder;
+                    }
+                }
+                else
+                {
+                    btn.Visible = false;
+                }
+            }
+
+            btnPrevPage.Enabled = _currentPage > 1;
+            btnNextPage.Enabled = _currentPage < _totalPage;
+
+            btnPrevPage.ForeColor = btnPrevPage.Enabled ? ColorTextSecondary : Color.FromArgb(180, 200, 190);
+            btnNextPage.ForeColor = btnNextPage.Enabled ? ColorTextSecondary : Color.FromArgb(180, 200, 190);
         }
 
         private void BtnPrevPage_Click(object sender, EventArgs e)
@@ -288,43 +379,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblRequestSub.Font = FontNormal;
             lblRequestSub.ForeColor = ColorTextMuted;
 
-            lblAssignTitle.Font = FontTitle;
-            lblAssignTitle.ForeColor = ColorTeal;
-
-            lblSelRequestHeader.Font = FontSub;
-            lblSelRequestHeader.ForeColor = ColorTextMuted;
-
-            lblSelDV.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            lblSelDV.ForeColor = ColorTeal;
-
-            lblSelBN.Font = FontNormal;
-            lblSelBN.ForeColor = ColorTextSecondary;
-
             // cbo drop downs
             cboServiceType.Font = FontNormal;
             cboStatus.Font = FontNormal;
-
-            // Assign Form
-            pnlAssignForm.BorderColor = ColorBorder;
-            pnlAssignForm.FillColor = Color.White;
-
-            pnlSelRequest.BorderColor = ColorTeal;
-            pnlSelRequest.FillColor = ColorTealLight;
-
-            // Confirm button
-            btnConfirm.Location = new Point(16, 130);
-            btnConfirm.Height = 42;
-
-            // KTV Card Styling
-            pnlKtvListCard.BorderColor = ColorBorder;
-            pnlKtvListCard.FillColor = Color.White;
-
-            lblKtvTitle.Font = FontTitle;
-            lblKtvTitle.ForeColor = Color.White;
-            lblKtvMeta.Font = FontSub;
-            lblKtvMeta.ForeColor = Color.White;
-
-            pnlKtvHeader.FillColor = ColorTeal;
 
             // Style DataGridView requests
             var headerBack = Color.FromArgb(247, 249, 248);
@@ -349,8 +406,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             dgvRequests.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
             dgvRequests.RowsDefaultCellStyle.BackColor = Color.White;
-            dgvRequests.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvRequests.GridColor = Color.FromArgb(238, 242, 240);
+            dgvRequests.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            dgvRequests.GridColor = Color.White;
             dgvRequests.RowTemplate.Height = 76; // Increased height to prevent vertical text overlap
             dgvRequests.MultiSelect = false;
             dgvRequests.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -456,15 +513,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
 
             // Update pagination UI
-            if (lblPageInfo != null)
-            {
-                lblPageInfo.Text = $"Trang {_currentPage} / {_totalPage}"; // Match standard patient list format
-                btnPrevPage.Enabled = _currentPage > 1;
-                btnNextPage.Enabled = _currentPage < _totalPage;
-
-                btnPrevPage.ForeColor = btnPrevPage.Enabled ? ColorTextSecondary : Color.FromArgb(180, 200, 190);
-                btnNextPage.ForeColor = btnNextPage.Enabled ? ColorTextSecondary : Color.FromArgb(180, 200, 190);
-            }
+            UpdatePaginationUI();
 
             dgvRequests.ClearSelection();
             dgvRequests.CurrentCell = null;
@@ -481,144 +530,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Empty method - scheduling time slots are hidden per requirements simplification
         }
 
-        private void RenderTechnicianList()
-        {
-            flpKtvList.Controls.Clear();
-            int panelW = flpKtvList.ClientSize.Width > 0 ? flpKtvList.ClientSize.Width - 6 : 374;
 
-            for (int i = 0; i < _ktvs.Count; i++)
-            {
-                var ktv = _ktvs[i];
-                int idx = i;
-
-                // Main card panel (height 84px provides extremely spacious vertical breathing room)
-                var pnlKtv = new Guna2Panel
-                {
-                    Size = new Size(panelW, 84),
-                    Margin = new Padding(0, 0, 0, 10),
-                    BorderRadius = 12,
-                    BorderThickness = 2,
-                    BorderColor = (i == _selectedKtvIndex) ? ColorTeal : ColorBorder,
-                    FillColor = (i == _selectedKtvIndex) ? ColorTealLight : Color.White,
-                    Cursor = Cursors.Hand
-                };
-
-                pnlKtv.Click += (s, e) => SelectTechnician(idx);
-
-                // Circle Avatar - 42x42 centered vertically at Y=21
-                var pnlAvatar = new Guna2Panel
-                {
-                    Size = new Size(42, 42),
-                    Location = new Point(14, 21),
-                    BorderRadius = 21,
-                    FillColor = ktv.Color
-                };
-                pnlAvatar.Click += (s, e) => SelectTechnician(idx);
-
-                var lblAvatar = new Label
-                {
-                    Text = ktv.Initials,
-                    Font = FontBold,
-                    ForeColor = Color.White,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Dock = DockStyle.Fill,
-                    BackColor = Color.Transparent
-                };
-                lblAvatar.Click += (s, e) => SelectTechnician(idx);
-                pnlAvatar.Controls.Add(lblAvatar);
-
-                // Technician Details Container with spacious offsets
-                int labelWidth = panelW - 175;
-                
-                var lblName = new Label
-                {
-                    Text = ktv.Name,
-                    Font = new Font("Segoe UI", 9.75F, FontStyle.Bold),
-                    ForeColor = ColorTextPrimary,
-                    Location = new Point(68, 12),
-                    Size = new Size(labelWidth, 18),
-                    BackColor = Color.Transparent
-                };
-                lblName.Click += (s, e) => SelectTechnician(idx);
-
-                var lblCode = new Label
-                {
-                    Text = ktv.Code,
-                    Font = new Font("Consolas", 8.5F, FontStyle.Bold),
-                    ForeColor = ColorTeal,
-                    Location = new Point(68, 33),
-                    Size = new Size(labelWidth, 15),
-                    BackColor = Color.Transparent
-                };
-                lblCode.Click += (s, e) => SelectTechnician(idx);
-
-                var lblSkills = new Label
-                {
-                    Text = ktv.Skills,
-                    Font = new Font("Segoe UI", 8.5F, FontStyle.Regular),
-                    ForeColor = ColorTextMuted,
-                    Location = new Point(68, 52),
-                    Size = new Size(labelWidth, 16),
-                    BackColor = Color.Transparent
-                };
-                lblSkills.Click += (s, e) => SelectTechnician(idx);
-
-                // Status Badge (Load) on the right - 100x26 centered vertically at Y=29
-                var pnlLoad = new Guna2Panel
-                {
-                    Size = new Size(100, 26),
-                    Location = new Point(panelW - 114, 29),
-                    BorderRadius = 13
-                };
-                pnlLoad.Click += (s, e) => SelectTechnician(idx);
-
-                Color loadBg = Color.White;
-                Color loadFore = Color.Black;
-                if (ktv.Load == "free")
-                {
-                    loadBg = Color.FromArgb(232, 248, 241);
-                    loadFore = ColorFree;
-                }
-                else if (ktv.Load == "moderate")
-                {
-                    loadBg = Color.FromArgb(255, 247, 230);
-                    loadFore = ColorModerate;
-                }
-                else
-                {
-                    loadBg = Color.FromArgb(254, 233, 230);
-                    loadFore = ColorBusy;
-                }
-
-                pnlLoad.FillColor = loadBg;
-
-                var lblLoad = new Label
-                {
-                    Text = ktv.LoadLabel,
-                    Font = new Font("Segoe UI Semibold", 8.25F, FontStyle.Bold),
-                    ForeColor = loadFore,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Dock = DockStyle.Fill,
-                    BackColor = Color.Transparent
-                };
-                lblLoad.Click += (s, e) => SelectTechnician(idx);
-                pnlLoad.Controls.Add(lblLoad);
-
-                pnlKtv.Controls.Add(pnlAvatar);
-                pnlKtv.Controls.Add(lblName);
-                pnlKtv.Controls.Add(lblCode);
-                pnlKtv.Controls.Add(lblSkills);
-                pnlKtv.Controls.Add(pnlLoad);
-
-                flpKtvList.Controls.Add(pnlKtv);
-            }
-        }
-
-        private void SelectTechnician(int idx)
-        {
-            _selectedKtvIndex = idx;
-            RenderTechnicianList();
-        }
 
         private void DgvRequests_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -669,8 +581,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             _selectedRequestIndex = originalIndex;
             var r = _requests[originalIndex];
 
-            lblSelDV.Text = $"{r.Hsba} — {r.ServiceType}";
-            lblSelBN.Text = $"{r.PatientCode} · {r.PatientName} · Ngày yêu cầu: {r.ServiceDate}";
+
 
             // Highlight in data grid
             dgvRequests.ClearSelection();
@@ -861,33 +772,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             e.Handled = true;
         }
 
-        private void BtnConfirm_Click(object sender, EventArgs e)
-        {
-            if (_selectedRequestIndex < 0 || _selectedRequestIndex >= _requests.Count)
-            {
-                ShowMessage("Vui lòng chọn yêu cầu dịch vụ từ danh sách bên trái!", "Thông báo");
-                return;
-            }
-
-            if (_selectedKtvIndex < 0 || _selectedKtvIndex >= _ktvs.Count)
-            {
-                ShowMessage("Vui lòng chọn kỹ thuật viên để phân công!", "Thông báo");
-                return;
-            }
-
-            var request = _requests[_selectedRequestIndex];
-            var ktv = _ktvs[_selectedKtvIndex];
-
-            // Perform assignment
-            request.AssignedKtv = "KTV. " + ktv.Name;
-            request.Status = "assigned";
-            request.StatusLabel = "Đã phân công";
-
-            ApplyFilter();
-            SelectRequest(_selectedRequestIndex);
-            
-            ShowMessage($"Đã phân công thành công KTV {ktv.Name} thực hiện dịch vụ {request.ServiceType} cho bệnh nhân {request.PatientName}.", "Bệnh viện X", MessageDialogIcon.Information);
-        }
 
         private void ShowMessage(string message, string title, MessageDialogIcon icon = MessageDialogIcon.Information)
         {
@@ -911,9 +795,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             int totalH = scrollH - 40;
             if (totalW <= 0 || totalH <= 0) return;
 
-            // Hide the quick assignment and technicians panels
-            pnlAssignForm.Visible = false;
-            pnlKtvListCard.Visible = false;
+
 
             // Width allocation: left card gets full width
             int leftW = totalW;
@@ -922,12 +804,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvRequests.SetBounds(20, 75, leftW - 40, totalH - 145);
 
             // Position pagination controls dynamically at the bottom right of the requests panel
-            if (btnPrevPage != null)
+            if (pnlPagination != null)
             {
-                int bottomY = pnlServiceRequests.Height - 15 - 36;
-                btnNextPage.SetBounds(leftW - 20 - 36, bottomY, 36, 36);
-                btnPrevPage.SetBounds(btnNextPage.Left - 10 - 36, bottomY, 36, 36);
-                lblPageInfo.Location = new Point(btnPrevPage.Left - 15 - lblPageInfo.Width, bottomY + (36 - lblPageInfo.Height) / 2);
+                int bottomY = pnlServiceRequests.Height - 40 - 15;
+                pnlPagination.Size = new Size(400, 40);
+                pnlPagination.Location = new Point(leftW - 400 - 20, bottomY);
             }
 
             // Set minimum horizontal scroll limit to preserve visual design integrity (without right panel)

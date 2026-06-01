@@ -894,14 +894,18 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlPagination.Controls.Add(lblPageInfo);
             pnlPagination.Controls.Add(btnPrevPage);
 
-            // Generate page numbers 1 through 5
+            // Generate page numbers 1 through 5 (dynamic clicking logic)
             _pageButtons.Clear();
-            for (int i = 1; i <= 5; i++)
+            for (int i = 0; i < 5; i++)
             {
-                int pageNum = i;
                 var btn = new Guna2Button();
-                StylePageButton(btn, pageNum.ToString());
-                btn.Click += (s, e) => ChangePage(pageNum);
+                StylePageButton(btn, "");
+                btn.Click += (s, e) => {
+                    if (s is Guna2Button clickBtn && int.TryParse(clickBtn.Text, out int pageNum))
+                    {
+                        ChangePage(pageNum);
+                    }
+                };
                 _pageButtons.Add(btn);
                 pnlPagination.Controls.Add(btn);
             }
@@ -959,15 +963,25 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             lblPageInfo.Text = $"Trang {_currentPage} / {_totalPage}";
 
-            // Toggle visibility and selection for page buttons
+            // Calculate start page for sliding window to support arbitrary number of pages
+            int startPage = 1;
+            if (_totalPage > 5)
+            {
+                startPage = _currentPage - 2;
+                if (startPage < 1) startPage = 1;
+                if (startPage + 4 > _totalPage) startPage = _totalPage - 4;
+            }
+
+            // Toggle visibility, text, and selection for page buttons
             for (int i = 0; i < 5; i++)
             {
-                int pageNum = i + 1;
+                int pageNum = startPage + i;
                 var btn = _pageButtons[i];
 
                 if (pageNum <= _totalPage)
                 {
                     btn.Visible = true;
+                    btn.Text = pageNum.ToString();
                     if (pageNum == _currentPage)
                     {
                         btn.FillColor = Color.FromArgb(15, 110, 86); // teal
