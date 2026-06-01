@@ -141,7 +141,7 @@ namespace HospitalX.GUI.PH2
             btnDashboard.Click += (s, e) => NavigateToDashboard();
             btnDanhSachBN.Click += (s, e) => NavigateToDanhSachBN();
             btnThemSuaBN.Click += (s, e) => NavigateToThemSuaBN();
-            btnTaoHSBA.Click += (s, e) => ShowComingSoon(btnTaoHSBA, "Tạo hồ sơ bệnh án");
+            btnTaoHSBA.Click += (s, e) => NavigateToTaoHSBA();
             btnDieuPhoiKTV.Click += (s, e) => ShowComingSoon(btnDieuPhoiKTV, "Điều phối kỹ thuật viên");
             btnThongBaoNoiBo.Click += (s, e) => ShowComingSoon(btnThongBaoNoiBo, "Thông báo nội bộ");
             btnHoSoCaNhan.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
@@ -170,7 +170,8 @@ namespace HospitalX.GUI.PH2
         /// <summary>Navigate to "Tạo hồ sơ bệnh án" tab. Called from child user controls.</summary>
         public void NavigateToTaoHSBA()
         {
-            ShowComingSoon(btnTaoHSBA, "Tạo hồ sơ bệnh án");
+            LoadPage(new ucTaoHSBA(), "Tạo hồ sơ bệnh án", "/ HSBA");
+            btnTaoHSBA.Checked = true;
         }
 
         private void LoadPage(UserControl control, string title, string breadcrumb)
