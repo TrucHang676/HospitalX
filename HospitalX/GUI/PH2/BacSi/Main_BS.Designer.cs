@@ -124,7 +124,7 @@
             this.btnHSCN.TabIndex = 19;
             this.btnHSCN.Text = "HỒ SƠ CÁ NHÂN";
             this.btnHSCN.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnHSCN.TextOffset = new System.Drawing.Point(8, 0);
+            this.btnHSCN.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // pnlLine1
             // 
@@ -217,7 +217,7 @@
             this.btnThongBao.TabIndex = 18;
             this.btnThongBao.Text = "THÔNG BÁO";
             this.btnThongBao.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnThongBao.TextOffset = new System.Drawing.Point(8, 0);
+            this.btnThongBao.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // btnDT
             // 
@@ -289,7 +289,7 @@
             this.btnBN.TabIndex = 16;
             this.btnBN.Text = "BỆNH NHÂN CỦA TÔI";
             this.btnBN.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnBN.TextOffset = new System.Drawing.Point(8, 0);
+            this.btnBN.TextOffset = new System.Drawing.Point(10, 0);
             // 
             // btnHSBA
             // 
@@ -386,7 +386,7 @@
             this.btnTongQuan.TabIndex = 14;
             this.btnTongQuan.Text = "TỔNG QUAN";
             this.btnTongQuan.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnTongQuan.TextOffset = new System.Drawing.Point(8, 0);
+            this.btnTongQuan.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // pnlTopRight
             // 

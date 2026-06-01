@@ -155,7 +155,7 @@
             this.btnHSCN.TabIndex = 19;
             this.btnHSCN.Text = "HỒ SƠ CÁ NHÂN";
             this.btnHSCN.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnHSCN.TextOffset = new System.Drawing.Point(8, 0);
+            this.btnHSCN.TextOffset = new System.Drawing.Point(15, 0);
             // 
             // pnlLine1
             // 

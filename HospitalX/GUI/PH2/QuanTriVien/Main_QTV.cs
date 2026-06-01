@@ -22,8 +22,6 @@ namespace HospitalX.GUI.PH2
             btnHSBA.Click += BtnHSBA_Click;
             btnBN.Click += BtnBN_Click;
             btnDT.Click += BtnDT_Click;
-            btnThongBao.Click += BtnThongBao_Click;
-            btnHSCN.Click += BtnHSCN_Click;
             btnLogout.Click += BtnLogout_Click;
         }
 
