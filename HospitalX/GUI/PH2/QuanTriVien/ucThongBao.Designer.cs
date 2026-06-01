@@ -21,12 +21,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlRoot = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
+            this.flowSent = new System.Windows.Forms.FlowLayoutPanel();
             this.dgvSent = new System.Windows.Forms.DataGridView();
             this.pnlHistoryHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.lblHistoryCount = new System.Windows.Forms.Label();
             this.lblHistoryTitle = new System.Windows.Forms.Label();
             this.pnlLeft = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlLabels = new Guna.UI2.WinForms.Guna2Panel();
+            this.flowLabels = new System.Windows.Forms.FlowLayoutPanel();
             this.btnSend = new Guna.UI2.WinForms.Guna2Button();
             this.chkT7 = new Guna.UI2.WinForms.Guna2CheckBox();
             this.chkT6 = new Guna.UI2.WinForms.Guna2CheckBox();
@@ -82,6 +84,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlHistory.BorderRadius = 8;
             this.pnlHistory.BorderThickness = 1;
+            this.pnlHistory.Controls.Add(this.flowSent);
             this.pnlHistory.Controls.Add(this.dgvSent);
             this.pnlHistory.Controls.Add(this.pnlHistoryHeader);
             this.pnlHistory.FillColor = System.Drawing.Color.White;
@@ -89,6 +92,21 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlHistory.Name = "pnlHistory";
             this.pnlHistory.Size = new System.Drawing.Size(628, 678);
             this.pnlHistory.TabIndex = 2;
+            // 
+            // flowSent
+            // 
+            this.flowSent.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowSent.AutoScroll = true;
+            this.flowSent.BackColor = System.Drawing.Color.White;
+            this.flowSent.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowSent.Location = new System.Drawing.Point(18, 82);
+            this.flowSent.Name = "flowSent";
+            this.flowSent.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.flowSent.Size = new System.Drawing.Size(592, 574);
+            this.flowSent.TabIndex = 2;
+            this.flowSent.WrapContents = false;
             // 
             // dgvSent
             // 
@@ -132,6 +150,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvSent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSent.Size = new System.Drawing.Size(622, 613);
             this.dgvSent.TabIndex = 1;
+            this.dgvSent.Visible = false;
             // 
             // pnlHistoryHeader
             // 
@@ -189,6 +208,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLabels.BorderRadius = 8;
             this.pnlLabels.BorderThickness = 1;
             this.pnlLabels.Controls.Add(this.btnSend);
+            this.pnlLabels.Controls.Add(this.flowLabels);
             this.pnlLabels.Controls.Add(this.chkT7);
             this.pnlLabels.Controls.Add(this.chkT6);
             this.pnlLabels.Controls.Add(this.chkT5);
@@ -204,6 +224,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLabels.Name = "pnlLabels";
             this.pnlLabels.Size = new System.Drawing.Size(444, 348);
             this.pnlLabels.TabIndex = 1;
+            // 
+            // flowLabels
+            // 
+            this.flowLabels.BackColor = System.Drawing.Color.White;
+            this.flowLabels.Location = new System.Drawing.Point(20, 62);
+            this.flowLabels.Name = "flowLabels";
+            this.flowLabels.Size = new System.Drawing.Size(400, 218);
+            this.flowLabels.TabIndex = 11;
             // 
             // btnSend
             // 
@@ -243,6 +271,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT7.UncheckedState.BorderThickness = 1;
             this.chkT7.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkT7.UseVisualStyleBackColor = false;
+            this.chkT7.Visible = false;
             this.chkT7.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT6
@@ -264,6 +293,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT6.UncheckedState.BorderThickness = 1;
             this.chkT6.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkT6.UseVisualStyleBackColor = false;
+            this.chkT6.Visible = false;
             this.chkT6.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT5
@@ -285,6 +315,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT5.UncheckedState.BorderThickness = 1;
             this.chkT5.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkT5.UseVisualStyleBackColor = false;
+            this.chkT5.Visible = false;
             this.chkT5.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT4
@@ -306,6 +337,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT4.UncheckedState.BorderThickness = 1;
             this.chkT4.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkT4.UseVisualStyleBackColor = false;
+            this.chkT4.Visible = false;
             this.chkT4.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT3
@@ -327,6 +359,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT3.UncheckedState.BorderThickness = 1;
             this.chkT3.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkT3.UseVisualStyleBackColor = false;
+            this.chkT3.Visible = false;
             this.chkT3.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT2
@@ -348,6 +381,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT2.UncheckedState.BorderThickness = 1;
             this.chkT2.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkT2.UseVisualStyleBackColor = false;
+            this.chkT2.Visible = false;
             this.chkT2.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkT1
@@ -369,6 +403,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkT1.UncheckedState.BorderThickness = 1;
             this.chkT1.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkT1.UseVisualStyleBackColor = false;
+            this.chkT1.Visible = false;
             this.chkT1.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
             // 
             // chkAll
@@ -390,6 +425,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkAll.UncheckedState.BorderThickness = 1;
             this.chkAll.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkAll.UseVisualStyleBackColor = false;
+            this.chkAll.Visible = false;
             this.chkAll.CheckedChanged += new System.EventHandler(this.chkAll_CheckedChanged);
             // 
             // lblSelectedCount
@@ -647,6 +683,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private Guna.UI2.WinForms.Guna2ComboBox cmbPriority;
         private System.Windows.Forms.Label lblPriority;
         private Guna.UI2.WinForms.Guna2Panel pnlLabels;
+        private System.Windows.Forms.FlowLayoutPanel flowLabels;
         private Guna.UI2.WinForms.Guna2Button btnSend;
         private Guna.UI2.WinForms.Guna2CheckBox chkT7;
         private Guna.UI2.WinForms.Guna2CheckBox chkT6;
@@ -659,6 +696,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private System.Windows.Forms.Label lblSelectedCount;
         private System.Windows.Forms.Label lblLabelsTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlHistory;
+        private System.Windows.Forms.FlowLayoutPanel flowSent;
         private System.Windows.Forms.DataGridView dgvSent;
         private Guna.UI2.WinForms.Guna2Panel pnlHistoryHeader;
         private System.Windows.Forms.Label lblHistoryCount;
