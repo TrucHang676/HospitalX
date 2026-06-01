@@ -121,7 +121,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(150, 38);
             this.btnSelectAll.TabIndex = 2;
-            this.btnSelectAll.Text = "☑ Chọn tất cả";
+            this.btnSelectAll.Text = "Chọn tất cả";
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
             // 
             // 

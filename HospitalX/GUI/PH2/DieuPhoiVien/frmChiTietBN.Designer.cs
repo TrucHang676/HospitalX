@@ -130,9 +130,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
             this.btnEdit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnEdit.Location = new System.Drawing.Point(240, 15);
+            this.btnEdit.Location = new System.Drawing.Point(300, 15);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(200, 40);
+            this.btnEdit.Size = new System.Drawing.Size(170, 40);
             this.btnEdit.TabIndex = 0;
             this.btnEdit.Text = "Sửa thông tin";
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
@@ -147,9 +147,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnCloseBottom.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnCloseBottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
             this.btnCloseBottom.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
-            this.btnCloseBottom.Location = new System.Drawing.Point(456, 15);
+            this.btnCloseBottom.Location = new System.Drawing.Point(486, 15);
             this.btnCloseBottom.Name = "btnCloseBottom";
-            this.btnCloseBottom.Size = new System.Drawing.Size(200, 40);
+            this.btnCloseBottom.Size = new System.Drawing.Size(170, 40);
             this.btnCloseBottom.TabIndex = 2;
             this.btnCloseBottom.Text = "Đóng";
             this.btnCloseBottom.Click += new System.EventHandler(this.btnCloseBottom_Click);
