@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_BN));
-            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm();
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnDV = new Guna.UI2.WinForms.Guna2Button();
             this.btnHSCN = new Guna.UI2.WinForms.Guna2Button();
             this.pnlLine1 = new Guna.UI2.WinForms.Guna2Separator();
             this.pnl2 = new Guna.UI2.WinForms.Guna2Panel();
@@ -51,7 +51,6 @@
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.btnDV = new Guna.UI2.WinForms.Guna2Button();
             this.pnlSidebar.SuspendLayout();
             this.pnl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).BeginInit();
@@ -87,6 +86,42 @@
             this.pnlSidebar.Name = "pnlSidebar";
             this.pnlSidebar.Size = new System.Drawing.Size(220, 850);
             this.pnlSidebar.TabIndex = 1;
+            // 
+            // btnDV
+            // 
+            this.btnDV.BackColor = System.Drawing.Color.Transparent;
+            this.btnDV.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(77)))), ((int)(((byte)(120)))));
+            this.btnDV.BorderRadius = 8;
+            this.btnDV.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnDV.CheckedState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnDV.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnDV.CheckedState.ForeColor = System.Drawing.Color.White;
+            this.btnDV.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image")));
+            this.btnDV.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDV.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnDV.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnDV.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnDV.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnDV.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnDV.FillColor = System.Drawing.Color.Transparent;
+            this.btnDV.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDV.ForeColor = System.Drawing.Color.Silver;
+            this.btnDV.HoverState.CustomBorderColor = System.Drawing.Color.White;
+            this.btnDV.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
+            this.btnDV.Image = ((System.Drawing.Image)(resources.GetObject("btnDV.Image")));
+            this.btnDV.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDV.ImageOffset = new System.Drawing.Point(8, 0);
+            this.btnDV.ImageSize = new System.Drawing.Size(27, 27);
+            this.btnDV.IndicateFocus = true;
+            this.btnDV.Location = new System.Drawing.Point(13, 304);
+            this.btnDV.Name = "btnDV";
+            this.btnDV.ShadowDecoration.BorderRadius = 8;
+            this.btnDV.ShadowDecoration.Depth = 3;
+            this.btnDV.Size = new System.Drawing.Size(190, 45);
+            this.btnDV.TabIndex = 20;
+            this.btnDV.Text = "DỊCH VỤ";
+            this.btnDV.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDV.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // btnHSCN
             // 
@@ -421,42 +456,6 @@
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(1128, 782);
             this.pnlContent.TabIndex = 3;
-            // 
-            // btnDV
-            // 
-            this.btnDV.BackColor = System.Drawing.Color.Transparent;
-            this.btnDV.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(77)))), ((int)(((byte)(120)))));
-            this.btnDV.BorderRadius = 8;
-            this.btnDV.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
-            this.btnDV.CheckedState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnDV.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnDV.CheckedState.ForeColor = System.Drawing.Color.White;
-            this.btnDV.CheckedState.Image = ((System.Drawing.Image)(resources.GetObject("resource.Image")));
-            this.btnDV.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDV.CustomBorderThickness = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.btnDV.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnDV.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnDV.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnDV.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnDV.FillColor = System.Drawing.Color.Transparent;
-            this.btnDV.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDV.ForeColor = System.Drawing.Color.Silver;
-            this.btnDV.HoverState.CustomBorderColor = System.Drawing.Color.White;
-            this.btnDV.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(114)))), ((int)(((byte)(99)))));
-            this.btnDV.Image = ((System.Drawing.Image)(resources.GetObject("btnDV.Image")));
-            this.btnDV.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnDV.ImageOffset = new System.Drawing.Point(8, 0);
-            this.btnDV.ImageSize = new System.Drawing.Size(27, 27);
-            this.btnDV.IndicateFocus = true;
-            this.btnDV.Location = new System.Drawing.Point(13, 304);
-            this.btnDV.Name = "btnDV";
-            this.btnDV.ShadowDecoration.BorderRadius = 8;
-            this.btnDV.ShadowDecoration.Depth = 3;
-            this.btnDV.Size = new System.Drawing.Size(190, 45);
-            this.btnDV.TabIndex = 20;
-            this.btnDV.Text = "DỊCH VỤ";
-            this.btnDV.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnDV.TextOffset = new System.Drawing.Point(8, 0);
             // 
             // Main_BN
             // 
