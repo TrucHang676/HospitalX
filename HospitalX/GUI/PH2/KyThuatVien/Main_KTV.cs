@@ -1,7 +1,7 @@
-using System.Drawing;
-using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using HospitalX.GUI.PH2.KyThuatVien;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2
 {
@@ -193,9 +193,5 @@ namespace HospitalX.GUI.PH2
             }
         }
 
-        private void lblLogoPlus_Click(object sender, System.EventArgs e)
-        {
-
-        }
     }
 }
