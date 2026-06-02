@@ -25,7 +25,6 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.cmbSort = new Guna.UI2.WinForms.Guna2ComboBox();
             this.dtpTo = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.dtpFrom = new Guna.UI2.WinForms.Guna2DateTimePicker();
-            this.cmbDateRange = new Guna.UI2.WinForms.Guna2ComboBox();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.pnlRoot.SuspendLayout();
             this.pnlToolbar.SuspendLayout();
@@ -67,7 +66,6 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlToolbar.Controls.Add(this.cmbSort);
             this.pnlToolbar.Controls.Add(this.dtpTo);
             this.pnlToolbar.Controls.Add(this.dtpFrom);
-            this.pnlToolbar.Controls.Add(this.cmbDateRange);
             this.pnlToolbar.Controls.Add(this.txtSearch);
             this.pnlToolbar.FillColor = System.Drawing.Color.White;
             this.pnlToolbar.Location = new System.Drawing.Point(24, 18);
@@ -81,7 +79,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCount.BackColor = System.Drawing.Color.Transparent;
             this.lblCount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblCount.Location = new System.Drawing.Point(825, 66);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(228, 22);
@@ -121,15 +119,16 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpTo.BorderRadius = 6;
             this.dtpTo.BorderThickness = 1;
             this.dtpTo.Checked = true;
+            this.dtpTo.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpTo.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
             this.dtpTo.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTo.Location = new System.Drawing.Point(753, 24);
+            this.dtpTo.Location = new System.Drawing.Point(609, 24);
             this.dtpTo.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
             this.dtpTo.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(112, 36);
+            this.dtpTo.Size = new System.Drawing.Size(125, 36);
             this.dtpTo.TabIndex = 3;
             this.dtpTo.Value = new System.DateTime(2026, 5, 31, 0, 0, 0, 0);
             // 
@@ -140,43 +139,18 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpFrom.BorderRadius = 6;
             this.dtpFrom.BorderThickness = 1;
             this.dtpFrom.Checked = true;
+            this.dtpFrom.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpFrom.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
             this.dtpFrom.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpFrom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFrom.Location = new System.Drawing.Point(622, 24);
+            this.dtpFrom.Location = new System.Drawing.Point(468, 24);
             this.dtpFrom.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
             this.dtpFrom.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             this.dtpFrom.Name = "dtpFrom";
-            this.dtpFrom.Size = new System.Drawing.Size(112, 36);
+            this.dtpFrom.Size = new System.Drawing.Size(125, 36);
             this.dtpFrom.TabIndex = 2;
             this.dtpFrom.Value = new System.DateTime(2026, 1, 1, 0, 0, 0, 0);
-            // 
-            // cmbDateRange
-            // 
-            this.cmbDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbDateRange.BackColor = System.Drawing.Color.Transparent;
-            this.cmbDateRange.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
-            this.cmbDateRange.BorderRadius = 6;
-            this.cmbDateRange.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmbDateRange.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbDateRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDateRange.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(251)))));
-            this.cmbDateRange.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.cmbDateRange.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.cmbDateRange.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cmbDateRange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.cmbDateRange.ItemHeight = 30;
-            this.cmbDateRange.Items.AddRange(new object[] {
-            "Tất cả thời gian",
-            "Tháng này",
-            "3 tháng gần đây",
-            "Tùy chọn"});
-            this.cmbDateRange.Location = new System.Drawing.Point(444, 24);
-            this.cmbDateRange.Name = "cmbDateRange";
-            this.cmbDateRange.Size = new System.Drawing.Size(159, 36);
-            this.cmbDateRange.StartIndex = 0;
-            this.cmbDateRange.TabIndex = 1;
             // 
             // txtSearch
             // 
@@ -224,7 +198,6 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private System.Windows.Forms.Panel pnlRoot;
         private Guna.UI2.WinForms.Guna2Panel pnlToolbar;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbDateRange;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpFrom;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpTo;
         private Guna.UI2.WinForms.Guna2ComboBox cmbSort;

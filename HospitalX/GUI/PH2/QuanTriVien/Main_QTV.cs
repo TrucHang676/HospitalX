@@ -1,5 +1,4 @@
 using Guna.UI2.WinForms;
-using HospitalX.GUI.PH2.BacSi;
 using HospitalX.GUI.PH2.QuanTriVien;
 using System;
 using System.Windows.Forms;
@@ -62,12 +61,6 @@ namespace HospitalX.GUI.PH2
                     Application.Exit();
                 }
             }
-        }
-
-        private void NavigateToHsbaPage()
-        {
-            btnTB.Checked = true;
-            LoadPage(new ucHSBA(), "Hồ sơ bệnh án");
         }
 
         // Load UserControl vào vùng nội dung chính.

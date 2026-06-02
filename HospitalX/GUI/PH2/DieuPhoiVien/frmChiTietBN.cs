@@ -32,102 +32,79 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblName.Text = _patient.Name;
             lblCode.Text = _patient.Id;
 
-            // Info rows — built programmatically like frmPatientDetail (BacSi)
+            // Info rows — built programmatically using premium Guna2 rounded cards
             int leftX = 28;
-            int rightX = 274;
+            int rightX = 352;
+            int colW = 300;
 
-            AddInfo("Mã bệnh nhân", _patient.Id, leftX, 56, true);
-            AddInfo("CCCD", _patient.Cccd, rightX, 56, true);
+            // Section 1: THÔNG TIN HÀNH CHÍNH & LIÊN LẠC
+            AddInfo("Mã bệnh nhân", _patient.Id, leftX, 56, colW, 36, true);
+            AddInfo("Số CCCD / Định danh", _patient.Cccd, rightX, 56, colW, 36, true);
 
-            AddInfo("Họ và tên", _patient.Name, leftX, 136, false);
-            AddInfo("Ngày sinh", _patient.Dob, rightX, 136, false);
+            AddInfo("Họ và tên", _patient.Name, leftX, 126, colW, 36, false);
+            AddInfo("Ngày sinh", _patient.Dob, rightX, 126, colW, 36, false);
 
-            AddInfo("Giới tính", _patient.Gender, leftX, 216, false);
-            AddInfo("Ngày nhập viện", _patient.Date, rightX, 216, false);
+            AddInfo("Giới tính", _patient.Gender, leftX, 196, colW, 36, false);
 
-            AddInfo("Khoa điều trị", _patient.Khoa, leftX, 296, false);
-            AddInfo("Bác sĩ phụ trách", _patient.Bs, rightX, 296, false);
+            string fullAddress = string.IsNullOrEmpty(_patient.SoNha) 
+                ? "Chưa cập nhật địa chỉ" 
+                : $"{_patient.SoNha}, {_patient.TenDuong}, {_patient.QuanHuyen}, {_patient.TinhTP}";
+            AddInfo("Địa chỉ liên lạc", fullAddress, rightX, 196, colW, 72, false, true);
 
-            // Status pill — custom paint
-            var lblStatusCap = new Label
+            // Section 2: TIỀN SỬ Y KHOA (Y = 296 - pushed down from 276)
+            var lblHistoryHeader = new Label
             {
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(122, 149, 137),
-                Location = new Point(leftX, 376),
-                Text = "TRẠNG THÁI",
+                Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(10, 79, 61),
+                Location = new Point(28, 296),
+                Text = "TIỀN SỬ Y KHOA VÀ DỊ ỨNG",
                 BackColor = Color.Transparent,
                 AutoSize = true
             };
-            pnlInfo.Controls.Add(lblStatusCap);
+            pnlInfo.Controls.Add(lblHistoryHeader);
 
-            var pnlPill = new Panel
-            {
-                Size = new Size(200, 26),
-                Location = new Point(leftX, 396),
-                BackColor = Color.Transparent
-            };
-
-            GetStatusColors(_patient.StatusLabel, out Color pillBack, out Color pillFore, out Color dotColor);
-
-            pnlPill.Paint += (s, e) =>
-            {
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                string text = _patient.StatusLabel;
-                int textW = TextRenderer.MeasureText(e.Graphics, text, new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold),
-                    Size.Empty, TextFormatFlags.NoPadding | TextFormatFlags.SingleLine).Width;
-                int pillW = Math.Max(textW + 36, 80);
-                int pillH = 24;
-
-                using (var path = new GraphicsPath())
-                {
-                    int r = 12;
-                    path.AddArc(0, 0, r * 2, r * 2, 180, 90);
-                    path.AddArc(pillW - r * 2, 0, r * 2, r * 2, 270, 90);
-                    path.AddArc(pillW - r * 2, pillH - r * 2, r * 2, r * 2, 0, 90);
-                    path.AddArc(0, pillH - r * 2, r * 2, r * 2, 90, 90);
-                    path.CloseFigure();
-                    using (var brush = new SolidBrush(pillBack))
-                        e.Graphics.FillPath(brush, path);
-                }
-                using (var dotBrush = new SolidBrush(dotColor))
-                    e.Graphics.FillEllipse(dotBrush, 10, 8, 8, 8);
-            };
-            pnlPill.Controls.Add(new Label
-            {
-                AutoSize = true,
-                Font = new Font("Segoe UI Semibold", 8.5F, FontStyle.Bold),
-                ForeColor = pillFore,
-                Location = new Point(22, 4),
-                BackColor = Color.Transparent,
-                Text = _patient.StatusLabel
-            });
-            pnlInfo.Controls.Add(pnlPill);
+            int fullW = 624;
+            AddInfo("Tiền sử bệnh bản thân", string.IsNullOrEmpty(_patient.TienSuBN) ? "Không có ghi nhận tiền sử bệnh lí." : _patient.TienSuBN, leftX, 332, fullW, 64, false, true);
+            AddInfo("Tiền sử bệnh gia đình", string.IsNullOrEmpty(_patient.TienSuGD) ? "Không có ghi nhận tiền sử bệnh di truyền." : _patient.TienSuGD, leftX, 432, fullW, 64, false, true);
+            AddInfo("Dị ứng thuốc & Hóa chất", string.IsNullOrEmpty(_patient.DiUng) ? "Không có ghi nhận dị ứng thuốc đã biết." : _patient.DiUng, leftX, 532, fullW, 64, false, true);
         }
 
-        private void AddInfo(string label, string value, int x, int y, bool mono)
+        private void AddInfo(string label, string value, int x, int y, int w, int h, bool mono, bool multiline = false)
         {
             var lbl = new Label
             {
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                Font = new Font("Segoe UI", 8.25F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(122, 149, 137),
                 Location = new Point(x, y),
                 Text = label.ToUpper(),
                 BackColor = Color.Transparent,
                 AutoSize = true
             };
-            var val = new Label
+
+            var card = new Guna.UI2.WinForms.Guna2Panel
             {
-                BackColor = Color.FromArgb(247, 249, 248),
-                Font = new Font(mono ? "Consolas" : "Segoe UI", 10F, FontStyle.Bold),
-                ForeColor = mono ? Color.FromArgb(15, 110, 86) : Color.FromArgb(24, 48, 42),
-                Location = new Point(x, y + 20),
-                Padding = new Padding(10, 0, 0, 0),
-                Size = new Size(220, 36),
-                Text = value,
-                TextAlign = ContentAlignment.MiddleLeft
+                BorderRadius = 8,
+                FillColor = Color.FromArgb(244, 247, 246),
+                Location = new Point(x, y + 18),
+                Size = new Size(w, h),
+                BackColor = Color.Transparent
             };
+
+            var lblValue = new Label
+            {
+                BackColor = Color.Transparent,
+                Font = new Font(mono ? "Consolas" : "Segoe UI", 9.75F, mono ? FontStyle.Bold : FontStyle.Regular),
+                ForeColor = mono ? Color.FromArgb(15, 110, 86) : Color.FromArgb(24, 48, 42),
+                Dock = DockStyle.Fill,
+                AutoSize = false,
+                Padding = new Padding(12, multiline ? 8 : 0, 12, multiline ? 8 : 0),
+                Text = value,
+                TextAlign = multiline ? ContentAlignment.TopLeft : ContentAlignment.MiddleLeft
+            };
+
+            card.Controls.Add(lblValue);
             pnlInfo.Controls.Add(lbl);
-            pnlInfo.Controls.Add(val);
+            pnlInfo.Controls.Add(card);
         }
 
         private void ApplyButtonIcons()
@@ -137,19 +114,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (imgEdit != null)
             {
                 btnEdit.Image = imgEdit;
-                btnEdit.ImageSize = new Size(20, 20);
-                btnEdit.ImageOffset = new Point(0, 0);
+                btnEdit.ImageSize = new Size(22, 22);
+                btnEdit.ImageOffset = new Point(0, 1);
                 btnEdit.TextOffset = new Point(0, 0);
-            }
-
-            // HSBA icon (Using dpv_4.png from image folder)
-            Image imgHsba = DpvAssets.Load("dpv_4.png");
-            if (imgHsba != null)
-            {
-                btnViewHsba.Image = imgHsba;
-                btnViewHsba.ImageSize = new Size(20, 20);
-                btnViewHsba.ImageOffset = new Point(0, 0);
-                btnViewHsba.TextOffset = new Point(0, 0);
             }
         }
 
@@ -186,11 +153,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.Close();
         }
 
-        private void btnViewHsba_Click(object sender, EventArgs e)
-        {
-            Result = ActionResult.ViewHSBA;
-            this.Close();
-        }
 
         private void btnCloseBottom_Click(object sender, EventArgs e)
         {

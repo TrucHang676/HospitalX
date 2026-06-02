@@ -17,46 +17,17 @@ namespace HospitalX.GUI.PH2.BenhNhan
         {
             InitializeComponent();
             WireEvents();
-            ApplyDateRange();
             RenderRecords();
         }
 
         private void WireEvents()
         {
             txtSearch.TextChanged += (sender, args) => RenderRecords();
-            cmbDateRange.SelectedIndexChanged += (sender, args) =>
-            {
-                ApplyDateRange();
-                RenderRecords();
-            };
+
             dtpFrom.ValueChanged += (sender, args) => RenderRecords();
             dtpTo.ValueChanged += (sender, args) => RenderRecords();
             cmbSort.SelectedIndexChanged += (sender, args) => RenderRecords();
             Resize += (sender, args) => LayoutRecordCards();
-        }
-
-        private void ApplyDateRange()
-        {
-            var today = DateTime.Today;
-            var selected = cmbDateRange.SelectedItem?.ToString() ?? "Tất cả thời gian";
-            dtpFrom.Enabled = selected == "Tùy chọn";
-            dtpTo.Enabled = selected == "Tùy chọn";
-
-            if (selected == "Tháng này")
-            {
-                dtpFrom.Value = new DateTime(today.Year, today.Month, 1);
-                dtpTo.Value = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
-            }
-            else if (selected == "3 tháng gần đây")
-            {
-                dtpFrom.Value = today.AddMonths(-3);
-                dtpTo.Value = today;
-            }
-            else if (selected == "Tất cả thời gian")
-            {
-                dtpFrom.Value = new DateTime(2026, 1, 1);
-                dtpTo.Value = new DateTime(2026, 12, 31);
-            }
         }
 
         private void RenderRecords()
@@ -128,7 +99,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
             var btnDetail = CreateDetailButton();
             btnDetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDetail.Location = new Point(card.Width - 200, 48);
+            btnDetail.Location = new Point(card.Width - 200, 43);
             btnDetail.Click += (sender, args) =>
             {
                 using (var form = new frmBenhAnDetailBN(record))
@@ -138,7 +109,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             };
             card.Controls.Add(btnDetail);
 
-            card.Resize += (sender, args) => btnDetail.Location = new Point(card.Width - 200, 48);
+            card.Resize += (sender, args) => btnDetail.Location = new Point(card.Width - 200, 43);
             return card;
         }
 

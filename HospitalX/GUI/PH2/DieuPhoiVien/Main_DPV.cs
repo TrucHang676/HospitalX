@@ -79,8 +79,7 @@ namespace HospitalX.GUI.PH2
             StyleNavButton(btnThongBaoNoiBo);
             StyleNavButton(btnHoSoCaNhan);
 
-            // Thu hẹp khoảng cách giữa "Thông báo nội bộ" và "Hồ sơ cá nhân" (khoảng cách 7px)
-            btnHoSoCaNhan.Location = new Point(btnHoSoCaNhan.Left, btnThongBaoNoiBo.Bottom + 7);
+
 
             StyleAvatarAndVpdBadge();
 
@@ -142,7 +141,7 @@ namespace HospitalX.GUI.PH2
             button.CheckedState.Image = DpvAssets.Load(checkedIcon);
             button.ImageSize = new Size(size, size);
             button.ImageOffset = new Point(8, 0);
-            button.TextOffset = new Point(8, 0);
+            button.TextOffset = new Point(15, 0);
         }
 
         private void WireNavigationEvents()
@@ -152,8 +151,8 @@ namespace HospitalX.GUI.PH2
             btnThemSuaBN.Click += (s, e) => NavigateToThemSuaBN();
             btnTaoHSBA.Click += (s, e) => NavigateToTaoHSBA();
             btnDieuPhoiKTV.Click += (s, e) => NavigateToDieuPhoiKTV();
-            btnThongBaoNoiBo.Click += (s, e) => ShowComingSoon(btnThongBaoNoiBo, "Thông báo nội bộ");
-            btnHoSoCaNhan.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
+            btnThongBaoNoiBo.Click += (s, e) => NavigateToThongBao();
+            btnHoSoCaNhan.Click += (s, e) => NavigateToHoSoCaNhan();
             btnLogout.Click += BtnLogout_Click;
         }
 
@@ -170,9 +169,14 @@ namespace HospitalX.GUI.PH2
         }
 
         /// <summary>Navigate to "Thêm / Sửa bệnh nhân" tab. Called from child user controls.</summary>
-        public void NavigateToThemSuaBN()
+        public void NavigateToThemSuaBN(string patientId = null)
         {
-            LoadPage(new ucThemSuaBN(), "Thêm bệnh nhân mới", "/ BỆNH NHÂN");
+            var uc = new ucThemSuaBN();
+            if (!string.IsNullOrEmpty(patientId))
+            {
+                uc.PreloadPatient(patientId);
+            }
+            LoadPage(uc, string.IsNullOrEmpty(patientId) ? "Thêm bệnh nhân mới" : "Sửa thông tin bệnh nhân", "/ BỆNH NHÂN");
             btnThemSuaBN.Checked = true;
         }
 
@@ -187,6 +191,18 @@ namespace HospitalX.GUI.PH2
         {
             LoadPage(new ucDieuPhoiKTV(), "Điều phối kỹ thuật viên", "/ HSBA_DV");
             btnDieuPhoiKTV.Checked = true;
+        }
+
+        public void NavigateToThongBao()
+        {
+            LoadPage(new HospitalX.GUI.PH2.DieuPhoiVien.ucThongBao(), "Thông báo", "/ Thông báo");
+            btnThongBaoNoiBo.Checked = true;
+        }
+
+        public void NavigateToHoSoCaNhan()
+        {
+            LoadPage(new ucHoSoCaNhan(), "Hồ sơ cá nhân", "/ Cá nhân");
+            btnHoSoCaNhan.Checked = true;
         }
 
         private void LoadPage(UserControl control, string title, string breadcrumb)
@@ -244,8 +260,8 @@ namespace HospitalX.GUI.PH2
 
         private void StyleAvatarAndVpdBadge()
         {
-            // Set BackColor to Transparent to prevent default square background drawing
-            lblAvatarIni.BackColor = Color.Transparent;
+            ptbAdmin.Image = DpvAssets.Load("female_doctor.png");
+            ptbAdmin.SizeMode = PictureBoxSizeMode.Zoom;
             lblVpdBadge.BackColor = Color.Transparent;
 
             // Căn chỉnh vị trí nhãn VPD sát với chữ "Điều phối viên"
@@ -255,28 +271,6 @@ namespace HospitalX.GUI.PH2
                 int roleTextWidth = (int)Math.Ceiling(size.Width);
                 lblVpdBadge.Location = new Point(lblRole.Left + roleTextWidth + 6, lblRole.Top - 3);
             }
-
-            // Vẽ bo tròn và đổi màu cho ô LH
-            lblAvatarIni.Paint += (s, e) =>
-            {
-                var lbl = (Label)s;
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                using (var bgBrush = new SolidBrush(pnlSidebar.BackColor))
-                {
-                    e.Graphics.FillRectangle(bgBrush, lbl.ClientRectangle);
-                }
-
-                Color avatarColor = Color.FromArgb(20, 115, 93); // Teal đậm đẹp
-                using (var path = GetRoundedPath(lbl.ClientRectangle, 10))
-                using (var brush = new SolidBrush(avatarColor))
-                {
-                    e.Graphics.FillPath(brush, path);
-                }
-
-                TextRenderer.DrawText(e.Graphics, lbl.Text, lbl.Font, lbl.ClientRectangle, lbl.ForeColor,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            };
 
             // Vẽ bo tròn và đổi màu cho ô VPD
             lblVpdBadge.Paint += (s, e) =>
@@ -321,7 +315,7 @@ namespace HospitalX.GUI.PH2
             btnProfile.ImageSize = new Size(18, 18);
             btnProfile.HoverState.FillColor = Color.FromArgb(230, 244, 240);
             btnProfile.Cursor = Cursors.Hand;
-            btnProfile.Click += (s, e) => ShowComingSoon(btnHoSoCaNhan, "Hồ sơ cá nhân");
+            btnProfile.Click += (s, e) => NavigateToHoSoCaNhan();
 
             // Notification button
             btnNotif = new Guna2Button();
@@ -381,6 +375,16 @@ namespace HospitalX.GUI.PH2
         }
 
         private void pnlSidebar_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnDanhSachBN_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblRole_Click(object sender, EventArgs e)
         {
 
         }

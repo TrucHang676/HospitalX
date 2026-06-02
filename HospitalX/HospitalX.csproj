@@ -375,6 +375,31 @@
     <Compile Include="GUI\PH2\DieuPhoiVien\frmChiTietBN.Designer.cs">
       <DependentUpon>frmChiTietBN.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucHoSoCaNhan.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucHoSoCaNhan.Designer.cs">
+      <DependentUpon>ucHoSoCaNhan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmDoiMatKhau.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmDoiMatKhau.Designer.cs">
+      <DependentUpon>frmDoiMatKhau.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucThongBao.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucThongBao.Designer.cs">
+      <DependentUpon>ucThongBao.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmNotificationDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\frmNotificationDetail.Designer.cs">
+      <DependentUpon>frmNotificationDetail.cs</DependentUpon>
+    </Compile>
+
     <Compile Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -584,6 +609,9 @@
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvThongBao.resx">
       <DependentUpon>ucKtvThongBao.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\QuanTriVien\frmAuditLogDetail.resx">
+      <DependentUpon>frmAuditLogDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucAudit.resx">
       <DependentUpon>ucAudit.cs</DependentUpon>
     </EmbeddedResource>
@@ -622,6 +650,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucDieuPhoiKTV.resx">
       <DependentUpon>ucDieuPhoiKTV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucHoSoCaNhan.resx">
+      <DependentUpon>ucHoSoCaNhan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmDoiMatKhau.resx">
+      <DependentUpon>frmDoiMatKhau.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucThongBao.resx">
+      <DependentUpon>ucThongBao.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\frmNotificationDetail.resx">
+      <DependentUpon>frmNotificationDetail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.resx">
       <DependentUpon>ucSaoLuuPhucHoi.cs</DependentUpon>

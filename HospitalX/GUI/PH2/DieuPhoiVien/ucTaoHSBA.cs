@@ -17,27 +17,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private static readonly Color LabelColor = Color.FromArgb(122, 149, 137);
         private static readonly Color TextColor = Color.FromArgb(74, 98, 89);
 
-        private string _selectedDoctorCode = "BS-TM-001";
-        private string _selectedDoctorName = "BS. Trần Minh Khoa";
+        private string _selectedDoctorCode = "";
+        private string _selectedDoctorName = "";
         private Guna2Panel _selectedDoctorCard = null;
 
         // Summary labels (updated dynamically)
+        private Label lblSumMaHSBA;
         private Label lblSumBN;
         private Label lblSumMaBN;
+        private Label lblSumNgayMo;
         private Label lblSumBS;
         private Label lblSumKhoa;
-        private Label lblSumIcd;
-        private Label lblSumHinhThuc;
+        private Label lblSumChanDoan;
+        private Label lblSumDieuTri;
+        private Label lblSumKetLuan;
 
-        private class IcdRowControls
-        {
-            public Guna2TextBox CodeBox { get; set; }
-            public Guna2TextBox DescBox { get; set; }
-            public Guna2Button DelBtn { get; set; }
-        }
-
-        private readonly System.Collections.Generic.List<IcdRowControls> _icdRows = new System.Collections.Generic.List<IcdRowControls>();
         private bool _step4Done = false;
+        private FlowLayoutPanel _flpSummary;
 
         public ucTaoHSBA()
         {
@@ -51,24 +47,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ptbStep1Icon.Image = DpvAssets.Load("magnifying-glass.png");
             ptbStep2Icon.Image = DpvAssets.Load("dpv_4.png");
             ptbStep3Icon.Image = DpvAssets.Load("dpv_8.png");
-            ptbNoteIcon.Image = DpvAssets.Load("taking.png");
 
             // Load right-side headers icons
             ptbSummaryHeaderIcon.Image = DpvAssets.Load("dpv_4.png");
-            ptbPermHeaderIcon.Image = DpvAssets.Load("settings.png");
-            ptbLoadHeaderIcon.Image = DpvAssets.Load("dpv_14.png") ?? DpvAssets.Load("dpv_10.png");
 
             // Style search button with icon
             btnSearchBN.Image = DpvAssets.Load("magnifying-glass.png");
             btnSearchBN.ImageSize = new Size(16, 16);
             btnSearchBN.ImageOffset = new Point(-4, 0);
             btnSearchBN.TextOffset = new Point(2, 0);
-
-            // Style footer buttons with icons
-            btnSaveDraft.Image = DpvAssets.Load("save.png");
-            btnSaveDraft.ImageSize = new Size(16, 16);
-            btnSaveDraft.ImageOffset = new Point(-4, 0);
-            btnSaveDraft.TextOffset = new Point(2, 0);
 
             btnCreateHSBA.Image = DpvAssets.Load("buttonTick.png");
             btnCreateHSBA.ImageSize = new Size(16, 16);
@@ -79,9 +66,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             BuildStepsIndicator();
             BuildDoctorCards();
             BuildSummaryContent();
-            BuildPermContent();
-            BuildLoadContent();
-            AddDefaultIcdRow();
+            
+            pnlPermCard.Visible = false;
+            pnlScroll.Controls.Remove(pnlPermCard);
 
             // Wire events
             btnSearchBN.Click += (s, ev) => ExecuteSearchBN();
@@ -94,36 +81,46 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 }
             };
             btnChangeBN.Click += (s, ev) => ChangeBN();
-            btnAddIcd.Click += (s, ev) => AddIcdRow();
-            btnSaveDraft.Click += (s, ev) => SaveDraft();
             btnCreateHSBA.Click += (s, ev) => CreateHSBA();
 
             // Wire input changes for fully dynamic steps indicator and summary cards
-            cboHinhThucDT.SelectedIndexChanged += (s, ev) =>
+            txtMaHSBA.TextChanged += (s, ev) =>
             {
-                if (lblSumHinhThuc != null)
-                    lblSumHinhThuc.Text = $"{cboHinhThucDT.Text} · {cboLoaiBH.Text}";
-                BuildStepsIndicator();
+                SetSummaryText(lblSumMaHSBA, string.IsNullOrWhiteSpace(txtMaHSBA.Text) ? "Chưa có" : txtMaHSBA.Text);
             };
-            cboLoaiBH.SelectedIndexChanged += (s, ev) =>
+            dtpNgayMo.ValueChanged += (s, ev) =>
             {
-                if (lblSumHinhThuc != null)
-                    lblSumHinhThuc.Text = $"{cboHinhThucDT.Text} · {cboLoaiBH.Text}";
-                BuildStepsIndicator();
+                SetSummaryText(lblSumNgayMo, !pnlPatientFound.Visible ? "Chưa có" : dtpNgayMo.Value.ToString("dd/MM/yyyy"));
             };
             cboKhoaDT.SelectedIndexChanged += (s, ev) =>
             {
-                if (lblSumKhoa != null)
-                    lblSumKhoa.Text = cboKhoaDT.Text;
+                SetSummaryText(lblSumKhoa, cboKhoaDT.Text);
                 BuildStepsIndicator();
             };
             txtChanDoan.TextChanged += (s, ev) =>
             {
+                if (!string.IsNullOrWhiteSpace(txtChanDoan.Text))
+                    txtChanDoan.BorderColor = CardBorder;
+                SetSummaryText(lblSumChanDoan, string.IsNullOrWhiteSpace(txtChanDoan.Text) ? "Chưa có" : txtChanDoan.Text);
+                BuildStepsIndicator();
+            };
+            txtDieuTri.TextChanged += (s, ev) =>
+            {
+                if (!string.IsNullOrWhiteSpace(txtDieuTri.Text))
+                    txtDieuTri.BorderColor = CardBorder;
+                SetSummaryText(lblSumDieuTri, string.IsNullOrWhiteSpace(txtDieuTri.Text) ? "Chưa có" : txtDieuTri.Text);
+                BuildStepsIndicator();
+            };
+            txtKetLuan.TextChanged += (s, ev) =>
+            {
+                if (!string.IsNullOrWhiteSpace(txtKetLuan.Text))
+                    txtKetLuan.BorderColor = CardBorder;
+                SetSummaryText(lblSumKetLuan, string.IsNullOrWhiteSpace(txtKetLuan.Text) ? "Chưa có" : txtKetLuan.Text);
                 BuildStepsIndicator();
             };
 
-            // Load default patient on initial display
-            LoadPatient("Nguyễn Văn An", "BN240001", "Nam", "15/03/1978", "Tim mạch");
+            // Start in a clean state with no patient selected and no doctor selected
+            ChangeBN();
 
             // Handle resize
             this.Resize += (s, ev) => AdjustLayout();
@@ -132,18 +129,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void InitComboBoxes()
         {
-            cboHinhThucDT.Items.Clear();
-            cboHinhThucDT.Items.Add("Nội trú");
-            cboHinhThucDT.Items.Add("Ngoại trú");
-            cboHinhThucDT.Items.Add("Cấp cứu");
-            cboHinhThucDT.SelectedIndex = 0;
-
-            cboLoaiBH.Items.Clear();
-            cboLoaiBH.Items.Add("BHYT toàn phần");
-            cboLoaiBH.Items.Add("BHYT một phần");
-            cboLoaiBH.Items.Add("Tự chi trả");
-            cboLoaiBH.SelectedIndex = 0;
-
             cboKhoaDT.Items.Clear();
             cboKhoaDT.Items.Add("Tim mạch (TM-001)");
             cboKhoaDT.Items.Add("Nội tổng quát (NTQ-002)");
@@ -152,18 +137,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cboKhoaDT.Items.Add("Thần kinh (TK-005)");
             cboKhoaDT.SelectedIndex = 0;
 
-            cboPhongDT.Items.Clear();
-            cboPhongDT.Items.Add("Phòng 201");
-            cboPhongDT.Items.Add("Phòng 202");
-            cboPhongDT.Items.Add("Phòng 203");
-            cboPhongDT.Items.Add("Phòng 204 (VIP)");
-            cboPhongDT.SelectedIndex = 0;
-
             dtpNgayMo.Value = DateTime.Now;
 
-            // Pre-fill diagnosis
+            // Pre-fill fields
             txtChanDoan.Text = "Đau tức ngực, nghi ngờ rối loạn nhịp tim. Cần chuyên khoa Tim mạch đánh giá.";
-            txtGhiChu.Text = "Bệnh nhân cao tuổi, cần ưu tiên theo dõi nhịp tim 24h đầu. Đã thông báo người nhà.";
+            txtDieuTri.Text = "Theo dõi điện tâm đồ liên tục, nghỉ ngơi tại giường, sẵn sàng xử lý loạn nhịp.";
+            txtKetLuan.Text = "Rối loạn nhịp tim nghi ngờ do mạch vành, cần nhập viện chuyên khoa Tim mạch.";
         }
 
         // =============================================
@@ -174,7 +153,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlSteps.Controls.Clear();
 
             bool step1Done = pnlPatientFound.Visible;
-            bool step2Done = step1Done && !string.IsNullOrWhiteSpace(txtChanDoan.Text) && _icdRows.Count > 0;
+            bool step2Done = step1Done && !string.IsNullOrWhiteSpace(txtChanDoan.Text) 
+                                       && !string.IsNullOrWhiteSpace(txtDieuTri.Text) 
+                                       && !string.IsNullOrWhiteSpace(txtKetLuan.Text);
             bool step3Done = step2Done && _selectedDoctorCard != null;
             bool step4Done = step3Done && _step4Done;
 
@@ -255,7 +236,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             var doctors = new[]
             {
-                new { Code = "BS-TM-001", Name = "BS. Trần Minh Khoa", Spec = "Tim mạch · 18 năm KN", Status = "● Đang rảnh (4 BN hôm nay)", IsFree = true, IsSelected = true },
+                new { Code = "BS-TM-001", Name = "BS. Trần Minh Khoa", Spec = "Tim mạch · 18 năm KN", Status = "● Đang rảnh (4 BN hôm nay)", IsFree = true, IsSelected = false },
                 new { Code = "BS-TM-002", Name = "BS. Nguyễn Thị Hồng", Spec = "Tim mạch · 12 năm KN", Status = "● Đang bận (8 BN hôm nay)", IsFree = false, IsSelected = false },
                 new { Code = "BS-TM-003", Name = "TS. Lê Đình Phước", Spec = "Tim mạch · 25 năm KN", Status = "● Đang rảnh (2 BN hôm nay)", IsFree = true, IsSelected = false },
                 new { Code = "BS-TM-004", Name = "BS. Phạm Thu Hà", Spec = "Tim mạch · 8 năm KN", Status = "● Đang bận (9 BN hôm nay)", IsFree = false, IsSelected = false },
@@ -355,29 +336,19 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             if (_selectedDoctorCard == card)
             {
-                // Toggle / Deselect this doctor
-                card.BorderColor = CardBorder;
-                card.FillColor = Color.White;
-
-                // Remove checkmark
-                for (int i = card.Controls.Count - 1; i >= 0; i--)
-                {
-                    if (card.Controls[i] is Label lbl && lbl.Text == "✓" && lbl.Font.Size > 10)
-                        card.Controls.RemoveAt(i);
-                }
-
-                _selectedDoctorCode = "";
-                _selectedDoctorName = "";
-                _selectedDoctorCard = null;
-
-                if (lblSumBS != null)
-                    lblSumBS.Text = "—";
-
-                BuildStepsIndicator();
-                return;
+                SelectDoctorByCode("");
             }
+            else
+            {
+                SelectDoctorByCode(code);
+            }
+        }
 
-            // Deselect all
+        private void SelectDoctorByCode(string code)
+        {
+            Guna2Panel targetCard = null;
+            string targetName = "";
+
             foreach (Control c in pnlDoctorGrid.Controls)
             {
                 if (c is Guna2Panel p)
@@ -391,86 +362,209 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                         if (p.Controls[i] is Label lbl && lbl.Text == "✓" && lbl.Font.Size > 10)
                             p.Controls.RemoveAt(i);
                     }
+
+                    if (!string.IsNullOrEmpty(code) && p.Tag as string == code)
+                    {
+                        targetCard = p;
+                        // Find the name label inside the card
+                        foreach (Control child in p.Controls)
+                        {
+                            if (child is Label l && l.Location.Y == 34) // based on name label location
+                            {
+                                targetName = l.Text;
+                            }
+                        }
+                    }
                 }
             }
 
-            // Select this card
-            card.BorderColor = Teal;
-            card.FillColor = TealLight;
-            var checkMark = new Label();
-            checkMark.AutoSize = true;
-            checkMark.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            checkMark.ForeColor = Teal;
-            checkMark.Location = new Point(card.Width - 30, 8);
-            checkMark.Text = "✓";
-            checkMark.BackColor = Color.Transparent;
-            checkMark.Click += (s, ev) => SelectDoctor(card, code, name);
-            card.Controls.Add(checkMark);
+            if (targetCard != null)
+            {
+                targetCard.BorderColor = Teal;
+                targetCard.FillColor = TealLight;
+                var checkMark = new Label();
+                checkMark.AutoSize = true;
+                checkMark.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+                checkMark.ForeColor = Teal;
+                checkMark.Location = new Point(targetCard.Width - 30, 8);
+                checkMark.Text = "✓";
+                checkMark.BackColor = Color.Transparent;
+                string localCode = code;
+                string localName = targetName;
+                checkMark.Click += (s, ev) => SelectDoctor(targetCard, localCode, localName);
+                targetCard.Controls.Add(checkMark);
 
-            _selectedDoctorCode = code;
-            _selectedDoctorName = name;
-            _selectedDoctorCard = card;
+                _selectedDoctorCode = code;
+                _selectedDoctorName = targetName;
+                _selectedDoctorCard = targetCard;
 
-            // Update summary
-            if (lblSumBS != null)
-                lblSumBS.Text = $"{code} — {name}";
+                SetSummaryText(lblSumBS, $"{code} — {targetName}");
+            }
+            else
+            {
+                _selectedDoctorCode = "";
+                _selectedDoctorName = "";
+                _selectedDoctorCard = null;
+
+                SetSummaryText(lblSumBS, "Chưa có");
+            }
 
             BuildStepsIndicator();
+            AdjustLayout();
         }
 
-        // =============================================
-        // SUMMARY PANEL
-        // =============================================
         private void BuildSummaryContent()
         {
-            var rows = new[]
+            pnlSummaryBody.Controls.Clear();
+            pnlSummaryBody.AutoScroll = false;
+
+            _flpSummary = new FlowLayoutPanel();
+            _flpSummary.Dock = DockStyle.Fill;
+            _flpSummary.FlowDirection = FlowDirection.TopDown;
+            _flpSummary.WrapContents = false;
+            _flpSummary.AutoScroll = true; // Bật thanh cuộn dọc thông minh!
+            _flpSummary.Padding = new Padding(16, 12, 16, 12);
+            _flpSummary.BackColor = Color.Transparent;
+            pnlSummaryBody.Controls.Add(_flpSummary);
+
+            // Row 1: MÃ HSBA (Left) & NGÀY MỞ (Right)
+            var row1 = CreateSideBySideRow("MÃ HSBA", "NGÀY MỞ", true, false, 175, 125, 195, out lblSumMaHSBA, out lblSumNgayMo);
+            _flpSummary.Controls.Add(row1);
+
+            // Row 2: BỆNH NHÂN (Left) & MÃ BN (Right)
+            var row2 = CreateSideBySideRow("BỆNH NHÂN", "MÃ BN", false, true, 175, 125, 195, out lblSumBN, out lblSumMaBN);
+            _flpSummary.Controls.Add(row2);
+
+            // Row 3: BÁC SĨ PHỤ TRÁCH (Left) & KHOA (Right)
+            var row3 = CreateSideBySideRow("BÁC SĨ PHỤ TRÁCH", "KHOA", false, true, 175, 125, 195, out lblSumBS, out lblSumKhoa);
+            _flpSummary.Controls.Add(row3);
+
+            // Row 4: CHẨN ĐOÁN (Full width)
+            var row4 = CreateFullWidthRow("CHẨN ĐOÁN", false, out lblSumChanDoan);
+            _flpSummary.Controls.Add(row4);
+
+            // Row 5: ĐIỀU TRỊ (Full width)
+            var row5 = CreateFullWidthRow("ĐIỀU TRỊ", false, out lblSumDieuTri);
+            _flpSummary.Controls.Add(row5);
+
+            // Row 6: KẾT LUẬN (Full width)
+            var row6 = CreateFullWidthRow("KẾT LUẬN", false, out lblSumKetLuan);
+            _flpSummary.Controls.Add(row6);
+        }
+
+        private Panel CreateSideBySideRow(string key1Text, string key2Text, bool val1Mono, bool val2Mono, int width1, int width2, int rightX, out Label val1Out, out Label val2Out)
+        {
+            var p = new Panel();
+            p.Width = 320; // Thu gọn chiều rộng xuống 320px để chừa chỗ cho scrollbar dọc, tránh scroll ngang
+            p.Height = 36;
+            p.Margin = new Padding(0, 0, 0, 14);
+            p.BackColor = Color.Transparent;
+
+            // Left Col Key
+            var k1 = new Label();
+            k1.Text = key1Text;
+            k1.Font = new Font("Segoe UI", 7.5F, FontStyle.Bold);
+            k1.ForeColor = LabelColor;
+            k1.Location = new Point(0, 0);
+            k1.AutoSize = true;
+            k1.BackColor = Color.Transparent;
+            p.Controls.Add(k1);
+
+            // Left Col Val
+            var v1 = new Label();
+            v1.Text = "Chưa có";
+            v1.Font = val1Mono ? new Font("Consolas", 9F, FontStyle.Bold) : new Font("Segoe UI", 9F, FontStyle.Regular);
+            v1.ForeColor = val1Mono ? Teal : Color.FromArgb(26, 46, 39);
+            v1.Location = new Point(0, 16);
+            v1.Width = width1;
+            v1.AutoSize = true;
+            v1.MaximumSize = new Size(width1, 0);
+            v1.Tag = "value";
+            v1.BackColor = Color.Transparent;
+            p.Controls.Add(v1);
+            val1Out = v1;
+
+            // Right Col Key
+            var k2 = new Label();
+            k2.Text = key2Text;
+            k2.Font = new Font("Segoe UI", 7.5F, FontStyle.Bold);
+            k2.ForeColor = LabelColor;
+            k2.Location = new Point(rightX, 0);
+            k2.AutoSize = true;
+            k2.BackColor = Color.Transparent;
+            p.Controls.Add(k2);
+
+            // Right Col Val
+            var v2 = new Label();
+            v2.Text = "Chưa có";
+            v2.Font = val2Mono ? new Font("Consolas", 9F, FontStyle.Bold) : new Font("Segoe UI", 9F, FontStyle.Regular);
+            v2.ForeColor = val2Mono ? Teal : Color.FromArgb(26, 46, 39);
+            v2.Location = new Point(rightX, 16);
+            v2.Width = width2;
+            v2.AutoSize = true;
+            v2.MaximumSize = new Size(width2, 0);
+            v2.Tag = "value";
+            v2.BackColor = Color.Transparent;
+            p.Controls.Add(v2);
+            val2Out = v2;
+
+            return p;
+        }
+
+        private Panel CreateFullWidthRow(string keyText, bool valMono, out Label valOut)
+        {
+            var p = new Panel();
+            p.Width = 320; // Thu gọn chiều rộng xuống 320px
+            p.Height = 36;
+            p.Margin = new Padding(0, 0, 0, 14);
+            p.BackColor = Color.Transparent;
+
+            // Key
+            var k = new Label();
+            k.Text = keyText;
+            k.Font = new Font("Segoe UI", 7.5F, FontStyle.Bold);
+            k.ForeColor = LabelColor;
+            k.Location = new Point(0, 0);
+            k.AutoSize = true;
+            k.BackColor = Color.Transparent;
+            p.Controls.Add(k);
+
+            // Val
+            var v = new Label();
+            v.Text = "Chưa có";
+            v.Font = valMono ? new Font("Consolas", 9F, FontStyle.Bold) : new Font("Segoe UI", 9F, FontStyle.Regular);
+            v.ForeColor = valMono ? Teal : Color.FromArgb(26, 46, 39);
+            v.Location = new Point(0, 16);
+            v.Width = 320;
+            v.AutoSize = true;
+            v.MaximumSize = new Size(320, 0);
+            v.Tag = "value";
+            v.BackColor = Color.Transparent;
+            p.Controls.Add(v);
+            valOut = v;
+
+            return p;
+        }
+
+        private void SetSummaryText(Label val, string text)
+        {
+            if (val == null) return;
+            val.Text = text;
+            if (val.Parent is Panel p)
             {
-                new { Key = "MÃ HSBA", Val = "HSBA-2026-0157", IsMono = true },
-                new { Key = "BỆNH NHÂN", Val = "Nguyễn Văn An", IsMono = false },
-                new { Key = "MÃ BN", Val = "BN240001", IsMono = true },
-                new { Key = "NGÀY MỞ", Val = DateTime.Now.ToString("dd/MM/yyyy"), IsMono = false },
-                new { Key = "BÁC SĨ PHỤ TRÁCH", Val = "BS-TM-001 — BS. Trần Minh Khoa", IsMono = false },
-                new { Key = "KHOA", Val = "TM-001 — Tim mạch", IsMono = true },
-                new { Key = "CHẨN ĐOÁN ICD-10", Val = "I49.9 — Rối loạn nhịp tim", IsMono = false },
-                new { Key = "HÌNH THỨC", Val = "Nội trú · BHYT toàn phần", IsMono = false },
-            };
-
-            int y = 16;
-            for (int i = 0; i < rows.Length; i++)
-            {
-                var keyLbl = new Label();
-                keyLbl.AutoSize = true;
-                keyLbl.Font = new Font("Segoe UI", 7.5F, FontStyle.Bold);
-                keyLbl.ForeColor = LabelColor;
-                keyLbl.Text = rows[i].Key;
-                keyLbl.Location = new Point(16, y);
-                keyLbl.BackColor = Color.Transparent;
-                pnlSummaryBody.Controls.Add(keyLbl);
-
-                var valLbl = new Label();
-                valLbl.AutoSize = true;
-                valLbl.Font = rows[i].IsMono
-                    ? new Font("Consolas", 9F, FontStyle.Bold)
-                    : new Font("Segoe UI", 9F, FontStyle.Regular);
-                valLbl.ForeColor = rows[i].IsMono ? Teal : Color.FromArgb(26, 46, 39);
-                valLbl.Text = rows[i].Val;
-                valLbl.Location = new Point(16, y + 16);
-                valLbl.BackColor = Color.Transparent;
-                pnlSummaryBody.Controls.Add(valLbl);
-
-                // Keep references for dynamic updates
-                switch (i)
+                int maxBottom = 0;
+                foreach (Control c in p.Controls)
                 {
-                    case 1: lblSumBN = valLbl; break;
-                    case 2: lblSumMaBN = valLbl; break;
-                    case 4: lblSumBS = valLbl; break;
-                    case 5: lblSumKhoa = valLbl; break;
-                    case 6: lblSumIcd = valLbl; break;
-                    case 7: lblSumHinhThuc = valLbl; break;
+                    if (c is Label l && l.Tag as string == "value")
+                    {
+                        l.Height = l.PreferredHeight;
+                        if (l.Bottom > maxBottom)
+                            maxBottom = l.Bottom;
+                    }
                 }
-
-                y += 44;
+                p.Height = maxBottom + 4;
             }
+            AdjustLayout();
         }
 
         // =============================================
@@ -546,169 +640,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlPermBody.Controls.Add(badgePanel);
         }
 
-        // =============================================
-        // LOAD PANEL (progress bar)
-        // =============================================
-        private void BuildLoadContent()
-        {
-            // Stats row
-            var lblBnLabel = new Label();
-            lblBnLabel.AutoSize = true;
-            lblBnLabel.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
-            lblBnLabel.ForeColor = Color.FromArgb(26, 46, 39);
-            lblBnLabel.Text = "Bệnh nhân hiện tại";
-            lblBnLabel.Location = new Point(16, 16);
-            lblBnLabel.BackColor = Color.Transparent;
-            pnlLoadBody.Controls.Add(lblBnLabel);
 
-            var lblBnCount = new Label();
-            lblBnCount.AutoSize = true;
-            lblBnCount.Font = new Font("Consolas", 9F, FontStyle.Bold);
-            lblBnCount.ForeColor = Teal;
-            lblBnCount.Text = "14/20";
-            lblBnCount.Location = new Point(310, 16);
-            lblBnCount.BackColor = Color.Transparent;
-            pnlLoadBody.Controls.Add(lblBnCount);
 
-            // Progress bar track
-            var pnlTrack = new Panel();
-            pnlTrack.Location = new Point(16, 48);
-            pnlTrack.Size = new Size(348, 8);
-            pnlTrack.BackColor = CardBorder;
-            pnlLoadBody.Controls.Add(pnlTrack);
-
-            // Make track rounded
-            var trackGp = new GraphicsPath();
-            trackGp.AddRoundedRectangle(new Rectangle(0, 0, 348, 8), 4);
-            pnlTrack.Region = new Region(trackGp);
-
-            // Progress bar fill
-            var pnlFill = new Panel();
-            pnlFill.Location = new Point(0, 0);
-            pnlFill.Size = new Size((int)(348 * 0.70), 8);
-            pnlFill.BackColor = Teal;
-            pnlTrack.Controls.Add(pnlFill);
-
-            // Status text
-            var lblLoadStatus = new Label();
-            lblLoadStatus.AutoSize = true;
-            lblLoadStatus.Font = new Font("Segoe UI", 7.5F);
-            lblLoadStatus.ForeColor = LabelColor;
-            lblLoadStatus.Text = "Tải hiện tại: 70% — Còn 6 chỗ trống";
-            lblLoadStatus.Location = new Point(16, 72);
-            lblLoadStatus.BackColor = Color.Transparent;
-            pnlLoadBody.Controls.Add(lblLoadStatus);
-        }
-
-        // =============================================
-        // ICD-10 MANAGEMENT
-        // =============================================
-        private void AddDefaultIcdRow()
-        {
-            AddIcdRowWithData("I49.9", "Rối loạn nhịp tim, không xác định");
-        }
-
-        private void AddIcdRow()
-        {
-            AddIcdRowWithData("", "");
-            RecalcIcdLayout();
-            UpdateSummaryIcd();
-        }
-
-        private void AddIcdRowWithData(string code, string desc)
-        {
-            int rowIndex = _icdRows.Count;
-            int y = rowIndex * 40;
-
-            var txtCode = new Guna2TextBox();
-            txtCode.BorderRadius = 8;
-            txtCode.BorderColor = CardBorder;
-            txtCode.BorderThickness = 1;
-            txtCode.FillColor = Color.FromArgb(247, 249, 248);
-            txtCode.ForeColor = Color.FromArgb(24, 48, 42);
-            txtCode.Font = new Font("Segoe UI", 9F);
-            txtCode.Location = new Point(0, y);
-            txtCode.Size = new Size(120, 34);
-            txtCode.Text = code;
-            txtCode.PlaceholderText = "VD: I49.9";
-            txtCode.PlaceholderForeColor = Color.FromArgb(180, 195, 188);
-            txtCode.BackColor = Color.Transparent;
-            txtCode.AutoSize = false;
-            txtCode.TextOffset = new Point(6, 0);
-            txtCode.HoverState.BorderColor = Teal;
-            txtCode.FocusedState.BorderColor = Teal;
-            pnlIcdContainer.Controls.Add(txtCode);
-
-            var txtDesc = new Guna2TextBox();
-            txtDesc.BorderRadius = 8;
-            txtDesc.BorderColor = CardBorder;
-            txtDesc.BorderThickness = 1;
-            txtDesc.FillColor = Color.FromArgb(247, 249, 248);
-            txtDesc.ForeColor = Color.FromArgb(24, 48, 42);
-            txtDesc.Font = new Font("Segoe UI", 9F);
-            txtDesc.Location = new Point(130, y);
-            txtDesc.Size = new Size(720, 34);
-            txtDesc.Text = desc;
-            txtDesc.PlaceholderText = "Mô tả bệnh…";
-            txtDesc.PlaceholderForeColor = Color.FromArgb(180, 195, 188);
-            txtDesc.BackColor = Color.Transparent;
-            txtDesc.AutoSize = false;
-            txtDesc.TextOffset = new Point(6, 0);
-            txtDesc.HoverState.BorderColor = Teal;
-            txtDesc.FocusedState.BorderColor = Teal;
-            pnlIcdContainer.Controls.Add(txtDesc);
-
-            var btnDel = new Guna2Button();
-            btnDel.Size = new Size(34, 34);
-            btnDel.Location = new Point(860, y);
-            btnDel.BorderRadius = 8;
-            btnDel.FillColor = Color.Transparent;
-            btnDel.ForeColor = Color.FromArgb(224, 92, 58);
-            btnDel.Font = new Font("Segoe UI", 12F);
-            btnDel.Text = ""; // Clear emoji text
-            btnDel.Image = DpvAssets.Load("bin.png");
-            btnDel.ImageSize = new Size(16, 16);
-            btnDel.Cursor = Cursors.Hand;
-            btnDel.BackColor = Color.Transparent;
-            btnDel.HoverState.FillColor = Color.FromArgb(255, 230, 225);
-
-            var row = new IcdRowControls
-            {
-                CodeBox = txtCode,
-                DescBox = txtDesc,
-                DelBtn = btnDel
-            };
-            _icdRows.Add(row);
-
-            btnDel.Click += (s, ev) =>
-            {
-                pnlIcdContainer.Controls.Remove(txtCode);
-                pnlIcdContainer.Controls.Remove(txtDesc);
-                pnlIcdContainer.Controls.Remove(btnDel);
-                _icdRows.Remove(row);
-                RecalcIcdLayout();
-                UpdateSummaryIcd();
-            };
-            pnlIcdContainer.Controls.Add(btnDel);
-
-            // Wire text changes to update summary and step indicator dynamically
-            txtCode.TextChanged += (s, ev) =>
-            {
-                UpdateSummaryIcd();
-                BuildStepsIndicator();
-            };
-            txtDesc.TextChanged += (s, ev) =>
-            {
-                UpdateSummaryIcd();
-                BuildStepsIndicator();
-            };
-        }
-
-        private void RecalcIcdLayout()
-        {
-            AdjustLayout();
-            BuildStepsIndicator();
-        }
 
         // =============================================
         // PATIENT SEARCH
@@ -781,113 +714,62 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             pnlPatientFound.Visible = true;
 
-            // Load patient clinical details based on code (MaBN)
-            pnlIcdContainer.Controls.Clear();
-            _icdRows.Clear();
-            _step4Done = false;
-            if (code == "BN240001") // Nguyễn Văn An
+            // Generate unique HSBA code based on patient code suffix
+            string suffix = code.Length >= 4 ? code.Substring(code.Length - 4) : "9999";
+            txtMaHSBA.Text = $"HSBA-2026-{suffix}";
+
+            // Map patient registered department to cboKhoaDT to assist coordinator
+            string deptLower = dept.ToLower();
+            if (deptLower.Contains("tim"))
             {
-                txtMaHSBA.Text = "HSBA-2026-0157";
-                cboHinhThucDT.SelectedIndex = 0; // Nội trú
-                cboLoaiBH.SelectedIndex = 0; // BHYT toàn phần
                 cboKhoaDT.SelectedIndex = 0; // Tim mạch (TM-001)
-                cboPhongDT.SelectedIndex = 0; // Phòng 201
-                txtChanDoan.Text = "Đau tức ngực, nghi ngờ rối loạn nhịp tim. Cần chuyên khoa Tim mạch đánh giá.";
-                txtGhiChu.Text = "Bệnh nhân cao tuổi, cần ưu tiên theo dõi nhịp tim 24h đầu. Đã thông báo người nhà.";
-                AddIcdRowWithData("I49.9", "Rối loạn nhịp tim, không xác định");
             }
-            else if (code == "BN240046") // Trần Thị Cường
+            else if (deptLower.Contains("nội") || deptLower.Contains("noi"))
             {
-                txtMaHSBA.Text = "HSBA-2026-0248";
-                cboHinhThucDT.SelectedIndex = 1; // Ngoại trú
-                cboLoaiBH.SelectedIndex = 1; // BHYT một phần
                 cboKhoaDT.SelectedIndex = 1; // Nội tổng quát (NTQ-002)
-                cboPhongDT.SelectedIndex = 2; // Phòng 203
-                txtChanDoan.Text = "Sốt cao co giật nhẹ, ho khan kéo dài 3 ngày. Nghi ngờ viêm phế quản cấp.";
-                txtGhiChu.Text = "Trẻ em 6 tuổi, cần dặn dò người nhà uống đúng liều lượng, theo dõi thân nhiệt định kỳ.";
-                AddIcdRowWithData("J20.9", "Viêm phế quản cấp, không xác định");
             }
-            else if (code == "BN240032") // Lê Thành Anh
+            else if (deptLower.Contains("chỉnh") || deptLower.Contains("chinh"))
             {
-                txtMaHSBA.Text = "HSBA-2026-0312";
-                cboHinhThucDT.SelectedIndex = 0; // Nội trú
-                cboLoaiBH.SelectedIndex = 1; // BHYT một phần
+                cboKhoaDT.SelectedIndex = 2; // Chỉnh hình (CH-003)
+            }
+            else if (deptLower.Contains("sản") || deptLower.Contains("san"))
+            {
                 cboKhoaDT.SelectedIndex = 3; // Sản khoa (SK-004)
-                cboPhongDT.SelectedIndex = 2; // Phòng 203
-                txtChanDoan.Text = "Theo dõi đau bụng hạ vị kéo dài, nghi ngờ viêm túi thừa hoặc bệnh lý ruột.";
-                txtGhiChu.Text = "Bệnh nhân nam lớn tuổi, 73 tuổi, có tiền sử tăng huyết áp nhẹ. Theo dõi sát nhiệt độ và đại tiện.";
-                AddIcdRowWithData("K57.9", "Bệnh túi thừa của ruột, không xác định");
+            }
+            else if (deptLower.Contains("thần") || deptLower.Contains("than"))
+            {
+                cboKhoaDT.SelectedIndex = 4; // Thần kinh (TK-005)
             }
             else
             {
-                // Dynamic clinical mock data generator based on department (dept)
-                string suffix = code.Length >= 4 ? code.Substring(code.Length - 4) : "9999";
-                txtMaHSBA.Text = $"HSBA-2026-{suffix}";
-                cboHinhThucDT.SelectedIndex = 0; // Nội trú
-                cboLoaiBH.SelectedIndex = 0; // BHYT toàn phần
-
-                // Map department string to correct cboKhoaDT items
-                // "Tim mạch", "Nội tổng quát", "Chỉnh hình", "Sản khoa", "Thần kinh", "Nhi khoa"
-                string deptLower = dept.ToLower();
-                if (deptLower.Contains("tim"))
-                {
-                    cboKhoaDT.SelectedIndex = 0; // Tim mạch (TM-001)
-                    cboPhongDT.SelectedIndex = 0; // Phòng 201
-                    txtChanDoan.Text = "Đau tức ngực, hồi hộp trống ngực liên tục. Nghi ngờ suy tim sung huyết.";
-                    txtGhiChu.Text = "Bệnh nhân cần kiểm tra điện tâm đồ và siêu âm tim khẩn cấp.";
-                    AddIcdRowWithData("I50.9", "Suy tim, không xác định");
-                }
-                else if (deptLower.Contains("nội") || deptLower.Contains("noi"))
-                {
-                    cboKhoaDT.SelectedIndex = 1; // Nội tổng quát (NTQ-002)
-                    cboPhongDT.SelectedIndex = 1; // Phòng 202
-                    txtChanDoan.Text = "Đau thượng vị lan ra sau lưng, ăn uống khó tiêu. Nghi ngờ viêm dạ dày cấp.";
-                    txtGhiChu.Text = "Kiêng đồ ăn cay nóng, nhiều dầu mỡ. Nội soi dạ dày khi có chỉ định.";
-                    AddIcdRowWithData("K29.7", "Viêm dạ dày, không xác định");
-                }
-                else if (deptLower.Contains("chỉnh") || deptLower.Contains("chinh"))
-                {
-                    cboKhoaDT.SelectedIndex = 2; // Chỉnh hình (CH-003)
-                    cboPhongDT.SelectedIndex = 2; // Phòng 203
-                    txtChanDoan.Text = "Chấn thương phần mềm cổ chân phải do té ngã. Theo dõi bong gân.";
-                    txtGhiChu.Text = "Hạn chế vận động mạnh cổ chân phải, chườm lạnh giảm sưng.";
-                    AddIcdRowWithData("S93.4", "Bong gân và đứt khớp cổ chân");
-                }
-                else if (deptLower.Contains("sản") || deptLower.Contains("san"))
-                {
-                    cboKhoaDT.SelectedIndex = 3; // Sản khoa (SK-004)
-                    cboPhongDT.SelectedIndex = 1; // Phòng 202
-                    txtChanDoan.Text = "Theo dõi đau tức vùng hạ vị kéo dài, rối loạn kinh nguyệt. Nghi ngờ u xơ tử cung.";
-                    txtGhiChu.Text = "Siêu âm đầu dò phụ khoa và xét nghiệm các chỉ số viêm.";
-                    AddIcdRowWithData("D25.9", "U xơ tử cung, không xác định");
-                }
-                else if (deptLower.Contains("thần") || deptLower.Contains("than"))
-                {
-                    cboKhoaDT.SelectedIndex = 4; // Thần kinh (TK-005)
-                    cboPhongDT.SelectedIndex = 3; // Phòng 204
-                    txtChanDoan.Text = "Đau nửa đầu Migraine cơn kịch phát, chóng mặt kèm buồn nôn.";
-                    txtGhiChu.Text = "Nằm nghỉ ngơi nơi yên tĩnh, tránh ánh sáng mạnh và tiếng ồn.";
-                    AddIcdRowWithData("G43.9", "Đau nửa đầu, không xác định");
-                }
-                else // Nhi khoa / default
-                {
-                    cboKhoaDT.SelectedIndex = 1; // Mặc định Nội tổng quát
-                    cboPhongDT.SelectedIndex = 2; // Phòng 203
-                    txtChanDoan.Text = "Ho khan kèm sốt nhẹ về chiều. Theo dõi nhiễm trùng đường hô hấp dưới.";
-                    txtGhiChu.Text = "Uống nhiều nước ấm, theo dõi thân nhiệt định kỳ mỗi 4 giờ.";
-                    AddIcdRowWithData("J06.9", "Nhiễm khuẩn đường hô hấp trên cấp tính");
-                }
+                cboKhoaDT.SelectedIndex = 1; // Mặc định Nội tổng quát (NTQ-002)
             }
 
-            RecalcIcdLayout();
+            // Always clear clinical inputs so coordinator enters new record details manually
+            txtChanDoan.Text = "";
+            txtDieuTri.Text = "";
+            txtKetLuan.Text = "";
+
+            txtChanDoan.BorderColor = CardBorder;
+            txtDieuTri.BorderColor = CardBorder;
+            txtKetLuan.BorderColor = CardBorder;
+
+            _step4Done = false;
+
+            SelectDoctorByCode("");
             BuildStepsIndicator();
 
             // Update summary
-            if (lblSumBN != null) lblSumBN.Text = name;
-            if (lblSumMaBN != null) lblSumMaBN.Text = code;
-            if (lblSumHinhThuc != null) lblSumHinhThuc.Text = $"{cboHinhThucDT.Text} · {cboLoaiBH.Text}";
-            if (lblSumKhoa != null) lblSumKhoa.Text = cboKhoaDT.Text;
-            UpdateSummaryIcd();
+            SetSummaryText(lblSumMaHSBA, txtMaHSBA.Text);
+            SetSummaryText(lblSumBN, name);
+            SetSummaryText(lblSumMaBN, code);
+            SetSummaryText(lblSumNgayMo, dtpNgayMo.Value.ToString("dd/MM/yyyy"));
+            SetSummaryText(lblSumKhoa, cboKhoaDT.Text);
+            SetSummaryText(lblSumChanDoan, "Chưa có");
+            SetSummaryText(lblSumDieuTri, "Chưa có");
+            SetSummaryText(lblSumKetLuan, "Chưa có");
+
+            AdjustLayout();
         }
 
         private void ChangeBN()
@@ -899,50 +781,34 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Clear inputs
             txtMaHSBA.Text = "";
             txtChanDoan.Text = "";
-            txtGhiChu.Text = "";
-            pnlIcdContainer.Controls.Clear();
-            _icdRows.Clear();
+            txtDieuTri.Text = "";
+            txtKetLuan.Text = "";
+            txtChanDoan.BorderColor = CardBorder;
+            txtDieuTri.BorderColor = CardBorder;
+            txtKetLuan.BorderColor = CardBorder;
             _step4Done = false;
-            RecalcIcdLayout();
             BuildStepsIndicator();
 
+            // Clear doctor selection
+            SelectDoctorByCode("");
+
             // Clear summary
-            if (lblSumBN != null) lblSumBN.Text = "—";
-            if (lblSumMaBN != null) lblSumMaBN.Text = "—";
-            if (lblSumHinhThuc != null) lblSumHinhThuc.Text = "—";
-            if (lblSumKhoa != null) lblSumKhoa.Text = "—";
-            if (lblSumIcd != null) lblSumIcd.Text = "—";
-        }
+            SetSummaryText(lblSumMaHSBA, "Chưa có");
+            SetSummaryText(lblSumBN, "Chưa có");
+            SetSummaryText(lblSumMaBN, "Chưa có");
+            SetSummaryText(lblSumNgayMo, "Chưa có");
+            SetSummaryText(lblSumBS, "Chưa có");
+            SetSummaryText(lblSumKhoa, "Chưa có");
+            SetSummaryText(lblSumChanDoan, "Chưa có");
+            SetSummaryText(lblSumDieuTri, "Chưa có");
+            SetSummaryText(lblSumKetLuan, "Chưa có");
 
-        private void UpdateSummaryIcd()
-        {
-            if (lblSumIcd != null)
-            {
-                lblSumIcd.Text = GetFirstIcdSummary();
-            }
-        }
-
-        private string GetFirstIcdSummary()
-        {
-            if (_icdRows.Count > 0)
-            {
-                var row = _icdRows[0];
-                return $"{row.CodeBox.Text} — {row.DescBox.Text}";
-            }
-            return "Chưa nhập ICD-10";
+            AdjustLayout();
         }
 
         // =============================================
         // CREATE HSBA
         // =============================================
-        private void SaveDraft()
-        {
-            _step4Done = true;
-            BuildStepsIndicator();
-            ShowDialog("Đã lưu nháp", "Hồ sơ bệnh án đã được lưu nháp thành công. Bạn có thể tiếp tục chỉnh sửa sau.",
-                Guna.UI2.WinForms.MessageDialogIcon.Information);
-        }
-
         private void CreateHSBA()
         {
             // Validate required fields
@@ -955,11 +821,28 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 errorMsg += "\n- Chẩn đoán sơ bộ";
                 txtChanDoan.BorderColor = Color.FromArgb(253, 114, 114);
             }
+            if (string.IsNullOrWhiteSpace(txtDieuTri.Text))
+            {
+                valid = false;
+                errorMsg += "\n- Hướng điều trị";
+                txtDieuTri.BorderColor = Color.FromArgb(253, 114, 114);
+            }
+            if (string.IsNullOrWhiteSpace(txtKetLuan.Text))
+            {
+                valid = false;
+                errorMsg += "\n- Kết luận";
+                txtKetLuan.BorderColor = Color.FromArgb(253, 114, 114);
+            }
 
             if (!pnlPatientFound.Visible)
             {
                 valid = false;
                 errorMsg += "\n- Chưa chọn bệnh nhân";
+            }
+            if (string.IsNullOrEmpty(_selectedDoctorCode))
+            {
+                valid = false;
+                errorMsg += "\n- Chưa chỉ định bác sĩ phụ trách";
             }
 
             if (!valid)
@@ -1003,61 +886,78 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlStep3Card.Width = leftW;
             pnlActionsCard.Width = leftW;
 
-            // Expand section containers inside cards to prevent clipping
-            pnlIcdSection.Width = pnlStep2Card.Width;
-            pnlNoteSection.Width = pnlStep3Card.Width;
-            txtGhiChu.Width = pnlNoteSection.Width - 40;
+            // Dynamically scale columns in Step 2
+            int col1X = 20;
+            int fieldW = (pnlStep2Card.Width - 60) / 2;
+            int col2X = col1X + fieldW + 20;
 
-            // Expand divider lines inside section panels dynamically
-            foreach (Control c in pnlIcdSection.Controls)
+            txtMaHSBA.Location = new Point(col1X, 80);
+            txtMaHSBA.Width = fieldW;
+            lblNgayMo.Location = new Point(col2X, 56);
+            dtpNgayMo.Location = new Point(col2X, 80);
+            dtpNgayMo.Width = fieldW;
+
+            // Dynamically scale multiline fields in Step 2
+            txtChanDoan.Width = pnlStep2Card.Width - 40;
+            txtDieuTri.Width = pnlStep2Card.Width - 40;
+            txtKetLuan.Width = pnlStep2Card.Width - 40;
+            pnlStep2Card.Height = txtKetLuan.Bottom + 20;
+
+            // Dynamically scale fields in Step 3
+            cboKhoaDT.Width = fieldW;
+            lblChonBS.Location = new Point(col1X, 138);
+            pnlDoctorGrid.Location = new Point(col1X, 162);
+            pnlDoctorGrid.Width = pnlStep3Card.Width - 40;
+
+            // Scale doctor cards inside grid
+            int docW = (pnlDoctorGrid.Width - 14) / 2;
+            int docH = 116;
+            for (int i = 0; i < pnlDoctorGrid.Controls.Count; i++)
             {
-                if (c is Panel && !(c is Guna2Panel) && c.Height == 1)
+                var card = pnlDoctorGrid.Controls[i] as Guna2Panel;
+                if (card != null)
                 {
-                    c.Width = pnlIcdSection.Width - 40;
+                    int col = i % 2;
+                    int row = i / 2;
+                    card.Location = new Point(col * (docW + 14), row * (docH + 14));
+                    card.Width = docW;
+                    foreach (Control child in card.Controls)
+                    {
+                        if (child is Label lbl && lbl.Text == "✓" && lbl.Font.Size > 10)
+                        {
+                            lbl.Left = docW - 30;
+                        }
+                    }
                 }
             }
-            foreach (Control c in pnlNoteSection.Controls)
-            {
-                if (c is Panel && !(c is Guna2Panel) && c.Height == 1)
-                {
-                    c.Width = pnlNoteSection.Width - 40;
-                }
-            }
 
-            // Position and resize ICD rows dynamically first
-            pnlIcdContainer.Width = pnlStep2Card.Width - 40;
-            btnAddIcd.Width = pnlIcdContainer.Width;
-
-            int icdY = 0;
-            foreach (var row in _icdRows)
-            {
-                row.CodeBox.Location = new Point(0, icdY);
-                row.CodeBox.Size = new Size(120, 34);
-
-                row.DescBox.Location = new Point(130, icdY);
-                row.DescBox.Size = new Size(pnlIcdContainer.Width - 130 - 34 - 16, 34);
-
-                row.DelBtn.Location = new Point(pnlIcdContainer.Width - 34, icdY);
-                row.DelBtn.Size = new Size(34, 34);
-
-                icdY += 40;
-            }
-            pnlIcdContainer.Height = _icdRows.Count > 0 ? icdY : 0;
-            btnAddIcd.Location = new Point(20, pnlIcdContainer.Bottom + 8);
-            pnlIcdSection.Height = btnAddIcd.Bottom + 10;
-            pnlStep2Card.Height = pnlIcdSection.Bottom;
+            pnlStep3Card.Height = pnlDoctorGrid.Bottom + 20;
 
             // Dynamically stack left cards with 16px gap!
             pnlStep2Card.Top = pnlStep1Card.Bottom + 16;
             pnlStep3Card.Top = pnlStep2Card.Bottom + 16;
             pnlActionsCard.Top = pnlStep3Card.Bottom + 16;
 
+            int sumHeight = 420;
+            if (_flpSummary != null)
+            {
+                int contentHeight = _flpSummary.Padding.Top + _flpSummary.Padding.Bottom;
+                foreach (Control c in _flpSummary.Controls)
+                {
+                    if (c.Visible)
+                    {
+                        contentHeight += c.Height + c.Margin.Top + c.Margin.Bottom;
+                    }
+                }
+                int requiredHeight = contentHeight + 40 + 12;
+                sumHeight = Math.Min(Math.Max(requiredHeight, 200), 420);
+            }
+
+            pnlSummaryCard.Height = sumHeight;
+            pnlSummaryBody.Height = sumHeight - 40 - 12;
             pnlSummaryCard.Location = new Point(rightX, 91);
             pnlSummaryCard.Width = rightW;
-            pnlPermCard.Location = new Point(rightX, 527);
-            pnlPermCard.Width = rightW;
-            pnlLoadCard.Location = new Point(rightX, 863);
-            pnlLoadCard.Width = rightW;
+            pnlPermCard.Visible = false;
 
             // Reposition search button
             btnSearchBN.Left = pnlStep1Card.Width - btnSearchBN.Width - 24;
@@ -1067,7 +967,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             // Reposition footer buttons dynamically
             btnCreateHSBA.Left = pnlActionsCard.Width - btnCreateHSBA.Width - 24;
-            btnSaveDraft.Left = btnCreateHSBA.Left - btnSaveDraft.Width - 12;
 
             // Restore scroll position
             pnlScroll.AutoScrollPosition = new Point(Math.Abs(scrollPos.X), Math.Abs(scrollPos.Y));

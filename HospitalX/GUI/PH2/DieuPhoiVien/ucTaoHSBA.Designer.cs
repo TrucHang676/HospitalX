@@ -39,34 +39,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtMaHSBA = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblNgayMo = new System.Windows.Forms.Label();
             this.dtpNgayMo = new Guna.UI2.WinForms.Guna2DateTimePicker();
-            this.lblHinhThucDT = new System.Windows.Forms.Label();
-            this.cboHinhThucDT = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblLoaiBH = new System.Windows.Forms.Label();
-            this.cboLoaiBH = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblChanDoan = new System.Windows.Forms.Label();
             this.txtChanDoan = new Guna.UI2.WinForms.Guna2TextBox();
-            this.pnlIcdSection = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblIcdTitle = new System.Windows.Forms.Label();
-            this.pnlIcdContainer = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnAddIcd = new Guna.UI2.WinForms.Guna2Button();
+            this.lblDieuTri = new System.Windows.Forms.Label();
+            this.txtDieuTri = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblKetLuan = new System.Windows.Forms.Label();
+            this.txtKetLuan = new Guna.UI2.WinForms.Guna2TextBox();
 
             // Step 3 — Doctor assignment
             this.pnlStep3Card = new Guna.UI2.WinForms.Guna2Panel();
             this.lblStep3Title = new System.Windows.Forms.Label();
             this.lblKhoaDT = new System.Windows.Forms.Label();
             this.cboKhoaDT = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblPhongDT = new System.Windows.Forms.Label();
-            this.cboPhongDT = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblChonBS = new System.Windows.Forms.Label();
             this.pnlDoctorGrid = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlNoteSection = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblGhiChuTitle = new System.Windows.Forms.Label();
-            this.txtGhiChu = new Guna.UI2.WinForms.Guna2TextBox();
 
             // Actions footer
             this.pnlActionsCard = new Guna.UI2.WinForms.Guna2Panel();
             this.lblDisclaimer = new System.Windows.Forms.Label();
-            this.btnSaveDraft = new Guna.UI2.WinForms.Guna2Button();
             this.btnCreateHSBA = new Guna.UI2.WinForms.Guna2Button();
 
             // Right side panels
@@ -80,18 +70,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblPermHeaderText = new System.Windows.Forms.Label();
             this.pnlPermBody = new Guna.UI2.WinForms.Guna2Panel();
 
-            this.pnlLoadCard = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlLoadHeader = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblLoadHeaderText = new System.Windows.Forms.Label();
-            this.pnlLoadBody = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.ptbStep1Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbStep2Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbStep3Icon = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.ptbNoteIcon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbSummaryHeaderIcon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbPermHeaderIcon = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.ptbLoadHeaderIcon = new Guna.UI2.WinForms.Guna2PictureBox();
  
             this.pnlScroll.SuspendLayout();
             this.pnlSteps.SuspendLayout();
@@ -101,21 +85,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep1Icon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbNoteIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbSummaryHeaderIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbPermHeaderIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbLoadHeaderIcon)).BeginInit();
             this.pnlStep2Card.SuspendLayout();
-            this.pnlIcdSection.SuspendLayout();
             this.pnlStep3Card.SuspendLayout();
-            this.pnlNoteSection.SuspendLayout();
             this.pnlActionsCard.SuspendLayout();
             this.pnlSummaryCard.SuspendLayout();
             this.pnlSummaryHeader.SuspendLayout();
             this.pnlPermCard.SuspendLayout();
             this.pnlPermHeader.SuspendLayout();
-            this.pnlLoadCard.SuspendLayout();
-            this.pnlLoadHeader.SuspendLayout();
             this.SuspendLayout();
 
             // Colors
@@ -144,8 +122,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlScroll.Controls.Add(this.pnlStep3Card);
             this.pnlScroll.Controls.Add(this.pnlActionsCard);
             this.pnlScroll.Controls.Add(this.pnlSummaryCard);
-            this.pnlScroll.Controls.Add(this.pnlPermCard);
-            this.pnlScroll.Controls.Add(this.pnlLoadCard);
 
             // =============================================
             // pnlSteps — Steps indicator bar
@@ -303,13 +279,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlStep2Card.Controls.Add(this.txtMaHSBA);
             this.pnlStep2Card.Controls.Add(this.lblNgayMo);
             this.pnlStep2Card.Controls.Add(this.dtpNgayMo);
-            this.pnlStep2Card.Controls.Add(this.lblHinhThucDT);
-            this.pnlStep2Card.Controls.Add(this.cboHinhThucDT);
-            this.pnlStep2Card.Controls.Add(this.lblLoaiBH);
-            this.pnlStep2Card.Controls.Add(this.cboLoaiBH);
             this.pnlStep2Card.Controls.Add(this.lblChanDoan);
             this.pnlStep2Card.Controls.Add(this.txtChanDoan);
-            this.pnlStep2Card.Controls.Add(this.pnlIcdSection);
+            this.pnlStep2Card.Controls.Add(this.lblDieuTri);
+            this.pnlStep2Card.Controls.Add(this.txtDieuTri);
+            this.pnlStep2Card.Controls.Add(this.lblKetLuan);
+            this.pnlStep2Card.Controls.Add(this.txtKetLuan);
  
             // ptbStep2Icon
             this.ptbStep2Icon.BackColor = System.Drawing.Color.Transparent;
@@ -380,59 +355,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.dtpNgayMo.TextOffset = new System.Drawing.Point(8, 0);
             this.dtpNgayMo.HoverState.BorderColor = teal;
  
-            // lblHinhThucDT
-            this.lblHinhThucDT.AutoSize = true;
-            this.lblHinhThucDT.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblHinhThucDT.ForeColor = labelColor;
-            this.lblHinhThucDT.Location = new System.Drawing.Point(col1X, 138);
-            this.lblHinhThucDT.Text = "HÌNH THỨC ĐIỀU TRỊ *";
-            this.lblHinhThucDT.BackColor = System.Drawing.Color.Transparent;
- 
-            // cboHinhThucDT
-            this.cboHinhThucDT.BorderRadius = 8;
-            this.cboHinhThucDT.BorderColor = cardBorder;
-            this.cboHinhThucDT.BorderThickness = 1;
-            this.cboHinhThucDT.FillColor = inputBg;
-            this.cboHinhThucDT.ForeColor = inputFore;
-            this.cboHinhThucDT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.cboHinhThucDT.Location = new System.Drawing.Point(col1X, 162);
-            this.cboHinhThucDT.Name = "cboHinhThucDT";
-            this.cboHinhThucDT.Size = new System.Drawing.Size(fieldW, 38);
-            this.cboHinhThucDT.BackColor = System.Drawing.Color.Transparent;
-            this.cboHinhThucDT.HoverState.BorderColor = teal;
-            this.cboHinhThucDT.FocusedState.BorderColor = teal;
-            this.cboHinhThucDT.ItemHeight = 32;
-            this.cboHinhThucDT.TextOffset = new System.Drawing.Point(8, 0);
- 
-            // lblLoaiBH
-            this.lblLoaiBH.AutoSize = true;
-            this.lblLoaiBH.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblLoaiBH.ForeColor = labelColor;
-            this.lblLoaiBH.Location = new System.Drawing.Point(col2X, 138);
-            this.lblLoaiBH.Text = "LOẠI BẢO HIỂM";
-            this.lblLoaiBH.BackColor = System.Drawing.Color.Transparent;
- 
-            // cboLoaiBH
-            this.cboLoaiBH.BorderRadius = 8;
-            this.cboLoaiBH.BorderColor = cardBorder;
-            this.cboLoaiBH.BorderThickness = 1;
-            this.cboLoaiBH.FillColor = inputBg;
-            this.cboLoaiBH.ForeColor = inputFore;
-            this.cboLoaiBH.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.cboLoaiBH.Location = new System.Drawing.Point(col2X, 162);
-            this.cboLoaiBH.Name = "cboLoaiBH";
-            this.cboLoaiBH.Size = new System.Drawing.Size(fieldW, 38);
-            this.cboLoaiBH.BackColor = System.Drawing.Color.Transparent;
-            this.cboLoaiBH.HoverState.BorderColor = teal;
-            this.cboLoaiBH.FocusedState.BorderColor = teal;
-            this.cboLoaiBH.ItemHeight = 32;
-            this.cboLoaiBH.TextOffset = new System.Drawing.Point(8, 0);
- 
             // lblChanDoan
             this.lblChanDoan.AutoSize = true;
             this.lblChanDoan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblChanDoan.ForeColor = labelColor;
-            this.lblChanDoan.Location = new System.Drawing.Point(col1X, 220);
+            this.lblChanDoan.Location = new System.Drawing.Point(col1X, 138);
             this.lblChanDoan.Text = "CHẨN ĐOÁN SƠ BỘ *";
             this.lblChanDoan.BackColor = System.Drawing.Color.Transparent;
  
@@ -443,7 +370,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtChanDoan.FillColor = inputBg;
             this.txtChanDoan.ForeColor = inputFore;
             this.txtChanDoan.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
-            this.txtChanDoan.Location = new System.Drawing.Point(col1X, 244);
+            this.txtChanDoan.Location = new System.Drawing.Point(col1X, 162);
             this.txtChanDoan.Name = "txtChanDoan";
             this.txtChanDoan.Size = new System.Drawing.Size(880, 68);
             this.txtChanDoan.Multiline = true;
@@ -455,57 +382,60 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtChanDoan.HoverState.BorderColor = teal;
             this.txtChanDoan.FocusedState.BorderColor = teal;
  
-            // pnlIcdSection — Container for ICD title + rows + add button
-            this.pnlIcdSection.BorderColor = System.Drawing.Color.Transparent;
-            this.pnlIcdSection.BorderThickness = 0;
-            this.pnlIcdSection.FillColor = System.Drawing.Color.White;
-            this.pnlIcdSection.Location = new System.Drawing.Point(0, 328);
-            this.pnlIcdSection.Name = "pnlIcdSection";
-            this.pnlIcdSection.Size = new System.Drawing.Size(940, 130);
-            this.pnlIcdSection.BackColor = System.Drawing.Color.Transparent;
-            this.pnlIcdSection.Controls.Add(this.lblIcdTitle);
-            this.pnlIcdSection.Controls.Add(this.pnlIcdContainer);
-            this.pnlIcdSection.Controls.Add(this.btnAddIcd);
+            // lblDieuTri
+            this.lblDieuTri.AutoSize = true;
+            this.lblDieuTri.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDieuTri.ForeColor = labelColor;
+            this.lblDieuTri.Location = new System.Drawing.Point(col1X, 244);
+            this.lblDieuTri.Text = "ĐIỀU TRỊ *";
+            this.lblDieuTri.BackColor = System.Drawing.Color.Transparent;
  
-            // Divider line above ICD
-            var icdDivider = new System.Windows.Forms.Panel();
-            icdDivider.BackColor = cardBorder;
-            icdDivider.Location = new System.Drawing.Point(20, 0);
-            icdDivider.Size = new System.Drawing.Size(900, 1);
-            this.pnlIcdSection.Controls.Add(icdDivider);
+            // txtDieuTri
+            this.txtDieuTri.BorderRadius = 8;
+            this.txtDieuTri.BorderColor = cardBorder;
+            this.txtDieuTri.BorderThickness = 1;
+            this.txtDieuTri.FillColor = inputBg;
+            this.txtDieuTri.ForeColor = inputFore;
+            this.txtDieuTri.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
+            this.txtDieuTri.Location = new System.Drawing.Point(col1X, 268);
+            this.txtDieuTri.Name = "txtDieuTri";
+            this.txtDieuTri.Size = new System.Drawing.Size(880, 68);
+            this.txtDieuTri.Multiline = true;
+            this.txtDieuTri.PlaceholderText = "Nhập hướng điều trị ban đầu…";
+            this.txtDieuTri.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188);
+            this.txtDieuTri.BackColor = System.Drawing.Color.Transparent;
+            this.txtDieuTri.AutoSize = false;
+            this.txtDieuTri.TextOffset = new System.Drawing.Point(8, 0);
+            this.txtDieuTri.HoverState.BorderColor = teal;
+            this.txtDieuTri.FocusedState.BorderColor = teal;
  
-            // lblIcdTitle
-            this.lblIcdTitle.AutoSize = true;
-            this.lblIcdTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblIcdTitle.ForeColor = teal;
-            this.lblIcdTitle.Location = new System.Drawing.Point(20, 12);
-            this.lblIcdTitle.Text = "🏷   MÃ ICD-10 (CHẨN ĐOÁN SƠ BỘ)";
-            this.lblIcdTitle.BackColor = System.Drawing.Color.Transparent;
+            // lblKetLuan
+            this.lblKetLuan.AutoSize = true;
+            this.lblKetLuan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblKetLuan.ForeColor = labelColor;
+            this.lblKetLuan.Location = new System.Drawing.Point(col1X, 350);
+            this.lblKetLuan.Text = "KẾT LUẬN *";
+            this.lblKetLuan.BackColor = System.Drawing.Color.Transparent;
  
-            // pnlIcdContainer
-            this.pnlIcdContainer.BorderThickness = 0;
-            this.pnlIcdContainer.FillColor = System.Drawing.Color.White;
-            this.pnlIcdContainer.Location = new System.Drawing.Point(20, 42);
-            this.pnlIcdContainer.Name = "pnlIcdContainer";
-            this.pnlIcdContainer.Size = new System.Drawing.Size(900, 36);
-            this.pnlIcdContainer.BackColor = System.Drawing.Color.Transparent;
+            // txtKetLuan
+            this.txtKetLuan.BorderRadius = 8;
+            this.txtKetLuan.BorderColor = cardBorder;
+            this.txtKetLuan.BorderThickness = 1;
+            this.txtKetLuan.FillColor = inputBg;
+            this.txtKetLuan.ForeColor = inputFore;
+            this.txtKetLuan.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
+            this.txtKetLuan.Location = new System.Drawing.Point(col1X, 374);
+            this.txtKetLuan.Name = "txtKetLuan";
+            this.txtKetLuan.Size = new System.Drawing.Size(880, 68);
+            this.txtKetLuan.Multiline = true;
+            this.txtKetLuan.PlaceholderText = "Nhập kết luận ban đầu của y sĩ hoặc bác sĩ…";
+            this.txtKetLuan.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188);
+            this.txtKetLuan.BackColor = System.Drawing.Color.Transparent;
+            this.txtKetLuan.AutoSize = false;
+            this.txtKetLuan.TextOffset = new System.Drawing.Point(8, 0);
+            this.txtKetLuan.HoverState.BorderColor = teal;
+            this.txtKetLuan.FocusedState.BorderColor = teal;
  
-            // btnAddIcd
-            this.btnAddIcd.BorderRadius = 8;
-            this.btnAddIcd.BorderThickness = 2;
-            this.btnAddIcd.BorderColor = teal;
-            this.btnAddIcd.FillColor = tealLight;
-            this.btnAddIcd.ForeColor = teal;
-            this.btnAddIcd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnAddIcd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddIcd.Location = new System.Drawing.Point(20, 86);
-            this.btnAddIcd.Name = "btnAddIcd";
-            this.btnAddIcd.Size = new System.Drawing.Size(900, 30);
-            this.btnAddIcd.TabIndex = 5;
-            this.btnAddIcd.Text = "+   Thêm mã ICD-10";
-            this.btnAddIcd.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddIcd.HoverState.FillColor = teal;
-            this.btnAddIcd.HoverState.ForeColor = System.Drawing.Color.White;
  
             // =============================================
             // pnlStep3Card — Bước 3: Chỉ định bác sĩ
@@ -523,11 +453,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlStep3Card.Controls.Add(this.lblStep3Title);
             this.pnlStep3Card.Controls.Add(this.lblKhoaDT);
             this.pnlStep3Card.Controls.Add(this.cboKhoaDT);
-            this.pnlStep3Card.Controls.Add(this.lblPhongDT);
-            this.pnlStep3Card.Controls.Add(this.cboPhongDT);
             this.pnlStep3Card.Controls.Add(this.lblChonBS);
             this.pnlStep3Card.Controls.Add(this.pnlDoctorGrid);
-            this.pnlStep3Card.Controls.Add(this.pnlNoteSection);
  
             // ptbStep3Icon
             this.ptbStep3Icon.BackColor = System.Drawing.Color.Transparent;
@@ -571,29 +498,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.cboKhoaDT.ItemHeight = 32;
             this.cboKhoaDT.TextOffset = new System.Drawing.Point(8, 0);
  
-            // lblPhongDT
-            this.lblPhongDT.AutoSize = true;
-            this.lblPhongDT.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblPhongDT.ForeColor = labelColor;
-            this.lblPhongDT.Location = new System.Drawing.Point(col2X, 56);
-            this.lblPhongDT.Text = "PHÒNG ĐIỀU TRỊ";
-            this.lblPhongDT.BackColor = System.Drawing.Color.Transparent;
- 
-            // cboPhongDT
-            this.cboPhongDT.BorderRadius = 8;
-            this.cboPhongDT.BorderColor = cardBorder;
-            this.cboPhongDT.BorderThickness = 1;
-            this.cboPhongDT.FillColor = inputBg;
-            this.cboPhongDT.ForeColor = inputFore;
-            this.cboPhongDT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.cboPhongDT.Location = new System.Drawing.Point(col2X, 80);
-            this.cboPhongDT.Name = "cboPhongDT";
-            this.cboPhongDT.Size = new System.Drawing.Size(fieldW, 38);
-            this.cboPhongDT.BackColor = System.Drawing.Color.Transparent;
-            this.cboPhongDT.HoverState.BorderColor = teal;
-            this.cboPhongDT.FocusedState.BorderColor = teal;
-            this.cboPhongDT.ItemHeight = 32;
-            this.cboPhongDT.TextOffset = new System.Drawing.Point(8, 0);
  
             // lblChonBS
             this.lblChonBS.AutoSize = true;
@@ -611,60 +515,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlDoctorGrid.Size = new System.Drawing.Size(900, 250);
             this.pnlDoctorGrid.BackColor = System.Drawing.Color.Transparent;
  
-            // pnlNoteSection — Notes area
-            this.pnlNoteSection.BorderThickness = 0;
-            this.pnlNoteSection.FillColor = System.Drawing.Color.White;
-            this.pnlNoteSection.Location = new System.Drawing.Point(0, 432);
-            this.pnlNoteSection.Name = "pnlNoteSection";
-            this.pnlNoteSection.Size = new System.Drawing.Size(940, 110);
-            this.pnlNoteSection.BackColor = System.Drawing.Color.Transparent;
-            this.pnlNoteSection.Controls.Add(this.ptbNoteIcon);
-            this.pnlNoteSection.Controls.Add(this.lblGhiChuTitle);
-            this.pnlNoteSection.Controls.Add(this.txtGhiChu);
- 
-            // ptbNoteIcon
-            this.ptbNoteIcon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbNoteIcon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbNoteIcon.Location = new System.Drawing.Point(20, 8);
-            this.ptbNoteIcon.Name = "ptbNoteIcon";
-            this.ptbNoteIcon.Size = new System.Drawing.Size(24, 24);
-            this.ptbNoteIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbNoteIcon.TabIndex = 103;
-            this.ptbNoteIcon.TabStop = false;
- 
-            // Divider above notes
-            var noteDivider = new System.Windows.Forms.Panel();
-            noteDivider.BackColor = cardBorder;
-            noteDivider.Location = new System.Drawing.Point(20, 0);
-            noteDivider.Size = new System.Drawing.Size(900, 1);
-            this.pnlNoteSection.Controls.Add(noteDivider);
- 
-            // lblGhiChuTitle
-            this.lblGhiChuTitle.AutoSize = true;
-            this.lblGhiChuTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblGhiChuTitle.ForeColor = teal;
-            this.lblGhiChuTitle.Location = new System.Drawing.Point(54, 10);
-            this.lblGhiChuTitle.Text = "GHI CHÚ ĐIỀU PHỐI";
-            this.lblGhiChuTitle.BackColor = System.Drawing.Color.Transparent;
- 
-            // txtGhiChu
-            this.txtGhiChu.BorderRadius = 8;
-            this.txtGhiChu.BorderColor = cardBorder;
-            this.txtGhiChu.BorderThickness = 1;
-            this.txtGhiChu.FillColor = inputBg;
-            this.txtGhiChu.ForeColor = inputFore;
-            this.txtGhiChu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
-            this.txtGhiChu.Location = new System.Drawing.Point(20, 38);
-            this.txtGhiChu.Name = "txtGhiChu";
-            this.txtGhiChu.Size = new System.Drawing.Size(900, 60);
-            this.txtGhiChu.Multiline = true;
-            this.txtGhiChu.PlaceholderText = "Ghi chú nội bộ cho bác sĩ / điều dưỡng…";
-            this.txtGhiChu.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188);
-            this.txtGhiChu.BackColor = System.Drawing.Color.Transparent;
-            this.txtGhiChu.AutoSize = false;
-            this.txtGhiChu.TextOffset = new System.Drawing.Point(8, 0);
-            this.txtGhiChu.HoverState.BorderColor = teal;
-            this.txtGhiChu.FocusedState.BorderColor = teal;
  
             // =============================================
             // pnlActionsCard — Actions footer (bo tròn nền trắng)
@@ -679,7 +529,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlActionsCard.TabIndex = 4;
             this.pnlActionsCard.BackColor = System.Drawing.Color.Transparent;
             this.pnlActionsCard.Controls.Add(this.lblDisclaimer);
-            this.pnlActionsCard.Controls.Add(this.btnSaveDraft);
             this.pnlActionsCard.Controls.Add(this.btnCreateHSBA);
  
             // lblDisclaimer
@@ -689,24 +538,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblDisclaimer.Location = new System.Drawing.Point(20, 24);
             this.lblDisclaimer.Text = "Điều phối viên có trách nhiệm xác nhận thông tin trước khi lưu.";
             this.lblDisclaimer.BackColor = System.Drawing.Color.Transparent;
- 
-            // btnSaveDraft
-            this.btnSaveDraft.BorderRadius = 8;
-            this.btnSaveDraft.BorderThickness = 1;
-            this.btnSaveDraft.BorderColor = cardBorder;
-            this.btnSaveDraft.FillColor = System.Drawing.Color.Transparent;
-            this.btnSaveDraft.ForeColor = System.Drawing.Color.FromArgb(74, 98, 89);
-            this.btnSaveDraft.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSaveDraft.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSaveDraft.Location = new System.Drawing.Point(540, 12);
-            this.btnSaveDraft.Name = "btnSaveDraft";
-            this.btnSaveDraft.Size = new System.Drawing.Size(150, 40);
-            this.btnSaveDraft.TabIndex = 0;
-            this.btnSaveDraft.Text = "Lưu nháp";
-            this.btnSaveDraft.BackColor = System.Drawing.Color.Transparent;
-            this.btnSaveDraft.HoverState.FillColor = tealLight;
-            this.btnSaveDraft.HoverState.ForeColor = teal;
-            this.btnSaveDraft.HoverState.BorderColor = teal;
  
             // btnCreateHSBA
             this.btnCreateHSBA.BorderRadius = 8;
@@ -831,59 +662,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlPermBody.BackColor = System.Drawing.Color.Transparent;
  
             // =============================================
-            // pnlLoadCard — Right: Tải của khoa
-            // =============================================
-            this.pnlLoadCard.BorderColor = cardBorder;
-            this.pnlLoadCard.BorderRadius = 12;
-            this.pnlLoadCard.BorderThickness = 1;
-            this.pnlLoadCard.FillColor = System.Drawing.Color.White;
-            this.pnlLoadCard.Location = new System.Drawing.Point(970, 863);
-            this.pnlLoadCard.Name = "pnlLoadCard";
-            this.pnlLoadCard.Size = new System.Drawing.Size(380, 150);
-            this.pnlLoadCard.TabIndex = 7;
-            this.pnlLoadCard.BackColor = System.Drawing.Color.Transparent;
-            this.pnlLoadCard.Controls.Add(this.pnlLoadHeader);
-            this.pnlLoadCard.Controls.Add(this.pnlLoadBody);
- 
-            // pnlLoadHeader
-            this.pnlLoadHeader.BorderRadius = 12;
-            this.pnlLoadHeader.CustomizableEdges.BottomLeft = false;
-            this.pnlLoadHeader.CustomizableEdges.BottomRight = false;
-            this.pnlLoadHeader.BorderThickness = 0;
-            this.pnlLoadHeader.FillColor = teal;
-            this.pnlLoadHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlLoadHeader.Name = "pnlLoadHeader";
-            this.pnlLoadHeader.Size = new System.Drawing.Size(380, 40);
-            this.pnlLoadHeader.BackColor = System.Drawing.Color.Transparent;
-            this.pnlLoadHeader.Controls.Add(this.ptbLoadHeaderIcon);
-            this.pnlLoadHeader.Controls.Add(this.lblLoadHeaderText);
- 
-            // ptbLoadHeaderIcon
-            this.ptbLoadHeaderIcon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbLoadHeaderIcon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbLoadHeaderIcon.Location = new System.Drawing.Point(14, 11);
-            this.ptbLoadHeaderIcon.Name = "ptbLoadHeaderIcon";
-            this.ptbLoadHeaderIcon.Size = new System.Drawing.Size(18, 18);
-            this.ptbLoadHeaderIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbLoadHeaderIcon.TabIndex = 106;
-            this.ptbLoadHeaderIcon.TabStop = false;
-
-            // lblLoadHeaderText
-            this.lblLoadHeaderText.AutoSize = true;
-            this.lblLoadHeaderText.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblLoadHeaderText.ForeColor = System.Drawing.Color.White;
-            this.lblLoadHeaderText.Location = new System.Drawing.Point(38, 10);
-            this.lblLoadHeaderText.Text = "Tải của khoa Tim mạch";
-            this.lblLoadHeaderText.BackColor = System.Drawing.Color.Transparent;
- 
-            // pnlLoadBody
-            this.pnlLoadBody.BorderThickness = 0;
-            this.pnlLoadBody.FillColor = System.Drawing.Color.Transparent;
-            this.pnlLoadBody.Location = new System.Drawing.Point(0, 40);
-            this.pnlLoadBody.Name = "pnlLoadBody";
-            this.pnlLoadBody.Size = new System.Drawing.Size(380, 110);
-            this.pnlLoadBody.BackColor = System.Drawing.Color.Transparent;
- 
             // =============================================
             // ucTaoHSBA
             // =============================================
@@ -903,14 +681,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep1Icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbNoteIcon)).EndInit();
+            this.pnlStep2Card.ResumeLayout(false);
             this.pnlStep2Card.PerformLayout();
-            this.pnlIcdSection.ResumeLayout(false);
-            this.pnlIcdSection.PerformLayout();
             this.pnlStep3Card.ResumeLayout(false);
             this.pnlStep3Card.PerformLayout();
-            this.pnlNoteSection.ResumeLayout(false);
-            this.pnlNoteSection.PerformLayout();
             this.pnlActionsCard.ResumeLayout(false);
             this.pnlActionsCard.PerformLayout();
             this.pnlSummaryCard.ResumeLayout(false);
@@ -919,9 +693,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlPermCard.ResumeLayout(false);
             this.pnlPermHeader.ResumeLayout(false);
             this.pnlPermHeader.PerformLayout();
-            this.pnlLoadCard.ResumeLayout(false);
-            this.pnlLoadHeader.ResumeLayout(false);
-            this.pnlLoadHeader.PerformLayout();
             this.ResumeLayout(false);
         }
 
@@ -949,34 +720,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Guna.UI2.WinForms.Guna2TextBox txtMaHSBA;
         private System.Windows.Forms.Label lblNgayMo;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpNgayMo;
-        private System.Windows.Forms.Label lblHinhThucDT;
-        private Guna.UI2.WinForms.Guna2ComboBox cboHinhThucDT;
-        private System.Windows.Forms.Label lblLoaiBH;
-        private Guna.UI2.WinForms.Guna2ComboBox cboLoaiBH;
         private System.Windows.Forms.Label lblChanDoan;
         private Guna.UI2.WinForms.Guna2TextBox txtChanDoan;
-        private Guna.UI2.WinForms.Guna2Panel pnlIcdSection;
-        private System.Windows.Forms.Label lblIcdTitle;
-        private Guna.UI2.WinForms.Guna2Panel pnlIcdContainer;
-        private Guna.UI2.WinForms.Guna2Button btnAddIcd;
+        private System.Windows.Forms.Label lblDieuTri;
+        private Guna.UI2.WinForms.Guna2TextBox txtDieuTri;
+        private System.Windows.Forms.Label lblKetLuan;
+        private Guna.UI2.WinForms.Guna2TextBox txtKetLuan;
 
         // Step 3
         private Guna.UI2.WinForms.Guna2Panel pnlStep3Card;
         private System.Windows.Forms.Label lblStep3Title;
         private System.Windows.Forms.Label lblKhoaDT;
         private Guna.UI2.WinForms.Guna2ComboBox cboKhoaDT;
-        private System.Windows.Forms.Label lblPhongDT;
-        private Guna.UI2.WinForms.Guna2ComboBox cboPhongDT;
         private System.Windows.Forms.Label lblChonBS;
         private Guna.UI2.WinForms.Guna2Panel pnlDoctorGrid;
-        private Guna.UI2.WinForms.Guna2Panel pnlNoteSection;
-        private System.Windows.Forms.Label lblGhiChuTitle;
-        private Guna.UI2.WinForms.Guna2TextBox txtGhiChu;
 
         // Actions
         private Guna.UI2.WinForms.Guna2Panel pnlActionsCard;
         private System.Windows.Forms.Label lblDisclaimer;
-        private Guna.UI2.WinForms.Guna2Button btnSaveDraft;
         private Guna.UI2.WinForms.Guna2Button btnCreateHSBA;
 
         // Right panels
@@ -990,11 +751,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Label lblPermHeaderText;
         private Guna.UI2.WinForms.Guna2Panel pnlPermBody;
 
-        private Guna.UI2.WinForms.Guna2Panel pnlLoadCard;
-        private Guna.UI2.WinForms.Guna2Panel pnlLoadHeader;
-        private System.Windows.Forms.Label lblLoadHeaderText;
-        private Guna.UI2.WinForms.Guna2Panel pnlLoadBody;
-
         // Dialog
         private Guna.UI2.WinForms.Guna2MessageDialog guna2MessageDialog1;
 
@@ -1002,11 +758,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Guna.UI2.WinForms.Guna2PictureBox ptbStep1Icon;
         private Guna.UI2.WinForms.Guna2PictureBox ptbStep2Icon;
         private Guna.UI2.WinForms.Guna2PictureBox ptbStep3Icon;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbNoteIcon;
 
         // PictureBox icons for right headers
         private Guna.UI2.WinForms.Guna2PictureBox ptbSummaryHeaderIcon;
         private Guna.UI2.WinForms.Guna2PictureBox ptbPermHeaderIcon;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbLoadHeaderIcon;
     }
 }

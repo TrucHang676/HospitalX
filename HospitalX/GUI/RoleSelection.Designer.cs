@@ -18,350 +18,358 @@ namespace HospitalX.GUI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RoleSelection));
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
-            this.pnlRoot = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlPh2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.pnlShell = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.pnlLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblFooter = new System.Windows.Forms.Label();
+            this.lblLeftNote = new System.Windows.Forms.Label();
+            this.lblHeadline = new System.Windows.Forms.Label();
+            this.lblEyebrow = new System.Windows.Forms.Label();
+            this.pnlLogo = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblLogo = new System.Windows.Forms.Label();
+            this.pnlRight = new Guna.UI2.WinForms.Guna2Panel();
             this.btnPh2Patient = new Guna.UI2.WinForms.Guna2Button();
             this.btnPh2Technician = new Guna.UI2.WinForms.Guna2Button();
             this.btnPh2Doctor = new Guna.UI2.WinForms.Guna2Button();
             this.btnPh2Coordinator = new Guna.UI2.WinForms.Guna2Button();
             this.btnPh2Dba = new Guna.UI2.WinForms.Guna2Button();
-            this.lblPh2Choose = new System.Windows.Forms.Label();
-            this.linePh2 = new System.Windows.Forms.Label();
-            this.lblPh2Sub = new System.Windows.Forms.Label();
-            this.lblPh2Title = new System.Windows.Forms.Label();
-            this.pnlPh2Icon = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblPh2Icon = new System.Windows.Forms.Label();
-            this.pnlPh1 = new Guna.UI2.WinForms.Guna2Panel();
             this.btnPh1Dba = new Guna.UI2.WinForms.Guna2Button();
-            this.lblPh1Choose = new System.Windows.Forms.Label();
-            this.linePh1 = new System.Windows.Forms.Label();
-            this.lblPh1Sub = new System.Windows.Forms.Label();
-            this.lblPh1Title = new System.Windows.Forms.Label();
-            this.pnlPh1Icon = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblPh1Icon = new System.Windows.Forms.Label();
-            this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
-            this.pnlRoot.SuspendLayout();
-            this.pnlPh2.SuspendLayout();
-            this.pnlPh2Icon.SuspendLayout();
-            this.pnlPh1.SuspendLayout();
-            this.pnlPh1Icon.SuspendLayout();
+            this.lblPh2Caption = new System.Windows.Forms.Label();
+            this.lblPh1Caption = new System.Windows.Forms.Label();
+            this.lblRightSub = new System.Windows.Forms.Label();
+            this.lblRightTitle = new System.Windows.Forms.Label();
+            this.pnlShell.SuspendLayout();
+            this.pnlLeft.SuspendLayout();
+            this.pnlLogo.SuspendLayout();
+            this.pnlRight.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2BorderlessForm1
             // 
-            this.guna2BorderlessForm1.BorderRadius = 12;
+            this.guna2BorderlessForm1.BorderRadius = 18;
             this.guna2BorderlessForm1.ContainerControl = this;
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
-            this.guna2BorderlessForm1.ShadowColor = System.Drawing.Color.DarkCyan;
+            this.guna2BorderlessForm1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(120)))), ((int)(((byte)(116)))));
             this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
-            // pnlRoot
+            // pnlShell
             // 
-            this.pnlRoot.BackColor = System.Drawing.Color.Transparent;
-            this.pnlRoot.BorderRadius = 14;
-            this.pnlRoot.Controls.Add(this.pnlPh2);
-            this.pnlRoot.Controls.Add(this.pnlPh1);
-            this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlRoot.FillColor = System.Drawing.Color.White;
-            this.pnlRoot.Location = new System.Drawing.Point(0, 0);
-            this.pnlRoot.Name = "pnlRoot";
-            this.pnlRoot.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(220)))), ((int)(((byte)(216)))));
-            this.pnlRoot.ShadowDecoration.Depth = 8;
-            this.pnlRoot.ShadowDecoration.Enabled = true;
-            this.pnlRoot.Size = new System.Drawing.Size(1080, 795);
-            this.pnlRoot.TabIndex = 0;
-            // 
-            // pnlPh2
-            // 
-            this.pnlPh2.Controls.Add(this.btnExit);
-            this.pnlPh2.Controls.Add(this.btnPh2Patient);
-            this.pnlPh2.Controls.Add(this.btnPh2Technician);
-            this.pnlPh2.Controls.Add(this.btnPh2Doctor);
-            this.pnlPh2.Controls.Add(this.btnPh2Coordinator);
-            this.pnlPh2.Controls.Add(this.btnPh2Dba);
-            this.pnlPh2.Controls.Add(this.lblPh2Choose);
-            this.pnlPh2.Controls.Add(this.linePh2);
-            this.pnlPh2.Controls.Add(this.lblPh2Sub);
-            this.pnlPh2.Controls.Add(this.lblPh2Title);
-            this.pnlPh2.Controls.Add(this.pnlPh2Icon);
-            this.pnlPh2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(121)))), ((int)(((byte)(88)))));
-            this.pnlPh2.Location = new System.Drawing.Point(520, 0);
-            this.pnlPh2.Name = "pnlPh2";
-            this.pnlPh2.Size = new System.Drawing.Size(560, 807);
-            this.pnlPh2.TabIndex = 1;
-            // 
-            // btnPh2Patient
-            // 
-            this.btnPh2Patient.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(167)))), ((int)(((byte)(143)))));
-            this.btnPh2Patient.BorderRadius = 10;
-            this.btnPh2Patient.BorderThickness = 1;
-            this.btnPh2Patient.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPh2Patient.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(137)))), ((int)(((byte)(106)))));
-            this.btnPh2Patient.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
-            this.btnPh2Patient.ForeColor = System.Drawing.Color.White;
-            this.btnPh2Patient.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(151)))), ((int)(((byte)(119)))));
-            this.btnPh2Patient.Location = new System.Drawing.Point(42, 616);
-            this.btnPh2Patient.Name = "btnPh2Patient";
-            this.btnPh2Patient.Size = new System.Drawing.Size(432, 84);
-            this.btnPh2Patient.TabIndex = 10;
-            this.btnPh2Patient.Text = "Bệnh nhân\r\nXem hồ sơ & tiền sử bệnh        →";
-            this.btnPh2Patient.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnPh2Patient.TextOffset = new System.Drawing.Point(22, 0);
-            // 
-            // btnPh2Technician
-            // 
-            this.btnPh2Technician.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(167)))), ((int)(((byte)(143)))));
-            this.btnPh2Technician.BorderRadius = 10;
-            this.btnPh2Technician.BorderThickness = 1;
-            this.btnPh2Technician.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPh2Technician.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(137)))), ((int)(((byte)(106)))));
-            this.btnPh2Technician.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
-            this.btnPh2Technician.ForeColor = System.Drawing.Color.White;
-            this.btnPh2Technician.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(151)))), ((int)(((byte)(119)))));
-            this.btnPh2Technician.Location = new System.Drawing.Point(42, 518);
-            this.btnPh2Technician.Name = "btnPh2Technician";
-            this.btnPh2Technician.Size = new System.Drawing.Size(432, 84);
-            this.btnPh2Technician.TabIndex = 9;
-            this.btnPh2Technician.Text = "Kỹ thuật viên\r\nThực hiện dịch vụ chẩn đoán        →";
-            this.btnPh2Technician.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnPh2Technician.TextOffset = new System.Drawing.Point(22, 0);
-            // 
-            // btnPh2Doctor
-            // 
-            this.btnPh2Doctor.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(167)))), ((int)(((byte)(143)))));
-            this.btnPh2Doctor.BorderRadius = 10;
-            this.btnPh2Doctor.BorderThickness = 1;
-            this.btnPh2Doctor.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPh2Doctor.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(137)))), ((int)(((byte)(106)))));
-            this.btnPh2Doctor.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
-            this.btnPh2Doctor.ForeColor = System.Drawing.Color.White;
-            this.btnPh2Doctor.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(151)))), ((int)(((byte)(119)))));
-            this.btnPh2Doctor.Location = new System.Drawing.Point(42, 420);
-            this.btnPh2Doctor.Name = "btnPh2Doctor";
-            this.btnPh2Doctor.Size = new System.Drawing.Size(432, 84);
-            this.btnPh2Doctor.TabIndex = 8;
-            this.btnPh2Doctor.Text = "Bác sĩ / Y sĩ\r\nChẩn đoán & điều trị        →";
-            this.btnPh2Doctor.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnPh2Doctor.TextOffset = new System.Drawing.Point(22, 0);
-            // 
-            // btnPh2Coordinator
-            // 
-            this.btnPh2Coordinator.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(167)))), ((int)(((byte)(143)))));
-            this.btnPh2Coordinator.BorderRadius = 10;
-            this.btnPh2Coordinator.BorderThickness = 1;
-            this.btnPh2Coordinator.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPh2Coordinator.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(137)))), ((int)(((byte)(106)))));
-            this.btnPh2Coordinator.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
-            this.btnPh2Coordinator.ForeColor = System.Drawing.Color.White;
-            this.btnPh2Coordinator.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(151)))), ((int)(((byte)(119)))));
-            this.btnPh2Coordinator.Location = new System.Drawing.Point(42, 322);
-            this.btnPh2Coordinator.Name = "btnPh2Coordinator";
-            this.btnPh2Coordinator.Size = new System.Drawing.Size(432, 84);
-            this.btnPh2Coordinator.TabIndex = 7;
-            this.btnPh2Coordinator.Text = "Điều phối viên\r\nTiếp nhận & điều phối bệnh nhân        →";
-            this.btnPh2Coordinator.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnPh2Coordinator.TextOffset = new System.Drawing.Point(22, 0);
-            // 
-            // btnPh2Dba
-            // 
-            this.btnPh2Dba.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(167)))), ((int)(((byte)(143)))));
-            this.btnPh2Dba.BorderRadius = 10;
-            this.btnPh2Dba.BorderThickness = 1;
-            this.btnPh2Dba.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPh2Dba.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(137)))), ((int)(((byte)(106)))));
-            this.btnPh2Dba.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
-            this.btnPh2Dba.ForeColor = System.Drawing.Color.White;
-            this.btnPh2Dba.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(84)))), ((int)(((byte)(151)))), ((int)(((byte)(119)))));
-            this.btnPh2Dba.Location = new System.Drawing.Point(42, 224);
-            this.btnPh2Dba.Name = "btnPh2Dba";
-            this.btnPh2Dba.Size = new System.Drawing.Size(432, 84);
-            this.btnPh2Dba.TabIndex = 6;
-            this.btnPh2Dba.Text = "DBA\r\nQuản trị hệ thống y tế        →";
-            this.btnPh2Dba.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnPh2Dba.TextOffset = new System.Drawing.Point(22, 0);
-            // 
-            // lblPh2Choose
-            // 
-            this.lblPh2Choose.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh2Choose.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblPh2Choose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(211)))), ((int)(((byte)(205)))));
-            this.lblPh2Choose.Location = new System.Drawing.Point(42, 172);
-            this.lblPh2Choose.Name = "lblPh2Choose";
-            this.lblPh2Choose.Size = new System.Drawing.Size(200, 30);
-            this.lblPh2Choose.TabIndex = 4;
-            this.lblPh2Choose.Text = "CHỌN VAI TRÒ";
-            // 
-            // linePh2
-            // 
-            this.linePh2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(167)))), ((int)(((byte)(143)))));
-            this.linePh2.Location = new System.Drawing.Point(42, 142);
-            this.linePh2.Name = "linePh2";
-            this.linePh2.Size = new System.Drawing.Size(60, 3);
-            this.linePh2.TabIndex = 3;
-            // 
-            // lblPh2Sub
-            // 
-            this.lblPh2Sub.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh2Sub.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
-            this.lblPh2Sub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(216)))), ((int)(((byte)(210)))));
-            this.lblPh2Sub.Location = new System.Drawing.Point(113, 105);
-            this.lblPh2Sub.Name = "lblPh2Sub";
-            this.lblPh2Sub.Size = new System.Drawing.Size(330, 50);
-            this.lblPh2Sub.TabIndex = 2;
-            this.lblPh2Sub.Text = "Quản lý dữ liệu y tế";
-            // 
-            // lblPh2Title
-            // 
-            this.lblPh2Title.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh2Title.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
-            this.lblPh2Title.ForeColor = System.Drawing.Color.White;
-            this.lblPh2Title.Location = new System.Drawing.Point(112, 54);
-            this.lblPh2Title.Name = "lblPh2Title";
-            this.lblPh2Title.Size = new System.Drawing.Size(320, 48);
-            this.lblPh2Title.TabIndex = 1;
-            this.lblPh2Title.Text = "Phân hệ 2";
-            // 
-            // pnlPh2Icon
-            // 
-            this.pnlPh2Icon.BorderRadius = 12;
-            this.pnlPh2Icon.Controls.Add(this.lblPh2Icon);
-            this.pnlPh2Icon.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(145)))), ((int)(((byte)(116)))));
-            this.pnlPh2Icon.Location = new System.Drawing.Point(42, 48);
-            this.pnlPh2Icon.Name = "pnlPh2Icon";
-            this.pnlPh2Icon.Size = new System.Drawing.Size(54, 54);
-            this.pnlPh2Icon.TabIndex = 0;
-            // 
-            // lblPh2Icon
-            // 
-            this.lblPh2Icon.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh2Icon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPh2Icon.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblPh2Icon.ForeColor = System.Drawing.Color.White;
-            this.lblPh2Icon.Location = new System.Drawing.Point(0, 0);
-            this.lblPh2Icon.Name = "lblPh2Icon";
-            this.lblPh2Icon.Size = new System.Drawing.Size(54, 54);
-            this.lblPh2Icon.TabIndex = 0;
-            this.lblPh2Icon.Text = "HX";
-            this.lblPh2Icon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pnlPh1
-            // 
-            this.pnlPh1.Controls.Add(this.btnPh1Dba);
-            this.pnlPh1.Controls.Add(this.lblPh1Choose);
-            this.pnlPh1.Controls.Add(this.linePh1);
-            this.pnlPh1.Controls.Add(this.lblPh1Sub);
-            this.pnlPh1.Controls.Add(this.lblPh1Title);
-            this.pnlPh1.Controls.Add(this.pnlPh1Icon);
-            this.pnlPh1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(76)))), ((int)(((byte)(132)))));
-            this.pnlPh1.Location = new System.Drawing.Point(-10, 0);
-            this.pnlPh1.Name = "pnlPh1";
-            this.pnlPh1.Size = new System.Drawing.Size(537, 795);
-            this.pnlPh1.TabIndex = 0;
-            // 
-            // btnPh1Dba
-            // 
-            this.btnPh1Dba.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(135)))), ((int)(((byte)(181)))));
-            this.btnPh1Dba.BorderRadius = 10;
-            this.btnPh1Dba.BorderThickness = 1;
-            this.btnPh1Dba.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPh1Dba.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(100)))), ((int)(((byte)(153)))));
-            this.btnPh1Dba.Font = new System.Drawing.Font("Segoe UI", 11.5F, System.Drawing.FontStyle.Bold);
-            this.btnPh1Dba.ForeColor = System.Drawing.Color.White;
-            this.btnPh1Dba.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(81)))), ((int)(((byte)(114)))), ((int)(((byte)(168)))));
-            this.btnPh1Dba.Location = new System.Drawing.Point(42, 224);
-            this.btnPh1Dba.Name = "btnPh1Dba";
-            this.btnPh1Dba.Size = new System.Drawing.Size(432, 84);
-            this.btnPh1Dba.TabIndex = 6;
-            this.btnPh1Dba.Text = "DBA\r\nQuản trị viên CSDL        →";
-            this.btnPh1Dba.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnPh1Dba.TextOffset = new System.Drawing.Point(22, 0);
-            // 
-            // lblPh1Choose
-            // 
-            this.lblPh1Choose.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh1Choose.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblPh1Choose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(228)))));
-            this.lblPh1Choose.Location = new System.Drawing.Point(41, 172);
-            this.lblPh1Choose.Name = "lblPh1Choose";
-            this.lblPh1Choose.Size = new System.Drawing.Size(200, 30);
-            this.lblPh1Choose.TabIndex = 4;
-            this.lblPh1Choose.Text = "CHỌN VAI TRÒ";
-            // 
-            // linePh1
-            // 
-            this.linePh1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(135)))), ((int)(((byte)(181)))));
-            this.linePh1.Location = new System.Drawing.Point(42, 142);
-            this.linePh1.Name = "linePh1";
-            this.linePh1.Size = new System.Drawing.Size(60, 3);
-            this.linePh1.TabIndex = 3;
-            // 
-            // lblPh1Sub
-            // 
-            this.lblPh1Sub.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh1Sub.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
-            this.lblPh1Sub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(190)))), ((int)(((byte)(204)))), ((int)(((byte)(228)))));
-            this.lblPh1Sub.Location = new System.Drawing.Point(113, 105);
-            this.lblPh1Sub.Name = "lblPh1Sub";
-            this.lblPh1Sub.Size = new System.Drawing.Size(330, 40);
-            this.lblPh1Sub.TabIndex = 2;
-            this.lblPh1Sub.Text = "Quản trị CSDL Oracle";
-            // 
-            // lblPh1Title
-            // 
-            this.lblPh1Title.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh1Title.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
-            this.lblPh1Title.ForeColor = System.Drawing.Color.White;
-            this.lblPh1Title.Location = new System.Drawing.Point(112, 54);
-            this.lblPh1Title.Name = "lblPh1Title";
-            this.lblPh1Title.Size = new System.Drawing.Size(320, 48);
-            this.lblPh1Title.TabIndex = 1;
-            this.lblPh1Title.Text = "Phân hệ 1";
-            // 
-            // pnlPh1Icon
-            // 
-            this.pnlPh1Icon.BorderRadius = 12;
-            this.pnlPh1Icon.Controls.Add(this.lblPh1Icon);
-            this.pnlPh1Icon.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(111)))), ((int)(((byte)(164)))));
-            this.pnlPh1Icon.Location = new System.Drawing.Point(42, 48);
-            this.pnlPh1Icon.Name = "pnlPh1Icon";
-            this.pnlPh1Icon.Size = new System.Drawing.Size(54, 54);
-            this.pnlPh1Icon.TabIndex = 0;
-            // 
-            // lblPh1Icon
-            // 
-            this.lblPh1Icon.BackColor = System.Drawing.Color.Transparent;
-            this.lblPh1Icon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPh1Icon.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblPh1Icon.ForeColor = System.Drawing.Color.White;
-            this.lblPh1Icon.Location = new System.Drawing.Point(0, 0);
-            this.lblPh1Icon.Name = "lblPh1Icon";
-            this.lblPh1Icon.Size = new System.Drawing.Size(54, 54);
-            this.lblPh1Icon.TabIndex = 0;
-            this.lblPh1Icon.Text = "DB";
-            this.lblPh1Icon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pnlShell.BackColor = System.Drawing.Color.Transparent;
+            this.pnlShell.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(229)))), ((int)(((byte)(224)))));
+            this.pnlShell.BorderRadius = 18;
+            this.pnlShell.BorderThickness = 1;
+            this.pnlShell.Controls.Add(this.btnExit);
+            this.pnlShell.Controls.Add(this.pnlLeft);
+            this.pnlShell.Controls.Add(this.pnlRight);
+            this.pnlShell.FillColor = System.Drawing.Color.White;
+            this.pnlShell.Location = new System.Drawing.Point(18, 18);
+            this.pnlShell.Name = "pnlShell";
+            this.pnlShell.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.pnlShell.ShadowDecoration.Depth = 12;
+            this.pnlShell.ShadowDecoration.Enabled = true;
+            this.pnlShell.Size = new System.Drawing.Size(924, 584);
+            this.pnlShell.TabIndex = 0;
             // 
             // btnExit
             // 
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
-            this.btnExit.BorderRadius = 15;
-            this.btnExit.CustomIconSize = 20F;
+            this.btnExit.BorderRadius = 8;
             this.btnExit.FillColor = System.Drawing.Color.Transparent;
-            this.btnExit.ForeColor = System.Drawing.Color.Black;
-            this.btnExit.HoverState.FillColor = System.Drawing.Color.LightSteelBlue;
-            this.btnExit.IconColor = System.Drawing.Color.DarkBlue;
-            this.btnExit.Location = new System.Drawing.Point(518, 9);
+            this.btnExit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
+            this.btnExit.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(94)))), ((int)(((byte)(89)))));
+            this.btnExit.Location = new System.Drawing.Point(878, 16);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(33, 32);
-            this.btnExit.TabIndex = 15;
+            this.btnExit.Size = new System.Drawing.Size(30, 28);
+            this.btnExit.TabIndex = 2;
+            // 
+            // pnlLeft
+            // 
+            this.pnlLeft.BorderRadius = 18;
+            this.pnlLeft.Controls.Add(this.lblFooter);
+            this.pnlLeft.Controls.Add(this.lblLeftNote);
+            this.pnlLeft.Controls.Add(this.lblHeadline);
+            this.pnlLeft.Controls.Add(this.lblEyebrow);
+            this.pnlLeft.Controls.Add(this.pnlLogo);
+            this.pnlLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.pnlLeft.Location = new System.Drawing.Point(0, 0);
+            this.pnlLeft.Name = "pnlLeft";
+            this.pnlLeft.Size = new System.Drawing.Size(318, 584);
+            this.pnlLeft.TabIndex = 0;
+            // 
+            // lblFooter
+            // 
+            this.lblFooter.BackColor = System.Drawing.Color.Transparent;
+            this.lblFooter.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblFooter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(224)))), ((int)(((byte)(212)))));
+            this.lblFooter.Location = new System.Drawing.Point(34, 524);
+            this.lblFooter.Name = "lblFooter";
+            this.lblFooter.Size = new System.Drawing.Size(220, 24);
+            this.lblFooter.TabIndex = 4;
+            this.lblFooter.Text = "CSC12001 - HCMUS";
+            // 
+            // lblLeftNote
+            // 
+            this.lblLeftNote.BackColor = System.Drawing.Color.Transparent;
+            this.lblLeftNote.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.lblLeftNote.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(241)))), ((int)(((byte)(236)))));
+            this.lblLeftNote.Location = new System.Drawing.Point(34, 330);
+            this.lblLeftNote.Name = "lblLeftNote";
+            this.lblLeftNote.Size = new System.Drawing.Size(238, 92);
+            this.lblLeftNote.TabIndex = 3;
+            this.lblLeftNote.Text = "Chọn đúng vai trò để mở màn hình đăng nhập và phân quyền thao tác.";
+            // 
+            // lblHeadline
+            // 
+            this.lblHeadline.BackColor = System.Drawing.Color.Transparent;
+            this.lblHeadline.Font = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Bold);
+            this.lblHeadline.ForeColor = System.Drawing.Color.White;
+            this.lblHeadline.Location = new System.Drawing.Point(32, 176);
+            this.lblHeadline.Name = "lblHeadline";
+            this.lblHeadline.Size = new System.Drawing.Size(248, 118);
+            this.lblHeadline.TabIndex = 2;
+            this.lblHeadline.Text = "HospitalX\r\nAccess";
+            // 
+            // lblEyebrow
+            // 
+            this.lblEyebrow.BackColor = System.Drawing.Color.Transparent;
+            this.lblEyebrow.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblEyebrow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(243)))), ((int)(((byte)(208)))));
+            this.lblEyebrow.Location = new System.Drawing.Point(35, 124);
+            this.lblEyebrow.Name = "lblEyebrow";
+            this.lblEyebrow.Size = new System.Drawing.Size(210, 24);
+            this.lblEyebrow.TabIndex = 1;
+            this.lblEyebrow.Text = "HOSPITAL SYSTEM";
+            // 
+            // pnlLogo
+            // 
+            this.pnlLogo.BorderRadius = 16;
+            this.pnlLogo.Controls.Add(this.lblLogo);
+            this.pnlLogo.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(150)))), ((int)(((byte)(112)))));
+            this.pnlLogo.Location = new System.Drawing.Point(34, 44);
+            this.pnlLogo.Name = "pnlLogo";
+            this.pnlLogo.Size = new System.Drawing.Size(60, 60);
+            this.pnlLogo.TabIndex = 0;
+            // 
+            // lblLogo
+            // 
+            this.lblLogo.BackColor = System.Drawing.Color.Transparent;
+            this.lblLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblLogo.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblLogo.ForeColor = System.Drawing.Color.White;
+            this.lblLogo.Location = new System.Drawing.Point(0, 0);
+            this.lblLogo.Name = "lblLogo";
+            this.lblLogo.Size = new System.Drawing.Size(60, 60);
+            this.lblLogo.TabIndex = 0;
+            this.lblLogo.Text = "HX";
+            this.lblLogo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlRight
+            // 
+            this.pnlRight.Controls.Add(this.btnPh2Patient);
+            this.pnlRight.Controls.Add(this.btnPh2Technician);
+            this.pnlRight.Controls.Add(this.btnPh2Doctor);
+            this.pnlRight.Controls.Add(this.btnPh2Coordinator);
+            this.pnlRight.Controls.Add(this.btnPh2Dba);
+            this.pnlRight.Controls.Add(this.btnPh1Dba);
+            this.pnlRight.Controls.Add(this.lblPh2Caption);
+            this.pnlRight.Controls.Add(this.lblPh1Caption);
+            this.pnlRight.Controls.Add(this.lblRightSub);
+            this.pnlRight.Controls.Add(this.lblRightTitle);
+            this.pnlRight.FillColor = System.Drawing.Color.White;
+            this.pnlRight.Location = new System.Drawing.Point(318, 0);
+            this.pnlRight.Name = "pnlRight";
+            this.pnlRight.Size = new System.Drawing.Size(606, 584);
+            this.pnlRight.TabIndex = 1;
+            // 
+            // btnPh2Patient
+            // 
+            this.btnPh2Patient.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(225)))), ((int)(((byte)(219)))));
+            this.btnPh2Patient.BorderRadius = 10;
+            this.btnPh2Patient.BorderThickness = 1;
+            this.btnPh2Patient.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPh2Patient.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(231)))), ((int)(((byte)(229)))));
+            this.btnPh2Patient.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(158)))), ((int)(((byte)(154)))));
+            this.btnPh2Patient.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(253)))), ((int)(((byte)(252)))));
+            this.btnPh2Patient.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnPh2Patient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnPh2Patient.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnPh2Patient.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnPh2Patient.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(63)))), ((int)(((byte)(50)))));
+            this.btnPh2Patient.Location = new System.Drawing.Point(318, 456);
+            this.btnPh2Patient.Name = "btnPh2Patient";
+            this.btnPh2Patient.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
+            this.btnPh2Patient.Size = new System.Drawing.Size(234, 62);
+            this.btnPh2Patient.TabIndex = 9;
+            this.btnPh2Patient.Text = "Bệnh nhân\r\nXem hồ sơ";
+            this.btnPh2Patient.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPh2Patient.TextOffset = new System.Drawing.Point(15, 0);
+            // 
+            // btnPh2Technician
+            // 
+            this.btnPh2Technician.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(225)))), ((int)(((byte)(219)))));
+            this.btnPh2Technician.BorderRadius = 10;
+            this.btnPh2Technician.BorderThickness = 1;
+            this.btnPh2Technician.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPh2Technician.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(231)))), ((int)(((byte)(229)))));
+            this.btnPh2Technician.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(158)))), ((int)(((byte)(154)))));
+            this.btnPh2Technician.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(253)))), ((int)(((byte)(252)))));
+            this.btnPh2Technician.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnPh2Technician.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnPh2Technician.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnPh2Technician.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnPh2Technician.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(63)))), ((int)(((byte)(50)))));
+            this.btnPh2Technician.Location = new System.Drawing.Point(56, 456);
+            this.btnPh2Technician.Name = "btnPh2Technician";
+            this.btnPh2Technician.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
+            this.btnPh2Technician.Size = new System.Drawing.Size(234, 62);
+            this.btnPh2Technician.TabIndex = 8;
+            this.btnPh2Technician.Text = "Kỹ thuật viên\r\nDịch vụ chẩn đoán";
+            this.btnPh2Technician.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPh2Technician.TextOffset = new System.Drawing.Point(15, 0);
+            // 
+            // btnPh2Doctor
+            // 
+            this.btnPh2Doctor.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(225)))), ((int)(((byte)(219)))));
+            this.btnPh2Doctor.BorderRadius = 10;
+            this.btnPh2Doctor.BorderThickness = 1;
+            this.btnPh2Doctor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPh2Doctor.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(231)))), ((int)(((byte)(229)))));
+            this.btnPh2Doctor.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(158)))), ((int)(((byte)(154)))));
+            this.btnPh2Doctor.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(253)))), ((int)(((byte)(252)))));
+            this.btnPh2Doctor.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnPh2Doctor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnPh2Doctor.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnPh2Doctor.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnPh2Doctor.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(63)))), ((int)(((byte)(50)))));
+            this.btnPh2Doctor.Location = new System.Drawing.Point(318, 376);
+            this.btnPh2Doctor.Name = "btnPh2Doctor";
+            this.btnPh2Doctor.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
+            this.btnPh2Doctor.Size = new System.Drawing.Size(234, 62);
+            this.btnPh2Doctor.TabIndex = 7;
+            this.btnPh2Doctor.Text = "Bác sĩ / Y sĩ\r\nChẩn đoán và điều trị";
+            this.btnPh2Doctor.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPh2Doctor.TextOffset = new System.Drawing.Point(15, 0);
+            // 
+            // btnPh2Coordinator
+            // 
+            this.btnPh2Coordinator.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(225)))), ((int)(((byte)(219)))));
+            this.btnPh2Coordinator.BorderRadius = 10;
+            this.btnPh2Coordinator.BorderThickness = 1;
+            this.btnPh2Coordinator.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPh2Coordinator.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(231)))), ((int)(((byte)(229)))));
+            this.btnPh2Coordinator.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(158)))), ((int)(((byte)(154)))));
+            this.btnPh2Coordinator.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(253)))), ((int)(((byte)(252)))));
+            this.btnPh2Coordinator.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnPh2Coordinator.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnPh2Coordinator.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnPh2Coordinator.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnPh2Coordinator.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(63)))), ((int)(((byte)(50)))));
+            this.btnPh2Coordinator.Location = new System.Drawing.Point(56, 376);
+            this.btnPh2Coordinator.Name = "btnPh2Coordinator";
+            this.btnPh2Coordinator.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
+            this.btnPh2Coordinator.Size = new System.Drawing.Size(234, 62);
+            this.btnPh2Coordinator.TabIndex = 6;
+            this.btnPh2Coordinator.Text = "Điều phối viên\r\nTiếp nhận bệnh nhân";
+            this.btnPh2Coordinator.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPh2Coordinator.TextOffset = new System.Drawing.Point(15, 0);
+            // 
+            // btnPh2Dba
+            // 
+            this.btnPh2Dba.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(225)))), ((int)(((byte)(219)))));
+            this.btnPh2Dba.BorderRadius = 10;
+            this.btnPh2Dba.BorderThickness = 1;
+            this.btnPh2Dba.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPh2Dba.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(231)))), ((int)(((byte)(229)))));
+            this.btnPh2Dba.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(158)))), ((int)(((byte)(154)))));
+            this.btnPh2Dba.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(253)))), ((int)(((byte)(252)))));
+            this.btnPh2Dba.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnPh2Dba.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnPh2Dba.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnPh2Dba.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnPh2Dba.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(63)))), ((int)(((byte)(50)))));
+            this.btnPh2Dba.Location = new System.Drawing.Point(56, 254);
+            this.btnPh2Dba.Name = "btnPh2Dba";
+            this.btnPh2Dba.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(235)))), ((int)(((byte)(226)))));
+            this.btnPh2Dba.Size = new System.Drawing.Size(496, 64);
+            this.btnPh2Dba.TabIndex = 5;
+            this.btnPh2Dba.Text = "DBA\r\nQuản trị hệ thống y tế";
+            this.btnPh2Dba.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPh2Dba.TextOffset = new System.Drawing.Point(18, 0);
+            // 
+            // btnPh1Dba
+            // 
+            this.btnPh1Dba.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(214)))), ((int)(((byte)(236)))));
+            this.btnPh1Dba.BorderRadius = 10;
+            this.btnPh1Dba.BorderThickness = 1;
+            this.btnPh1Dba.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPh1Dba.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(231)))), ((int)(((byte)(238)))));
+            this.btnPh1Dba.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(154)))), ((int)(((byte)(170)))));
+            this.btnPh1Dba.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(255)))));
+            this.btnPh1Dba.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnPh1Dba.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(74)))), ((int)(((byte)(132)))));
+            this.btnPh1Dba.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(74)))), ((int)(((byte)(132)))));
+            this.btnPh1Dba.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(242)))), ((int)(((byte)(253)))));
+            this.btnPh1Dba.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(58)))), ((int)(((byte)(106)))));
+            this.btnPh1Dba.Location = new System.Drawing.Point(56, 154);
+            this.btnPh1Dba.Name = "btnPh1Dba";
+            this.btnPh1Dba.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(230)))), ((int)(((byte)(250)))));
+            this.btnPh1Dba.Size = new System.Drawing.Size(496, 50);
+            this.btnPh1Dba.TabIndex = 4;
+            this.btnPh1Dba.Text = "DBA - Quản trị viên CSDL Oracle";
+            this.btnPh1Dba.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPh1Dba.TextOffset = new System.Drawing.Point(18, 0);
+            // 
+            // lblPh2Caption
+            // 
+            this.lblPh2Caption.BackColor = System.Drawing.Color.Transparent;
+            this.lblPh2Caption.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
+            this.lblPh2Caption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(122)))), ((int)(((byte)(116)))));
+            this.lblPh2Caption.Location = new System.Drawing.Point(56, 222);
+            this.lblPh2Caption.Name = "lblPh2Caption";
+            this.lblPh2Caption.Size = new System.Drawing.Size(260, 22);
+            this.lblPh2Caption.TabIndex = 3;
+            this.lblPh2Caption.Text = "PHÂN HỆ 2 - DỮ LIỆU Y TẾ";
+            // 
+            // lblPh1Caption
+            // 
+            this.lblPh1Caption.BackColor = System.Drawing.Color.Transparent;
+            this.lblPh1Caption.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
+            this.lblPh1Caption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(122)))), ((int)(((byte)(116)))));
+            this.lblPh1Caption.Location = new System.Drawing.Point(56, 124);
+            this.lblPh1Caption.Name = "lblPh1Caption";
+            this.lblPh1Caption.Size = new System.Drawing.Size(260, 22);
+            this.lblPh1Caption.TabIndex = 2;
+            this.lblPh1Caption.Text = "PHÂN HỆ 1 - QUẢN TRỊ CSDL";
+            // 
+            // lblRightSub
+            // 
+            this.lblRightSub.BackColor = System.Drawing.Color.Transparent;
+            this.lblRightSub.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblRightSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(121)))), ((int)(((byte)(116)))));
+            this.lblRightSub.Location = new System.Drawing.Point(56, 72);
+            this.lblRightSub.Name = "lblRightSub";
+            this.lblRightSub.Size = new System.Drawing.Size(450, 30);
+            this.lblRightSub.TabIndex = 1;
+            this.lblRightSub.Text = "Chọn vai trò để đăng nhập đúng phân hệ và giao diện làm việc.";
+            // 
+            // lblRightTitle
+            // 
+            this.lblRightTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblRightTitle.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
+            this.lblRightTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblRightTitle.Location = new System.Drawing.Point(52, 30);
+            this.lblRightTitle.Name = "lblRightTitle";
+            this.lblRightTitle.Size = new System.Drawing.Size(280, 42);
+            this.lblRightTitle.TabIndex = 0;
+            this.lblRightTitle.Text = "Chọn vai trò";
             // 
             // RoleSelection
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1080, 795);
-            this.Controls.Add(this.pnlRoot);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
+            this.ClientSize = new System.Drawing.Size(960, 620);
+            this.Controls.Add(this.pnlShell);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -369,37 +377,34 @@ namespace HospitalX.GUI
             this.Name = "RoleSelection";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "HospitalX - Chọn vai trò";
-            this.pnlRoot.ResumeLayout(false);
-            this.pnlPh2.ResumeLayout(false);
-            this.pnlPh2Icon.ResumeLayout(false);
-            this.pnlPh1.ResumeLayout(false);
-            this.pnlPh1Icon.ResumeLayout(false);
+            this.pnlShell.ResumeLayout(false);
+            this.pnlLeft.ResumeLayout(false);
+            this.pnlLogo.ResumeLayout(false);
+            this.pnlRight.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
-        private Guna.UI2.WinForms.Guna2Panel pnlRoot;
-        private Guna.UI2.WinForms.Guna2Panel pnlPh1;
-        private Guna.UI2.WinForms.Guna2Panel pnlPh2;
-        private Guna.UI2.WinForms.Guna2Panel pnlPh1Icon;
-        private Guna.UI2.WinForms.Guna2Panel pnlPh2Icon;
-        private System.Windows.Forms.Label lblPh1Icon;
-        private System.Windows.Forms.Label lblPh2Icon;
-        private System.Windows.Forms.Label lblPh1Title;
-        private System.Windows.Forms.Label lblPh2Title;
-        private System.Windows.Forms.Label lblPh1Sub;
-        private System.Windows.Forms.Label lblPh2Sub;
-        private System.Windows.Forms.Label linePh1;
-        private System.Windows.Forms.Label linePh2;
-        private System.Windows.Forms.Label lblPh1Choose;
-        private System.Windows.Forms.Label lblPh2Choose;
-        private Guna.UI2.WinForms.Guna2Button btnPh1Dba;
-        private Guna.UI2.WinForms.Guna2Button btnPh2Dba;
-        private Guna.UI2.WinForms.Guna2Button btnPh2Coordinator;
-        private Guna.UI2.WinForms.Guna2Button btnPh2Doctor;
-        private Guna.UI2.WinForms.Guna2Button btnPh2Technician;
-        private Guna.UI2.WinForms.Guna2Button btnPh2Patient;
+        private Guna.UI2.WinForms.Guna2Panel pnlShell;
         private Guna.UI2.WinForms.Guna2ControlBox btnExit;
+        private Guna.UI2.WinForms.Guna2Panel pnlLeft;
+        private System.Windows.Forms.Label lblFooter;
+        private System.Windows.Forms.Label lblLeftNote;
+        private System.Windows.Forms.Label lblHeadline;
+        private System.Windows.Forms.Label lblEyebrow;
+        private Guna.UI2.WinForms.Guna2Panel pnlLogo;
+        private System.Windows.Forms.Label lblLogo;
+        private Guna.UI2.WinForms.Guna2Panel pnlRight;
+        private Guna.UI2.WinForms.Guna2Button btnPh2Patient;
+        private Guna.UI2.WinForms.Guna2Button btnPh2Technician;
+        private Guna.UI2.WinForms.Guna2Button btnPh2Doctor;
+        private Guna.UI2.WinForms.Guna2Button btnPh2Coordinator;
+        private Guna.UI2.WinForms.Guna2Button btnPh2Dba;
+        private Guna.UI2.WinForms.Guna2Button btnPh1Dba;
+        private System.Windows.Forms.Label lblPh2Caption;
+        private System.Windows.Forms.Label lblPh1Caption;
+        private System.Windows.Forms.Label lblRightSub;
+        private System.Windows.Forms.Label lblRightTitle;
     }
 }

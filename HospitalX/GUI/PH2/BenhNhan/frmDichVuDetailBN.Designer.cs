@@ -125,6 +125,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // txtResult
             // 
+            this.txtResult.BackColor = System.Drawing.Color.Transparent;
             this.txtResult.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(228)))));
             this.txtResult.BorderRadius = 6;
             this.txtResult.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -161,7 +162,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblTechnicianValue.Location = new System.Drawing.Point(210, 126);
             this.lblTechnicianValue.Name = "lblTechnicianValue";
             this.lblTechnicianValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblTechnicianValue.Size = new System.Drawing.Size(158, 32);
+            this.lblTechnicianValue.Size = new System.Drawing.Size(177, 32);
             this.lblTechnicianValue.TabIndex = 2;
             // 
             // lblTechnician
@@ -195,9 +196,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
             this.lblDate.Location = new System.Drawing.Point(28, 104);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(91, 15);
+            this.lblDate.Size = new System.Drawing.Size(105, 15);
             this.lblDate.TabIndex = 5;
-            this.lblDate.Text = "NGÀY DỊCH VỤ";
+            this.lblDate.Text = "NGÀY THỰC HIỆN";
             // 
             // lblServiceValue
             // 
@@ -207,7 +208,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblServiceValue.Location = new System.Drawing.Point(210, 48);
             this.lblServiceValue.Name = "lblServiceValue";
             this.lblServiceValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblServiceValue.Size = new System.Drawing.Size(500, 32);
+            this.lblServiceValue.Size = new System.Drawing.Size(326, 32);
             this.lblServiceValue.TabIndex = 6;
             // 
             // lblService

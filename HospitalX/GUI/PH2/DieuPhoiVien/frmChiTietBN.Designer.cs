@@ -25,7 +25,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblInfoTitle = new System.Windows.Forms.Label();
             this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnEdit = new Guna.UI2.WinForms.Guna2Button();
-            this.btnViewHsba = new Guna.UI2.WinForms.Guna2Button();
             this.btnCloseBottom = new Guna.UI2.WinForms.Guna2Button();
             this.pnlHeader.SuspendLayout();
             this.pnlInfo.SuspendLayout();
@@ -48,7 +47,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.pnlHeader.Location = new System.Drawing.Point(20, 16);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(530, 100);
+            this.pnlHeader.Size = new System.Drawing.Size(680, 100);
             this.pnlHeader.TabIndex = 0;
             // 
             // 
@@ -57,7 +56,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblCode.BackColor = System.Drawing.Color.Transparent;
             this.lblCode.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblCode.ForeColor = System.Drawing.Color.White;
-            this.lblCode.Location = new System.Drawing.Point(360, 48);
+            this.lblCode.Location = new System.Drawing.Point(510, 48);
             this.lblCode.Name = "lblCode";
             this.lblCode.Size = new System.Drawing.Size(150, 30);
             this.lblCode.TabIndex = 2;
@@ -95,7 +94,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlInfo.FillColor = System.Drawing.Color.White;
             this.pnlInfo.Location = new System.Drawing.Point(20, 128);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(530, 450);
+            this.pnlInfo.Size = new System.Drawing.Size(680, 680);
             this.pnlInfo.TabIndex = 1;
             // 
             // lblInfoTitle
@@ -116,12 +115,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlFooter.BorderRadius = 12;
             this.pnlFooter.BorderThickness = 1;
             this.pnlFooter.Controls.Add(this.btnEdit);
-            this.pnlFooter.Controls.Add(this.btnViewHsba);
             this.pnlFooter.Controls.Add(this.btnCloseBottom);
             this.pnlFooter.FillColor = System.Drawing.Color.White;
-            this.pnlFooter.Location = new System.Drawing.Point(20, 590);
+            this.pnlFooter.Location = new System.Drawing.Point(20, 820);
             this.pnlFooter.Name = "pnlFooter";
-            this.pnlFooter.Size = new System.Drawing.Size(530, 70);
+            this.pnlFooter.Size = new System.Drawing.Size(680, 70);
             this.pnlFooter.TabIndex = 2;
             // 
             // btnEdit
@@ -132,29 +130,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
             this.btnEdit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnEdit.Location = new System.Drawing.Point(20, 15);
+            this.btnEdit.Location = new System.Drawing.Point(300, 15);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(150, 40);
+            this.btnEdit.Size = new System.Drawing.Size(170, 40);
             this.btnEdit.TabIndex = 0;
             this.btnEdit.Text = "Sửa thông tin";
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
-            // 
-            // btnViewHsba
-            // 
-            this.btnViewHsba.BackColor = System.Drawing.Color.Transparent;
-            this.btnViewHsba.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnViewHsba.BorderRadius = 20;
-            this.btnViewHsba.BorderThickness = 1;
-            this.btnViewHsba.FillColor = System.Drawing.Color.Transparent;
-            this.btnViewHsba.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnViewHsba.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnViewHsba.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnViewHsba.Location = new System.Drawing.Point(190, 15);
-            this.btnViewHsba.Name = "btnViewHsba";
-            this.btnViewHsba.Size = new System.Drawing.Size(150, 40);
-            this.btnViewHsba.TabIndex = 1;
-            this.btnViewHsba.Text = "Xem HSBA";
-            this.btnViewHsba.Click += new System.EventHandler(this.btnViewHsba_Click);
             // 
             // btnCloseBottom
             // 
@@ -166,9 +147,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnCloseBottom.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnCloseBottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
             this.btnCloseBottom.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
-            this.btnCloseBottom.Location = new System.Drawing.Point(360, 15);
+            this.btnCloseBottom.Location = new System.Drawing.Point(486, 15);
             this.btnCloseBottom.Name = "btnCloseBottom";
-            this.btnCloseBottom.Size = new System.Drawing.Size(150, 40);
+            this.btnCloseBottom.Size = new System.Drawing.Size(170, 40);
             this.btnCloseBottom.TabIndex = 2;
             this.btnCloseBottom.Text = "Đóng";
             this.btnCloseBottom.Click += new System.EventHandler(this.btnCloseBottom_Click);
@@ -178,7 +159,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(570, 680);
+            this.ClientSize = new System.Drawing.Size(720, 910);
             this.Controls.Add(this.pnlFooter);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.pnlHeader);
@@ -204,7 +185,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Label lblInfoTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlFooter;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
-        private Guna.UI2.WinForms.Guna2Button btnViewHsba;
         private Guna.UI2.WinForms.Guna2Button btnCloseBottom;
     }
 }
