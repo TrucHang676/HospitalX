@@ -79,7 +79,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCount.BackColor = System.Drawing.Color.Transparent;
             this.lblCount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblCount.Location = new System.Drawing.Point(825, 66);
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(228, 22);
