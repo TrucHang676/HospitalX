@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.QuanTriVien
+﻿namespace HospitalX.GUI.PH2.QuanTriVien
 {
     partial class ucThongBao
     {
@@ -27,14 +27,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLabels = new Guna.UI2.WinForms.Guna2Panel();
             this.btnSend = new Guna.UI2.WinForms.Guna2Button();
             this.flowLabels = new System.Windows.Forms.FlowLayoutPanel();
-            this.chkT7 = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.chkT6 = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.chkT5 = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.chkT4 = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.chkT3 = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.chkT2 = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.chkT1 = new Guna.UI2.WinForms.Guna2CheckBox();
-            this.chkAll = new Guna.UI2.WinForms.Guna2CheckBox();
+            this.btnLabelT1 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnLabelT2 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnLabelT3 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnLabelT4 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnLabelT5 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnLabelT6 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnLabelT7 = new Guna.UI2.WinForms.Guna2Button();
             this.lblSelectedCount = new System.Windows.Forms.Label();
             this.lblLabelsTitle = new System.Windows.Forms.Label();
             this.pnlCompose = new Guna.UI2.WinForms.Guna2Panel();
@@ -48,11 +47,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblContent = new System.Windows.Forms.Label();
             this.lblComposeTitle = new System.Windows.Forms.Label();
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
+            this.btnLabelAll = new Guna.UI2.WinForms.Guna2Button();
             this.pnlRoot.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             this.pnlHistoryHeader.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlLabels.SuspendLayout();
+            this.flowLabels.SuspendLayout();
             this.pnlCompose.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,7 +82,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlHistory.FillColor = System.Drawing.Color.White;
             this.pnlHistory.Location = new System.Drawing.Point(477, 35);
             this.pnlHistory.Name = "pnlHistory";
-            this.pnlHistory.Size = new System.Drawing.Size(628, 678);
+            this.pnlHistory.Size = new System.Drawing.Size(628, 705);
             this.pnlHistory.TabIndex = 2;
             // 
             // flowSent
@@ -95,7 +96,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.flowSent.Location = new System.Drawing.Point(18, 82);
             this.flowSent.Name = "flowSent";
             this.flowSent.Padding = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.flowSent.Size = new System.Drawing.Size(592, 574);
+            this.flowSent.Size = new System.Drawing.Size(592, 601);
             this.flowSent.TabIndex = 2;
             this.flowSent.WrapContents = false;
             // 
@@ -129,7 +130,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblHistoryTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Bold);
             this.lblHistoryTitle.ForeColor = System.Drawing.Color.White;
-            this.lblHistoryTitle.Location = new System.Drawing.Point(3, 17);
+            this.lblHistoryTitle.Location = new System.Drawing.Point(11, 17);
             this.lblHistoryTitle.Name = "lblHistoryTitle";
             this.lblHistoryTitle.Size = new System.Drawing.Size(163, 25);
             this.lblHistoryTitle.TabIndex = 0;
@@ -144,7 +145,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLeft.FillColor = System.Drawing.Color.Transparent;
             this.pnlLeft.Location = new System.Drawing.Point(23, 35);
             this.pnlLeft.Name = "pnlLeft";
-            this.pnlLeft.Size = new System.Drawing.Size(444, 678);
+            this.pnlLeft.Size = new System.Drawing.Size(444, 708);
             this.pnlLeft.TabIndex = 1;
             // 
             // pnlLabels
@@ -154,22 +155,15 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLabels.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(216)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlLabels.BorderRadius = 8;
             this.pnlLabels.BorderThickness = 1;
+            this.pnlLabels.Controls.Add(this.btnLabelAll);
             this.pnlLabels.Controls.Add(this.btnSend);
             this.pnlLabels.Controls.Add(this.flowLabels);
-            this.pnlLabels.Controls.Add(this.chkT7);
-            this.pnlLabels.Controls.Add(this.chkT6);
-            this.pnlLabels.Controls.Add(this.chkT5);
-            this.pnlLabels.Controls.Add(this.chkT4);
-            this.pnlLabels.Controls.Add(this.chkT3);
-            this.pnlLabels.Controls.Add(this.chkT2);
-            this.pnlLabels.Controls.Add(this.chkT1);
-            this.pnlLabels.Controls.Add(this.chkAll);
             this.pnlLabels.Controls.Add(this.lblSelectedCount);
             this.pnlLabels.Controls.Add(this.lblLabelsTitle);
             this.pnlLabels.FillColor = System.Drawing.Color.White;
             this.pnlLabels.Location = new System.Drawing.Point(0, 330);
             this.pnlLabels.Name = "pnlLabels";
-            this.pnlLabels.Size = new System.Drawing.Size(444, 348);
+            this.pnlLabels.Size = new System.Drawing.Size(444, 375);
             this.pnlLabels.TabIndex = 1;
             // 
             // btnSend
@@ -180,200 +174,192 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.btnSend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnSend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnSend.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSend.ForeColor = System.Drawing.Color.White;
             this.btnSend.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(138)))), ((int)(((byte)(108)))));
-            this.btnSend.Location = new System.Drawing.Point(24, 288);
+            this.btnSend.Location = new System.Drawing.Point(24, 315);
             this.btnSend.Name = "btnSend";
             this.btnSend.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(86)))), ((int)(((byte)(67)))));
             this.btnSend.Size = new System.Drawing.Size(396, 40);
             this.btnSend.TabIndex = 10;
-            this.btnSend.Text = "Gửi thông báo qua OLS";
+            this.btnSend.Text = "Gửi thông báo";
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // flowLabels
             // 
             this.flowLabels.BackColor = System.Drawing.Color.White;
-            this.flowLabels.Location = new System.Drawing.Point(20, 62);
+            this.flowLabels.Controls.Add(this.btnLabelT1);
+            this.flowLabels.Controls.Add(this.btnLabelT2);
+            this.flowLabels.Controls.Add(this.btnLabelT3);
+            this.flowLabels.Controls.Add(this.btnLabelT4);
+            this.flowLabels.Controls.Add(this.btnLabelT5);
+            this.flowLabels.Controls.Add(this.btnLabelT6);
+            this.flowLabels.Controls.Add(this.btnLabelT7);
+            this.flowLabels.Location = new System.Drawing.Point(24, 114);
             this.flowLabels.Name = "flowLabels";
-            this.flowLabels.Size = new System.Drawing.Size(400, 218);
+            this.flowLabels.Size = new System.Drawing.Size(400, 195);
             this.flowLabels.TabIndex = 11;
             // 
-            // chkT7
+            // btnLabelT1
             // 
-            this.chkT7.BackColor = System.Drawing.Color.Transparent;
-            this.chkT7.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT7.CheckedState.BorderRadius = 3;
-            this.chkT7.CheckedState.BorderThickness = 1;
-            this.chkT7.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkT7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT7.Location = new System.Drawing.Point(20, 204);
-            this.chkT7.Name = "chkT7";
-            this.chkT7.Size = new System.Drawing.Size(194, 32);
-            this.chkT7.TabIndex = 9;
-            this.chkT7.Text = "t7 - Nhân viên Cơ sở 2";
-            this.chkT7.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkT7.UncheckedState.BorderRadius = 3;
-            this.chkT7.UncheckedState.BorderThickness = 1;
-            this.chkT7.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkT7.UseVisualStyleBackColor = false;
-            this.chkT7.Visible = false;
-            this.chkT7.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
+            this.btnLabelT1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.btnLabelT1.BorderRadius = 10;
+            this.btnLabelT1.BorderThickness = 1;
+            this.btnLabelT1.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelT1.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelT1.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelT1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelT1.FillColor = System.Drawing.Color.White;
+            this.btnLabelT1.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
+            this.btnLabelT1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.btnLabelT1.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.btnLabelT1.Location = new System.Drawing.Point(3, 10);
+            this.btnLabelT1.Margin = new System.Windows.Forms.Padding(3, 10, 6, 4);
+            this.btnLabelT1.Name = "btnLabelT1";
+            this.btnLabelT1.Size = new System.Drawing.Size(179, 38);
+            this.btnLabelT1.TabIndex = 1;
+            this.btnLabelT1.Tag = "t1";
+            this.btnLabelT1.Text = "Toàn bộ nhân viên\r";
+            this.btnLabelT1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelT1.TextOffset = new System.Drawing.Point(6, 0);
             // 
-            // chkT6
+            // btnLabelT2
             // 
-            this.chkT6.BackColor = System.Drawing.Color.Transparent;
-            this.chkT6.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT6.CheckedState.BorderRadius = 3;
-            this.chkT6.CheckedState.BorderThickness = 1;
-            this.chkT6.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkT6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT6.Location = new System.Drawing.Point(230, 166);
-            this.chkT6.Name = "chkT6";
-            this.chkT6.Size = new System.Drawing.Size(190, 32);
-            this.chkT6.TabIndex = 8;
-            this.chkT6.Text = "t6 - Nhân viên Cơ sở 1";
-            this.chkT6.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkT6.UncheckedState.BorderRadius = 3;
-            this.chkT6.UncheckedState.BorderThickness = 1;
-            this.chkT6.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkT6.UseVisualStyleBackColor = false;
-            this.chkT6.Visible = false;
-            this.chkT6.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
+            this.btnLabelT2.BorderColor = this.btnLabelT1.BorderColor;
+            this.btnLabelT2.BorderRadius = 10;
+            this.btnLabelT2.BorderThickness = 1;
+            this.btnLabelT2.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelT2.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelT2.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelT2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelT2.FillColor = System.Drawing.Color.White;
+            this.btnLabelT2.Font = this.btnLabelT1.Font;
+            this.btnLabelT2.ForeColor = this.btnLabelT1.ForeColor;
+            this.btnLabelT2.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.btnLabelT2.Location = new System.Drawing.Point(213, 10);
+            this.btnLabelT2.Margin = new System.Windows.Forms.Padding(25, 10, 3, 4);
+            this.btnLabelT2.Name = "btnLabelT2";
+            this.btnLabelT2.Size = new System.Drawing.Size(179, 38);
+            this.btnLabelT2.TabIndex = 2;
+            this.btnLabelT2.Tag = "t2";
+            this.btnLabelT2.Text = "Ban Giám đốc\r\n";
+            this.btnLabelT2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelT2.TextOffset = new System.Drawing.Point(6, 0);
             // 
-            // chkT5
+            // btnLabelT3
             // 
-            this.chkT5.BackColor = System.Drawing.Color.Transparent;
-            this.chkT5.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT5.CheckedState.BorderRadius = 3;
-            this.chkT5.CheckedState.BorderThickness = 1;
-            this.chkT5.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkT5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT5.Location = new System.Drawing.Point(20, 166);
-            this.chkT5.Name = "chkT5";
-            this.chkT5.Size = new System.Drawing.Size(194, 32);
-            this.chkT5.TabIndex = 7;
-            this.chkT5.Text = "t5 - Nhân viên Khoa Nội trú";
-            this.chkT5.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkT5.UncheckedState.BorderRadius = 3;
-            this.chkT5.UncheckedState.BorderThickness = 1;
-            this.chkT5.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkT5.UseVisualStyleBackColor = false;
-            this.chkT5.Visible = false;
-            this.chkT5.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
+            this.btnLabelT3.BorderColor = this.btnLabelT1.BorderColor;
+            this.btnLabelT3.BorderRadius = 10;
+            this.btnLabelT3.BorderThickness = 1;
+            this.btnLabelT3.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelT3.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelT3.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelT3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelT3.FillColor = System.Drawing.Color.White;
+            this.btnLabelT3.Font = this.btnLabelT1.Font;
+            this.btnLabelT3.ForeColor = this.btnLabelT1.ForeColor;
+            this.btnLabelT3.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.btnLabelT3.Location = new System.Drawing.Point(3, 55);
+            this.btnLabelT3.Margin = new System.Windows.Forms.Padding(3, 3, 6, 4);
+            this.btnLabelT3.Name = "btnLabelT3";
+            this.btnLabelT3.Size = new System.Drawing.Size(179, 38);
+            this.btnLabelT3.TabIndex = 3;
+            this.btnLabelT3.Tag = "t3";
+            this.btnLabelT3.Text = "Lãnh đạo khoa/phòng\r\n";
+            this.btnLabelT3.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelT3.TextOffset = new System.Drawing.Point(6, 0);
             // 
-            // chkT4
+            // btnLabelT4
             // 
-            this.chkT4.BackColor = System.Drawing.Color.Transparent;
-            this.chkT4.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT4.CheckedState.BorderRadius = 3;
-            this.chkT4.CheckedState.BorderThickness = 1;
-            this.chkT4.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkT4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT4.Location = new System.Drawing.Point(230, 128);
-            this.chkT4.Name = "chkT4";
-            this.chkT4.Size = new System.Drawing.Size(190, 32);
-            this.chkT4.TabIndex = 6;
-            this.chkT4.Text = "t4 - Nhân viên Khoa Ngoại trú";
-            this.chkT4.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkT4.UncheckedState.BorderRadius = 3;
-            this.chkT4.UncheckedState.BorderThickness = 1;
-            this.chkT4.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkT4.UseVisualStyleBackColor = false;
-            this.chkT4.Visible = false;
-            this.chkT4.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
+            this.btnLabelT4.BorderColor = this.btnLabelT1.BorderColor;
+            this.btnLabelT4.BorderRadius = 10;
+            this.btnLabelT4.BorderThickness = 1;
+            this.btnLabelT4.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelT4.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelT4.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelT4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelT4.FillColor = System.Drawing.Color.White;
+            this.btnLabelT4.Font = this.btnLabelT1.Font;
+            this.btnLabelT4.ForeColor = this.btnLabelT1.ForeColor;
+            this.btnLabelT4.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.btnLabelT4.Location = new System.Drawing.Point(213, 55);
+            this.btnLabelT4.Margin = new System.Windows.Forms.Padding(25, 3, 3, 4);
+            this.btnLabelT4.Name = "btnLabelT4";
+            this.btnLabelT4.Size = new System.Drawing.Size(179, 38);
+            this.btnLabelT4.TabIndex = 4;
+            this.btnLabelT4.Tag = "t4";
+            this.btnLabelT4.Text = "Lãnh đạo khoa Tiêu hóa";
+            this.btnLabelT4.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelT4.TextOffset = new System.Drawing.Point(6, 0);
             // 
-            // chkT3
+            // btnLabelT5
             // 
-            this.chkT3.BackColor = System.Drawing.Color.Transparent;
-            this.chkT3.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT3.CheckedState.BorderRadius = 3;
-            this.chkT3.CheckedState.BorderThickness = 1;
-            this.chkT3.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkT3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT3.Location = new System.Drawing.Point(20, 128);
-            this.chkT3.Name = "chkT3";
-            this.chkT3.Size = new System.Drawing.Size(194, 32);
-            this.chkT3.TabIndex = 5;
-            this.chkT3.Text = "t3 - Lãnh đạo khoa/phòng";
-            this.chkT3.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkT3.UncheckedState.BorderRadius = 3;
-            this.chkT3.UncheckedState.BorderThickness = 1;
-            this.chkT3.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkT3.UseVisualStyleBackColor = false;
-            this.chkT3.Visible = false;
-            this.chkT3.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
+            this.btnLabelT5.BorderColor = this.btnLabelT1.BorderColor;
+            this.btnLabelT5.BorderRadius = 10;
+            this.btnLabelT5.BorderThickness = 1;
+            this.btnLabelT5.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelT5.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelT5.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelT5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelT5.FillColor = System.Drawing.Color.White;
+            this.btnLabelT5.Font = this.btnLabelT1.Font;
+            this.btnLabelT5.ForeColor = this.btnLabelT1.ForeColor;
+            this.btnLabelT5.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.btnLabelT5.Location = new System.Drawing.Point(3, 100);
+            this.btnLabelT5.Margin = new System.Windows.Forms.Padding(3, 3, 6, 4);
+            this.btnLabelT5.Name = "btnLabelT5";
+            this.btnLabelT5.Size = new System.Drawing.Size(179, 38);
+            this.btnLabelT5.TabIndex = 5;
+            this.btnLabelT5.Tag = "t5";
+            this.btnLabelT5.Text = "Nhân viên khoa Tiêu hóa ở HCM";
+            this.btnLabelT5.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelT5.TextOffset = new System.Drawing.Point(6, 0);
             // 
-            // chkT2
+            // btnLabelT6
             // 
-            this.chkT2.BackColor = System.Drawing.Color.Transparent;
-            this.chkT2.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT2.CheckedState.BorderRadius = 3;
-            this.chkT2.CheckedState.BorderThickness = 1;
-            this.chkT2.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkT2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT2.Location = new System.Drawing.Point(230, 90);
-            this.chkT2.Name = "chkT2";
-            this.chkT2.Size = new System.Drawing.Size(190, 32);
-            this.chkT2.TabIndex = 4;
-            this.chkT2.Text = "t2 - Ban Giám đốc";
-            this.chkT2.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkT2.UncheckedState.BorderRadius = 3;
-            this.chkT2.UncheckedState.BorderThickness = 1;
-            this.chkT2.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkT2.UseVisualStyleBackColor = false;
-            this.chkT2.Visible = false;
-            this.chkT2.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
+            this.btnLabelT6.BorderColor = this.btnLabelT1.BorderColor;
+            this.btnLabelT6.BorderRadius = 10;
+            this.btnLabelT6.BorderThickness = 1;
+            this.btnLabelT6.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelT6.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelT6.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelT6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelT6.FillColor = System.Drawing.Color.White;
+            this.btnLabelT6.Font = this.btnLabelT1.Font;
+            this.btnLabelT6.ForeColor = this.btnLabelT1.ForeColor;
+            this.btnLabelT6.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.btnLabelT6.Location = new System.Drawing.Point(213, 100);
+            this.btnLabelT6.Margin = new System.Windows.Forms.Padding(25, 3, 3, 4);
+            this.btnLabelT6.Name = "btnLabelT6";
+            this.btnLabelT6.Size = new System.Drawing.Size(179, 38);
+            this.btnLabelT6.TabIndex = 6;
+            this.btnLabelT6.Tag = "t6";
+            this.btnLabelT6.Text = "Nhân viên khoa Tiêu hóa ở HN";
+            this.btnLabelT6.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelT6.TextOffset = new System.Drawing.Point(6, 0);
             // 
-            // chkT1
+            // btnLabelT7
             // 
-            this.chkT1.BackColor = System.Drawing.Color.Transparent;
-            this.chkT1.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT1.CheckedState.BorderRadius = 3;
-            this.chkT1.CheckedState.BorderThickness = 1;
-            this.chkT1.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkT1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkT1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.chkT1.Location = new System.Drawing.Point(20, 90);
-            this.chkT1.Name = "chkT1";
-            this.chkT1.Size = new System.Drawing.Size(194, 32);
-            this.chkT1.TabIndex = 3;
-            this.chkT1.Text = "t1 - Toàn bộ nhân viên";
-            this.chkT1.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkT1.UncheckedState.BorderRadius = 3;
-            this.chkT1.UncheckedState.BorderThickness = 1;
-            this.chkT1.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkT1.UseVisualStyleBackColor = false;
-            this.chkT1.Visible = false;
-            this.chkT1.CheckedChanged += new System.EventHandler(this.LabelCheckChanged);
-            // 
-            // chkAll
-            // 
-            this.chkAll.BackColor = System.Drawing.Color.Transparent;
-            this.chkAll.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkAll.CheckedState.BorderRadius = 3;
-            this.chkAll.CheckedState.BorderThickness = 1;
-            this.chkAll.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.chkAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.chkAll.Location = new System.Drawing.Point(20, 58);
-            this.chkAll.Name = "chkAll";
-            this.chkAll.Size = new System.Drawing.Size(194, 26);
-            this.chkAll.TabIndex = 2;
-            this.chkAll.Text = "Chọn tất cả nhóm";
-            this.chkAll.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
-            this.chkAll.UncheckedState.BorderRadius = 3;
-            this.chkAll.UncheckedState.BorderThickness = 1;
-            this.chkAll.UncheckedState.FillColor = System.Drawing.Color.White;
-            this.chkAll.UseVisualStyleBackColor = false;
-            this.chkAll.Visible = false;
-            this.chkAll.CheckedChanged += new System.EventHandler(this.chkAll_CheckedChanged);
+            this.btnLabelT7.BorderColor = this.btnLabelT1.BorderColor;
+            this.btnLabelT7.BorderRadius = 10;
+            this.btnLabelT7.BorderThickness = 1;
+            this.btnLabelT7.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelT7.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelT7.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelT7.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelT7.FillColor = System.Drawing.Color.White;
+            this.btnLabelT7.Font = this.btnLabelT1.Font;
+            this.btnLabelT7.ForeColor = this.btnLabelT1.ForeColor;
+            this.btnLabelT7.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.btnLabelT7.Location = new System.Drawing.Point(3, 145);
+            this.btnLabelT7.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
+            this.btnLabelT7.Name = "btnLabelT7";
+            this.btnLabelT7.Size = new System.Drawing.Size(179, 38);
+            this.btnLabelT7.TabIndex = 7;
+            this.btnLabelT7.Tag = "t7";
+            this.btnLabelT7.Text = "Lãnh đạo khoa Tiêu hóa và khoa Thần kinh taị HP";
+            this.btnLabelT7.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelT7.TextOffset = new System.Drawing.Point(6, 0);
             // 
             // lblSelectedCount
             // 
@@ -448,11 +434,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.lblPriority.AutoSize = true;
             this.lblPriority.BackColor = System.Drawing.Color.Transparent;
-            this.lblPriority.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
+            this.lblPriority.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
             this.lblPriority.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
             this.lblPriority.Location = new System.Drawing.Point(238, 232);
             this.lblPriority.Name = "lblPriority";
-            this.lblPriority.Size = new System.Drawing.Size(54, 15);
+            this.lblPriority.Size = new System.Drawing.Size(51, 13);
             this.lblPriority.TabIndex = 7;
             this.lblPriority.Text = "ƯU TIÊN";
             // 
@@ -476,18 +462,20 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.lblLocation.AutoSize = true;
             this.lblLocation.BackColor = System.Drawing.Color.Transparent;
-            this.lblLocation.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
+            this.lblLocation.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
             this.lblLocation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
             this.lblLocation.Location = new System.Drawing.Point(24, 232);
             this.lblLocation.Name = "lblLocation";
-            this.lblLocation.Size = new System.Drawing.Size(61, 15);
+            this.lblLocation.Size = new System.Drawing.Size(57, 13);
             this.lblLocation.TabIndex = 5;
             this.lblLocation.Text = "ĐỊA ĐIỂM";
             // 
             // dtpTime
             // 
             this.dtpTime.BackColor = System.Drawing.Color.Transparent;
+            this.dtpTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
             this.dtpTime.BorderRadius = 6;
+            this.dtpTime.BorderThickness = 1;
             this.dtpTime.Checked = true;
             this.dtpTime.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpTime.CustomFormat = "dd/MM/yyyy HH:mm";
@@ -506,11 +494,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.lblTime.AutoSize = true;
             this.lblTime.BackColor = System.Drawing.Color.Transparent;
-            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
+            this.lblTime.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
             this.lblTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
             this.lblTime.Location = new System.Drawing.Point(24, 168);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(64, 15);
+            this.lblTime.Size = new System.Drawing.Size(61, 13);
             this.lblTime.TabIndex = 3;
             this.lblTime.Text = "NGÀY GIỜ";
             // 
@@ -535,11 +523,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.lblContent.AutoSize = true;
             this.lblContent.BackColor = System.Drawing.Color.Transparent;
-            this.lblContent.Font = new System.Drawing.Font("Segoe UI", 8.7F, System.Drawing.FontStyle.Bold);
+            this.lblContent.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
             this.lblContent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
             this.lblContent.Location = new System.Drawing.Point(24, 52);
             this.lblContent.Name = "lblContent";
-            this.lblContent.Size = new System.Drawing.Size(68, 15);
+            this.lblContent.Size = new System.Drawing.Size(63, 13);
             this.lblContent.TabIndex = 1;
             this.lblContent.Text = "NỘI DUNG";
             // 
@@ -564,6 +552,33 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.msgDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
             this.msgDialog.Text = null;
             // 
+            // btnLabelAll
+            // 
+            this.btnLabelAll.BackColor = System.Drawing.Color.Transparent;
+            this.btnLabelAll.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(216)))), ((int)(((byte)(203)))));
+            this.btnLabelAll.BorderRadius = 10;
+            this.btnLabelAll.BorderThickness = 1;
+            this.btnLabelAll.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelAll.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelAll.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(243)))), ((int)(((byte)(236)))));
+            this.btnLabelAll.CheckedState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnLabelAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelAll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
+            this.btnLabelAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLabelAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelAll.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelAll.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelAll.Location = new System.Drawing.Point(27, 73);
+            this.btnLabelAll.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
+            this.btnLabelAll.Name = "btnLabelAll";
+            this.btnLabelAll.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(232)))), ((int)(((byte)(222)))));
+            this.btnLabelAll.Size = new System.Drawing.Size(179, 34);
+            this.btnLabelAll.TabIndex = 12;
+            this.btnLabelAll.Tag = "ALL";
+            this.btnLabelAll.Text = "Chọn tất cả nhóm nhận";
+            this.btnLabelAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelAll.TextOffset = new System.Drawing.Point(14, 0);
+            // 
             // ucThongBao
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -580,6 +595,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLeft.ResumeLayout(false);
             this.pnlLabels.ResumeLayout(false);
             this.pnlLabels.PerformLayout();
+            this.flowLabels.ResumeLayout(false);
             this.pnlCompose.ResumeLayout(false);
             this.pnlCompose.PerformLayout();
             this.ResumeLayout(false);
@@ -602,15 +618,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private System.Windows.Forms.Label lblPriority;
         private Guna.UI2.WinForms.Guna2Panel pnlLabels;
         private System.Windows.Forms.FlowLayoutPanel flowLabels;
+        private Guna.UI2.WinForms.Guna2Button btnLabelT1;
+        private Guna.UI2.WinForms.Guna2Button btnLabelT2;
+        private Guna.UI2.WinForms.Guna2Button btnLabelT3;
+        private Guna.UI2.WinForms.Guna2Button btnLabelT4;
+        private Guna.UI2.WinForms.Guna2Button btnLabelT5;
+        private Guna.UI2.WinForms.Guna2Button btnLabelT6;
+        private Guna.UI2.WinForms.Guna2Button btnLabelT7;
         private Guna.UI2.WinForms.Guna2Button btnSend;
-        private Guna.UI2.WinForms.Guna2CheckBox chkT7;
-        private Guna.UI2.WinForms.Guna2CheckBox chkT6;
-        private Guna.UI2.WinForms.Guna2CheckBox chkT5;
-        private Guna.UI2.WinForms.Guna2CheckBox chkT4;
-        private Guna.UI2.WinForms.Guna2CheckBox chkT3;
-        private Guna.UI2.WinForms.Guna2CheckBox chkT2;
-        private Guna.UI2.WinForms.Guna2CheckBox chkT1;
-        private Guna.UI2.WinForms.Guna2CheckBox chkAll;
         private System.Windows.Forms.Label lblSelectedCount;
         private System.Windows.Forms.Label lblLabelsTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlHistory;
@@ -619,5 +634,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private System.Windows.Forms.Label lblHistoryCount;
         private System.Windows.Forms.Label lblHistoryTitle;
         private Guna.UI2.WinForms.Guna2MessageDialog msgDialog;
+        private Guna.UI2.WinForms.Guna2Button btnLabelAll;
     }
 }
+

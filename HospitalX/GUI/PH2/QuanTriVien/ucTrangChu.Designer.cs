@@ -17,9 +17,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pnlRoot = new Guna.UI2.WinForms.Guna2Panel();
+            this.pnlWelcome = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblWelcomeAvatar = new System.Windows.Forms.Label();
+            this.lblWelcomeTitle = new System.Windows.Forms.Label();
             this.pnlRecent = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvRecent = new System.Windows.Forms.DataGridView();
             this.colTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -47,10 +50,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblUsersValue = new System.Windows.Forms.Label();
             this.lblUsersTitle = new System.Windows.Forms.Label();
             this.pnlStats = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlWelcome = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblWelcomeAvatar = new System.Windows.Forms.Label();
-            this.lblWelcomeTitle = new System.Windows.Forms.Label();
             this.pnlRoot.SuspendLayout();
+            this.pnlWelcome.SuspendLayout();
             this.pnlRecent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecent)).BeginInit();
             this.pnlRecentHeader.SuspendLayout();
@@ -59,7 +60,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlBackup.SuspendLayout();
             this.pnlAudit.SuspendLayout();
             this.pnlUsers.SuspendLayout();
-            this.pnlWelcome.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlRoot
@@ -77,6 +77,42 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRoot.Padding = new System.Windows.Forms.Padding(20, 16, 20, 16);
             this.pnlRoot.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.TabIndex = 0;
+            // 
+            // pnlWelcome
+            // 
+            this.pnlWelcome.BackColor = System.Drawing.Color.Transparent;
+            this.pnlWelcome.BorderRadius = 14;
+            this.pnlWelcome.Controls.Add(this.lblWelcomeAvatar);
+            this.pnlWelcome.Controls.Add(this.lblWelcomeTitle);
+            this.pnlWelcome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(58)))), ((int)(((byte)(95)))));
+            this.pnlWelcome.Location = new System.Drawing.Point(26, 19);
+            this.pnlWelcome.Name = "pnlWelcome";
+            this.pnlWelcome.Size = new System.Drawing.Size(1079, 85);
+            this.pnlWelcome.TabIndex = 6;
+            // 
+            // lblWelcomeAvatar
+            // 
+            this.lblWelcomeAvatar.BackColor = System.Drawing.Color.SkyBlue;
+            this.lblWelcomeAvatar.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelcomeAvatar.ForeColor = System.Drawing.Color.White;
+            this.lblWelcomeAvatar.Location = new System.Drawing.Point(25, 18);
+            this.lblWelcomeAvatar.Name = "lblWelcomeAvatar";
+            this.lblWelcomeAvatar.Size = new System.Drawing.Size(59, 50);
+            this.lblWelcomeAvatar.TabIndex = 0;
+            this.lblWelcomeAvatar.Text = "TH";
+            this.lblWelcomeAvatar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblWelcomeTitle
+            // 
+            this.lblWelcomeTitle.AutoSize = true;
+            this.lblWelcomeTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblWelcomeTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelcomeTitle.ForeColor = System.Drawing.Color.White;
+            this.lblWelcomeTitle.Location = new System.Drawing.Point(103, 29);
+            this.lblWelcomeTitle.Name = "lblWelcomeTitle";
+            this.lblWelcomeTitle.Size = new System.Drawing.Size(205, 32);
+            this.lblWelcomeTitle.TabIndex = 1;
+            this.lblWelcomeTitle.Text = "Chào buổi sáng, ";
             // 
             // pnlRecent
             // 
@@ -103,38 +139,37 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvRecent.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvRecent.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvRecent.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
-            this.dgvRecent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(128)))), ((int)(((byte)(116)))));
+            this.dgvRecent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvRecent.ColumnHeadersHeight = 36;
             this.dgvRecent.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colTime,
             this.colEvent,
             this.colLevel});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9.2F);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRecent.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvRecent.Dock = System.Windows.Forms.DockStyle.Fill;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9.2F);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(48)))), ((int)(((byte)(43)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRecent.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvRecent.EnableHeadersVisualStyles = false;
             this.dgvRecent.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
-            this.dgvRecent.Location = new System.Drawing.Point(0, 62);
+            this.dgvRecent.Location = new System.Drawing.Point(3, 62);
             this.dgvRecent.MultiSelect = false;
             this.dgvRecent.Name = "dgvRecent";
             this.dgvRecent.ReadOnly = true;
             this.dgvRecent.RowHeadersVisible = false;
             this.dgvRecent.RowTemplate.Height = 44;
             this.dgvRecent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecent.Size = new System.Drawing.Size(675, 424);
+            this.dgvRecent.Size = new System.Drawing.Size(669, 424);
             this.dgvRecent.TabIndex = 1;
             // 
             // colTime
@@ -434,42 +469,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlStats.TabIndex = 3;
             this.pnlStats.WrapContents = false;
             // 
-            // pnlWelcome
-            // 
-            this.pnlWelcome.BackColor = System.Drawing.Color.Transparent;
-            this.pnlWelcome.BorderRadius = 14;
-            this.pnlWelcome.Controls.Add(this.lblWelcomeAvatar);
-            this.pnlWelcome.Controls.Add(this.lblWelcomeTitle);
-            this.pnlWelcome.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(58)))), ((int)(((byte)(95)))));
-            this.pnlWelcome.Location = new System.Drawing.Point(26, 19);
-            this.pnlWelcome.Name = "pnlWelcome";
-            this.pnlWelcome.Size = new System.Drawing.Size(1079, 85);
-            this.pnlWelcome.TabIndex = 6;
-            // 
-            // lblWelcomeAvatar
-            // 
-            this.lblWelcomeAvatar.BackColor = System.Drawing.Color.SkyBlue;
-            this.lblWelcomeAvatar.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWelcomeAvatar.ForeColor = System.Drawing.Color.White;
-            this.lblWelcomeAvatar.Location = new System.Drawing.Point(25, 18);
-            this.lblWelcomeAvatar.Name = "lblWelcomeAvatar";
-            this.lblWelcomeAvatar.Size = new System.Drawing.Size(59, 50);
-            this.lblWelcomeAvatar.TabIndex = 0;
-            this.lblWelcomeAvatar.Text = "TH";
-            this.lblWelcomeAvatar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblWelcomeTitle
-            // 
-            this.lblWelcomeTitle.AutoSize = true;
-            this.lblWelcomeTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblWelcomeTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWelcomeTitle.ForeColor = System.Drawing.Color.White;
-            this.lblWelcomeTitle.Location = new System.Drawing.Point(103, 29);
-            this.lblWelcomeTitle.Name = "lblWelcomeTitle";
-            this.lblWelcomeTitle.Size = new System.Drawing.Size(205, 32);
-            this.lblWelcomeTitle.TabIndex = 1;
-            this.lblWelcomeTitle.Text = "Chào buổi sáng, ";
-            // 
             // ucTrangChu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -480,6 +479,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.Size = new System.Drawing.Size(1128, 782);
             this.Load += new System.EventHandler(this.ucTrangChu_Load);
             this.pnlRoot.ResumeLayout(false);
+            this.pnlWelcome.ResumeLayout(false);
+            this.pnlWelcome.PerformLayout();
             this.pnlRecent.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecent)).EndInit();
             this.pnlRecentHeader.ResumeLayout(false);
@@ -493,8 +494,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlAudit.PerformLayout();
             this.pnlUsers.ResumeLayout(false);
             this.pnlUsers.PerformLayout();
-            this.pnlWelcome.ResumeLayout(false);
-            this.pnlWelcome.PerformLayout();
             this.ResumeLayout(false);
 
         }

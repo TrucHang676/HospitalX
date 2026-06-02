@@ -11,7 +11,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
     public partial class ucThongBao : UserControl
     {
         private readonly List<NotificationRecord> _notifications = new List<NotificationRecord>();
-        private readonly List<LabelOption> _labelOptions = new List<LabelOption>();
         private readonly Dictionary<string, Guna2Button> _labelButtons = new Dictionary<string, Guna2Button>();
         private readonly HashSet<string> _selectedLabels = new HashSet<string>();
         private Guna2Button _selectAllButton;
@@ -31,10 +30,29 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
 
             _loaded = true;
+            LocalizeStaticText();
             SeedData();
-            BuildLabelChips();
+            BindDesignerLabelButtons();
             RenderSentCards();
             UpdateSelectedCount();
+        }
+
+        private void LocalizeStaticText()
+        {
+            lblComposeTitle.Text = "Soạn thông báo mới";
+            lblContent.Text = "NỘI DUNG";
+            lblTime.Text = "NGÀY GIỜ";
+            lblLocation.Text = "ĐỊA ĐIỂM";
+            lblPriority.Text = "ƯU TIÊN";
+            lblLabelsTitle.Text = "Nhãn OLS gửi";
+            lblHistoryTitle.Text = "Thông báo đã gửi";
+            btnSend.Text = "Gửi thông báo qua OLS";
+            txtContent.PlaceholderText = "Nhập nội dung thông báo nội bộ...";
+            txtLocation.PlaceholderText = "VD: Hội trường A";
+
+            cmbPriority.Items.Clear();
+            cmbPriority.Items.AddRange(new object[] { "Thông thường", "Quan trọng", "Khẩn cấp" });
+            cmbPriority.SelectedIndex = 0;
         }
 
         private void SeedData()
@@ -44,14 +62,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 return;
             }
 
-            _labelOptions.Add(new LabelOption("t1", "Toàn bộ nhân viên", "~124 người"));
-            _labelOptions.Add(new LabelOption("t2", "Ban Giám đốc", "~5 người"));
-            _labelOptions.Add(new LabelOption("t3", "Lãnh đạo khoa/phòng", "~22 người"));
-            _labelOptions.Add(new LabelOption("t4", "Khoa Ngoại trú", "~31 người"));
-            _labelOptions.Add(new LabelOption("t5", "Khoa Nội trú", "~28 người"));
-            _labelOptions.Add(new LabelOption("t6", "Nhân viên Cơ sở 1", "~68 người"));
-            _labelOptions.Add(new LabelOption("t7", "Nhân viên Cơ sở 2", "~56 người"));
-
             _notifications.Add(new NotificationRecord("24/05 09:15", "Nhắc nhở cập nhật mật khẩu trước ngày 30/05", "Hội trường A", "t1", "Quan trọng"));
             _notifications.Add(new NotificationRecord("23/05 16:42", "Họp giao ban Ban Giám đốc tại phòng họp số 3", "Phòng họp số 3", "t2", "Khẩn cấp"));
             _notifications.Add(new NotificationRecord("22/05 11:00", "Cập nhật quy trình nhập liệu HSBA tháng 6 theo mẫu mới", "", "t3, t4", "Thông thường"));
@@ -60,107 +70,56 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             _notifications.Add(new NotificationRecord("16/05 09:00", "Họp lãnh đạo khoa toàn bệnh viện, tổng kết tháng 5", "Hội trường lớn", "t2, t3", "Thông thường"));
         }
 
-        private void BuildLabelChips()
+        private void BindDesignerLabelButtons()
         {
-            flowLabels.SuspendLayout();
-            flowLabels.Controls.Clear();
             _labelButtons.Clear();
+            _selectAllButton = btnLabelAll;
 
-            _selectAllButton = CreateSelectAllButton();
-            flowLabels.Controls.Add(_selectAllButton);
+            RegisterLabelButton(btnLabelT1, "t1");
+            RegisterLabelButton(btnLabelT2, "t2");
+            RegisterLabelButton(btnLabelT3, "t3");
+            RegisterLabelButton(btnLabelT4, "t4");
+            RegisterLabelButton(btnLabelT5, "t5");
+            RegisterLabelButton(btnLabelT6, "t6");
+            RegisterLabelButton(btnLabelT7, "t7");
 
-            foreach (LabelOption option in _labelOptions)
+            btnLabelAll.Click -= DesignerSelectAll_Click;
+            btnLabelAll.Click += DesignerSelectAll_Click;
+        }
+
+        private void RegisterLabelButton(Guna2Button button, string code)
+        {
+            button.Tag = code;
+            _labelButtons[code] = button;
+            button.Click -= DesignerLabel_Click;
+            button.Click += DesignerLabel_Click;
+        }
+
+        private void DesignerSelectAll_Click(object sender, EventArgs e)
+        {
+            ToggleAllLabels();
+        }
+
+        private void DesignerLabel_Click(object sender, EventArgs e)
+        {
+            Guna2Button button = sender as Guna2Button;
+            if (button == null || button.Tag == null)
             {
-                Guna2Button button = CreateLabelChip(option);
-                _labelButtons.Add(option.Code, button);
-                flowLabels.Controls.Add(button);
+                return;
             }
 
-            flowLabels.ResumeLayout();
-        }
-
-        private Guna2Button CreateSelectAllButton()
-        {
-            Guna2Button button = new Guna2Button
-            {
-                BorderColor = Color.FromArgb(196, 226, 216),
-                BorderRadius = 8,
-                BorderThickness = 1,
-                ButtonMode = ButtonMode.ToogleButton,
-                CheckedState =
-                {
-                    BorderColor = Color.FromArgb(15, 110, 86),
-                    FillColor = Color.FromArgb(230, 244, 240),
-                    ForeColor = Color.FromArgb(15, 110, 86)
-                },
-                Cursor = Cursors.Hand,
-                FillColor = Color.FromArgb(247, 250, 249),
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(15, 110, 86),
-                HoverState =
-                {
-                    BorderColor = Color.FromArgb(15, 110, 86),
-                    FillColor = Color.FromArgb(239, 248, 245),
-                    ForeColor = Color.FromArgb(15, 110, 86)
-                },
-                Margin = new Padding(0, 0, 0, 6),
-                PressedColor = Color.FromArgb(214, 238, 231),
-                Size = new Size(394, 30),
-                Text = "Chọn tất cả nhóm nhận",
-                TextAlign = HorizontalAlignment.Left,
-                TextOffset = new Point(10, 0)
-            };
-
-            button.Click += (s, e) => ToggleAllLabels();
-            return button;
-        }
-
-        private Guna2Button CreateLabelChip(LabelOption option)
-        {
-            Guna2Button button = new Guna2Button
-            {
-                BorderColor = Color.FromArgb(218, 232, 226),
-                BorderRadius = 9,
-                BorderThickness = 1,
-                ButtonMode = ButtonMode.ToogleButton,
-                CheckedState =
-                {
-                    BorderColor = Color.FromArgb(15, 110, 86),
-                    FillColor = Color.FromArgb(230, 244, 240),
-                    ForeColor = Color.FromArgb(10, 42, 64)
-                },
-                Cursor = Cursors.Hand,
-                FillColor = Color.White,
-                Font = new Font("Segoe UI", 8F, FontStyle.Bold),
-                ForeColor = Color.FromArgb(24, 48, 42),
-                HoverState =
-                {
-                    BorderColor = Color.FromArgb(15, 110, 86),
-                    FillColor = Color.FromArgb(247, 250, 249),
-                    ForeColor = Color.FromArgb(10, 42, 64)
-                },
-                Margin = new Padding(0, 0, 8, 4),
-                PressedColor = Color.FromArgb(214, 238, 231),
-                Size = new Size(188, 40),
-                Tag = option.Code,
-                Text = option.Code + "  " + option.Name + Environment.NewLine + option.CountText,
-                TextAlign = HorizontalAlignment.Left,
-                TextOffset = new Point(10, 0)
-            };
-
-            button.Click += (s, e) => ToggleLabel(option.Code);
-            return button;
+            ToggleLabel(Convert.ToString(button.Tag));
         }
 
         private void ToggleAllLabels()
         {
-            bool selectAll = _selectedLabels.Count != _labelOptions.Count;
+            bool selectAll = _selectedLabels.Count != _labelButtons.Count;
             _selectedLabels.Clear();
             if (selectAll)
             {
-                foreach (LabelOption option in _labelOptions)
+                foreach (string code in _labelButtons.Keys)
                 {
-                    _selectedLabels.Add(option.Code);
+                    _selectedLabels.Add(code);
                 }
             }
 
@@ -190,7 +149,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
             if (_selectAllButton != null)
             {
-                _selectAllButton.Checked = _selectedLabels.Count == _labelOptions.Count;
+                _selectAllButton.Checked = _selectedLabels.Count == _labelButtons.Count;
             }
 
             UpdateSelectedCount();
@@ -238,8 +197,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 ForeColor = Color.FromArgb(102, 128, 116),
                 Location = new Point(16, 15),
                 Size = new Size(88, 36),
-                Text = notification.Time.Replace(" ", Environment.NewLine),
-                TextAlign = ContentAlignment.TopLeft
+                Text = notification.Time.Replace(" ", Environment.NewLine)
             };
 
             Label content = new Label
@@ -261,7 +219,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 ForeColor = Color.FromArgb(102, 128, 116),
                 Location = new Point(108, 42),
                 Size = new Size(width - 300, 22),
-                Text = string.IsNullOrWhiteSpace(notification.Location) ? "dba_admin" : notification.Location + " · dba_admin"
+                Text = string.IsNullOrWhiteSpace(notification.Location) ? "dba_admin" : notification.Location + " - dba_admin"
             };
 
             Guna2Button labelBadge = CreateBadge(notification.Labels, Color.FromArgb(219, 234, 254), Color.FromArgb(30, 64, 175));
@@ -388,20 +346,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
 
             return Color.FromArgb(241, 245, 249);
-        }
-
-        private class LabelOption
-        {
-            public LabelOption(string code, string name, string countText)
-            {
-                Code = code;
-                Name = name;
-                CountText = countText;
-            }
-
-            public string Code { get; private set; }
-            public string Name { get; private set; }
-            public string CountText { get; private set; }
         }
 
         private class NotificationRecord

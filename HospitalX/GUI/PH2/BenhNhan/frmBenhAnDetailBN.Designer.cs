@@ -312,13 +312,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtTreatment.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
             this.txtTreatment.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtTreatment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.txtTreatment.Location = new System.Drawing.Point(28, 140);
+            this.txtTreatment.Location = new System.Drawing.Point(24, 140);
             this.txtTreatment.Multiline = true;
             this.txtTreatment.Name = "txtTreatment";
             this.txtTreatment.PlaceholderText = "";
             this.txtTreatment.ReadOnly = true;
             this.txtTreatment.SelectedText = "";
-            this.txtTreatment.Size = new System.Drawing.Size(303, 56);
+            this.txtTreatment.Size = new System.Drawing.Size(307, 56);
             this.txtTreatment.TabIndex = 2;
             // 
             // lblTreatment
@@ -367,9 +367,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             this.lblRecordDateValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
             this.lblRecordDateValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblRecordDateValue.Location = new System.Drawing.Point(557, 24);
+            this.lblRecordDateValue.Location = new System.Drawing.Point(533, 23);
             this.lblRecordDateValue.Name = "lblRecordDateValue";
-            this.lblRecordDateValue.Size = new System.Drawing.Size(82, 22);
+            this.lblRecordDateValue.Size = new System.Drawing.Size(99, 22);
             this.lblRecordDateValue.TabIndex = 6;
             this.lblRecordDateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -379,7 +379,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblRecordDate.BackColor = System.Drawing.Color.Transparent;
             this.lblRecordDate.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblRecordDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblRecordDate.Location = new System.Drawing.Point(483, 30);
+            this.lblRecordDate.Location = new System.Drawing.Point(464, 28);
             this.lblRecordDate.Name = "lblRecordDate";
             this.lblRecordDate.Size = new System.Drawing.Size(63, 15);
             this.lblRecordDate.TabIndex = 7;

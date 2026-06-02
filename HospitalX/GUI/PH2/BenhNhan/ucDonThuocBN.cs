@@ -20,46 +20,16 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 .Where(record => record.Prescriptions.Any())
                 .ToList();
             WireEvents();
-            ApplyDateRange();
             RenderPrescriptions();
         }
 
         private void WireEvents()
         {
             txtSearch.TextChanged += (sender, args) => RenderPrescriptions();
-            cmbDateRange.SelectedIndexChanged += (sender, args) =>
-            {
-                ApplyDateRange();
-                RenderPrescriptions();
-            };
             dtpFrom.ValueChanged += (sender, args) => RenderPrescriptions();
             dtpTo.ValueChanged += (sender, args) => RenderPrescriptions();
             cmbSort.SelectedIndexChanged += (sender, args) => RenderPrescriptions();
             Resize += (sender, args) => LayoutCards();
-        }
-
-        private void ApplyDateRange()
-        {
-            var selected = cmbDateRange.SelectedItem?.ToString() ?? "Tất cả thời gian";
-            dtpFrom.Enabled = selected == "Tùy chọn";
-            dtpTo.Enabled = selected == "Tùy chọn";
-
-            if (selected == "Tháng này")
-            {
-                var today = DateTime.Today;
-                dtpFrom.Value = new DateTime(today.Year, today.Month, 1);
-                dtpTo.Value = new DateTime(today.Year, today.Month, DateTime.DaysInMonth(today.Year, today.Month));
-            }
-            else if (selected == "3 tháng gần đây")
-            {
-                dtpFrom.Value = DateTime.Today.AddMonths(-3);
-                dtpTo.Value = DateTime.Today;
-            }
-            else if (selected == "Tất cả thời gian")
-            {
-                dtpFrom.Value = new DateTime(2026, 1, 1);
-                dtpTo.Value = new DateTime(2026, 12, 31);
-            }
         }
 
         private void RenderPrescriptions()
@@ -128,19 +98,19 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 CustomBorderColor = Color.FromArgb(0, 128, 102),
                 CustomBorderThickness = new Padding(4, 0, 0, 0),
                 FillColor = Color.White,
-                Height = 132,
+                Height = 180,
                 Margin = new Padding(0, 0, 0, 12),
                 Width = 800
             };
 
-            card.Controls.Add(CreateBadge(record.Id, 24, 18, 116));
-            card.Controls.Add(CreateText(prescriptionDate.ToString("dd/MM/yyyy"), 158, 22, 110, 22, 10f, FontStyle.Bold, Color.FromArgb(112, 138, 132)));
-            card.Controls.Add(CreateText($"{record.Prescriptions.Count} thuốc trong đơn", 24, 54, 620, 26, 13f, FontStyle.Bold, Color.FromArgb(10, 42, 64)));
-            card.Controls.Add(CreateText(medicineNames, 24, 84, 650, 22, 10f, FontStyle.Regular, Color.FromArgb(74, 98, 92)));
-            card.Controls.Add(CreateText($"Hồ sơ: {record.Diagnosis}", 24, 106, 650, 20, 9f, FontStyle.Regular, Color.FromArgb(112, 138, 132)));
+            card.Controls.Add(CreateBadge(record.Id, 24, 18, 130));
+            card.Controls.Add(CreateText(prescriptionDate.ToString("dd/MM/yyyy"), 170, 18, 130, 25, 10f, FontStyle.Bold, Color.FromArgb(112, 138, 132)));
+            card.Controls.Add(CreateText($"{record.Prescriptions.Count} thuốc trong đơn", 24, 50, 620, 50, 13f, FontStyle.Bold, Color.FromArgb(10, 42, 64)));
+            card.Controls.Add(CreateText(medicineNames, 24, 95, 620, 40, 10f, FontStyle.Regular, Color.FromArgb(74, 98, 92)));
+            card.Controls.Add(CreateText($"Hồ sơ: {record.Diagnosis}", 24, 130, 620, 30, 9.5f, FontStyle.Regular, Color.FromArgb(112, 138, 132)));
 
             var button = CreateDetailButton();
-            button.Location = new Point(card.Width - 150, 47);
+            button.Location = new Point(card.Width - 200, 43);
             button.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             button.Click += (sender, args) =>
             {
@@ -150,7 +120,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 }
             };
             card.Controls.Add(button);
-            card.Resize += (sender, args) => button.Location = new Point(card.Width - 150, 47);
+            card.Resize += (sender, args) => button.Location = new Point(card.Width - 200, 43);
             return card;
         }
 
@@ -172,7 +142,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 Font = new Font("Segoe UI", 10f, FontStyle.Bold),
                 ForeColor = Color.White,
                 PressedColor = Color.FromArgb(0, 78, 63),
-                Size = new Size(126, 38),
+                Size = new Size(155, 42),
                 Text = "Xem chi tiết"
             };
             button.HoverState.FillColor = Color.FromArgb(0, 97, 78);

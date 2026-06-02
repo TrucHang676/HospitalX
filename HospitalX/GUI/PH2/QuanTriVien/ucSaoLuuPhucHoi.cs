@@ -21,6 +21,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             InitializeComponent();
             SeedData();
             WireEvents();
+            LocalizeStaticText();
+            StyleHistoryGrid();
             RenderHistory();
             RenderRestoreCards();
             ShowBackupTab();
@@ -111,6 +113,75 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             _backups.Add(new BackupRecord("BK-20260523-F", new DateTime(2026, 5, 23, 0, 1, 0), "FULL", "AUTO", "8.3 GB", "47m 05s", true));
             _backups.Add(new BackupRecord("BK-20260522-M01", new DateTime(2026, 5, 22, 9, 30, 0), "FULL", "MANUAL", "8.2 GB", "46m 12s", true));
             _backups.Add(new BackupRecord("BK-20260521-I18", new DateTime(2026, 5, 21, 18, 0, 0), "INCR", "AUTO", "-", "-", false));
+        }
+
+        private void LocalizeStaticText()
+        {
+            btnTabBackup.Text = "Sao lưu";
+            btnTabRestore.Text = "Phục hồi";
+            lblManualTitle.Text = "Sao lưu chủ động";
+            lblBackupType.Text = "LOẠI SAO LƯU";
+            chkFull.Text = "FULL - Toàn bộ CSDL";
+            chkIncremental.Text = "INCREMENTAL - Dữ liệu thay đổi";
+            lblDestination.Text = "ĐÍCH LƯU TRỮ";
+            lblCompression.Text = "NÉN DỮ LIỆU";
+            lblBackupTag.Text = "GHI CHÚ / TAG";
+            btnStartBackup.Text = "Bắt đầu sao lưu";
+            lblBackupPercent.Text = "Sẵn sàng";
+            lblBackupStatus.Text = "Chưa có tiến trình sao lưu đang chạy.";
+            lblHistoryTitle.Text = "Lịch sử sao lưu";
+
+            lblRestoreListTitle.Text = "Chọn bản backup";
+            lblPointInTime.Text = "POINT-IN-TIME RECOVERY";
+            btnStartRestore.Text = "Khởi động phục hồi CSDL";
+            lblRestoreProgressTitle.Text = "Tiến trình phục hồi";
+            lblRestoreStatus.Text = "Standby";
+            ResetStepLabels();
+            txtConsole.Text = "Chưa có tiến trình phục hồi." + Environment.NewLine +
+                "Khi khởi động phục hồi, nhật ký RMAN sẽ hiển thị tại đây.";
+        }
+
+        private void StyleHistoryGrid()
+        {
+            dgvHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvHistory.BackgroundColor = Color.White;
+            dgvHistory.BorderStyle = BorderStyle.None;
+            dgvHistory.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvHistory.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvHistory.EnableHeadersVisualStyles = false;
+            dgvHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvHistory.RowTemplate.Height = 48;
+            dgvHistory.ColumnHeadersHeight = 38;
+
+            dgvHistory.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(247, 250, 249);
+            dgvHistory.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(82, 110, 102);
+            dgvHistory.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvHistory.ColumnHeadersDefaultCellStyle.Padding = new Padding(6, 0, 6, 0);
+
+            dgvHistory.DefaultCellStyle.BackColor = Color.White;
+            dgvHistory.DefaultCellStyle.ForeColor = Color.FromArgb(31, 49, 68);
+            dgvHistory.DefaultCellStyle.Font = new Font("Segoe UI", 9.2F);
+            dgvHistory.DefaultCellStyle.Padding = new Padding(6, 0, 6, 0);
+            dgvHistory.DefaultCellStyle.SelectionBackColor = Color.FromArgb(232, 244, 240);
+            dgvHistory.DefaultCellStyle.SelectionForeColor = Color.FromArgb(10, 42, 64);
+            dgvHistory.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 251, 250);
+            dgvHistory.GridColor = Color.FromArgb(226, 236, 232);
+
+            colBackupId.HeaderText = "Backup ID";
+            colBackupTime.HeaderText = "Thời gian";
+            colBackupType.HeaderText = "Loại";
+            colBackupSource.HeaderText = "Nguồn";
+            colBackupSize.HeaderText = "Kích thước";
+            colBackupDuration.HeaderText = "Thời lượng";
+            colBackupStatus.HeaderText = "Trạng thái";
+
+            colBackupId.FillWeight = 130F;
+            colBackupTime.FillWeight = 116F;
+            colBackupType.FillWeight = 70F;
+            colBackupSource.FillWeight = 74F;
+            colBackupSize.FillWeight = 82F;
+            colBackupDuration.FillWeight = 90F;
+            colBackupStatus.FillWeight = 78F;
         }
 
         private void ShowBackupTab()
@@ -246,7 +317,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             {
                 int index = i;
                 BackupRecord backup = verified[i];
-                Guna2Panel card = CreateRestoreCard(backup, i == _selectedRestoreIndex);
+                Guna2Panel card = CreateRestoreCardModern(backup, i == _selectedRestoreIndex);
                 card.Click += (s, e) =>
                 {
                     _selectedRestoreIndex = index;
@@ -324,6 +395,103 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             };
 
             card.Controls.Add(id);
+            card.Controls.Add(meta);
+            card.Controls.Add(size);
+            card.Controls.Add(duration);
+            return card;
+        }
+
+        private Guna2Panel CreateRestoreCardModern(BackupRecord backup, bool selected)
+        {
+            Color accent = Color.FromArgb(15, 110, 86);
+            Color ink = Color.FromArgb(15, 42, 64);
+            Color muted = Color.FromArgb(100, 121, 116);
+            Color badgeFill = backup.Type == "FULL" ? Color.FromArgb(220, 245, 236) : Color.FromArgb(219, 234, 254);
+            Color badgeFore = backup.Type == "FULL" ? accent : Color.FromArgb(30, 64, 175);
+
+            Guna2Panel card = new Guna2Panel
+            {
+                BorderColor = selected ? accent : Color.FromArgb(218, 232, 226),
+                BorderRadius = 10,
+                BorderThickness = selected ? 2 : 1,
+                Cursor = Cursors.Hand,
+                FillColor = selected ? Color.FromArgb(234, 246, 241) : Color.White,
+                Height = 86,
+                Margin = new Padding(0, 0, 0, 12),
+                Width = Math.Max(420, flowRestoreCards.ClientSize.Width - 24),
+                Tag = backup
+            };
+
+            Guna2Panel marker = new Guna2Panel
+            {
+                BorderRadius = 2,
+                FillColor = selected ? accent : Color.FromArgb(214, 228, 223),
+                Location = new Point(0, 14),
+                Size = new Size(4, 58)
+            };
+
+            Guna2Panel typeBadge = new Guna2Panel
+            {
+                BorderRadius = 8,
+                FillColor = badgeFill,
+                Location = new Point(16, 50),
+                Size = new Size(60, 24)
+            };
+            Label typeText = new Label
+            {
+                BackColor = Color.Transparent,
+                Dock = DockStyle.Fill,
+                Font = new Font("Segoe UI", 8.2F, FontStyle.Bold),
+                ForeColor = badgeFore,
+                Text = backup.Type,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            typeBadge.Controls.Add(typeText);
+
+            Label id = new Label
+            {
+                AutoEllipsis = true,
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 10.4F, FontStyle.Bold),
+                ForeColor = ink,
+                Location = new Point(16, 12),
+                Size = new Size(card.Width - 170, 24),
+                Text = backup.Id
+            };
+            Label meta = new Label
+            {
+                AutoEllipsis = true,
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 8.8F),
+                ForeColor = muted,
+                Location = new Point(86, 52),
+                Size = new Size(card.Width - 238, 22),
+                Text = backup.Time.ToString("dd/MM/yyyy HH:mm") + " - " + backup.Source + " - VERIFIED"
+            };
+            Label size = new Label
+            {
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                ForeColor = accent,
+                Location = new Point(card.Width - 128, 14),
+                Size = new Size(100, 24),
+                Text = backup.Size,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+            Label duration = new Label
+            {
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 8.5F),
+                ForeColor = muted,
+                Location = new Point(card.Width - 128, 42),
+                Size = new Size(100, 20),
+                Text = backup.Duration,
+                TextAlign = ContentAlignment.MiddleRight
+            };
+
+            card.Controls.Add(marker);
+            card.Controls.Add(id);
+            card.Controls.Add(typeBadge);
             card.Controls.Add(meta);
             card.Controls.Add(size);
             card.Controls.Add(duration);

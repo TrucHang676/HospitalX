@@ -17,9 +17,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlRoot = new System.Windows.Forms.Panel();
             this.pnlRestore = new System.Windows.Forms.Panel();
@@ -40,7 +40,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblPointInTime = new System.Windows.Forms.Label();
             this.flowRestoreCards = new System.Windows.Forms.FlowLayoutPanel();
             this.lblRestoreListTitle = new System.Windows.Forms.Label();
-            this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlBackup = new System.Windows.Forms.Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvHistory = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -71,6 +70,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkIncremental = new Guna.UI2.WinForms.Guna2CheckBox();
             this.chkFull = new Guna.UI2.WinForms.Guna2CheckBox();
             this.lblManualTitle = new System.Windows.Forms.Label();
+            this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.btnTabRestore = new Guna.UI2.WinForms.Guna2Button();
             this.btnTabBackup = new Guna.UI2.WinForms.Guna2Button();
@@ -98,8 +98,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // pnlRoot
             // 
-            this.pnlRoot.Controls.Add(this.pnlBackup);
             this.pnlRoot.Controls.Add(this.pnlRestore);
+            this.pnlRoot.Controls.Add(this.pnlBackup);
             this.pnlRoot.Controls.Add(this.pnlContent);
             this.pnlRoot.Controls.Add(this.pnlTabs);
             this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -146,13 +146,16 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.txtConsole.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
             this.txtConsole.BorderRadius = 8;
             this.txtConsole.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtConsole.DefaultText = "";
+            this.txtConsole.DefaultText = "Chưa có tiến trình phục hồi.\r\nKhi khởi động phục hồi, nhật ký RMAN sẽ hiển thị tạ" +
+    "i đây.";
+            this.txtConsole.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
             this.txtConsole.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtConsole.ForeColor = System.Drawing.Color.Black;
+            this.txtConsole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
             this.txtConsole.Location = new System.Drawing.Point(24, 330);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
-            this.txtConsole.PlaceholderText = "";
+            this.txtConsole.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.txtConsole.PlaceholderText = "Nhật ký RMAN sẽ xuất hiện tại đây";
             this.txtConsole.ReadOnly = true;
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtConsole.SelectedText = "";
@@ -242,7 +245,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // progressRestore
             // 
             this.progressRestore.BorderRadius = 5;
-            this.progressRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.progressRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(240)))), ((int)(((byte)(230)))));
             this.progressRestore.Location = new System.Drawing.Point(24, 60);
             this.progressRestore.Name = "progressRestore";
             this.progressRestore.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
@@ -299,8 +302,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // dtpPointInTime
             // 
+            this.dtpPointInTime.BackColor = System.Drawing.Color.Transparent;
+            this.dtpPointInTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
             this.dtpPointInTime.BorderRadius = 8;
+            this.dtpPointInTime.BorderThickness = 1;
             this.dtpPointInTime.Checked = true;
+            this.dtpPointInTime.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpPointInTime.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dtpPointInTime.FillColor = System.Drawing.Color.White;
             this.dtpPointInTime.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -309,7 +316,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dtpPointInTime.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpPointInTime.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpPointInTime.Name = "dtpPointInTime";
-            this.dtpPointInTime.Size = new System.Drawing.Size(220, 36);
+            this.dtpPointInTime.Size = new System.Drawing.Size(170, 36);
             this.dtpPointInTime.TabIndex = 1;
             this.dtpPointInTime.Value = new System.DateTime(2026, 6, 1, 15, 52, 2, 335);
             // 
@@ -345,14 +352,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblRestoreListTitle.TabIndex = 4;
             this.lblRestoreListTitle.Text = "Chọn bản backup";
             // 
-            // pnlContent
-            // 
-            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(22, 64);
-            this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1084, 700);
-            this.pnlContent.TabIndex = 2;
-            // 
             // pnlBackup
             // 
             this.pnlBackup.Controls.Add(this.pnlHistory);
@@ -382,14 +381,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvHistory.AllowUserToAddRows = false;
             this.dgvHistory.AllowUserToDeleteRows = false;
             this.dgvHistory.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
-            this.dgvHistory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(49)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.dgvHistory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(110)))), ((int)(((byte)(102)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(82)))), ((int)(((byte)(110)))), ((int)(((byte)(102)))));
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvHistory.ColumnHeadersHeight = 34;
             this.dgvHistory.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colBackupId,
@@ -399,14 +403,15 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.colBackupSize,
             this.colBackupDuration,
             this.colBackupStatus});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvHistory.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9.2F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(49)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvHistory.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvHistory.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
             this.dgvHistory.Location = new System.Drawing.Point(2, 54);
             this.dgvHistory.MultiSelect = false;
@@ -484,7 +489,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // pnlHistoryHeader
             // 
-            this.pnlHistoryHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.pnlHistoryHeader.BackColor = System.Drawing.Color.White;
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryTotal);
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryTitle);
             this.pnlHistoryHeader.Dock = System.Windows.Forms.DockStyle.Top;
@@ -508,8 +513,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // lblHistoryTitle
             // 
             this.lblHistoryTitle.AutoSize = true;
+            this.lblHistoryTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblHistoryTitle.ForeColor = System.Drawing.Color.White;
+            this.lblHistoryTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblHistoryTitle.Location = new System.Drawing.Point(18, 16);
             this.lblHistoryTitle.Name = "lblHistoryTitle";
             this.lblHistoryTitle.Size = new System.Drawing.Size(123, 21);
@@ -782,6 +788,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblManualTitle.TabIndex = 12;
             this.lblManualTitle.Text = "Sao lưu chủ động";
             // 
+            // pnlContent
+            // 
+            this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlContent.Location = new System.Drawing.Point(22, 64);
+            this.pnlContent.Name = "pnlContent";
+            this.pnlContent.Size = new System.Drawing.Size(1084, 700);
+            this.pnlContent.TabIndex = 2;
+            // 
             // pnlTabs
             // 
             this.pnlTabs.Controls.Add(this.btnTabRestore);
@@ -799,8 +813,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.btnTabRestore.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnTabRestore.CheckedState.ForeColor = System.Drawing.Color.White;
             this.btnTabRestore.FillColor = System.Drawing.Color.White;
-            this.btnTabRestore.Font = this.btnTabBackup.Font;
-            this.btnTabRestore.ForeColor = this.btnTabBackup.ForeColor;
+            this.btnTabRestore.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnTabRestore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnTabRestore.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.btnTabRestore.Location = new System.Drawing.Point(140, 6);
             this.btnTabRestore.Name = "btnTabRestore";
