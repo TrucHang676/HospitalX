@@ -18,6 +18,7 @@ namespace HospitalX
 
             //Application.Run(new GUI.RoleSelection());
             //Application.Run(new GUI.PH2.Main_DPV());
+            //Application.Run(new GUI.PH2.Main_DPV());
             //Application.Run(new GUI.PH2.Main_KTV());
             Application.Run(new GUI.PH2.Main_BS());
             //Application.Run(new GUI.PH2.Main_BN());

@@ -122,7 +122,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlScroll.Controls.Add(this.pnlStep3Card);
             this.pnlScroll.Controls.Add(this.pnlActionsCard);
             this.pnlScroll.Controls.Add(this.pnlSummaryCard);
-            this.pnlScroll.Controls.Add(this.pnlPermCard);
 
             // =============================================
             // pnlSteps — Steps indicator bar

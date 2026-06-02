@@ -222,14 +222,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 e.Graphics.SetClip(path);
 
-                // 1. Thêm mảng màu xám nhạt ở góc bên phải (khớp với hình mẫu 2)
-                var arcRect = new Rectangle(card.Width - 110, -40, 160, 160);
-                using (var brush = new SolidBrush(Color.FromArgb(242, 244, 243)))
-                {
-                    e.Graphics.FillEllipse(brush, arcRect);
-                }
-
-                // 2. Vẽ thanh màu ngang bo nhẹ theo góc ô
+                // 1. Vẽ thanh màu ngang bo nhẹ theo góc ô
                 if (card.Tag is Color accentColor)
                 {
                     using (var brush = new SolidBrush(accentColor))
@@ -727,11 +720,26 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     {
                         if (child.Name == "lblText")
                         {
-                            child.Width = targetW - 120;
+                            child.Width = targetW - 60;
                         }
                     }
                 }
             }
+        }
+
+        private static Color GetDotColor(Color iconBack)
+        {
+            if (iconBack.R == 230 && iconBack.G == 244 && iconBack.B == 240) // light green (success)
+                return Color.FromArgb(15, 110, 86);
+            if (iconBack.R == 255 && iconBack.G == 248 && iconBack.B == 225) // light orange (warning/info)
+                return Color.FromArgb(232, 168, 56);
+            if (iconBack.R == 253 && iconBack.G == 236 && iconBack.B == 234) // light red (danger)
+                return Color.FromArgb(229, 57, 53);
+            if (iconBack.R == 237 && iconBack.G == 231 && iconBack.B == 246) // light purple
+                return Color.FromArgb(103, 58, 183);
+            if (iconBack.R == 230 && iconBack.G == 248 && iconBack.B == 246) // light teal
+                return Color.FromArgb(0, 150, 136);
+            return Color.FromArgb(15, 110, 86);
         }
 
         private void AddActivity(string imageName, Color iconBack, string text, string meta)
@@ -745,23 +753,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 BackColor = Color.White
             };
 
+            Color dotColor = GetDotColor(iconBack);
+
             row.Paint += (s, e) =>
             {
                 var pnl = (Panel)s;
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
                 using (var pen = new Pen(Color.FromArgb(240, 244, 242), 1))
                 {
                     e.Graphics.DrawLine(pen, 0, pnl.Height - 1, pnl.Width, pnl.Height - 1);
                 }
-            };
 
-            var ptbIcon = new Guna2PictureBox
-            {
-                Image = DpvAssets.Load(imageName),
-                FillColor = iconBack,
-                BorderRadius = 8,
-                SizeMode = PictureBoxSizeMode.Zoom,
-                Padding = new Padding(6),
-                Bounds = new Rectangle(6, 16, 32, 32)
+                // Draw solid circular dot as status indicator instead of rendering too many icons
+                using (var brush = new SolidBrush(dotColor))
+                {
+                    e.Graphics.FillEllipse(brush, 24, 28, 8, 8);
+                }
             };
 
             var lblText = new Label
@@ -772,7 +780,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 Font = new Font("Segoe UI", 10.5F),
                 ForeColor = Color.FromArgb(24, 48, 42),
                 Location = new Point(48, 6),
-                Size = new Size(row.Width - 120, 30),
+                Size = new Size(row.Width - 60, 30),
                 AutoSize = false,
                 BackColor = Color.Transparent
             };
@@ -822,7 +830,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 BackColor = Color.Transparent
             };
 
-            row.Controls.Add(ptbIcon);
             row.Controls.Add(lblText);
             row.Controls.Add(lblMeta);
             flpActivity.Controls.Add(row);

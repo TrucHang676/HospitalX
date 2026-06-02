@@ -213,6 +213,21 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             RenderAuditLogs();
         }
 
+        private static Color GetDotColor(Color iconBack)
+        {
+            if (iconBack.R == 230 && iconBack.G == 244 && iconBack.B == 240) // light green (success)
+                return Color.FromArgb(15, 110, 86);
+            if (iconBack.R == 255 && iconBack.G == 248 && iconBack.B == 225) // light orange (warning/info)
+                return Color.FromArgb(232, 168, 56);
+            if (iconBack.R == 253 && iconBack.G == 236 && iconBack.B == 234) // light red (danger)
+                return Color.FromArgb(229, 57, 53);
+            if (iconBack.R == 237 && iconBack.G == 231 && iconBack.B == 246) // light purple
+                return Color.FromArgb(103, 58, 183);
+            if (iconBack.R == 230 && iconBack.G == 248 && iconBack.B == 246) // light teal
+                return Color.FromArgb(0, 150, 136);
+            return Color.FromArgb(15, 110, 86);
+        }
+
         private void RenderAuditLogs()
         {
             flpActivities.Controls.Clear();
@@ -226,23 +241,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     BackColor = Color.White
                 };
 
+                Color dotColor = GetDotColor(log.IconBack);
+
                 row.Paint += (s, e) =>
                 {
                     var pnl = (Panel)s;
+                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
                     using (var pen = new Pen(Color.FromArgb(245, 248, 246), 1))
                     {
                         e.Graphics.DrawLine(pen, 0, pnl.Height - 1, pnl.Width, pnl.Height - 1);
                     }
-                };
 
-                var ptbIcon = new Guna2PictureBox
-                {
-                    Image = DpvAssets.Load(log.IconName),
-                    FillColor = log.IconBack,
-                    BorderRadius = 8,
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    Padding = new Padding(6),
-                    Bounds = new Rectangle(8, 14, 32, 32)
+                    // Draw solid circular dot as status indicator instead of rendering too many icons
+                    using (var brush = new SolidBrush(dotColor))
+                    {
+                        e.Graphics.FillEllipse(brush, 26, 30, 8, 8);
+                    }
                 };
 
                 var lblText = new Label
@@ -253,7 +268,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     Font = new Font("Segoe UI", 10F),
                     ForeColor = TextDark,
                     Location = new Point(52, 6),
-                    Size = new Size(row.Width - 140, 30),
+                    Size = new Size(row.Width - 80, 30),
                     AutoSize = false,
                     BackColor = Color.Transparent
                 };
@@ -304,7 +319,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     BackColor = Color.Transparent
                 };
 
-                row.Controls.Add(ptbIcon);
                 row.Controls.Add(lblText);
                 row.Controls.Add(lblMeta);
                 flpActivities.Controls.Add(row);
@@ -347,7 +361,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 ctrl.Width = flpActivities.ClientSize.Width - 8;
                 if (ctrl.Controls["lblText"] is Label lbl)
                 {
-                    lbl.Width = ctrl.Width - 140;
+                    lbl.Width = ctrl.Width - 80;
                 }
             }
         }
