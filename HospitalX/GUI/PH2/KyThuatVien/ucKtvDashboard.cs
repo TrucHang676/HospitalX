@@ -21,6 +21,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private readonly Guna2Panel[] statDots = new Guna2Panel[4];
         private readonly Label[] lblStatValues = new Label[4];
         private readonly Label[] lblStatLabels = new Label[4];
+        private readonly Label[] lblStatTrends = new Label[4];
 
         // Hàng 1
         private Label lblTaskTitle;
@@ -126,55 +127,79 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             Controls.Add(banner);
 
             // 2. Khởi tạo 4 Stat Cards
-            Color[] statColors = { 
-                Color.FromArgb(230, 244, 240), // Teal nhạt
-                Color.FromArgb(255, 244, 220), // Vàng nhạt
-                Color.FromArgb(230, 244, 240), // Teal nhạt
-                Color.FromArgb(232, 241, 251)  // Xanh dương nhạt
+            string[] statLbls = { "DỊCH VỤ HÔM NAY", "CHỜ CẬP NHẬT KQ", "ĐÃ HOÀN THÀNH", "TIẾN ĐỘ TRONG NGÀY" };
+            string[] statEmojis = { "🧪", "⏳", "✅", "📈" };
+            Color[] accents = {
+                Color.FromArgb(15, 110, 86),   // Deep Teal
+                Color.FromArgb(255, 179, 0),   // Amber
+                Color.FromArgb(229, 57, 53),   // Red
+                Color.FromArgb(25, 118, 210)   // Blue
             };
-            
-            string[] statTexts = { "DV", "KQ", "OK", "%" };
-            Color[] statForeColors = {
+            Color[] iconBgs = {
+                Color.FromArgb(230, 244, 240),
+                Color.FromArgb(255, 248, 225),
+                Color.FromArgb(253, 244, 244),
+                Color.FromArgb(227, 242, 253)
+            };
+            Color[] trendColors = {
                 Color.FromArgb(15, 110, 86),
-                Color.FromArgb(240, 165, 0),
-                Color.FromArgb(15, 110, 86),
-                Color.FromArgb(35, 119, 196)
+                Color.FromArgb(160, 112, 0),
+                Color.FromArgb(229, 57, 53),
+                Color.FromArgb(25, 118, 210)
             };
 
             for (int i = 0; i < 4; i++)
             {
-                statCards[i].BorderColor = Color.FromArgb(218, 232, 226); // Đồng bộ viền của phân hệ Bác sĩ
-                PrepareRoundedPanel(statCards[i]);
+                var card = statCards[i];
+                card.Controls.Clear();
+                card.ShadowDecoration.Enabled = false;
+                card.BorderThickness = 1;
+                card.BorderColor = Color.FromArgb(218, 232, 226);
+                card.BorderRadius = 14;
+                card.FillColor = Color.White;
+                card.Padding = new Padding(0, 4, 0, 0);
+                card.Tag = accents[i];
 
+                card.Paint -= KpiCard_Paint;
+                card.Paint += KpiCard_Paint;
+
+                // Create round icon box
                 statDots[i] = new Guna2Panel
                 {
-                    Size = new Size(48, 48),
-                    BorderRadius = 14,
-                    FillColor = statColors[i]
+                    Size = new Size(36, 36),
+                    Location = new Point(18, 14),
+                    BorderRadius = 10,
+                    FillColor = iconBgs[i],
+                    BackColor = Color.Transparent
                 };
                 PrepareRoundedPanel(statDots[i]);
-                
-                var lblIconText = new Label
+                var lblEmoji = new Label
                 {
-                    Text = statTexts[i],
-                    Location = new Point(0, 0),
-                    Size = new Size(48, 48),
-                    Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                    ForeColor = statForeColors[i],
+                    Text = statEmojis[i],
+                    Name = "lblEmoji",
+                    Dock = DockStyle.Fill,
+                    Font = new Font("Segoe UI", 11F),
                     TextAlign = ContentAlignment.MiddleCenter,
                     BackColor = Color.Transparent
                 };
-                statDots[i].Controls.Add(lblIconText);
+                statDots[i].Controls.Add(lblEmoji);
+                card.Controls.Add(statDots[i]);
 
-                // Đồng bộ cỡ chữ với phân hệ bác sĩ (Value: 20F Bold, Caption: 9.5F Regular)
-                // Đặt chiều cao 38 cho lblStatValues để tránh bị che mất phần dưới của số
-                lblStatValues[i] = TextLabel("-", 86, 32, 120, 38, 20F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
-                lblStatLabels[i] = TextLabel("-", 88, 70, 140, 20, 9.5F, FontStyle.Regular, Color.FromArgb(122, 149, 137));
+                // Small uppercase caption
+                lblStatLabels[i] = TextLabel(statLbls[i], 18, 50, 200, 16, 8.25F, FontStyle.Bold, Color.FromArgb(122, 149, 137));
+                card.Controls.Add(lblStatLabels[i]);
 
-                statCards[i].Controls.Add(statDots[i]);
-                statCards[i].Controls.Add(lblStatValues[i]);
-                statCards[i].Controls.Add(lblStatLabels[i]);
-                Controls.Add(statCards[i]);
+                // Large bold value
+                lblStatValues[i] = TextLabel("-", 18, 66, 200, 38, 18F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
+                card.Controls.Add(lblStatValues[i]);
+
+                // Trend/subtitle
+                lblStatTrends[i] = TextLabel("-", 18, 108, 200, 18, 8.5F, FontStyle.Bold, trendColors[i]);
+                card.Controls.Add(lblStatTrends[i]);
+
+                // ConfigureKpiHover(card);
+
+                Controls.Add(card);
             }
 
             // 3. Khởi tạo Task Card (Dịch vụ hôm nay) - Xóa hover của card cha
@@ -374,26 +399,25 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblBannerSub.Location = new Point(110, 68);
             lblBannerSub.Width = banner.Width - 150;
 
-            // 2. Layout 4 Stat Cards (Tăng chiều dài lên 138px để đồng bộ hoàn toàn với Bác sĩ và có nhiều khoảng thở)
+            // 2. Layout 4 Stat Cards
             int cardWidth = (availWidth - 3 * gap) / 4;
-            int cardHeight = 138; // Tăng lên 138px cực kỳ chuẩn (đồng bộ phân hệ bác sĩ)
+            int cardHeight = 130;
             int statY = banner.Bottom + gap;
 
             for (int i = 0; i < 4; i++)
             {
-                statCards[i].Location = new Point(margin + i * (cardWidth + gap), statY);
-                statCards[i].Size = new Size(cardWidth, cardHeight);
-                
-                // Căn giữa ô vuông Icon theo chiều cao 138px mới
-                statDots[i].Location = new Point(18, (cardHeight - 48) / 2);
+                var card = statCards[i];
+                card.Location = new Point(margin + i * (cardWidth + gap), statY);
+                card.Size = new Size(cardWidth, cardHeight);
 
-                int labelWidth = cardWidth - 96;
-                lblStatValues[i].Width = labelWidth;
-                lblStatLabels[i].Width = labelWidth;
-
-                // Căn chỉnh tọa độ Y thông minh bên trong card cao 138px để hiển thị thoáng và sang trọng
-                lblStatValues[i].Location = new Point(86, 32);
-                lblStatLabels[i].Location = new Point(88, 70);
+                // Update children widths dynamically to fit
+                foreach (Control ctrl in card.Controls)
+                {
+                    if (ctrl is Label lbl && lbl.Name != "lblEmoji")
+                    {
+                        lbl.Width = cardWidth - 30;
+                    }
+                }
             }
 
             // 3. Layout Hàng 1 (Dịch vụ hôm nay & Hoạt động gần đây)
@@ -454,19 +478,18 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 }
             }
 
-            // 4. Layout Hàng 2 (Lịch thực hiện hôm nay & Tiến độ hôm nay)
+            // 4. Layout Hàng 2 (Lịch thực hiện hôm nay)
             int row2Y = taskCard.Bottom + gap;
             int row2Height = 380; 
 
             scheduleCard.Location = new Point(margin, row2Y);
-            scheduleCard.Size = new Size(leftCardWidth, row2Height);
+            scheduleCard.Size = new Size(availWidth, row2Height);
 
-            progressCard.Location = new Point(margin + leftCardWidth + gap, row2Y);
-            progressCard.Size = new Size(rightCardWidth, row2Height);
+            progressCard.Visible = false;
 
             // Cập nhật các dòng lịch trình biểu diễn trực quan (Timeline blocks)
             int schedY = 62;
-            int blockWidth = leftCardWidth - 120;
+            int blockWidth = availWidth - 120;
             
             for (int i = 0; i < scheduleControls.Count; i++)
             {
@@ -542,16 +565,16 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblBannerSub.Text = $"{DateTime.Now:dd/MM/yyyy} · {totalToday} dịch vụ được phân công · {pendingKq} kết quả chờ cập nhật";
 
             lblStatValues[0].Text = totalToday.ToString();
-            lblStatLabels[0].Text = "Dịch vụ hôm nay";
+            lblStatTrends[0].Text = "Trong ca trực";
 
             lblStatValues[1].Text = pendingKq.ToString();
-            lblStatLabels[1].Text = "Chờ cập nhật KQ";
+            lblStatTrends[1].Text = pendingKq > 0 ? "Cần nhập KQ" : "Đã xong";
 
             lblStatValues[2].Text = completed.ToString();
-            lblStatLabels[2].Text = "Đã hoàn thành";
+            lblStatTrends[2].Text = "Đã hoàn thành";
 
             lblStatValues[3].Text = $"{progress}%";
-            lblStatLabels[3].Text = "Tiến độ trong ngày";
+            lblStatTrends[3].Text = $"{completed}/{totalToday} dịch vụ";
 
             // Vòng tiến độ: Ring 0=Hoàn thành, Ring 1=Chờ thực hiện, Ring 2=% Tổng tiến độ
             int ring0Val = totalToday > 0 ? (completed  * 100 / totalToday) : 0;
@@ -836,6 +859,45 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private class ScheduleControlInfo
         {
             public string Role { get; set; }
+        }
+
+        private void KpiCard_Paint(object sender, PaintEventArgs e)
+        {
+            var card = (Guna2Panel)sender;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            using (var path = GetRoundedRectPath(new RectangleF(0, 0, card.Width, card.Height), 14))
+            {
+                e.Graphics.SetClip(path);
+
+                var arcRect = new Rectangle(card.Width - 110, -40, 160, 160);
+                using (var brush = new SolidBrush(Color.FromArgb(242, 244, 243)))
+                {
+                    e.Graphics.FillEllipse(brush, arcRect);
+                }
+
+                if (card.Tag is Color accentColor)
+                {
+                    using (var brush = new SolidBrush(accentColor))
+                    {
+                        e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
+                    }
+                }
+
+                e.Graphics.ResetClip();
+            }
+        }
+
+        private static System.Drawing.Drawing2D.GraphicsPath GetRoundedRectPath(RectangleF rect, float radius)
+        {
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            float diameter = radius * 2;
+            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
+            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
+            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+            return path;
         }
     }
 }

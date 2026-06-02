@@ -457,7 +457,6 @@ namespace HospitalX.GUI.PH2
         private Guna.UI2.WinForms.Guna2Separator pnlLine1;
         private Guna.UI2.WinForms.Guna2Panel pnl2;
         private System.Windows.Forms.Label lblTenBS;
-        private System.Windows.Forms.Label lbl;
         private Guna.UI2.WinForms.Guna2PictureBox ptbAdmin;
         private Guna.UI2.WinForms.Guna2Button btnBvsR;
         private Guna.UI2.WinForms.Guna2Button btnAudit;

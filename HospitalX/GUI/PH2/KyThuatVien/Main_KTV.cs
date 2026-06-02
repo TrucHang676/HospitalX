@@ -12,6 +12,10 @@ namespace HospitalX.GUI.PH2
         public Main_KTV()
         {
             InitializeComponent();
+            if (System.IO.File.Exists(@"d:\HospitalX\image\medical-team.ico"))
+            {
+                this.Icon = new System.Drawing.Icon(@"d:\HospitalX\image\medical-team.ico");
+            }
             Instance = this;
 
             SetButtonImages(this.btnDashboard, KtvIcons.SidebarDashboardNormal, KtvIcons.SidebarDashboardActive);

@@ -96,6 +96,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\DataProvider.cs" />
@@ -148,6 +151,12 @@
     </Compile>
     <Compile Include="GUI\PH2\KyThuatVien\frmKtvEditProfile.Designer.cs">
       <DependentUpon>frmKtvEditProfile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\frmKtvNotificationDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\KyThuatVien\frmKtvNotificationDetail.Designer.cs">
+      <DependentUpon>frmKtvNotificationDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\PH2\KyThuatVien\ucKtvKetQua.cs">
       <SubType>UserControl</SubType>
@@ -528,6 +537,9 @@
     <EmbeddedResource Include="GUI\PH2\BacSi\ucTongQuan.resx">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\frmKtvNotificationDetail.resx">
+      <DependentUpon>frmKtvNotificationDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\Main_KTV.resx">
       <DependentUpon>Main_KTV.cs</DependentUpon>
     </EmbeddedResource>
@@ -565,6 +577,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BenhNhan\ucHSCN.resx">
       <DependentUpon>ucHSCN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvHoSo.resx">
+      <DependentUpon>ucKtvHoSo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvThongBao.resx">
+      <DependentUpon>ucKtvThongBao.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\QuanTriVien\ucAudit.resx">
       <DependentUpon>ucAudit.cs</DependentUpon>

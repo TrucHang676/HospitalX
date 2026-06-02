@@ -46,10 +46,12 @@ namespace HospitalX.GUI.PH2
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlLogo = new Guna.UI2.WinForms.Guna2Panel();
+            this.ptbChuThap = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblLogoPlus = new System.Windows.Forms.Label();
             this.lblBrand = new System.Windows.Forms.Label();
             this.lblBrandSub = new System.Windows.Forms.Label();
             this.pnlAvatar = new Guna.UI2.WinForms.Guna2Panel();
+            this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblAvatarText = new System.Windows.Forms.Label();
             this.lblTenKtv = new System.Windows.Forms.Label();
             this.lblRole = new System.Windows.Forms.Label();
@@ -64,14 +66,12 @@ namespace HospitalX.GUI.PH2
             this.lblSubtitle = new System.Windows.Forms.Label();
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.ptbChuThap = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
             this.pnlSidebar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
-            this.pnlAvatar.SuspendLayout();
-            this.pnlTopbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).BeginInit();
+            this.pnlAvatar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).BeginInit();
+            this.pnlTopbar.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2BorderlessForm1
@@ -115,6 +115,21 @@ namespace HospitalX.GUI.PH2
             this.pnlLogo.Name = "pnlLogo";
             this.pnlLogo.Size = new System.Drawing.Size(61, 57);
             this.pnlLogo.TabIndex = 0;
+            // 
+            // ptbChuThap
+            // 
+            this.ptbChuThap.BackColor = System.Drawing.Color.Transparent;
+            this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
+            this.ptbChuThap.Image = ((System.Drawing.Image)(resources.GetObject("ptbChuThap.Image")));
+            this.ptbChuThap.ImageRotate = 0F;
+            this.ptbChuThap.Location = new System.Drawing.Point(13, 12);
+            this.ptbChuThap.Margin = new System.Windows.Forms.Padding(4);
+            this.ptbChuThap.Name = "ptbChuThap";
+            this.ptbChuThap.Size = new System.Drawing.Size(35, 33);
+            this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbChuThap.TabIndex = 1;
+            this.ptbChuThap.TabStop = false;
+            this.ptbChuThap.UseTransparentBackground = true;
             // 
             // lblLogoPlus
             // 
@@ -169,6 +184,22 @@ namespace HospitalX.GUI.PH2
             this.pnlAvatar.Size = new System.Drawing.Size(48, 44);
             this.pnlAvatar.TabIndex = 3;
             // 
+            // ptbAdmin
+            // 
+            this.ptbAdmin.BackColor = System.Drawing.Color.Transparent;
+            this.ptbAdmin.FillColor = System.Drawing.Color.Transparent;
+            this.ptbAdmin.Image = ((System.Drawing.Image)(resources.GetObject("ptbAdmin.Image")));
+            this.ptbAdmin.ImageRotate = 0F;
+            this.ptbAdmin.Location = new System.Drawing.Point(0, 0);
+            this.ptbAdmin.Margin = new System.Windows.Forms.Padding(4);
+            this.ptbAdmin.MinimumSize = new System.Drawing.Size(48, 44);
+            this.ptbAdmin.Name = "ptbAdmin";
+            this.ptbAdmin.Size = new System.Drawing.Size(48, 44);
+            this.ptbAdmin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbAdmin.TabIndex = 9;
+            this.ptbAdmin.TabStop = false;
+            this.ptbAdmin.UseTransparentBackground = true;
+            // 
             // lblAvatarText
             // 
             this.lblAvatarText.BackColor = System.Drawing.Color.Transparent;
@@ -208,7 +239,6 @@ namespace HospitalX.GUI.PH2
             this.lblRole.Size = new System.Drawing.Size(99, 17);
             this.lblRole.TabIndex = 5;
             this.lblRole.Text = "KTV xét nghiệm";
-            // 
             // 
             // btnDashboard
             // 
@@ -429,37 +459,6 @@ namespace HospitalX.GUI.PH2
             this.pnlContent.Size = new System.Drawing.Size(1507, 966);
             this.pnlContent.TabIndex = 0;
             // 
-            // ptbChuThap
-            // 
-            this.ptbChuThap.BackColor = System.Drawing.Color.Transparent;
-            this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
-            this.ptbChuThap.Image = ((System.Drawing.Image)(resources.GetObject("ptbChuThap.Image")));
-            this.ptbChuThap.ImageRotate = 0F;
-            this.ptbChuThap.Location = new System.Drawing.Point(13, 12);
-            this.ptbChuThap.Margin = new System.Windows.Forms.Padding(4);
-            this.ptbChuThap.Name = "ptbChuThap";
-            this.ptbChuThap.Size = new System.Drawing.Size(35, 33);
-            this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbChuThap.TabIndex = 1;
-            this.ptbChuThap.TabStop = false;
-            this.ptbChuThap.UseTransparentBackground = true;
-            // 
-            // ptbAdmin
-            // 
-            this.ptbAdmin.BackColor = System.Drawing.Color.Transparent;
-            this.ptbAdmin.FillColor = System.Drawing.Color.Transparent;
-            this.ptbAdmin.Image = ((System.Drawing.Image)(resources.GetObject("ptbAdmin.Image")));
-            this.ptbAdmin.ImageRotate = 0F;
-            this.ptbAdmin.Location = new System.Drawing.Point(0, 0);
-            this.ptbAdmin.Margin = new System.Windows.Forms.Padding(4);
-            this.ptbAdmin.MinimumSize = new System.Drawing.Size(48, 44);
-            this.ptbAdmin.Name = "ptbAdmin";
-            this.ptbAdmin.Size = new System.Drawing.Size(48, 44);
-            this.ptbAdmin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbAdmin.TabIndex = 9;
-            this.ptbAdmin.TabStop = false;
-            this.ptbAdmin.UseTransparentBackground = true;
-            // 
             // Main_KTV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -477,11 +476,11 @@ namespace HospitalX.GUI.PH2
             this.pnlSidebar.ResumeLayout(false);
             this.pnlSidebar.PerformLayout();
             this.pnlLogo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).EndInit();
             this.pnlAvatar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).EndInit();
             this.pnlTopbar.ResumeLayout(false);
             this.pnlTopbar.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).EndInit();
             this.ResumeLayout(false);
 
         }

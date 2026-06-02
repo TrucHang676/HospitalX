@@ -31,11 +31,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             public Label LblFlag { get; set; }
         }
 
-        // Layout UI controls
+        // Layout UI controls (instantiated inside #if false blocks but referenced in active validation checks)
+#pragma warning disable CS0169, CS0649
         private Label lblQueueTitle;
         private Label lblQueueCount;
         private Guna2TextBox txtSearchQueue;
         private FlowLayoutPanel pnlQueueItems;
+#pragma warning restore CS0169, CS0649
 
         // Form Cards
         private Guna2Panel pnlAvatarCircle;
@@ -459,6 +461,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 CustomBorderColor = active ? KtvTheme.Teal : Color.Transparent,
                 CustomBorderThickness = new Padding(active ? 4 : 0, 0, 0, 0)
             };
+            card.ShadowDecoration.Enabled = true;
+            card.ShadowDecoration.Color = Color.FromArgb(30, 15, 110, 86);
+            card.ShadowDecoration.Depth = active ? 8 : 4;
+            card.ShadowDecoration.Shadow = active ? new Padding(0, 2, 8, 4) : new Padding(0, 1, 4, 2);
 
             var lblHsba = KtvTheme.Label(service.MaHsba, 14, 10, 8F, FontStyle.Bold, active ? KtvTheme.Teal : KtvTheme.TextMid);
             lblHsba.AutoSize = false;
@@ -497,17 +503,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             card.Controls.AddRange(new Control[] { lblHsba, lblPatient, lblService, status });
             WireServiceCardEvents(card, service);
-            foreach (Control child in card.Controls)
-                WireServiceCardEvents(child, service);
 
             return card;
         }
 
         private void WireServiceCardEvents(Control control, KtvService service)
         {
+            control.Cursor = Cursors.Hand;
             control.Click += (s, e) => SelectPatient(service);
             control.MouseEnter += (s, e) => SetServiceCardHover(control, true);
             control.MouseLeave += (s, e) => SetServiceCardHover(control, false);
+            foreach (Control child in control.Controls)
+            {
+                WireServiceCardEvents(child, service);
+            }
         }
 
         private void SetServiceCardHover(Control source, bool hover)
@@ -518,20 +527,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             if (card == null || !serviceCardMap.ContainsKey(card)) return;
 
-            // Check if cursor is still within the boundaries of the card when MouseLeave is triggered
-            if (!hover)
-            {
-                Point clientPos = card.PointToClient(Cursor.Position);
-                if (card.ClientRectangle.Contains(clientPos))
-                {
-                    // The mouse is still inside the card boundary, ignore to prevent flickering
-                    return;
-                }
-            }
-
             bool active = serviceCardMap[card] == activeService;
             card.FillColor = active ? KtvTheme.TealLight : (hover ? Color.FromArgb(244, 250, 248) : Color.White);
             card.BorderColor = active || hover ? KtvTheme.Teal : KtvTheme.Border;
+            
+            // Dynamic shadow depth transitions
+            card.ShadowDecoration.Depth = (active || hover) ? 8 : 4;
+            card.ShadowDecoration.Shadow = (active || hover) ? new Padding(0, 2, 8, 4) : new Padding(0, 1, 4, 2);
+
             foreach (Control child in card.Controls)
             {
                 if (child is Guna2Panel panel && !serviceCardMap.ContainsKey(panel))
