@@ -156,6 +156,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.BackColor = System.Drawing.Color.Transparent;
             this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.txtSearch.BorderRadius = 6;
             this.txtSearch.Cursor = System.Windows.Forms.Cursors.IBeam;

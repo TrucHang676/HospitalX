@@ -131,6 +131,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtFamilyHistory
             // 
+            this.txtFamilyHistory.BackColor = System.Drawing.Color.Transparent;
             this.txtFamilyHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtFamilyHistory.BorderRadius = 8;
             this.txtFamilyHistory.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -162,6 +163,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtMedicalHistory
             // 
+            this.txtMedicalHistory.BackColor = System.Drawing.Color.Transparent;
             this.txtMedicalHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtMedicalHistory.BorderRadius = 8;
             this.txtMedicalHistory.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -193,6 +195,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtAllergy
             // 
+            this.txtAllergy.BackColor = System.Drawing.Color.Transparent;
             this.txtAllergy.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtAllergy.BorderRadius = 8;
             this.txtAllergy.Cursor = System.Windows.Forms.Cursors.IBeam;

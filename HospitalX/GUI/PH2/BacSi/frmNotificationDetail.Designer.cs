@@ -121,6 +121,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnMarkRead
             // 
+            this.btnMarkRead.BackColor = System.Drawing.Color.Transparent;
             this.btnMarkRead.BorderRadius = 8;
             this.btnMarkRead.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMarkRead.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
@@ -136,6 +137,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtContent
             // 
+            this.txtContent.BackColor = System.Drawing.Color.Transparent;
             this.txtContent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtContent.BorderRadius = 8;
             this.txtContent.Cursor = System.Windows.Forms.Cursors.IBeam;

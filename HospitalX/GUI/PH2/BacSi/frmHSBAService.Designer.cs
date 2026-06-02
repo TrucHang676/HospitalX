@@ -198,6 +198,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtServiceNote
             // 
+            this.txtServiceNote.BackColor = System.Drawing.Color.Transparent;
             this.txtServiceNote.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtServiceNote.BorderRadius = 8;
             this.txtServiceNote.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -228,6 +229,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtServiceName
             // 
+            this.txtServiceName.BackColor = System.Drawing.Color.Transparent;
             this.txtServiceName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtServiceName.BorderRadius = 8;
             this.txtServiceName.Cursor = System.Windows.Forms.Cursors.IBeam;

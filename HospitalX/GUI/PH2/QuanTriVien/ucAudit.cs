@@ -55,17 +55,17 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void SetupAuditGrids()
         {
-            SetupSoftGrid(dgvLogs, 58, 44);
+            SetupSoftGrid(dgvLogs, 62, 44);
             dgvLogs.DefaultCellStyle.Font = new Font("Segoe UI", 9.4F);
-            dgvLogs.Columns["colAuditId"].FillWeight = 92F;
-            dgvLogs.Columns["colTime"].FillWeight = 112F;
+            dgvLogs.Columns["colAuditId"].FillWeight = 104F;
+            dgvLogs.Columns["colTime"].FillWeight = 110F;
             dgvLogs.Columns["colUser"].FillWeight = 96F;
-            dgvLogs.Columns["colAction"].FillWeight = 74F;
-            dgvLogs.Columns["colObject"].FillWeight = 96F;
-            dgvLogs.Columns["colDetail"].FillWeight = 220F;
-            dgvLogs.Columns["colRows"].FillWeight = 54F;
+            dgvLogs.Columns["colAction"].FillWeight = 82F;
+            dgvLogs.Columns["colObject"].FillWeight = 104F;
+            dgvLogs.Columns["colDetail"].FillWeight = 238F;
+            dgvLogs.Columns["colRows"].FillWeight = 48F;
             dgvLogs.Columns["colIp"].FillWeight = 88F;
-            dgvLogs.Columns["colResult"].FillWeight = 84F;
+            dgvLogs.Columns["colResult"].FillWeight = 112F;
             dgvLogs.Columns["colDetailAction"].FillWeight = 70F;
         }
 
@@ -74,9 +74,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             grid.EnableHeadersVisualStyles = false;
             grid.BackgroundColor = Color.White;
             grid.BorderStyle = BorderStyle.None;
-            grid.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            grid.CellBorderStyle = DataGridViewCellBorderStyle.None;
             grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            grid.GridColor = Color.FromArgb(238, 242, 240);
+            grid.GridColor = Color.White;
             grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             grid.MultiSelect = false;
             grid.RowHeadersVisible = false;
@@ -87,10 +87,16 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             grid.RowTemplate.Height = rowHeight;
             grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            grid.AdvancedCellBorderStyle.Left = DataGridViewAdvancedCellBorderStyle.None;
-            grid.AdvancedCellBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None;
-            grid.AdvancedCellBorderStyle.Top = DataGridViewAdvancedCellBorderStyle.None;
-            grid.AdvancedCellBorderStyle.Bottom = DataGridViewAdvancedCellBorderStyle.Single;
+            grid.AdvancedCellBorderStyle.All = DataGridViewAdvancedCellBorderStyle.None;
+            grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.None;
+
+            Guna2DataGridView gunaGrid = grid as Guna2DataGridView;
+            if (gunaGrid != null)
+            {
+                gunaGrid.ThemeStyle.GridColor = Color.White;
+                gunaGrid.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+                gunaGrid.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.None;
+            }
 
             grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
             grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(122, 149, 137);
@@ -106,6 +112,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             grid.DefaultCellStyle.Padding = new Padding(10, 0, 8, 0);
             grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
             grid.RowsDefaultCellStyle.BackColor = Color.White;
+
+            foreach (DataGridViewColumn column in grid.Columns)
+            {
+                column.DividerWidth = 0;
+            }
         }
 
         private void SeedData()
@@ -217,6 +228,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                     "Xem");
                 dgvLogs.Rows[rowIndex].Tag = log;
                 dgvLogs.Rows[rowIndex].DefaultCellStyle.BackColor = log.Success ? Color.White : Color.FromArgb(255, 247, 247);
+                dgvLogs.Rows[rowIndex].DividerHeight = 0;
             }
 
             dgvLogs.ClearSelection();
@@ -226,21 +238,17 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         {
             if (e.RowIndex < 0)
             {
+                PaintHeaderCell(e);
                 return;
             }
 
             string columnName = dgvLogs.Columns[e.ColumnIndex].Name;
-            if (columnName != "colAuditId" && columnName != "colTime" && columnName != "colAction" && columnName != "colResult" && columnName != "colDetailAction")
-            {
-                return;
-            }
-
-            e.PaintBackground(e.CellBounds, true);
+            PaintLogCellBackground(e);
             string text = Convert.ToString(e.Value);
 
             if (columnName == "colAuditId")
             {
-                Rectangle idBadge = new Rectangle(e.CellBounds.X + 12, e.CellBounds.Y + 16, Math.Min(e.CellBounds.Width - 22, 106), 28);
+                Rectangle idBadge = new Rectangle(e.CellBounds.X + 12, e.CellBounds.Y + 17, e.CellBounds.Width - 24, 28);
                 PaintBadge(e.Graphics, idBadge, text, Color.FromArgb(230, 244, 240), Color.FromArgb(15, 110, 86), Color.Transparent, 8.8F);
                 e.Handled = true;
                 return;
@@ -261,11 +269,30 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             if (columnName == "colDetailAction")
             {
                 bool hovered = e.RowIndex == _hoveredDetailRowIndex;
-                Rectangle button = new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y + 14, e.CellBounds.Width - 20, 30);
+                Rectangle button = new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y + 16, e.CellBounds.Width - 20, 30);
                 Color fill = hovered ? Color.FromArgb(230, 244, 240) : Color.White;
                 Color border = hovered ? Color.FromArgb(15, 110, 86) : Color.FromArgb(218, 232, 226);
                 Color buttonFore = hovered ? Color.FromArgb(10, 79, 61) : Color.FromArgb(15, 110, 86);
                 PaintBadge(e.Graphics, button, "Xem", fill, buttonFore, border, 8.8F);
+                e.Handled = true;
+                return;
+            }
+
+            if (columnName != "colAction" && columnName != "colResult")
+            {
+                TextFormatFlags flags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis;
+                if (columnName == "colRows")
+                {
+                    flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis;
+                }
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    text,
+                    new Font("Segoe UI", 9.4F),
+                    new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 22, e.CellBounds.Height),
+                    Color.FromArgb(24, 48, 42),
+                    flags);
                 e.Handled = true;
                 return;
             }
@@ -284,8 +311,52 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 GetActionColors(text, out back, out fore);
             }
 
-            Rectangle statusBadge = new Rectangle(e.CellBounds.X + 12, e.CellBounds.Y + 16, Math.Min(e.CellBounds.Width - 18, 86), 28);
+            Rectangle statusBadge = new Rectangle(e.CellBounds.X + 12, e.CellBounds.Y + 17, e.CellBounds.Width - 24, 28);
             PaintBadge(e.Graphics, statusBadge, text, back, fore, Color.Transparent, 8.5F);
+            e.Handled = true;
+        }
+
+        private void PaintLogCellBackground(DataGridViewCellPaintingEventArgs e)
+        {
+            AuditLogRecord record = dgvLogs.Rows[e.RowIndex].Tag as AuditLogRecord;
+            Color fill;
+            if (record != null && !record.Success)
+            {
+                fill = Color.FromArgb(255, 248, 248);
+            }
+            else
+            {
+                fill = e.RowIndex % 2 == 0 ? Color.White : Color.FromArgb(248, 251, 250);
+            }
+
+            using (SolidBrush brush = new SolidBrush(fill))
+            {
+                Rectangle cover = new Rectangle(e.CellBounds.X - 1, e.CellBounds.Y - 1, e.CellBounds.Width + 3, e.CellBounds.Height + 3);
+                e.Graphics.FillRectangle(brush, cover);
+            }
+
+            using (Pen pen = new Pen(Color.FromArgb(236, 243, 240)))
+            {
+                e.Graphics.DrawLine(pen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+            }
+        }
+
+        private static void PaintHeaderCell(DataGridViewCellPaintingEventArgs e)
+        {
+            using (SolidBrush brush = new SolidBrush(Color.FromArgb(247, 249, 248)))
+            {
+                Rectangle cover = new Rectangle(e.CellBounds.X - 1, e.CellBounds.Y - 1, e.CellBounds.Width + 3, e.CellBounds.Height + 3);
+                e.Graphics.FillRectangle(brush, cover);
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                Convert.ToString(e.Value),
+                new Font("Segoe UI", 9F, FontStyle.Bold),
+                new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height),
+                Color.FromArgb(122, 149, 137),
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+
             e.Handled = true;
         }
 

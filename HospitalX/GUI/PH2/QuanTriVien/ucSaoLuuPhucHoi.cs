@@ -237,6 +237,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void BtnDryRun_Click(object sender, EventArgs e)
         {
+            PrepareMessageDialog();
             msgDialog.Icon = MessageDialogIcon.Information;
             msgDialog.Buttons = MessageDialogButtons.OK;
             msgDialog.Caption = "Dry Run";
@@ -526,6 +527,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 return;
             }
 
+            PrepareMessageDialog();
             msgDialog.Icon = MessageDialogIcon.Warning;
             msgDialog.Buttons = MessageDialogButtons.YesNo;
             msgDialog.Caption = "Xác nhận phục hồi CSDL";
@@ -576,6 +578,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             SetStepDone(_restoreStep + 1, steps[_restoreStep]);
             AppendConsole("Hoàn thành: " + steps[_restoreStep]);
             _restoreStep++;
+        }
+
+        private void PrepareMessageDialog()
+        {
+            msgDialog.Parent = FindForm();
+            msgDialog.Style = MessageDialogStyle.Light;
         }
 
         private void ResetStepLabels()

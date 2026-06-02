@@ -120,6 +120,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnDelete
             // 
+            this.btnDelete.BackColor = System.Drawing.Color.Transparent;
             this.btnDelete.BorderRadius = 8;
             this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDelete.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
@@ -134,6 +135,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnUpdate
             // 
+            this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
             this.btnUpdate.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnUpdate.BorderRadius = 8;
             this.btnUpdate.BorderThickness = 1;
@@ -151,6 +153,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnAdd
             // 
+            this.btnAdd.BackColor = System.Drawing.Color.Transparent;
             this.btnAdd.BorderRadius = 8;
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
@@ -166,6 +169,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtDose
             // 
+            this.txtDose.BackColor = System.Drawing.Color.Transparent;
             this.txtDose.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtDose.BorderRadius = 8;
             this.txtDose.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -184,6 +188,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtMedicineName
             // 
+            this.txtMedicineName.BackColor = System.Drawing.Color.Transparent;
             this.txtMedicineName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtMedicineName.BorderRadius = 8;
             this.txtMedicineName.Cursor = System.Windows.Forms.Cursors.IBeam;
