@@ -27,6 +27,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.btnDesignerUrgent = new Guna.UI2.WinForms.Guna2Button();
             this.pnlNotifScroll = new System.Windows.Forms.Panel();
             this.pnlToast = new Guna.UI2.WinForms.Guna2Panel();
+            this.cboSort = new Guna.UI2.WinForms.Guna2ComboBox();
             
             // 4 Stats Cards
             this.cardStat1 = new Guna.UI2.WinForms.Guna2Panel();
@@ -54,7 +55,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblDesignerHeroTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblDesignerHeroTitle.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Bold);
             this.lblDesignerHeroTitle.ForeColor = System.Drawing.Color.White;
-            this.lblDesignerHeroTitle.Location = new System.Drawing.Point(24, 18);
+            this.lblDesignerHeroTitle.Location = new System.Drawing.Point(24, 16);
             this.lblDesignerHeroTitle.Name = "lblDesignerHeroTitle";
             this.lblDesignerHeroTitle.Text = "Trung tâm thông báo";
 
@@ -62,7 +63,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblDesignerHeroSub.BackColor = System.Drawing.Color.Transparent;
             this.lblDesignerHeroSub.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblDesignerHeroSub.ForeColor = System.Drawing.Color.FromArgb(214, 239, 232);
-            this.lblDesignerHeroSub.Location = new System.Drawing.Point(26, 54);
+            this.lblDesignerHeroSub.Location = new System.Drawing.Point(24, 56);
             this.lblDesignerHeroSub.Name = "lblDesignerHeroSub";
             this.lblDesignerHeroSub.Text = "Theo dõi phân công, cảnh báo xét nghiệm và cập nhật nghiệp vụ.";
 
@@ -118,6 +119,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlToolbar.Controls.Add(this.btnDesignerAll);
             this.pnlToolbar.Controls.Add(this.btnDesignerUnread);
             this.pnlToolbar.Controls.Add(this.btnDesignerUrgent);
+            this.pnlToolbar.Controls.Add(this.cboSort);
 
             this.btnDesignerAll.BorderRadius = 16;
             this.btnDesignerAll.FillColor = System.Drawing.Color.FromArgb(15, 110, 86);
@@ -152,6 +154,21 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.btnDesignerUrgent.Size = new System.Drawing.Size(104, 32);
             this.btnDesignerUrgent.Text = "Khẩn cấp";
             this.btnDesignerUrgent.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+
+            // 
+            // cboSort
+            // 
+            this.cboSort.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(235)))), ((int)(((byte)(240)))));
+            this.cboSort.BorderRadius = 6;
+            this.cboSort.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.cboSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(85)))), ((int)(((byte)(104)))));
+            this.cboSort.Items.AddRange(new object[] {
+            "Mới nhất trước",
+            "Cũ nhất trước"});
+            this.cboSort.SelectedIndex = 0;
+            this.cboSort.Size = new System.Drawing.Size(188, 34);
+            this.cboSort.Name = "cboSort";
+
 
             // 
             // pnlToast
@@ -232,5 +249,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Guna.UI2.WinForms.Guna2Panel cardStat2;
         private Guna.UI2.WinForms.Guna2Panel cardStat3;
         private Guna.UI2.WinForms.Guna2Panel cardStat4;
+        private Guna.UI2.WinForms.Guna2ComboBox cboSort;
     }
 }

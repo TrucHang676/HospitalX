@@ -19,6 +19,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private readonly Label[] lblStripLabels = new Label[4];
         private readonly Guna2Panel[] stripDots = new Guna2Panel[4];
 
+        private readonly Label[] lblStatTrends = new Label[3];
+
         // 3. Bảng dữ liệu chính (Main Grid Card)
 
         // 4. Phân trang (Pagination)
@@ -39,7 +41,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         // Dữ liệu nội bộ
         private readonly List<KtvService> allServices = new List<KtvService>();
         private string currentTab = "all";
-        private int hoveredButtonIndex = 0;
         private string sortColumnName = "colTime";
         private bool sortAscending = true;
         private bool isDrawerBuilt = false;
@@ -98,6 +99,107 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private void BuildControls()
         {
             if (IsInDesigner()) return;
+
+            // 2. Setup 3 premium KPI Cards
+            string[] statLbls = { "TỔNG DỊCH VỤ", "CHỜ THỰC HIỆN", "HOÀN THÀNH" };
+            string[] statEmojis = { "📋", "⏳", "✅" };
+            Color[] accents = {
+                Color.FromArgb(15, 110, 86),   // Deep Teal
+                Color.FromArgb(255, 179, 0),   // Amber
+                Color.FromArgb(229, 57, 53)    // Red
+            };
+            Color[] iconBgs = {
+                Color.FromArgb(230, 244, 240),
+                Color.FromArgb(255, 248, 225),
+                Color.FromArgb(253, 244, 244)
+            };
+            Color[] trendColors = {
+                Color.FromArgb(15, 110, 86),
+                Color.FromArgb(160, 112, 0),
+                Color.FromArgb(229, 57, 53)
+            };
+            string[] trends = { "Trong ca trực", "Cần nhập KQ", "Đã hoàn thành" };
+
+            for (int i = 0; i < 3; i++)
+            {
+                var card = stripCards[i];
+                card.Controls.Clear();
+                card.ShadowDecoration.Enabled = false;
+                card.BorderThickness = 1;
+                card.BorderColor = Color.FromArgb(218, 232, 226);
+                card.BorderRadius = 14;
+                card.FillColor = Color.White;
+                card.Padding = new Padding(0, 4, 0, 0);
+                card.Tag = accents[i];
+
+                card.Paint -= KpiCard_Paint;
+                card.Paint += KpiCard_Paint;
+
+                // Create round icon box
+                var pnlIcon = new Guna2Panel
+                {
+                    Size = new Size(36, 36),
+                    Location = new Point(18, 14),
+                    BorderRadius = 10,
+                    FillColor = iconBgs[i],
+                    BackColor = Color.Transparent
+                };
+                pnlIcon.BackColor = Color.Transparent;
+                pnlIcon.UseTransparentBackground = true;
+                
+                var lblEmoji = new Label
+                {
+                    Text = statEmojis[i],
+                    Name = "lblEmoji",
+                    Dock = DockStyle.Fill,
+                    Font = new Font("Segoe UI", 11F),
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    BackColor = Color.Transparent
+                };
+                pnlIcon.Controls.Add(lblEmoji);
+                card.Controls.Add(pnlIcon);
+
+                // Small uppercase caption
+                lblStripLabels[i] = new Label
+                {
+                    Text = statLbls[i],
+                    Location = new Point(18, 54),
+                    Size = new Size(200, 18),
+                    Font = new Font("Segoe UI", 8.25F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(122, 149, 137),
+                    BackColor = Color.Transparent,
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+                card.Controls.Add(lblStripLabels[i]);
+
+                // Large bold value
+                lblStripVals[i] = new Label
+                {
+                    Text = "-",
+                    Location = new Point(18, 72),
+                    Size = new Size(200, 34),
+                    Font = new Font("Segoe UI", 18F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(24, 48, 42),
+                    BackColor = Color.Transparent,
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+                card.Controls.Add(lblStripVals[i]);
+
+                // Trend/subtitle
+                lblStatTrends[i] = new Label
+                {
+                    Text = trends[i],
+                    Location = new Point(18, 106),
+                    Size = new Size(200, 18),
+                    Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                    ForeColor = trendColors[i],
+                    BackColor = Color.Transparent,
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+                card.Controls.Add(lblStatTrends[i]);
+
+                // ConfigureKpiHover(card);
+            }
 
             // Timer cho slide drawer mượt mà
             tmrDrawer = new Timer { Interval = 15 };
@@ -239,7 +341,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             for (int i = 0; i < 3; i++)
             {
                 stripCards[i].Location = new Point(margin + i * (stripWidth + gap), stripY);
-                stripCards[i].Size = new Size(stripWidth, 104);
+                stripCards[i].Size = new Size(stripWidth, 140);
                 stripDots[i].Location = new Point(22, 46);
             }
 
@@ -480,19 +582,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 FillRound(e.Graphics, btn1, 6, Color.FromArgb(15, 110, 86));
                 TextRenderer.DrawText(e.Graphics, "Chi tiết", new Font("Segoe UI", 8.5F, FontStyle.Bold), btn1, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
 
-                // Button 2: Action Specific
+                // Button 2: Nhập KQ
                 Rectangle btn2 = new Rectangle(cell.X + 90, cell.Y + 18, 72, 26);
-                if (status == "Chờ thực hiện")
-                {
-                    FillRound(e.Graphics, btn2, 6, Color.FromArgb(240, 165, 0));
-                    TextRenderer.DrawText(e.Graphics, "Nhập KQ", new Font("Segoe UI", 8.5F, FontStyle.Bold), btn2, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                }
-                else // Hoàn thành
-                {
-                    FillRound(e.Graphics, btn2, 6, Color.White);
-                    DrawRound(e.Graphics, btn2, 6, Color.FromArgb(218, 232, 226));
-                    TextRenderer.DrawText(e.Graphics, "In KQ", new Font("Segoe UI", 8.5F, FontStyle.Bold), btn2, Color.FromArgb(74, 85, 104), TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                }
+                FillRound(e.Graphics, btn2, 6, Color.FromArgb(240, 165, 0));
+                TextRenderer.DrawText(e.Graphics, "Nhập KQ", new Font("Segoe UI", 8.5F, FontStyle.Bold), btn2, Color.White, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
 
                 e.Handled = true;
                 return;
@@ -581,22 +674,15 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     frm.ShowDialog(this);
                 }
             }
-            else if (clickX >= 90 && clickX <= 162) // Button 2: Action cụ thể
+            else if (clickX >= 90 && clickX <= 162) // Button 2: Nhập KQ
             {
-                if (status == "Chờ thực hiện")
+                if (Main_KTV.Instance != null)
                 {
-                    if (Main_KTV.Instance != null)
-                    {
-                        Main_KTV.Instance.SwitchToKetQua(recordId);
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Chuyển sang phân hệ Nhập kết quả cho {patientName} (HSBA: {recordId})!", "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    Main_KTV.Instance.SwitchToKetQua(recordId);
                 }
-                else if (status == "Hoàn thành")
+                else
                 {
-                    MessageBox.Show($"Đang in phiếu kết quả: {serviceName} — BN {patientName} (HSBA: {recordId})", "In kết quả", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Chuyển sang phân hệ Nhập kết quả cho {patientName} (HSBA: {recordId})!", "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -946,6 +1032,76 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private void PnlOverlay_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void KpiCard_Paint(object sender, PaintEventArgs e)
+        {
+            var card = (Guna2Panel)sender;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            using (var path = GetRoundedRectPath(new RectangleF(0, 0, card.Width, card.Height), 14))
+            {
+                e.Graphics.SetClip(path);
+
+                var arcRect = new Rectangle(card.Width - 110, -40, 160, 160);
+                using (var brush = new SolidBrush(Color.FromArgb(242, 244, 243)))
+                {
+                    e.Graphics.FillEllipse(brush, arcRect);
+                }
+
+                if (card.Tag is Color accentColor)
+                {
+                    using (var brush = new SolidBrush(accentColor))
+                    {
+                        e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
+                    }
+                }
+
+                e.Graphics.ResetClip();
+            }
+        }
+
+        private static System.Drawing.Drawing2D.GraphicsPath GetRoundedRectPath(RectangleF rect, float radius)
+        {
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            float diameter = radius * 2;
+            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
+            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
+            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+
+        private void ConfigureKpiHover(Guna2Panel card)
+        {
+            card.Cursor = Cursors.Hand;
+            card.ShadowDecoration.Enabled = true;
+            card.ShadowDecoration.Color = Color.FromArgb(40, 15, 110, 86);
+            card.ShadowDecoration.Depth = 5;
+            card.ShadowDecoration.Shadow = new Padding(0, 2, 8, 4);
+
+            EventHandler enter = (s, e) => SetKpiHoverState(card, true);
+            EventHandler leave = (s, e) => SetKpiHoverState(card, false);
+
+            card.MouseEnter += enter;
+            card.MouseLeave += leave;
+
+            foreach (Control child in card.Controls)
+            {
+                child.Cursor = Cursors.Hand;
+                child.MouseEnter += enter;
+                child.MouseLeave += leave;
+            }
+        }
+
+        private void SetKpiHoverState(Guna2Panel card, bool hovered)
+        {
+            card.FillColor = hovered ? Color.FromArgb(248, 252, 250) : Color.White;
+            card.BorderColor = hovered ? Color.FromArgb(15, 110, 86) : Color.FromArgb(218, 232, 226);
+            card.ShadowDecoration.Enabled = true;
+            card.ShadowDecoration.Depth = hovered ? 12 : 5;
+            card.ShadowDecoration.Shadow = hovered ? new Padding(0, 4, 14, 8) : new Padding(0, 2, 8, 4);
         }
     }
 }

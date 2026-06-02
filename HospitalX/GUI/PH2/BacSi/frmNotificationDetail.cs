@@ -12,6 +12,7 @@ namespace HospitalX.GUI.PH2.BacSi
             _record = record;
             InitializeComponent();
             LoadRecord();
+            ConfigureReadOnlyTextBox();
         }
 
         private void LoadRecord()
@@ -23,6 +24,17 @@ namespace HospitalX.GUI.PH2.BacSi
             lblLocationValue.Text = _record.Location;
             txtContent.Text = _record.Content;
             btnMarkRead.Visible = !_record.IsRead;
+        }
+
+        private void ConfigureReadOnlyTextBox()
+        {
+            txtContent.Cursor = Cursors.Default;
+            txtContent.TabStop = false;
+            txtContent.HoverState.BorderColor = txtContent.BorderColor;
+            txtContent.FocusedState.BorderColor = txtContent.BorderColor;
+            txtContent.HoverState.FillColor = txtContent.FillColor;
+            txtContent.FocusedState.FillColor = txtContent.FillColor;
+            txtContent.Enter += (s, e) => this.ActiveControl = null;
         }
 
         private void btnMarkRead_Click(object sender, EventArgs e)
