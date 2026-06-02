@@ -50,7 +50,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             // Load right-side headers icons
             ptbSummaryHeaderIcon.Image = DpvAssets.Load("dpv_4.png");
-            ptbPermHeaderIcon.Image = DpvAssets.Load("settings.png");
 
             // Style search button with icon
             btnSearchBN.Image = DpvAssets.Load("magnifying-glass.png");
@@ -67,7 +66,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             BuildStepsIndicator();
             BuildDoctorCards();
             BuildSummaryContent();
-            BuildPermContent();
+            
+            pnlPermCard.Visible = false;
+            pnlScroll.Controls.Remove(pnlPermCard);
 
             // Wire events
             btnSearchBN.Click += (s, ev) => ExecuteSearchBN();
@@ -956,8 +957,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlSummaryBody.Height = sumHeight - 40 - 12;
             pnlSummaryCard.Location = new Point(rightX, 91);
             pnlSummaryCard.Width = rightW;
-            pnlPermCard.Location = new Point(rightX, pnlSummaryCard.Bottom + 16);
-            pnlPermCard.Width = rightW;
+            pnlPermCard.Visible = false;
 
             // Reposition search button
             btnSearchBN.Left = pnlStep1Card.Width - btnSearchBN.Width - 24;
