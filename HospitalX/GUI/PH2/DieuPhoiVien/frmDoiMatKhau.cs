@@ -11,16 +11,49 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private static readonly Color BorderGray = Color.FromArgb(218, 232, 226); // #DAE8E2
         private static readonly Color TextDark = Color.FromArgb(24, 48, 42); // #18302A
 
+        private Image imgEyeOpen;
+        private Image imgEyeClose;
+        private Image imgEyeCloseDim;
+
         public frmDoiMatKhau()
         {
             InitializeComponent();
             DoubleBuffered = true;
             this.StartPosition = FormStartPosition.CenterParent;
+            LoadEyeIcons();
         }
 
         private void frmDoiMatKhau_Load(object sender, EventArgs e)
         {
             SetupStyles();
+        }
+
+        private void LoadEyeIcons()
+        {
+            try
+            {
+                imgEyeOpen = DpvAssets.Load("eye_open.png");
+                imgEyeClose = DpvAssets.Load("eye_close.png");
+                imgEyeCloseDim = GetOpacityImage(imgEyeClose, 0.4f);
+            }
+            catch
+            {
+                // Fallback
+            }
+        }
+
+        private Image GetOpacityImage(Image source, float opacity)
+        {
+            Bitmap bmp = new Bitmap(source.Width, source.Height);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                System.Drawing.Imaging.ColorMatrix matrix = new System.Drawing.Imaging.ColorMatrix();
+                matrix.Matrix33 = opacity;
+                System.Drawing.Imaging.ImageAttributes attributes = new System.Drawing.Imaging.ImageAttributes();
+                attributes.SetColorMatrix(matrix, System.Drawing.Imaging.ColorMatrixFlag.Default, System.Drawing.Imaging.ColorAdjustType.Bitmap);
+                g.DrawImage(source, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, source.Width, source.Height, GraphicsUnit.Pixel, attributes);
+            }
+            return bmp;
         }
 
         private void SetupStyles()
@@ -56,6 +89,50 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 txt.FocusedState.BorderColor = ThemeGreen;
                 txt.Font = new Font("Segoe UI", 9.5F);
                 txt.ForeColor = TextDark;
+
+                // Configure password eye visibility icon with initial dim state
+                if (imgEyeCloseDim != null)
+                {
+                    txt.IconRight = imgEyeCloseDim;
+                }
+                else
+                {
+                    txt.IconRight = DpvAssets.Load("eye_close.png");
+                }
+                txt.IconRightCursor = Cursors.Hand;
+                txt.IconRightSize = new Size(18, 18);
+                txt.IconRightClick += txtPassword_IconRightClick;
+            }
+        }
+
+        private void txtPassword_IconRightClick(object sender, EventArgs e)
+        {
+            if (sender is Guna2TextBox txt)
+            {
+                if (txt.PasswordChar == '•')
+                {
+                    txt.PasswordChar = '\0';
+                    if (imgEyeOpen != null)
+                    {
+                        txt.IconRight = imgEyeOpen;
+                    }
+                    else
+                    {
+                        txt.IconRight = DpvAssets.Load("eye_open.png");
+                    }
+                }
+                else
+                {
+                    txt.PasswordChar = '•';
+                    if (imgEyeCloseDim != null)
+                    {
+                        txt.IconRight = imgEyeCloseDim;
+                    }
+                    else
+                    {
+                        txt.IconRight = DpvAssets.Load("eye_close.png");
+                    }
+                }
             }
         }
 
@@ -113,7 +190,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
             else
             {
-                MessageBox.Show(message, title, MessageBoxButtons.OK, icon == MessageDialogIcon.Information ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
+                using (var msgDialog = new Guna2MessageDialog())
+                {
+                    msgDialog.Parent = this;
+                    msgDialog.Icon = icon;
+                    msgDialog.Buttons = MessageDialogButtons.OK;
+                    msgDialog.Caption = title;
+                    msgDialog.Style = MessageDialogStyle.Light;
+                    msgDialog.Show(message);
+                }
             }
         }
     }

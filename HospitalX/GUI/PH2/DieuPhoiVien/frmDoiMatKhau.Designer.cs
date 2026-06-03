@@ -18,7 +18,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.borderlessForm = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.guna2BorderlessForm = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -48,17 +48,18 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnClose.Size = new System.Drawing.Size(36, 32);
             this.btnClose.TabIndex = 1;
             // 
-            // borderlessForm
+            // guna2BorderlessForm
             // 
-            this.borderlessForm.BorderRadius = 16;
-            this.borderlessForm.ContainerControl = this;
-            this.borderlessForm.TransparentWhileDrag = true;
+            this.guna2BorderlessForm.BorderRadius = 16;
+            this.guna2BorderlessForm.ContainerControl = this;
+            this.guna2BorderlessForm.TransparentWhileDrag = true;
             // 
             // pnlHeader
             // 
             this.pnlHeader.Controls.Add(this.btnClose);
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(434, 50);
@@ -89,6 +90,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // txtOldPass
             // 
+            this.txtOldPass.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtOldPass.BorderRadius = 8;
             this.txtOldPass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtOldPass.DefaultText = "";
@@ -96,8 +98,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtOldPass.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.txtOldPass.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.txtOldPass.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtOldPass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtOldPass.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtOldPass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtOldPass.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtOldPass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtOldPass.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtOldPass.Location = new System.Drawing.Point(24, 90);
             this.txtOldPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -121,6 +124,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // txtNewPass
             // 
+            this.txtNewPass.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtNewPass.BorderRadius = 8;
             this.txtNewPass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtNewPass.DefaultText = "";
@@ -128,8 +132,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtNewPass.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.txtNewPass.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.txtNewPass.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtNewPass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtNewPass.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtNewPass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtNewPass.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtNewPass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtNewPass.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtNewPass.Location = new System.Drawing.Point(24, 162);
             this.txtNewPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -153,6 +158,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // txtConfirmPass
             // 
+            this.txtConfirmPass.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtConfirmPass.BorderRadius = 8;
             this.txtConfirmPass.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtConfirmPass.DefaultText = "";
@@ -160,8 +166,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtConfirmPass.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.txtConfirmPass.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.txtConfirmPass.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtConfirmPass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtConfirmPass.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtConfirmPass.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtConfirmPass.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.txtConfirmPass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtConfirmPass.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtConfirmPass.Location = new System.Drawing.Point(24, 234);
             this.txtConfirmPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -175,6 +182,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // btnConfirm
             // 
             this.btnConfirm.BorderRadius = 8;
+            this.btnConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConfirm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnConfirm.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnConfirm.ForeColor = System.Drawing.Color.White;
+            this.btnConfirm.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
             this.btnConfirm.Location = new System.Drawing.Point(292, 296);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(118, 38);
@@ -184,7 +196,14 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // btnCancel
             // 
+            this.btnCancel.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnCancel.BorderThickness = 1;
             this.btnCancel.BorderRadius = 8;
+            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancel.FillColor = System.Drawing.Color.Transparent;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnCancel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.btnCancel.Location = new System.Drawing.Point(158, 296);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(118, 38);
@@ -221,7 +240,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2BorderlessForm borderlessForm;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm;
         private Guna.UI2.WinForms.Guna2ControlBox btnClose;
         private Guna.UI2.WinForms.Guna2Panel pnlHeader;
         private System.Windows.Forms.Label lblTitle;
