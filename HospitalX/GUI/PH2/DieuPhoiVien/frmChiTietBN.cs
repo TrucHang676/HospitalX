@@ -23,7 +23,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             _patient = patient;
             LoadPatient();
-            ApplyButtonIcons();
         }
 
         private void LoadPatient()
@@ -107,18 +106,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlInfo.Controls.Add(card);
         }
 
-        private void ApplyButtonIcons()
-        {
-            // Edit icon
-            Image imgEdit = DpvAssets.Load("dpv_3.png");
-            if (imgEdit != null)
-            {
-                btnEdit.Image = imgEdit;
-                btnEdit.ImageSize = new Size(22, 22);
-                btnEdit.ImageOffset = new Point(0, 1);
-                btnEdit.TextOffset = new Point(0, 0);
-            }
-        }
 
         private static void GetStatusColors(string status, out Color back, out Color fore, out Color dot)
         {
@@ -154,10 +141,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         }
 
 
-        private void btnCloseBottom_Click(object sender, EventArgs e)
-        {
-            Result = ActionResult.None;
-            this.Close();
-        }
+
     }
 }

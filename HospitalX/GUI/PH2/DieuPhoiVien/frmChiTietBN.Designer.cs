@@ -25,7 +25,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblInfoTitle = new System.Windows.Forms.Label();
             this.pnlFooter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnEdit = new Guna.UI2.WinForms.Guna2Button();
-            this.btnCloseBottom = new Guna.UI2.WinForms.Guna2Button();
+            this.btnClose = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlHeader.SuspendLayout();
             this.pnlInfo.SuspendLayout();
             this.pnlFooter.SuspendLayout();
@@ -41,6 +41,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // pnlHeader
             // 
             this.pnlHeader.BorderRadius = 12;
+            this.pnlHeader.Controls.Add(this.btnClose);
             this.pnlHeader.Controls.Add(this.lblCode);
             this.pnlHeader.Controls.Add(this.lblName);
             this.pnlHeader.Controls.Add(this.lblTitle);
@@ -115,7 +116,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlFooter.BorderRadius = 12;
             this.pnlFooter.BorderThickness = 1;
             this.pnlFooter.Controls.Add(this.btnEdit);
-            this.pnlFooter.Controls.Add(this.btnCloseBottom);
             this.pnlFooter.FillColor = System.Drawing.Color.White;
             this.pnlFooter.Location = new System.Drawing.Point(20, 820);
             this.pnlFooter.Name = "pnlFooter";
@@ -130,29 +130,25 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnEdit.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.btnEdit.ForeColor = System.Drawing.Color.White;
             this.btnEdit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnEdit.Location = new System.Drawing.Point(300, 15);
+            this.btnEdit.Location = new System.Drawing.Point(255, 15);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(170, 40);
             this.btnEdit.TabIndex = 0;
             this.btnEdit.Text = "Sửa thông tin";
             this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
-            // btnCloseBottom
+            // btnClose
             // 
-            this.btnCloseBottom.BackColor = System.Drawing.Color.Transparent;
-            this.btnCloseBottom.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.btnCloseBottom.BorderRadius = 20;
-            this.btnCloseBottom.BorderThickness = 1;
-            this.btnCloseBottom.FillColor = System.Drawing.Color.Transparent;
-            this.btnCloseBottom.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnCloseBottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
-            this.btnCloseBottom.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
-            this.btnCloseBottom.Location = new System.Drawing.Point(486, 15);
-            this.btnCloseBottom.Name = "btnCloseBottom";
-            this.btnCloseBottom.Size = new System.Drawing.Size(170, 40);
-            this.btnCloseBottom.TabIndex = 2;
-            this.btnCloseBottom.Text = "Đóng";
-            this.btnCloseBottom.Click += new System.EventHandler(this.btnCloseBottom_Click);
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnClose.BorderRadius = 8;
+            this.btnClose.FillColor = System.Drawing.Color.Transparent;
+            this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.btnClose.IconColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(635, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(36, 32);
+            this.btnClose.TabIndex = 5;
             // 
             // frmChiTietBN
             // 
@@ -185,6 +181,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Label lblInfoTitle;
         private Guna.UI2.WinForms.Guna2Panel pnlFooter;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
-        private Guna.UI2.WinForms.Guna2Button btnCloseBottom;
+        private Guna.UI2.WinForms.Guna2ControlBox btnClose;
     }
 }
