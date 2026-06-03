@@ -44,7 +44,8 @@ namespace HospitalX.GUI
             else
             {
                 // Fallback circular cross drawing
-                ptbChuThap.Paint += (s, e) => {
+                ptbChuThap.Paint += (s, e) =>
+                {
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     Color theme = _role?.ThemeColor ?? Color.FromArgb(20, 116, 91);
                     using (var brush = new SolidBrush(theme))
@@ -69,7 +70,8 @@ namespace HospitalX.GUI
             if (passImg != null) ptbIconPass.Image = passImg;
 
             // Setup dynamic vector icon for the role info card
-            ptbRoleIcon.Paint += (s, e) => {
+            ptbRoleIcon.Paint += (s, e) =>
+            {
                 Color theme = _role?.ThemeColor ?? Color.FromArgb(20, 116, 91);
                 DrawVectorIcon(e.Graphics, ptbRoleIcon.Width, ptbRoleIcon.Height, _role.Key, theme);
             };
@@ -102,7 +104,7 @@ namespace HospitalX.GUI
             Line.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
 
             // Hospital brand label colors matching module theme
-            lblHospital.ForeColor = isPh1 
+            lblHospital.ForeColor = isPh1
                 ? Color.FromArgb(147, 197, 253) // light blue (#93C5FD)
                 : Color.FromArgb(167, 243, 208); // light green (#A7F3D0)
             lblQTCSDLBV.ForeColor = Color.White;
@@ -145,7 +147,7 @@ namespace HospitalX.GUI
             // Back Button styling
             btnBack.ForeColor = theme;
             btnBack.BorderColor = theme;
-            btnBack.HoverState.FillColor = isPh1 
+            btnBack.HoverState.FillColor = isPh1
                 ? Color.FromArgb(30, 37, 74, 132)   // semi-transparent blue
                 : Color.FromArgb(30, 20, 116, 91);  // semi-transparent green
 
@@ -170,7 +172,7 @@ namespace HospitalX.GUI
             // Calculate gradient colors for left panel background
             Color theme = _role?.ThemeColor ?? Color.FromArgb(20, 116, 91);
             bool isPh1 = _role?.Module == LoginModule.Ph1;
-            
+
             Color color1, color2, accentColor;
             if (isPh1)
             {
@@ -489,7 +491,7 @@ namespace HospitalX.GUI
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                
+
                 // Traverse up to find the "image" folder dynamically (portable support)
                 string currentDir = baseDir;
                 for (int i = 0; i < 5; i++)
