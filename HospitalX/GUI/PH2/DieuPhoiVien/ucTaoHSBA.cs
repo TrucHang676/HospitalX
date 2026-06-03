@@ -57,10 +57,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnSearchBN.ImageOffset = new Point(-4, 0);
             btnSearchBN.TextOffset = new Point(2, 0);
 
-            btnCreateHSBA.Image = DpvAssets.Load("buttonTick.png");
-            btnCreateHSBA.ImageSize = new Size(16, 16);
-            btnCreateHSBA.ImageOffset = new Point(-4, 0);
-            btnCreateHSBA.TextOffset = new Point(2, 0);
+            btnCreateHSBA.Image = null;
+            btnCreateHSBA.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnCreateHSBA.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnCreateHSBA.ImageOffset = new Point(0, 0);
+            btnCreateHSBA.TextOffset = new Point(0, 0);
 
             InitComboBoxes();
             BuildStepsIndicator();
@@ -236,10 +237,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             var doctors = new[]
             {
-                new { Code = "BS-TM-001", Name = "BS. Trần Minh Khoa", Spec = "Tim mạch · 18 năm KN", Status = "● Đang rảnh (4 BN hôm nay)", IsFree = true, IsSelected = false },
-                new { Code = "BS-TM-002", Name = "BS. Nguyễn Thị Hồng", Spec = "Tim mạch · 12 năm KN", Status = "● Đang bận (8 BN hôm nay)", IsFree = false, IsSelected = false },
-                new { Code = "BS-TM-003", Name = "TS. Lê Đình Phước", Spec = "Tim mạch · 25 năm KN", Status = "● Đang rảnh (2 BN hôm nay)", IsFree = true, IsSelected = false },
-                new { Code = "BS-TM-004", Name = "BS. Phạm Thu Hà", Spec = "Tim mạch · 8 năm KN", Status = "● Đang bận (9 BN hôm nay)", IsFree = false, IsSelected = false },
+                new { Code = "BS-TM-001", Name = "BS. Trần Minh Khoa", Spec = "Tim mạch", Status = "● Đang rảnh", IsFree = true, IsSelected = false },
+                new { Code = "BS-TM-002", Name = "BS. Nguyễn Thị Hồng", Spec = "Tim mạch", Status = "● Đang bận", IsFree = false, IsSelected = false },
+                new { Code = "BS-TM-003", Name = "TS. Lê Đình Phước", Spec = "Tim mạch", Status = "● Đang rảnh", IsFree = true, IsSelected = false },
+                new { Code = "BS-TM-004", Name = "BS. Phạm Thu Hà", Spec = "Tim mạch", Status = "● Đang bận", IsFree = false, IsSelected = false },
             };
 
             int cardW = 435;

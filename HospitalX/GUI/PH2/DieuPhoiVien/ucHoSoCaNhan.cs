@@ -157,7 +157,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             txtProfMaNV.Text = "NV-DPV-0047";
             txtProfHoTen.Text = "Lê Hoài Thương";
             txtProfVaiTro.Text = "Điều phối viên";
-            txtKhoa.Text = "Phòng Điều phối Y tế";
+            txtKhoa.Text = "Khoa Tim mạch";
+            lblDeptAndFacility.Text = "Khoa Tim mạch\r\nBệnh viện Đa khoa Tỉnh";
             txtProfGioiTinh.Text = "Nữ";
             txtProfNgaySinh.Text = "12/04/1992";
             txtProfCccd.Text = "079192004567";
