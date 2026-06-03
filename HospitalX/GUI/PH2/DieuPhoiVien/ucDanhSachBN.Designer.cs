@@ -21,9 +21,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlTableCard = new Guna.UI2.WinForms.Guna2Panel();
             this.lblTableMeta = new System.Windows.Forms.Label();
             this.lblTableTitle = new System.Windows.Forms.Label();
-            this.btnSelectAll = new Guna.UI2.WinForms.Guna2Button();
             this.dgvPatients = new System.Windows.Forms.DataGridView();
-            this.colCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colMaBN = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colHoTen = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDob = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -73,7 +71,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlTableCard.BorderThickness = 1;
             this.pnlTableCard.Controls.Add(this.lblTableMeta);
             this.pnlTableCard.Controls.Add(this.lblTableTitle);
-            this.pnlTableCard.Controls.Add(this.btnSelectAll);
             this.pnlTableCard.Controls.Add(this.dgvPatients);
             this.pnlTableCard.Controls.Add(this.lblPageInfo);
             this.pnlTableCard.Controls.Add(this.btnPrevPage);
@@ -106,25 +103,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblTableTitle.Size = new System.Drawing.Size(222, 25);
             this.lblTableTitle.TabIndex = 0;
             this.lblTableTitle.Text = "Danh sách bệnh nhân";
-            // 
-            // btnSelectAll
-            // 
-            this.btnSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelectAll.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.btnSelectAll.BorderRadius = 8;
-            this.btnSelectAll.BorderThickness = 1;
-            this.btnSelectAll.FillColor = System.Drawing.Color.Transparent;
-            this.btnSelectAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnSelectAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
-            this.btnSelectAll.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(245)))), ((int)(((byte)(242)))));
-            this.btnSelectAll.Location = new System.Drawing.Point(1070, 15);
-            this.btnSelectAll.Name = "btnSelectAll";
-            this.btnSelectAll.Size = new System.Drawing.Size(150, 38);
-            this.btnSelectAll.TabIndex = 2;
-            this.btnSelectAll.Text = "Chọn tất cả";
-            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
-            // 
-            // 
             // dgvPatients
             // 
             this.dgvPatients.AllowUserToAddRows = false;
@@ -134,9 +112,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvPatients.BackgroundColor = System.Drawing.Color.White;
             this.dgvPatients.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPatients.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPatients.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colCheck,
             this.colMaBN,
             this.colHoTen,
             this.colDob,
@@ -152,13 +128,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.dgvPatients.RowHeadersVisible = false;
             this.dgvPatients.Size = new System.Drawing.Size(1344, 690);
             this.dgvPatients.TabIndex = 4;
-            // 
-            // colCheck
-            // 
-            this.colCheck.HeaderText = "";
-            this.colCheck.MinimumWidth = 40;
-            this.colCheck.Name = "colCheck";
-            this.colCheck.Width = 40;
             // 
             // colMaBN
             // 
@@ -399,7 +368,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Guna.UI2.WinForms.Guna2Panel pnlTableCard;
         private System.Windows.Forms.Label lblTableMeta;
         private System.Windows.Forms.Label lblTableTitle;
-        private Guna.UI2.WinForms.Guna2Button btnSelectAll;
         private System.Windows.Forms.DataGridView dgvPatients;
         private System.Windows.Forms.Label lblPageInfo;
         private Guna.UI2.WinForms.Guna2Button btnPrevPage;
@@ -410,7 +378,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Guna.UI2.WinForms.Guna2ComboBox cboGioiTinh;
         private System.Windows.Forms.Label lblSearch;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn colCheck;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaBN;
         private System.Windows.Forms.DataGridViewTextBoxColumn colHoTen;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDob;

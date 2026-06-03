@@ -23,7 +23,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private List<PatientModel> _filteredPatients = new List<PatientModel>();
         private int _currentPage = 1;
         private int _totalPage = 1;
-        private string _activeChipStatus = "all";
         private int _hoveredRowIndex = -1;
         private PatientModel _selectedPatient = null;
         private int cboSortSelectedIndex = 0;
@@ -31,7 +30,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Image _imgDpv3 = null;
         private int _hoveredButtonIndex = -1;
         private int _hoveredButtonRowIndex = -1;
-        private bool _isAllSelectedToggle = false;
 
         public ucDanhSachBN()
         {
@@ -111,13 +109,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvPatients.MultiSelect = false;
             dgvPatients.ShowCellToolTips = false;
 
-            colCheck.Width = 40;
             colMaBN.FillWeight = 8F;
             colHoTen.FillWeight = 16F;
             colDob.FillWeight = 10F;
             colGioiTinh.FillWeight = 8F;
             colCccd.FillWeight = 12F;
-            colSoNha.FillWeight = 6F;
+            colSoNha.FillWeight = 8F;
             colTenDuong.FillWeight = 14F;
             colQuanHuyen.FillWeight = 12F;
             colTinhTP.FillWeight = 10F;
@@ -125,14 +122,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             foreach (DataGridViewColumn col in dgvPatients.Columns)
             {
-                if (col != colCheck)
-                {
-                    col.SortMode = DataGridViewColumnSortMode.NotSortable;
-                    col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
             colThaoTac.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colCheck.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
             dgvPatients.CellPainting += dgvPatients_CellPainting;
             dgvPatients.MouseMove += dgvPatients_MouseMove;
@@ -190,7 +183,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void RenderGrid()
         {
-            _isAllSelectedToggle = false;
             dgvPatients.Rows.Clear();
 
             int startIdx = (_currentPage - 1) * PageSize;
@@ -198,7 +190,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             foreach (var p in pageItems)
             {
-                dgvPatients.Rows.Add(false, p.Id, p.Name, p.Dob, p.Gender, p.Cccd, p.SoNha, p.TenDuong, p.QuanHuyen, p.TinhTP, "");
+                dgvPatients.Rows.Add(p.Id, p.Name, p.Dob, p.Gender, p.Cccd, p.SoNha, p.TenDuong, p.QuanHuyen, p.TinhTP, "");
             }
 
             lblTableMeta.Text = $"Hiển thị {pageItems.Count} / {_filteredPatients.Count} bệnh nhân";
@@ -240,14 +232,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ApplyFilter();
         }
 
-        private void btnSelectAll_Click(object sender, EventArgs e)
-        {
-            _isAllSelectedToggle = !_isAllSelectedToggle;
-            foreach (DataGridViewRow row in dgvPatients.Rows)
-            {
-                row.Cells[colCheck.Index].Value = _isAllSelectedToggle;
-            }
-        }
+
 
         private void dgvPatients_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
@@ -267,12 +252,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             using (var brush = new SolidBrush(bg))
                 e.Graphics.FillRectangle(brush, cell);
 
-            if (e.ColumnIndex == colCheck.Index)
-            {
-                e.PaintContent(cell);
-                e.Handled = true;
-                return;
-            }
+
 
             if (e.ColumnIndex == colMaBN.Index)
             {
@@ -580,11 +560,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnReset.Image = DpvAssets.Load("undo (1).png");
             btnReset.ImageSize = new Size(16, 16);
             btnReset.ImageOffset = new Point(0, 0);
-
-
             // Setup proper column widths & minimum widths to prevent any value clipping
-            colCheck.Width = 40;
-            colCheck.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
 
             colMaBN.MinimumWidth = 80;
             colMaBN.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -601,7 +577,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             colCccd.MinimumWidth = 120;
             colCccd.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            colSoNha.MinimumWidth = 65;
+            colSoNha.MinimumWidth = 90;
             colSoNha.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             colTenDuong.MinimumWidth = 150;
@@ -633,21 +609,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             txtSearch.IconLeftSize = new Size(16, 16);
             txtSearch.IconLeftOffset = new Point(10, 0);
 
-            // Setup table header buttons anchor
-            btnSelectAll.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
-            // Setup Select All button with image instead of unicode character
-            Image imgSelectAll = DpvAssets.Load("buttonTick.png");
-            if (imgSelectAll != null)
-            {
-                btnSelectAll.Image = imgSelectAll;
-                btnSelectAll.ImageSize = new Size(16, 16);
-                btnSelectAll.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-                btnSelectAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-                btnSelectAll.ImageOffset = new Point(8, 0);
-                btnSelectAll.TextOffset = new Point(12, 0);
-            }
-            btnSelectAll.Text = "Chọn tất cả";
 
             // Setup Table Title Icon (replacing unicode emoji)
             var ptbTableTitleIcon = new Guna.UI2.WinForms.Guna2PictureBox();
@@ -826,9 +788,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnReset.Width = 110;
             btnReset.Location = new Point(pnlFilterBar.Width - btnReset.Width - 21, 34);
 
-            // Dynamically position select all button on the top right
-            btnSelectAll.Width = 150;
-            btnSelectAll.Location = new Point(pnlTableCard.Width - btnSelectAll.Width - 21, 15);
+
         }
 
         private static string RemoveDiacritics(string text)
