@@ -50,6 +50,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         public UcKtvDichVu()
         {
             InitializeComponent();
+            Disposed += UcKtvDichVu_Disposed;
 
             if (IsInDesigner())
             {
@@ -96,6 +97,17 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             LoadRows();
 
             this.Resize += UcKtvDichVu_Resize;
+        }
+
+        private void UcKtvDichVu_Disposed(object sender, EventArgs e)
+        {
+            if (tmrDrawer != null)
+            {
+                tmrDrawer.Stop();
+                tmrDrawer.Tick -= TmrDrawer_Tick;
+                tmrDrawer.Dispose();
+                tmrDrawer = null;
+            }
         }
 
         private bool IsInDesigner()

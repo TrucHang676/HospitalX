@@ -417,7 +417,7 @@ namespace HospitalX.GUI.PH2
             this.lblPageTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Bold);
             this.lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(39)))), ((int)(((byte)(51)))));
-            this.lblPageTitle.Location = new System.Drawing.Point(24, 6);
+            this.lblPageTitle.Location = new System.Drawing.Point(24, 14);
             this.lblPageTitle.Name = "lblPageTitle";
             this.lblPageTitle.Size = new System.Drawing.Size(119, 31);
             this.lblPageTitle.TabIndex = 0;

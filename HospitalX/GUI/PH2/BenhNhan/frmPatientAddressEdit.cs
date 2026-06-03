@@ -23,7 +23,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             txtStreetName.Text = originalStreetName;
             txtDistrict.Text = originalDistrict;
             txtCity.Text = originalCity;
-            btnSave.Visible = false;
+            UpdateSaveButtonState();
         }
 
         public string FullAddress
@@ -40,7 +40,15 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
         private void AddressField_TextChanged(object sender, EventArgs e)
         {
-            btnSave.Visible = HasCompleteInput() && HasChanges();
+            UpdateSaveButtonState();
+        }
+
+        private void UpdateSaveButtonState()
+        {
+            bool canSave = HasCompleteInput() && HasChanges();
+            btnSave.Visible = true;
+            btnSave.Enabled = canSave;
+            btnSave.Cursor = canSave ? Cursors.Hand : Cursors.Default;
         }
 
         private bool HasCompleteInput()
@@ -61,6 +69,20 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (!HasCompleteInput())
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ số nhà, tên đường, quận/huyện và tỉnh/thành phố.",
+                    "Thiếu dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                UpdateSaveButtonState();
+                return;
+            }
+
+            if (!HasChanges())
+            {
+                UpdateSaveButtonState();
+                return;
+            }
+
             DialogResult = DialogResult.OK;
             Close();
         }

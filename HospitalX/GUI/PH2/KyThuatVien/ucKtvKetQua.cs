@@ -98,6 +98,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         public ucKtvKetQua()
         {
             InitializeComponent();
+            Disposed += ucKtvKetQua_Disposed;
             DoubleBuffered = true;
             BackColor = KtvTheme.Bg;
             this.AutoScroll = false;
@@ -110,6 +111,17 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             this.Resize += UcKtvKetQua_Resize;
             this.Load += UcKtvKetQua_Load;
+        }
+
+        private void ucKtvKetQua_Disposed(object sender, EventArgs e)
+        {
+            if (tmrToast != null)
+            {
+                tmrToast.Stop();
+                tmrToast.Tick -= TmrToast_Tick;
+                tmrToast.Dispose();
+                tmrToast = null;
+            }
         }
 
         private void UcKtvKetQua_Load(object sender, EventArgs e)
@@ -530,7 +542,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             bool active = serviceCardMap[card] == activeService;
             card.FillColor = active ? KtvTheme.TealLight : (hover ? Color.FromArgb(244, 250, 248) : Color.White);
             card.BorderColor = active || hover ? KtvTheme.Teal : KtvTheme.Border;
-            
+
             // Dynamic shadow depth transitions
             card.ShadowDecoration.Depth = (active || hover) ? 8 : 4;
             card.ShadowDecoration.Shadow = (active || hover) ? new Padding(0, 2, 8, 4) : new Padding(0, 1, 4, 2);
@@ -886,11 +898,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // A. Patient Strip â€” dÃ¹ng thÃ´ng tin tá»« BENHNHAN (BnGender, BnDob, MaBn, CCCD)
             // KhÃ´ng cÃ²n dÃ¹ng tÃªn bá»‡nh nhÃ¢n Ä‘á»ƒ Ä‘oÃ¡n giá»›i tÃ­nh
             string bnGender = activeService.BnGender ?? "Nam";
-            string bnDob    = activeService.BnDob ?? "";
-            int    bAge     = 0;
+            string bnDob = activeService.BnDob ?? "";
+            int bAge = 0;
             if (!string.IsNullOrEmpty(bnDob))
                 bAge = KtvData.CalcAge(bnDob);
-            string bAgeStr  = bAge > 0 ? $"{bAge} tuá»•i" : bnDob;
+            string bAgeStr = bAge > 0 ? $"{bAge} tuá»•i" : bnDob;
 
             // Metadata: MÃ£BN Â· PhÃ¡i Â· Tuá»•i â€” tá»« BENHNHAN (khÃ´ng hiá»ƒn thá»‹ tÃªn BÃ¡c sÄ© vÃ¬ khÃ´ng join trong prototype)
             lblPatientMeta = KtvTheme.Label($"{activeService.MaBn} Â· {bnGender} Â· {bAgeStr} Â· HSBA: {activeService.MaHsba}", 90, 55, 9F, FontStyle.Regular, Color.FromArgb(200, 230, 222));
@@ -1151,83 +1163,83 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // D. File Attachment Card
             if (DateTime.MinValue == DateTime.MaxValue)
             {
-            cardAttachment = KtvTheme.Card(0, y, cardW, 212);
-            cardAttachment.ShadowDecoration.Enabled = true;
-            cardAttachment.ShadowDecoration.Color = KtvTheme.Teal;
-            cardAttachment.ShadowDecoration.Depth = 8;
-            cardAttachment.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
+                cardAttachment = KtvTheme.Card(0, y, cardW, 212);
+                cardAttachment.ShadowDecoration.Enabled = true;
+                cardAttachment.ShadowDecoration.Color = KtvTheme.Teal;
+                cardAttachment.ShadowDecoration.Depth = 8;
+                cardAttachment.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
 
-            lblAttachmentHeader = KtvTheme.Label("ðŸ“Ž ÄÃ­nh kÃ¨m tá»‡p káº¿t quáº£", 20, 18, 10F, FontStyle.Bold, KtvTheme.TextDark);
-            cardAttachment.Controls.Add(lblAttachmentHeader);
+                lblAttachmentHeader = KtvTheme.Label("ðŸ“Ž ÄÃ­nh kÃ¨m tá»‡p káº¿t quáº£", 20, 18, 10F, FontStyle.Bold, KtvTheme.TextDark);
+                cardAttachment.Controls.Add(lblAttachmentHeader);
 
-            pnlUploadZone = new Guna2Panel
-            {
-                Location = new Point(20, 48),
-                Size = new Size(cardW - 40, 100),
-                BorderRadius = 10,
-                BorderColor = Color.Transparent,   // hide Guna border; draw dashed manually
-                BorderThickness = 0,
-                FillColor = Color.FromArgb(250, 252, 253),
-                Cursor = Cursors.Hand
-            };
-            pnlUploadZone.Paint += (s, pe) =>
-            {
-                var r = pnlUploadZone.ClientRectangle;
-                r.Inflate(-1, -1);
-                using (var pen = new Pen(KtvTheme.Border, 1.5f) { DashStyle = DashStyle.Dash })
-                using (var gp = new GraphicsPath())
+                pnlUploadZone = new Guna2Panel
                 {
-                    int radius = 10;
-                    int d = radius * 2;
-                    gp.AddArc(r.X, r.Y, d, d, 180, 90);
-                    gp.AddArc(r.Right - d, r.Y, d, d, 270, 90);
-                    gp.AddArc(r.Right - d, r.Bottom - d, d, d, 0, 90);
-                    gp.AddArc(r.X, r.Bottom - d, d, d, 90, 90);
-                    gp.CloseFigure();
-                    pe.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                    pe.Graphics.DrawPath(pen, gp);
-                }
-            };
-            pnlUploadZone.MouseEnter += (s, e2) => { pnlUploadZone.FillColor = KtvTheme.TealLight; };
-            pnlUploadZone.MouseLeave += (s, e2) => { pnlUploadZone.FillColor = Color.FromArgb(250, 252, 253); };
-            pnlUploadZone.Click += PnlUploadZone_Click;
+                    Location = new Point(20, 48),
+                    Size = new Size(cardW - 40, 100),
+                    BorderRadius = 10,
+                    BorderColor = Color.Transparent,   // hide Guna border; draw dashed manually
+                    BorderThickness = 0,
+                    FillColor = Color.FromArgb(250, 252, 253),
+                    Cursor = Cursors.Hand
+                };
+                pnlUploadZone.Paint += (s, pe) =>
+                {
+                    var r = pnlUploadZone.ClientRectangle;
+                    r.Inflate(-1, -1);
+                    using (var pen = new Pen(KtvTheme.Border, 1.5f) { DashStyle = DashStyle.Dash })
+                    using (var gp = new GraphicsPath())
+                    {
+                        int radius = 10;
+                        int d = radius * 2;
+                        gp.AddArc(r.X, r.Y, d, d, 180, 90);
+                        gp.AddArc(r.Right - d, r.Y, d, d, 270, 90);
+                        gp.AddArc(r.Right - d, r.Bottom - d, d, d, 0, 90);
+                        gp.AddArc(r.X, r.Bottom - d, d, d, 90, 90);
+                        gp.CloseFigure();
+                        pe.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                        pe.Graphics.DrawPath(pen, gp);
+                    }
+                };
+                pnlUploadZone.MouseEnter += (s, e2) => { pnlUploadZone.FillColor = KtvTheme.TealLight; };
+                pnlUploadZone.MouseLeave += (s, e2) => { pnlUploadZone.FillColor = Color.FromArgb(250, 252, 253); };
+                pnlUploadZone.Click += PnlUploadZone_Click;
 
-            // Icon (large, centered top)
-            var lblUploadIcon = KtvTheme.Label("ðŸ“„", 0, 12, 20F, FontStyle.Regular, KtvTheme.TextMid);
-            lblUploadIcon.Size = new Size(cardW - 40, 30);
-            lblUploadIcon.TextAlign = ContentAlignment.MiddleCenter;
-            lblUploadIcon.Click += PnlUploadZone_Click;
-            pnlUploadZone.Controls.Add(lblUploadIcon);
+                // Icon (large, centered top)
+                var lblUploadIcon = KtvTheme.Label("ðŸ“„", 0, 12, 20F, FontStyle.Regular, KtvTheme.TextMid);
+                lblUploadIcon.Size = new Size(cardW - 40, 30);
+                lblUploadIcon.TextAlign = ContentAlignment.MiddleCenter;
+                lblUploadIcon.Click += PnlUploadZone_Click;
+                pnlUploadZone.Controls.Add(lblUploadIcon);
 
-            lblUpload1 = KtvTheme.Label("Nháº¥p Ä‘á»ƒ táº£i lÃªn hoáº·c kÃ©o file vÃ o Ä‘Ã¢y", 0, 46, 9F, FontStyle.Bold, KtvTheme.Teal);
-            lblUpload1.Size = new Size(cardW - 40, 22);
-            lblUpload1.TextAlign = ContentAlignment.MiddleCenter;
-            lblUpload1.Click += PnlUploadZone_Click;
-            pnlUploadZone.Controls.Add(lblUpload1);
+                lblUpload1 = KtvTheme.Label("Nháº¥p Ä‘á»ƒ táº£i lÃªn hoáº·c kÃ©o file vÃ o Ä‘Ã¢y", 0, 46, 9F, FontStyle.Bold, KtvTheme.Teal);
+                lblUpload1.Size = new Size(cardW - 40, 22);
+                lblUpload1.TextAlign = ContentAlignment.MiddleCenter;
+                lblUpload1.Click += PnlUploadZone_Click;
+                pnlUploadZone.Controls.Add(lblUpload1);
 
-            lblUpload2 = KtvTheme.Label("PDF, JPG, PNG Â· Tá»‘i Ä‘a 10MB má»—i file", 0, 70, 8F, FontStyle.Regular, KtvTheme.TextLight);
-            lblUpload2.Size = new Size(cardW - 40, 18);
-            lblUpload2.TextAlign = ContentAlignment.MiddleCenter;
-            lblUpload2.Click += PnlUploadZone_Click;
-            pnlUploadZone.Controls.Add(lblUpload2);
-            cardAttachment.Controls.Add(pnlUploadZone);
+                lblUpload2 = KtvTheme.Label("PDF, JPG, PNG Â· Tá»‘i Ä‘a 10MB má»—i file", 0, 70, 8F, FontStyle.Regular, KtvTheme.TextLight);
+                lblUpload2.Size = new Size(cardW - 40, 18);
+                lblUpload2.TextAlign = ContentAlignment.MiddleCenter;
+                lblUpload2.Click += PnlUploadZone_Click;
+                pnlUploadZone.Controls.Add(lblUpload2);
+                cardAttachment.Controls.Add(pnlUploadZone);
 
-            flpUploadedFiles = new FlowLayoutPanel
-            {
-                Location = new Point(20, 158),
-                Size = new Size(cardW - 40, 44),
-                FlowDirection = FlowDirection.LeftToRight,
-                WrapContents = true,
-                AutoScroll = false,
-                BackColor = Color.White
-            };
-            cardAttachment.Controls.Add(flpUploadedFiles);
+                flpUploadedFiles = new FlowLayoutPanel
+                {
+                    Location = new Point(20, 158),
+                    Size = new Size(cardW - 40, 44),
+                    FlowDirection = FlowDirection.LeftToRight,
+                    WrapContents = true,
+                    AutoScroll = false,
+                    BackColor = Color.White
+                };
+                cardAttachment.Controls.Add(flpUploadedFiles);
 
-            pnlFormContainer.Controls.Add(cardAttachment);
-            y += 212 + 16;
+                pnlFormContainer.Controls.Add(cardAttachment);
+                y += 212 + 16;
 
-            // Render attachment list initially
-            RenderAttachmentsList();
+                // Render attachment list initially
+                RenderAttachmentsList();
             }
 
             // E. Actions Card
@@ -1256,9 +1268,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnComplete.Size = new Size(280, 40);
             btnComplete.TextAlign = HorizontalAlignment.Center;
             btnComplete.TextOffset = new Point(0, 0);
-            btnComplete.Click += (s, e) => {
-                activeService.KetQua = txtRemarks.Text.Trim().Length > 0 
-                    ? txtRemarks.Text.Trim() 
+            btnComplete.Click += (s, e) =>
+            {
+                activeService.KetQua = txtRemarks.Text.Trim().Length > 0
+                    ? txtRemarks.Text.Trim()
                     : (activeService.Service + ": káº¿t quáº£ bÃ¬nh thÆ°á»ng");
                 ShowToastNotification("âœ… ÄÃ£ lÆ°u KETQUA vÃ o HSBA_DV thÃ nh cÃ´ng!");
                 BuildQueueItems();
@@ -1404,7 +1417,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     Font = new Font("Segoe UI", 7F, FontStyle.Bold),
                     Cursor = Cursors.Hand
                 };
-                btnDelete.Click += (s, e) => {
+                btnDelete.Click += (s, e) =>
+                {
                     mockAttachedFiles.Remove(file);
                     RenderAttachmentsList();
                 };

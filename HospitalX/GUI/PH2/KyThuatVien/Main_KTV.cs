@@ -22,9 +22,19 @@ namespace HospitalX.GUI.PH2
             SetButtonImages(this.btnThongBao, KtvIcons.SidebarThongBaoNormal, KtvIcons.SidebarThongBaoActive);
             ApplyDoctorSidebarLayout();
 
+            FormClosed += Main_KTV_FormClosed;
             WireNavigation();
             LoadPage(new ucKtvDashboard(), "Trang chủ", "Xin chào, bạn có 7 dịch vụ được phân công hôm nay");
             btnDashboard.Checked = true;
+        }
+
+        private void Main_KTV_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DisposeCurrentPage();
+            if (ReferenceEquals(Instance, this))
+            {
+                Instance = null;
+            }
         }
 
         private void WireNavigation()
@@ -73,10 +83,20 @@ namespace HospitalX.GUI.PH2
 
         private void LoadPage(UserControl control, string title, string subtitle)
         {
-            pnlContent.Controls.Clear();
+            DisposeCurrentPage();
             control.Dock = DockStyle.Fill;
             pnlContent.Controls.Add(control);
             lblPageTitle.Text = title;
+        }
+
+        private void DisposeCurrentPage()
+        {
+            while (pnlContent.Controls.Count > 0)
+            {
+                Control oldControl = pnlContent.Controls[0];
+                pnlContent.Controls.RemoveAt(0);
+                oldControl.Dispose();
+            }
         }
 
         private void ApplyDoctorSidebarLayout()
