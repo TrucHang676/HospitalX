@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private readonly List<AuditLogRecord> _logs = new List<AuditLogRecord>();
         private readonly List<AuditScenario> _scenarios = new List<AuditScenario>();
         private bool _isLoaded;
+        private int _hoveredDetailRowIndex = -1;
 
         public ucAudit()
         {
@@ -30,8 +32,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
             _isLoaded = true;
             SeedData();
+            SetupAuditGrids();
             WireEvents();
-            BindScenarios();
             ApplyFilters();
         }
 
@@ -45,9 +47,76 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             dtpFrom.ValueChanged += FilterChanged;
             dtpTo.ValueChanged += FilterChanged;
             btnClear.Click += BtnClear_Click;
-            btnEnableAudit.Click += BtnEnableAudit_Click;
             dgvLogs.CellContentClick += dgvLogs_CellContentClick;
             dgvLogs.CellPainting += dgvLogs_CellPainting;
+            dgvLogs.MouseMove += dgvLogs_MouseMove;
+            dgvLogs.MouseLeave += dgvLogs_MouseLeave;
+        }
+
+        private void SetupAuditGrids()
+        {
+            SetupSoftGrid(dgvLogs, 62, 44);
+            dgvLogs.DefaultCellStyle.Font = new Font("Segoe UI", 9.4F);
+            dgvLogs.Columns["colAuditId"].FillWeight = 104F;
+            dgvLogs.Columns["colTime"].FillWeight = 110F;
+            dgvLogs.Columns["colUser"].FillWeight = 96F;
+            dgvLogs.Columns["colAction"].FillWeight = 82F;
+            dgvLogs.Columns["colObject"].FillWeight = 104F;
+            dgvLogs.Columns["colDetail"].FillWeight = 238F;
+            dgvLogs.Columns["colRows"].FillWeight = 48F;
+            dgvLogs.Columns["colIp"].FillWeight = 88F;
+            dgvLogs.Columns["colResult"].FillWeight = 112F;
+            dgvLogs.Columns["colDetailAction"].FillWeight = 70F;
+        }
+
+        private static void SetupSoftGrid(DataGridView grid, int rowHeight, int headerHeight)
+        {
+            grid.EnableHeadersVisualStyles = false;
+            grid.BackgroundColor = Color.White;
+            grid.BorderStyle = BorderStyle.None;
+            grid.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            grid.GridColor = Color.White;
+            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            grid.MultiSelect = false;
+            grid.RowHeadersVisible = false;
+            grid.AllowUserToResizeRows = false;
+            grid.AllowUserToResizeColumns = false;
+            grid.ColumnHeadersHeight = headerHeight;
+            grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            grid.RowTemplate.Height = rowHeight;
+            grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            grid.AdvancedCellBorderStyle.All = DataGridViewAdvancedCellBorderStyle.None;
+            grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.None;
+
+            Guna2DataGridView gunaGrid = grid as Guna2DataGridView;
+            if (gunaGrid != null)
+            {
+                gunaGrid.ThemeStyle.GridColor = Color.White;
+                gunaGrid.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+                gunaGrid.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.None;
+            }
+
+            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(122, 149, 137);
+            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            grid.ColumnHeadersDefaultCellStyle.Padding = new Padding(10, 0, 0, 0);
+            grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(247, 249, 248);
+            grid.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(122, 149, 137);
+
+            grid.DefaultCellStyle.BackColor = Color.White;
+            grid.DefaultCellStyle.ForeColor = Color.FromArgb(24, 48, 42);
+            grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 244, 240);
+            grid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(24, 48, 42);
+            grid.DefaultCellStyle.Padding = new Padding(10, 0, 8, 0);
+            grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
+            grid.RowsDefaultCellStyle.BackColor = Color.White;
+
+            foreach (DataGridViewColumn column in grid.Columns)
+            {
+                column.DividerWidth = 0;
+            }
         }
 
         private void SeedData()
@@ -76,17 +145,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             _logs.Add(new AuditLogRecord("AUD-08403", new DateTime(2026, 5, 23, 16, 55, 22), "bs_tim_01", "LOGIN", "SESSION", "Đăng nhập thành công", 1, "10.0.2.17", true, "STD-01"));
             _logs.Add(new AuditLogRecord("AUD-08402", new DateTime(2026, 5, 22, 10, 15, 09), "ys_noitru_03", "UPDATE", "ĐƠNTHUỐC", "Thay đổi NGÀYĐT cho HSBA-0794", 1, "10.0.2.33", true, "FGA-01"));
             _logs.Add(new AuditLogRecord("AUD-08401", new DateTime(2026, 5, 21, 9, 30, 0), "nv_khoa_a_09", "INSERT", "HSBA_DV", "Bị từ chối thêm dịch vụ vào HSBA không phụ trách", 0, "10.0.1.22", false, "FGA-04"));
-        }
-
-        private void BindScenarios()
-        {
-            dgvScenarios.Rows.Clear();
-            foreach (AuditScenario scenario in _scenarios)
-            {
-                int rowIndex = dgvScenarios.Rows.Add(scenario.Code, scenario.Type, scenario.Name, scenario.Target, scenario.Status);
-                dgvScenarios.Rows[rowIndex].Tag = scenario;
-            }
-            dgvScenarios.ClearSelection();
         }
 
         private void ApplyFilters()
@@ -159,7 +217,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             {
                 int rowIndex = dgvLogs.Rows.Add(
                     log.Id,
-                    log.Time.ToString("dd/MM/yyyy HH:mm:ss"),
+                    log.Time.ToString("dd/MM/yyyy") + "\n" + log.Time.ToString("HH:mm:ss"),
                     log.Username,
                     log.Action,
                     log.ObjectName,
@@ -170,6 +228,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                     "Xem");
                 dgvLogs.Rows[rowIndex].Tag = log;
                 dgvLogs.Rows[rowIndex].DefaultCellStyle.BackColor = log.Success ? Color.White : Color.FromArgb(255, 247, 247);
+                dgvLogs.Rows[rowIndex].DividerHeight = 0;
             }
 
             dgvLogs.ClearSelection();
@@ -179,22 +238,61 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         {
             if (e.RowIndex < 0)
             {
+                PaintHeaderCell(e);
                 return;
             }
 
             string columnName = dgvLogs.Columns[e.ColumnIndex].Name;
-            if (columnName != "colAction" && columnName != "colResult" && columnName != "colDetailAction")
+            PaintLogCellBackground(e);
+            string text = Convert.ToString(e.Value);
+
+            if (columnName == "colAuditId")
             {
+                Rectangle idBadge = new Rectangle(e.CellBounds.X + 12, e.CellBounds.Y + 17, e.CellBounds.Width - 24, 28);
+                PaintBadge(e.Graphics, idBadge, text, Color.FromArgb(230, 244, 240), Color.FromArgb(15, 110, 86), Color.Transparent, 8.8F);
+                e.Handled = true;
                 return;
             }
 
-            e.PaintBackground(e.CellBounds, true);
-            string text = Convert.ToString(e.Value);
+            if (columnName == "colTime")
+            {
+                string[] lines = text.Split('\n');
+                TextRenderer.DrawText(e.Graphics, lines[0], new Font("Segoe UI", 9.6F, FontStyle.Bold), new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y + 8, e.CellBounds.Width - 22, 24), Color.FromArgb(24, 48, 42), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                if (lines.Length > 1)
+                {
+                    TextRenderer.DrawText(e.Graphics, lines[1], new Font("Segoe UI", 8.8F), new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y + 31, e.CellBounds.Width - 22, 22), Color.FromArgb(122, 149, 137), TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                }
+                e.Handled = true;
+                return;
+            }
 
             if (columnName == "colDetailAction")
             {
-                Rectangle button = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y + 8, e.CellBounds.Width - 16, e.CellBounds.Height - 16);
-                PaintBadge(e.Graphics, button, "Xem", Color.White, Color.FromArgb(15, 110, 86), Color.FromArgb(196, 226, 216));
+                bool hovered = e.RowIndex == _hoveredDetailRowIndex;
+                Rectangle button = new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y + 16, e.CellBounds.Width - 20, 30);
+                Color fill = hovered ? Color.FromArgb(230, 244, 240) : Color.White;
+                Color border = hovered ? Color.FromArgb(15, 110, 86) : Color.FromArgb(218, 232, 226);
+                Color buttonFore = hovered ? Color.FromArgb(10, 79, 61) : Color.FromArgb(15, 110, 86);
+                PaintBadge(e.Graphics, button, "Xem", fill, buttonFore, border, 8.8F);
+                e.Handled = true;
+                return;
+            }
+
+            if (columnName != "colAction" && columnName != "colResult")
+            {
+                TextFormatFlags flags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis;
+                if (columnName == "colRows")
+                {
+                    flags = TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis;
+                }
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    text,
+                    new Font("Segoe UI", 9.4F),
+                    new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 22, e.CellBounds.Height),
+                    Color.FromArgb(24, 48, 42),
+                    flags);
                 e.Handled = true;
                 return;
             }
@@ -203,7 +301,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             Color fore;
             if (columnName == "colResult")
             {
-                bool success = text.Contains("Thành") || text.Contains("ThÃ");
+                AuditLogRecord record = dgvLogs.Rows[e.RowIndex].Tag as AuditLogRecord;
+                bool success = record == null || record.Success;
                 back = success ? Color.FromArgb(220, 252, 231) : Color.FromArgb(254, 226, 226);
                 fore = success ? Color.FromArgb(22, 101, 52) : Color.FromArgb(185, 28, 28);
             }
@@ -212,9 +311,85 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 GetActionColors(text, out back, out fore);
             }
 
-            Rectangle badge = new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y + 10, Math.Min(e.CellBounds.Width - 18, 86), e.CellBounds.Height - 20);
-            PaintBadge(e.Graphics, badge, text, back, fore, Color.Transparent);
+            Rectangle statusBadge = new Rectangle(e.CellBounds.X + 12, e.CellBounds.Y + 17, e.CellBounds.Width - 24, 28);
+            PaintBadge(e.Graphics, statusBadge, text, back, fore, Color.Transparent, 8.5F);
             e.Handled = true;
+        }
+
+        private void PaintLogCellBackground(DataGridViewCellPaintingEventArgs e)
+        {
+            AuditLogRecord record = dgvLogs.Rows[e.RowIndex].Tag as AuditLogRecord;
+            Color fill;
+            if (record != null && !record.Success)
+            {
+                fill = Color.FromArgb(255, 248, 248);
+            }
+            else
+            {
+                fill = e.RowIndex % 2 == 0 ? Color.White : Color.FromArgb(248, 251, 250);
+            }
+
+            using (SolidBrush brush = new SolidBrush(fill))
+            {
+                Rectangle cover = new Rectangle(e.CellBounds.X - 1, e.CellBounds.Y - 1, e.CellBounds.Width + 3, e.CellBounds.Height + 3);
+                e.Graphics.FillRectangle(brush, cover);
+            }
+
+            using (Pen pen = new Pen(Color.FromArgb(236, 243, 240)))
+            {
+                e.Graphics.DrawLine(pen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right, e.CellBounds.Bottom - 1);
+            }
+        }
+
+        private static void PaintHeaderCell(DataGridViewCellPaintingEventArgs e)
+        {
+            using (SolidBrush brush = new SolidBrush(Color.FromArgb(247, 249, 248)))
+            {
+                Rectangle cover = new Rectangle(e.CellBounds.X - 1, e.CellBounds.Y - 1, e.CellBounds.Width + 3, e.CellBounds.Height + 3);
+                e.Graphics.FillRectangle(brush, cover);
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                Convert.ToString(e.Value),
+                new Font("Segoe UI", 9F, FontStyle.Bold),
+                new Rectangle(e.CellBounds.X + 10, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height),
+                Color.FromArgb(122, 149, 137),
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+
+            e.Handled = true;
+        }
+
+        private void dgvLogs_MouseMove(object sender, MouseEventArgs e)
+        {
+            DataGridView.HitTestInfo hit = dgvLogs.HitTest(e.X, e.Y);
+            int actionColumnIndex = dgvLogs.Columns["colDetailAction"].Index;
+            int nextHoveredRow = hit.Type == DataGridViewHitTestType.Cell && hit.ColumnIndex == actionColumnIndex ? hit.RowIndex : -1;
+
+            if (_hoveredDetailRowIndex != nextHoveredRow)
+            {
+                int oldRow = _hoveredDetailRowIndex;
+                _hoveredDetailRowIndex = nextHoveredRow;
+                dgvLogs.Cursor = _hoveredDetailRowIndex >= 0 ? Cursors.Hand : Cursors.Default;
+                InvalidateDetailCell(oldRow);
+                InvalidateDetailCell(_hoveredDetailRowIndex);
+            }
+        }
+
+        private void dgvLogs_MouseLeave(object sender, EventArgs e)
+        {
+            int oldRow = _hoveredDetailRowIndex;
+            _hoveredDetailRowIndex = -1;
+            dgvLogs.Cursor = Cursors.Default;
+            InvalidateDetailCell(oldRow);
+        }
+
+        private void InvalidateDetailCell(int rowIndex)
+        {
+            if (rowIndex >= 0 && rowIndex < dgvLogs.Rows.Count)
+            {
+                dgvLogs.InvalidateCell(dgvLogs.Columns["colDetailAction"].Index, rowIndex);
+            }
         }
 
         private static void GetActionColors(string action, out Color back, out Color fore)
@@ -246,12 +421,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
         }
 
-        private static void PaintBadge(Graphics graphics, Rectangle rect, string text, Color fill, Color fore, Color border)
+        private static void PaintBadge(Graphics graphics, Rectangle rect, string text, Color fill, Color fore, Color border, float fontSize)
         {
-            using (System.Drawing.Drawing2D.GraphicsPath path = RoundedPath(rect, 7))
+            using (GraphicsPath path = RoundedPath(rect, 7))
             using (SolidBrush brush = new SolidBrush(fill))
             {
-                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 graphics.FillPath(brush, path);
                 if (border != Color.Transparent)
                 {
@@ -262,13 +437,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 }
             }
 
-            TextRenderer.DrawText(graphics, text, new Font("Segoe UI", 8.6F, FontStyle.Bold), rect, fore, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+            TextRenderer.DrawText(graphics, text, new Font("Segoe UI", fontSize, FontStyle.Bold), rect, fore, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
         }
 
-        private static System.Drawing.Drawing2D.GraphicsPath RoundedPath(Rectangle rect, int radius)
+        private static GraphicsPath RoundedPath(Rectangle rect, int radius)
         {
             int d = radius * 2;
-            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            var path = new GraphicsPath();
             path.AddArc(rect.X, rect.Y, d, d, 180, 90);
             path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
             path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);

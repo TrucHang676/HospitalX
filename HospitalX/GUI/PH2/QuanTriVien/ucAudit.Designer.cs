@@ -17,12 +17,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucAudit));
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlRoot = new System.Windows.Forms.Panel();
@@ -41,17 +38,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLogsHeader = new System.Windows.Forms.Panel();
             this.lblResultCount = new System.Windows.Forms.Label();
             this.lblLogsTitle = new System.Windows.Forms.Label();
-            this.pnlMiddle = new System.Windows.Forms.Panel();
-            this.pnlScenario = new Guna.UI2.WinForms.Guna2Panel();
-            this.dgvScenarios = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.colScenarioCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colScenarioType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colScenarioName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colScenarioTarget = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colScenarioStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pnlScenarioHeader = new System.Windows.Forms.Panel();
-            this.btnEnableAudit = new Guna.UI2.WinForms.Guna2Button();
-            this.lblScenarioTitle = new System.Windows.Forms.Label();
             this.pnlFilter = new Guna.UI2.WinForms.Guna2Panel();
             this.btnClear = new Guna.UI2.WinForms.Guna2Button();
             this.cmbSort = new Guna.UI2.WinForms.Guna2ComboBox();
@@ -72,10 +58,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLogs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLogs)).BeginInit();
             this.pnlLogsHeader.SuspendLayout();
-            this.pnlMiddle.SuspendLayout();
-            this.pnlScenario.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvScenarios)).BeginInit();
-            this.pnlScenarioHeader.SuspendLayout();
             this.pnlFilter.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +65,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
             this.msgDialog.Caption = null;
-            this.msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
+            this.msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Information;
             this.msgDialog.Parent = null;
             this.msgDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
             this.msgDialog.Text = null;
@@ -91,7 +73,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // pnlRoot
             // 
             this.pnlRoot.Controls.Add(this.pnlLogs);
-            this.pnlRoot.Controls.Add(this.pnlMiddle);
             this.pnlRoot.Controls.Add(this.pnlFilter);
             this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRoot.Location = new System.Drawing.Point(0, 0);
@@ -107,14 +88,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlLogs.BorderThickness = 1;
             this.pnlLogs.Controls.Add(this.dgvLogs);
             this.pnlLogs.Controls.Add(this.pnlLogsHeader);
-            this.pnlLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlLogs.FillColor = System.Drawing.Color.White;
-            this.pnlLogs.Location = new System.Drawing.Point(22, 403);
+            this.pnlLogs.Location = new System.Drawing.Point(22, 181);
+            this.pnlLogs.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
             this.pnlLogs.Name = "pnlLogs";
             this.pnlLogs.Padding = new System.Windows.Forms.Padding(1);
             this.pnlLogs.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(236)))), ((int)(((byte)(230)))));
             this.pnlLogs.ShadowDecoration.Depth = 5;
-            this.pnlLogs.Size = new System.Drawing.Size(1084, 361);
+            this.pnlLogs.Size = new System.Drawing.Size(1084, 583);
             this.pnlLogs.TabIndex = 3;
             // 
             // dgvLogs
@@ -122,16 +103,16 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvLogs.AllowUserToAddRows = false;
             this.dgvLogs.AllowUserToDeleteRows = false;
             this.dgvLogs.AllowUserToResizeRows = false;
-            dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
-            this.dgvLogs.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle14.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLogs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
+            this.dgvLogs.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLogs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvLogs.ColumnHeadersHeight = 36;
             this.dgvLogs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colAuditId,
@@ -144,14 +125,14 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.colIp,
             this.colResult,
             this.colDetailAction});
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvLogs.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvLogs.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvLogs.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
             this.dgvLogs.Location = new System.Drawing.Point(4, 53);
             this.dgvLogs.MultiSelect = false;
@@ -159,7 +140,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.dgvLogs.ReadOnly = true;
             this.dgvLogs.RowHeadersVisible = false;
             this.dgvLogs.RowTemplate.Height = 48;
-            this.dgvLogs.Size = new System.Drawing.Size(1076, 304);
+            this.dgvLogs.Size = new System.Drawing.Size(1076, 526);
             this.dgvLogs.TabIndex = 1;
             this.dgvLogs.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvLogs.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -287,168 +268,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblLogsTitle.Size = new System.Drawing.Size(138, 20);
             this.lblLogsTitle.TabIndex = 0;
             this.lblLogsTitle.Text = "Nhật ký kiểm toán";
-            // 
-            // pnlMiddle
-            // 
-            this.pnlMiddle.Controls.Add(this.pnlScenario);
-            this.pnlMiddle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlMiddle.Location = new System.Drawing.Point(22, 158);
-            this.pnlMiddle.Name = "pnlMiddle";
-            this.pnlMiddle.Padding = new System.Windows.Forms.Padding(0, 14, 0, 14);
-            this.pnlMiddle.Size = new System.Drawing.Size(1084, 245);
-            this.pnlMiddle.TabIndex = 2;
-            // 
-            // pnlScenario
-            // 
-            this.pnlScenario.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlScenario.BorderRadius = 10;
-            this.pnlScenario.BorderThickness = 2;
-            this.pnlScenario.Controls.Add(this.dgvScenarios);
-            this.pnlScenario.Controls.Add(this.pnlScenarioHeader);
-            this.pnlScenario.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlScenario.FillColor = System.Drawing.Color.White;
-            this.pnlScenario.Location = new System.Drawing.Point(0, 14);
-            this.pnlScenario.Name = "pnlScenario";
-            this.pnlScenario.Padding = new System.Windows.Forms.Padding(1);
-            this.pnlScenario.Size = new System.Drawing.Size(1084, 217);
-            this.pnlScenario.TabIndex = 2;
-            // 
-            // dgvScenarios
-            // 
-            this.dgvScenarios.AllowUserToAddRows = false;
-            this.dgvScenarios.AllowUserToDeleteRows = false;
-            this.dgvScenarios.AllowUserToResizeRows = false;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
-            this.dgvScenarios.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle16;
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvScenarios.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
-            this.dgvScenarios.ColumnHeadersHeight = 32;
-            this.dgvScenarios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colScenarioCode,
-            this.colScenarioType,
-            this.colScenarioName,
-            this.colScenarioTarget,
-            this.colScenarioStatus});
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvScenarios.DefaultCellStyle = dataGridViewCellStyle18;
-            this.dgvScenarios.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.dgvScenarios.Location = new System.Drawing.Point(4, 48);
-            this.dgvScenarios.MultiSelect = false;
-            this.dgvScenarios.Name = "dgvScenarios";
-            this.dgvScenarios.ReadOnly = true;
-            this.dgvScenarios.RowHeadersVisible = false;
-            this.dgvScenarios.RowTemplate.Height = 34;
-            this.dgvScenarios.Size = new System.Drawing.Size(1076, 165);
-            this.dgvScenarios.TabIndex = 1;
-            this.dgvScenarios.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvScenarios.ThemeStyle.AlternatingRowsStyle.Font = null;
-            this.dgvScenarios.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
-            this.dgvScenarios.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = System.Drawing.Color.Empty;
-            this.dgvScenarios.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = System.Drawing.Color.Empty;
-            this.dgvScenarios.ThemeStyle.BackColor = System.Drawing.Color.White;
-            this.dgvScenarios.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.dgvScenarios.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.dgvScenarios.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvScenarios.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvScenarios.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvScenarios.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvScenarios.ThemeStyle.HeaderStyle.Height = 32;
-            this.dgvScenarios.ThemeStyle.ReadOnly = true;
-            this.dgvScenarios.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvScenarios.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvScenarios.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvScenarios.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            this.dgvScenarios.ThemeStyle.RowsStyle.Height = 34;
-            this.dgvScenarios.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvScenarios.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            // 
-            // colScenarioCode
-            // 
-            this.colScenarioCode.FillWeight = 60F;
-            this.colScenarioCode.HeaderText = "Mã";
-            this.colScenarioCode.Name = "colScenarioCode";
-            this.colScenarioCode.ReadOnly = true;
-            // 
-            // colScenarioType
-            // 
-            this.colScenarioType.FillWeight = 105F;
-            this.colScenarioType.HeaderText = "Loại audit";
-            this.colScenarioType.Name = "colScenarioType";
-            this.colScenarioType.ReadOnly = true;
-            // 
-            // colScenarioName
-            // 
-            this.colScenarioName.FillWeight = 145F;
-            this.colScenarioName.HeaderText = "Ngữ cảnh";
-            this.colScenarioName.Name = "colScenarioName";
-            this.colScenarioName.ReadOnly = true;
-            // 
-            // colScenarioTarget
-            // 
-            this.colScenarioTarget.FillWeight = 120F;
-            this.colScenarioTarget.HeaderText = "Đối tượng";
-            this.colScenarioTarget.Name = "colScenarioTarget";
-            this.colScenarioTarget.ReadOnly = true;
-            // 
-            // colScenarioStatus
-            // 
-            this.colScenarioStatus.FillWeight = 76F;
-            this.colScenarioStatus.HeaderText = "Trạng thái";
-            this.colScenarioStatus.Name = "colScenarioStatus";
-            this.colScenarioStatus.ReadOnly = true;
-            // 
-            // pnlScenarioHeader
-            // 
-            this.pnlScenarioHeader.BackColor = System.Drawing.Color.White;
-            this.pnlScenarioHeader.Controls.Add(this.btnEnableAudit);
-            this.pnlScenarioHeader.Controls.Add(this.lblScenarioTitle);
-            this.pnlScenarioHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlScenarioHeader.Location = new System.Drawing.Point(1, 1);
-            this.pnlScenarioHeader.Name = "pnlScenarioHeader";
-            this.pnlScenarioHeader.Size = new System.Drawing.Size(1082, 47);
-            this.pnlScenarioHeader.TabIndex = 0;
-            // 
-            // btnEnableAudit
-            // 
-            this.btnEnableAudit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEnableAudit.BorderRadius = 8;
-            this.btnEnableAudit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnEnableAudit.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.btnEnableAudit.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.btnEnableAudit.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnEnableAudit.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEnableAudit.ForeColor = System.Drawing.Color.White;
-            this.btnEnableAudit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnEnableAudit.HoverState.ForeColor = System.Drawing.Color.White;
-            this.btnEnableAudit.Location = new System.Drawing.Point(901, 9);
-            this.btnEnableAudit.Name = "btnEnableAudit";
-            this.btnEnableAudit.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnEnableAudit.Size = new System.Drawing.Size(163, 30);
-            this.btnEnableAudit.TabIndex = 2;
-            this.btnEnableAudit.Text = "Kích hoạt audit";
-            // 
-            // lblScenarioTitle
-            // 
-            this.lblScenarioTitle.AutoSize = true;
-            this.lblScenarioTitle.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblScenarioTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblScenarioTitle.Location = new System.Drawing.Point(17, 14);
-            this.lblScenarioTitle.Name = "lblScenarioTitle";
-            this.lblScenarioTitle.Size = new System.Drawing.Size(117, 20);
-            this.lblScenarioTitle.TabIndex = 0;
-            this.lblScenarioTitle.Text = "Ngữ cảnh audit";
             // 
             // pnlFilter
             // 
@@ -750,11 +569,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             ((System.ComponentModel.ISupportInitialize)(this.dgvLogs)).EndInit();
             this.pnlLogsHeader.ResumeLayout(false);
             this.pnlLogsHeader.PerformLayout();
-            this.pnlMiddle.ResumeLayout(false);
-            this.pnlScenario.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvScenarios)).EndInit();
-            this.pnlScenarioHeader.ResumeLayout(false);
-            this.pnlScenarioHeader.PerformLayout();
             this.pnlFilter.ResumeLayout(false);
             this.pnlFilter.PerformLayout();
             this.ResumeLayout(false);
@@ -781,17 +595,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private Guna.UI2.WinForms.Guna2ComboBox cmbSort;
         private System.Windows.Forms.Label lblSort;
         private Guna.UI2.WinForms.Guna2Button btnClear;
-        private System.Windows.Forms.Panel pnlMiddle;
-        private Guna.UI2.WinForms.Guna2Panel pnlScenario;
-        private System.Windows.Forms.Panel pnlScenarioHeader;
-        private System.Windows.Forms.Label lblScenarioTitle;
-        private Guna.UI2.WinForms.Guna2Button btnEnableAudit;
-        private Guna.UI2.WinForms.Guna2DataGridView dgvScenarios;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colScenarioCode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colScenarioType;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colScenarioName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colScenarioTarget;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colScenarioStatus;
         private Guna.UI2.WinForms.Guna2Panel pnlLogs;
         private System.Windows.Forms.Panel pnlLogsHeader;
         private System.Windows.Forms.Label lblResultCount;

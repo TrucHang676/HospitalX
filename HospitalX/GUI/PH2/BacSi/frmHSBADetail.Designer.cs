@@ -106,7 +106,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblPatientMeta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.lblPatientMeta.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblPatientMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblPatientMeta.Location = new System.Drawing.Point(32, 101);
+            this.lblPatientMeta.Location = new System.Drawing.Point(32, 88);
             this.lblPatientMeta.Name = "lblPatientMeta";
             this.lblPatientMeta.Size = new System.Drawing.Size(690, 24);
             this.lblPatientMeta.TabIndex = 3;
@@ -362,6 +362,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtConclusion
             // 
+            this.txtConclusion.BackColor = System.Drawing.Color.Transparent;
             this.txtConclusion.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtConclusion.BorderRadius = 8;
             this.txtConclusion.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -394,6 +395,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtTreatment
             // 
+            this.txtTreatment.BackColor = System.Drawing.Color.Transparent;
             this.txtTreatment.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtTreatment.BorderRadius = 8;
             this.txtTreatment.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -426,6 +428,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtDiagnosis
             // 
+            this.txtDiagnosis.BackColor = System.Drawing.Color.Transparent;
             this.txtDiagnosis.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtDiagnosis.BorderRadius = 8;
             this.txtDiagnosis.Cursor = System.Windows.Forms.Cursors.IBeam;

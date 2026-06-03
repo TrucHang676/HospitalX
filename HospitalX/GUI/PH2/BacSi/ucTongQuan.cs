@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -137,8 +138,182 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            string maHsba = Convert.ToString(dgvRecentHsba.Rows[e.RowIndex].Cells["colHsbaId"].Value);
-            MessageBox.Show("Mở chi tiết " + maHsba, "HospitalX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ucHSBA.HsbaRecord record = CreateHsbaRecordFromRecentRow(e.RowIndex);
+            using (frmHSBADetail form = new frmHSBADetail(record))
+            {
+                form.ShowDialog(this);
+            }
+        }
+
+        // Tạo dữ liệu HSBA mẫu cho popup chi tiết khi bấm nút Xem ở bảng Tổng quan.
+        private ucHSBA.HsbaRecord CreateHsbaRecordFromRecentRow(int rowIndex)
+        {
+            DataGridViewRow row = dgvRecentHsba.Rows[rowIndex];
+            string hsbaId = Convert.ToString(row.Cells["colHsbaId"].Value);
+            string patientText = Convert.ToString(row.Cells["colPatient"].Value);
+            string dateText = Convert.ToString(row.Cells["colDate"].Value);
+
+            string[] patientLines = patientText.Split('\n');
+            string patientName = patientLines.Length > 0 ? patientLines[0] : "";
+            string patientMeta = patientLines.Length > 1 ? patientLines[1] : "";
+            string[] metaParts = patientMeta.Split('·');
+
+            string patientCode = metaParts.Length > 0 ? metaParts[0].Trim() : "";
+            string gender = metaParts.Length > 1 ? metaParts[1].Trim() : "";
+            int age = 0;
+            if (metaParts.Length > 2)
+            {
+                int.TryParse(metaParts[2].Replace("tuổi", "").Trim(), out age);
+            }
+
+            DateTime createdDate;
+            string createdText = dateText.Split('\n')[0];
+            if (!DateTime.TryParseExact(createdText, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out createdDate))
+            {
+                createdDate = DateTime.Today;
+            }
+
+            return new ucHSBA.HsbaRecord
+            {
+                Id = hsbaId,
+                PatientCode = patientCode,
+                PatientName = patientName,
+                Gender = gender,
+                Age = age,
+                Department = "Khoa Tim Mạch",
+                CreatedDate = createdDate,
+                BirthDate = GetBirthDate(hsbaId),
+                CitizenId = GetCitizenId(hsbaId),
+                Address = GetAddress(hsbaId),
+                Allergy = GetAllergy(hsbaId),
+                MedicalHistory = GetMedicalHistory(hsbaId),
+                Diagnosis = GetDiagnosis(hsbaId),
+                Treatment = GetTreatment(hsbaId),
+                Conclusion = GetConclusion(hsbaId),
+                Services = GetServices(hsbaId),
+                Prescriptions = GetPrescriptions(hsbaId)
+            };
+        }
+
+        private static string GetBirthDate(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0821": return "15/03/1974";
+                case "HSBA-0819": return "09/10/1988";
+                case "HSBA-0815": return "22/04/1959";
+                case "HSBA-0801": return "03/12/1981";
+                case "HSBA-0799": return "19/01/1997";
+                default: return "";
+            }
+        }
+
+        private static string GetCitizenId(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0821": return "079074012345";
+                case "HSBA-0819": return "079088004512";
+                case "HSBA-0815": return "079059002151";
+                case "HSBA-0801": return "079081001891";
+                case "HSBA-0799": return "079097001741";
+                default: return "";
+            }
+        }
+
+        private static string GetAddress(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0821": return "Q.1, TP.HCM";
+                case "HSBA-0819": return "Q.7, TP.HCM";
+                case "HSBA-0815": return "TP. Thủ Đức, TP.HCM";
+                case "HSBA-0801": return "Q.3, TP.HCM";
+                case "HSBA-0799": return "Q. Tân Bình, TP.HCM";
+                default: return "";
+            }
+        }
+
+        private static string GetAllergy(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0815": return "Dị ứng Penicillin";
+                default: return "Không ghi nhận";
+            }
+        }
+
+        private static string GetMedicalHistory(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0821": return "Tăng huyết áp từ năm 2018. Không hút thuốc lá.";
+                case "HSBA-0819": return "Đã từng hồi hộp đánh trống ngực khi gắng sức.";
+                case "HSBA-0815": return "Đái tháo đường type 2, tăng huyết áp lâu năm.";
+                case "HSBA-0801": return "Tăng huyết áp nhẹ.";
+                case "HSBA-0799": return "Không có bệnh nền đáng kể.";
+                default: return "";
+            }
+        }
+
+        private static string GetDiagnosis(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0821": return "Tăng huyết áp độ II, rối loạn nhịp tim kèm khó thở khi gắng sức.";
+                case "HSBA-0819": return "Rối loạn nhịp tim kịch phát trên thất, cần theo dõi Holter 24h.";
+                case "HSBA-0815": return "Suy tim độ II - NYHA, có tiền sử đái tháo đường type 2.";
+                case "HSBA-0801": return "Tăng huyết áp kiểm soát tốt.";
+                case "HSBA-0799": return "Rối loạn nhịp ngoại tâm thu lành tính.";
+                default: return "";
+            }
+        }
+
+        private static string GetTreatment(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0821": return "Amlodipine 5mg, Bisoprolol 2.5mg. Theo dõi huyết áp tại nhà.";
+                case "HSBA-0819": return "Theo dõi nhịp tim, hạn chế caffeine, tái khám khi có kết quả Holter.";
+                case "HSBA-0815": return "Điều chỉnh lợi tiểu, kiểm soát đường huyết và theo dõi CT tim.";
+                case "HSBA-0801": return "Tiếp tục thuốc duy trì, ăn nhạt, vận động đều.";
+                case "HSBA-0799": return "Trấn an, giảm chất kích thích, theo dõi triệu chứng.";
+                default: return "";
+            }
+        }
+
+        private static string GetConclusion(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0801": return "Tăng huyết áp kiểm soát tốt, tái khám sau 1 tháng.";
+                case "HSBA-0799": return "Không cần can thiệp thêm.";
+                default: return "(Chưa có kết luận - bệnh nhân đang điều trị)";
+            }
+        }
+
+        private static List<string> GetServices(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0819": return new List<string> { "Holter điện tim 24h - Chờ kết quả" };
+                case "HSBA-0815": return new List<string> { "CT tim - Chờ kết quả", "Xét nghiệm HbA1c - Có kết quả" };
+                case "HSBA-0801": return new List<string> { "Xét nghiệm máu - Có kết quả" };
+                case "HSBA-0799": return new List<string> { "Điện tim - Có kết quả" };
+                default: return new List<string> { "Siêu âm tim - Chờ kết quả", "Xét nghiệm máu tổng quát - Có kết quả" };
+            }
+        }
+
+        private static List<string> GetPrescriptions(string hsbaId)
+        {
+            switch (hsbaId)
+            {
+                case "HSBA-0819": return new List<string> { "Magnesium B6 - 2 viên/ngày" };
+                case "HSBA-0815": return new List<string> { "Furosemide 40mg - 1 viên buổi sáng", "Metformin 500mg - 2 viên/ngày" };
+                case "HSBA-0801": return new List<string> { "Losartan 50mg - 1 viên/ngày" };
+                case "HSBA-0799": return new List<string> { "Không kê thuốc" };
+                default: return new List<string> { "Amlodipine 5mg - 1 viên/ngày, sáng sau ăn", "Bisoprolol 2.5mg - 1 viên/ngày, sáng trước ăn" };
+            }
         }
 
         private void BtnViewAll_Click(object sender, EventArgs e)

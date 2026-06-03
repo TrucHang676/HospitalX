@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -31,9 +31,6 @@ namespace HospitalX.GUI.PH1
         // Theo dõi tab và filter hiện tại
         private string _currentGranteeTab = "USER";
         private string _currentObjectFilter = "";
-
-        // Flag để tránh infinite loop trong cbExec CheckedChanged handler
-        private bool _isUpdatingCheckboxes = false;
 
         // Cache cbExec reference để tránh repeated searches (control có thể nested)
         //private CheckBox _cbExec = null;
@@ -574,8 +571,6 @@ namespace HospitalX.GUI.PH1
         {
             if (obj == null) return;
 
-            _isUpdatingCheckboxes = true;
-
             bool isTableOrView = (obj.Type == "TABLE" || obj.Type == "VIEW");
             bool isProcOrFunc = (obj.Type == "PROCEDURE" || obj.Type == "FUNCTION");
 
@@ -622,7 +617,6 @@ namespace HospitalX.GUI.PH1
             //if (execCheckbox != null && !execCheckbox.Enabled)
             //    execCheckbox.Checked = false;
 
-            _isUpdatingCheckboxes = false;
             RefreshStepUI();
         }
 

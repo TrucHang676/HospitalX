@@ -1,7 +1,7 @@
-using System.Drawing;
-using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using HospitalX.GUI.PH2.KyThuatVien;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2
 {
@@ -12,6 +12,10 @@ namespace HospitalX.GUI.PH2
         public Main_KTV()
         {
             InitializeComponent();
+            if (System.IO.File.Exists(@"d:\HospitalX\image\medical-team.ico"))
+            {
+                this.Icon = new System.Drawing.Icon(@"d:\HospitalX\image\medical-team.ico");
+            }
             Instance = this;
 
             SetButtonImages(this.btnDashboard, KtvIcons.SidebarDashboardNormal, KtvIcons.SidebarDashboardActive);
@@ -189,9 +193,5 @@ namespace HospitalX.GUI.PH2
             }
         }
 
-        private void lblLogoPlus_Click(object sender, System.EventArgs e)
-        {
-
-        }
     }
 }

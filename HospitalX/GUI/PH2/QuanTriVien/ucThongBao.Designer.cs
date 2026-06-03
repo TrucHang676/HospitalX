@@ -102,6 +102,8 @@
             // 
             // pnlHistoryHeader
             // 
+            this.pnlHistoryHeader.BorderRadius = 8;
+            this.pnlHistoryHeader.BorderThickness = 1;
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryCount);
             this.pnlHistoryHeader.Controls.Add(this.lblHistoryTitle);
             this.pnlHistoryHeader.Dock = System.Windows.Forms.DockStyle.Top;

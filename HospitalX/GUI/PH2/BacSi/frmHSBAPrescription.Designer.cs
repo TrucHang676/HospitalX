@@ -99,7 +99,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblPatient.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.lblPatient.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblPatient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblPatient.Location = new System.Drawing.Point(32, 101);
+            this.lblPatient.Location = new System.Drawing.Point(32, 90);
             this.lblPatient.Name = "lblPatient";
             this.lblPatient.Size = new System.Drawing.Size(520, 24);
             this.lblPatient.TabIndex = 1;
@@ -198,6 +198,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtDose
             // 
+            this.txtDose.BackColor = System.Drawing.Color.Transparent;
             this.txtDose.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtDose.BorderRadius = 8;
             this.txtDose.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -228,6 +229,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // txtMedicineName
             // 
+            this.txtMedicineName.BackColor = System.Drawing.Color.Transparent;
             this.txtMedicineName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.txtMedicineName.BorderRadius = 8;
             this.txtMedicineName.Cursor = System.Windows.Forms.Cursors.IBeam;

@@ -88,7 +88,7 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLine1
             // 
-            this.pnlLine1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.pnlLine1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlLine1.FillThickness = 5;
             this.pnlLine1.Location = new System.Drawing.Point(0, 135);
             this.pnlLine1.Name = "pnlLine1";
@@ -315,7 +315,7 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLine2
             // 
-            this.pnlLine2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.pnlLine2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlLine2.FillThickness = 5;
             this.pnlLine2.Location = new System.Drawing.Point(0, 65);
             this.pnlLine2.Name = "pnlLine2";
@@ -457,7 +457,6 @@ namespace HospitalX.GUI.PH2
         private Guna.UI2.WinForms.Guna2Separator pnlLine1;
         private Guna.UI2.WinForms.Guna2Panel pnl2;
         private System.Windows.Forms.Label lblTenBS;
-        private System.Windows.Forms.Label lbl;
         private Guna.UI2.WinForms.Guna2PictureBox ptbAdmin;
         private Guna.UI2.WinForms.Guna2Button btnBvsR;
         private Guna.UI2.WinForms.Guna2Button btnAudit;

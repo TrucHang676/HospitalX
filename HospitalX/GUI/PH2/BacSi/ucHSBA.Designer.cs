@@ -66,8 +66,8 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.lblResultCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblResultCount.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
-            this.lblResultCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblResultCount.Location = new System.Drawing.Point(815, 7);
+            this.lblResultCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblResultCount.Location = new System.Drawing.Point(815, 92);
             this.lblResultCount.Name = "lblResultCount";
             this.lblResultCount.Size = new System.Drawing.Size(236, 24);
             this.lblResultCount.TabIndex = 7;
@@ -104,6 +104,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpTo.BorderRadius = 8;
             this.dtpTo.BorderThickness = 1;
             this.dtpTo.Checked = true;
+            this.dtpTo.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpTo.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             this.dtpTo.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
@@ -123,6 +124,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpFrom.BorderRadius = 8;
             this.dtpFrom.BorderThickness = 1;
             this.dtpFrom.Checked = true;
+            this.dtpFrom.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpFrom.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             this.dtpFrom.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.dtpFrom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
@@ -204,7 +206,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // ucHSBA
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.Controls.Add(this.flpHsbaList);

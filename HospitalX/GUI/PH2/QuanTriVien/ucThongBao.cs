@@ -1,5 +1,4 @@
 using Guna.UI2.WinForms;
-using Guna.UI2.WinForms.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -50,9 +49,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             txtContent.PlaceholderText = "Nhập nội dung thông báo nội bộ...";
             txtLocation.PlaceholderText = "VD: Hội trường A";
 
-            cmbPriority.Items.Clear();
-            cmbPriority.Items.AddRange(new object[] { "Thông thường", "Quan trọng", "Khẩn cấp" });
-            cmbPriority.SelectedIndex = 0;
         }
 
         private void SeedData()
@@ -187,7 +183,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BorderThickness = 1,
                 FillColor = notification.Priority == "Khẩn cấp" ? Color.FromArgb(255, 249, 249) : Color.White,
                 Margin = new Padding(0, 0, 0, 12),
-                Size = new Size(width, 86)
+                Size = new Size(width, 95)
             };
 
             Label time = new Label
@@ -195,8 +191,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BackColor = Color.Transparent,
                 Font = new Font("Segoe UI", 8.4F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(102, 128, 116),
-                Location = new Point(16, 15),
-                Size = new Size(88, 36),
+                Location = new Point(16, 20),
+                Size = new Size(90, 60),
                 Text = notification.Time.Replace(" ", Environment.NewLine)
             };
 
@@ -206,8 +202,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BackColor = Color.Transparent,
                 Font = new Font("Segoe UI", 9.4F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(10, 42, 64),
-                Location = new Point(108, 14),
-                Size = new Size(width - 300, 24),
+                Location = new Point(108, 15),
+                Size = new Size(width - 300, 25),
                 Text = notification.Content
             };
 
@@ -217,24 +213,19 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 BackColor = Color.Transparent,
                 Font = new Font("Segoe UI", 8.6F),
                 ForeColor = Color.FromArgb(102, 128, 116),
-                Location = new Point(108, 42),
-                Size = new Size(width - 300, 22),
+                Location = new Point(108, 50),
+                Size = new Size(width - 300, 23),
                 Text = string.IsNullOrWhiteSpace(notification.Location) ? "dba_admin" : notification.Location + " - dba_admin"
             };
 
             Guna2Button labelBadge = CreateBadge(notification.Labels, Color.FromArgb(219, 234, 254), Color.FromArgb(30, 64, 175));
-            labelBadge.Location = new Point(width - 172, 16);
-            labelBadge.Size = new Size(62, 28);
-
-            Guna2Button priorityBadge = CreateBadge(notification.Priority, soft, accent);
-            priorityBadge.Location = new Point(width - 102, 16);
-            priorityBadge.Size = new Size(86, 28);
+            labelBadge.Location = new Point(width - 172, 25);
+            labelBadge.Size = new Size(120, 40);
 
             card.Controls.Add(time);
             card.Controls.Add(content);
             card.Controls.Add(location);
             card.Controls.Add(labelBadge);
-            card.Controls.Add(priorityBadge);
             return card;
         }
 

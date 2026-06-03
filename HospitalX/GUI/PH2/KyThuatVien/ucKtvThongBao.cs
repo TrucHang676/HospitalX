@@ -44,8 +44,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Guna2Button btnPillAll;
         private Guna2Button btnPillUnread;
         private Guna2Button btnPillUrgent;
-        private Guna2ComboBox cboSort;
-        private Guna2Button btnMarkAll;
+
 
         // Custom Toast Notification
         private Label lblToastText;
@@ -246,10 +245,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlHero.ShadowDecoration.Color = Color.FromArgb(45, 15, 110, 86);
             pnlHero.ShadowDecoration.Depth = 12;
 
-            lblHeroTitle = KtvTheme.Label("Trung tâm thông báo", 24, 18, 17F, FontStyle.Bold, Color.White);
-            lblHeroSub = KtvTheme.Label("Theo dõi phân công, cảnh báo xét nghiệm và cập nhật nghiệp vụ trong ca trực.", 24, 50, 9.5F, FontStyle.Regular, Color.FromArgb(214, 239, 232));
+            lblHeroTitle = KtvTheme.Label("Trung tâm thông báo", 24, 16, 17F, FontStyle.Bold, Color.White);
+            lblHeroSub = KtvTheme.Label("Theo dõi phân công, cảnh báo xét nghiệm và cập nhật nghiệp vụ trong ca trực.", 24, 56, 9.5F, FontStyle.Regular, Color.FromArgb(214, 239, 232));
             lblHeroSub.AutoSize = false;
-            lblHeroSub.Size = new Size(640, 24);
+            lblHeroSub.Size = new Size(640, 28);
 
             btnHeroMarkAll = new Guna2Button
             {
@@ -309,51 +308,26 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlToolbar.ShadowDecoration.Depth = 6;
 
             btnPillAll = CreatePillButton("Tất cả (12)", true);
-            btnPillAll.Location = new Point(14, 8);
+            btnPillAll.Location = new Point(14, 10);
             btnPillAll.Click += (s, e) => SwitchPill("all");
 
             btnPillUnread = CreatePillButton("Chưa đọc (5)", false);
-            btnPillUnread.Location = new Point(116, 8);
+            btnPillUnread.Location = new Point(116, 10);
             btnPillUnread.Click += (s, e) => SwitchPill("unread");
 
             btnPillUrgent = CreatePillButton("Khẩn cấp (2)", false);
-            btnPillUrgent.Location = new Point(228, 8);
+            btnPillUrgent.Location = new Point(228, 10);
             btnPillUrgent.Click += (s, e) => SwitchPill("urgent");
 
             pnlToolbar.Controls.AddRange(new Control[] { btnPillAll, btnPillUnread, btnPillUrgent });
 
-            cboSort = new Guna2ComboBox
-            {
-                Size = new Size(188, 34),
-                BorderRadius = 6,
-                BorderColor = KtvTheme.Border,
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                ForeColor = KtvTheme.TextMid,
-                ItemHeight = 28,
-                DropDownHeight = 94,
-                DropDownWidth = 188,
-                MaxDropDownItems = 3,
-                IntegralHeight = false
-            };
-            cboSort.Items.AddRange(new object[] { "Mới nhất trước", "Cũ nhất trước", "Ưu tiên cao nhất" });
+            cboSort.Items.Clear();
+            cboSort.Items.AddRange(new object[] { "Mới nhất trước", "Cũ nhất trước" });
             cboSort.SelectedIndex = 0;
+            cboSort.SelectedIndexChanged += CboSort_SelectedIndexChanged;
             pnlToolbar.Controls.Add(cboSort);
 
-            btnMarkAll = new Guna2Button
-            {
-                Text = "✅ Đọc tất cả",
-                Size = new Size(110, 32),
-                BorderRadius = 6,
-                FillColor = Color.Transparent,
-                ForeColor = KtvTheme.Teal,
-                BorderColor = KtvTheme.Border,
-                BorderThickness = 1,
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                Cursor = Cursors.Hand,
-                HoverState = { FillColor = KtvTheme.TealLight }
-            };
-            btnMarkAll.Click += BtnMarkAll_Click;
-            pnlToolbar.Controls.Add(btnMarkAll);
+            // Removed btnMarkAll (Đọc tất cả) from toolbar to match user layout request
 
             // 3. Build Toast Notification
             pnlToast.Size = new Size(360, 52);
@@ -411,48 +385,103 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlNotifScroll.Size = new Size(listW, availHeight);
 
             // A. Stats Cards (Top)
-            int statW = (listW - 3 * gap) / 4;
+            int scrollContentW = listW - 28; // Standard gutters to prevent horizontal scrollbar and vertical overlap
+            int statW = (scrollContentW - 3 * gap) / 4;
             int statY = 0;
-            string[] statLbls = { "Chưa đọc", "Khẩn cấp", "Hôm nay", "Tháng này" };
+            int statHeight = 130;
+            string[] statLbls = { "CHƯA ĐỌC", "KHẨN CẤP", "NHẬN HÔM NAY", "TỔNG TRONG THÁNG" };
             string[] statVals = { GetUnreadCount().ToString(), "2", "12", "48" };
-            Color[] valColors = { KtvTheme.Teal, KtvTheme.Danger, KtvTheme.TextDark, KtvTheme.TextDark };
+            string[] statTrends = { 
+                GetUnreadCount() > 0 ? "Cần xử lý ngay" : "Đã đọc hết",
+                "Ưu tiên cao nhất",
+                "↑ 3 thông báo mới",
+                "↑ 8% so với tháng trước"
+            };
+            string[] statEmojis = { "📬", "🚨", "📅", "📈" };
+            Color[] accents = {
+                Color.FromArgb(15, 110, 86),   // Deep Teal
+                Color.FromArgb(229, 57, 53),   // Red
+                Color.FromArgb(255, 179, 0),   // Amber
+                Color.FromArgb(25, 118, 210)   // Blue
+            };
+            Color[] iconBgs = {
+                Color.FromArgb(230, 244, 240),
+                Color.FromArgb(253, 244, 244),
+                Color.FromArgb(255, 248, 225),
+                Color.FromArgb(227, 242, 253)
+            };
+            Color[] trendColors = {
+                Color.FromArgb(15, 110, 86),
+                Color.FromArgb(229, 57, 53),
+                Color.FromArgb(34, 197, 94),
+                Color.FromArgb(34, 197, 94)
+            };
 
             for (int i = 0; i < 4; i++)
             {
-                cardStats[i].Controls.Clear();
-                cardStats[i].ShadowDecoration.Enabled = true;
-                cardStats[i].ShadowDecoration.Color = KtvTheme.Teal;
-                cardStats[i].ShadowDecoration.Depth = 6;
-
-                lblStatVals[i] = KtvTheme.Label(statVals[i], 20, 8, 20F, FontStyle.Bold, valColors[i]);
-                lblStatVals[i].AutoSize = false;
-                lblStatVals[i].Size = new Size(80, 36);
-
-                var lblL = KtvTheme.Label(statLbls[i], 20, 44, 9F, FontStyle.Regular, KtvTheme.TextLight);
-                lblL.AutoSize = false;
-                lblL.Size = new Size(100, 20);
-
-                cardStats[i].Controls.AddRange(new Control[] { lblStatVals[i], lblL });
+                var card = cardStats[i];
+                card.Controls.Clear();
+                card.ShadowDecoration.Enabled = false;
+                card.BorderThickness = 1;
+                card.BorderColor = Color.FromArgb(218, 232, 226);
+                card.BorderRadius = 14;
+                card.FillColor = Color.White;
+                card.Padding = new Padding(0, 4, 0, 0);
+                card.Tag = accents[i];
                 
-                cardStats[i].Location = new Point(0 + i * (statW + gap), statY);
-                cardStats[i].Size = new Size(statW, 72);
-                cardStats[i].FillColor = i == 0 ? Color.FromArgb(242, 250, 247) : (i == 1 ? Color.FromArgb(253, 244, 244) : Color.White);
-                cardStats[i].BorderColor = i == 0 ? Color.FromArgb(196, 224, 214) : (i == 1 ? Color.FromArgb(248, 218, 218) : KtvTheme.Border);
-                lblStatVals[i].Text = statVals[i];
-                lblStatVals[i].Width = statW - 30;
-                cardStats[i].Controls[1].Width = statW - 30;
+                card.Paint -= KpiCard_Paint;
+                card.Paint += KpiCard_Paint;
+
+                // Create round icon box
+                var pnlIcon = new Guna2Panel
+                {
+                    Size = new Size(36, 36),
+                    Location = new Point(18, 14),
+                    BorderRadius = 10,
+                    FillColor = iconBgs[i],
+                    BackColor = Color.Transparent
+                };
+                var lblEmoji = KtvTheme.Label(statEmojis[i], 0, 0, 11F, FontStyle.Regular, Color.Black);
+                lblEmoji.AutoSize = false;
+                lblEmoji.Location = new Point(0, 0);
+                lblEmoji.Size = new Size(36, 36);
+                lblEmoji.TextAlign = ContentAlignment.MiddleCenter;
+                pnlIcon.Controls.Add(lblEmoji);
+                card.Controls.Add(pnlIcon);
+
+                // Small uppercase caption
+                var lblCap = KtvTheme.Label(statLbls[i], 18, 50, 8.25F, FontStyle.Bold, Color.FromArgb(122, 149, 137));
+                lblCap.AutoSize = false;
+                lblCap.Size = new Size(statW - 30, 16);
+                card.Controls.Add(lblCap);
+
+                // Large bold value
+                lblStatVals[i] = KtvTheme.Label(statVals[i], 18, 66, 18F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
+                lblStatVals[i].AutoSize = false;
+                lblStatVals[i].Size = new Size(statW - 30, 38);
+                card.Controls.Add(lblStatVals[i]);
+
+                // Trend/subtitle
+                var lblTrend = KtvTheme.Label(statTrends[i], 18, 106, 8.5F, FontStyle.Bold, trendColors[i]);
+                lblTrend.AutoSize = false;
+                lblTrend.Size = new Size(statW - 30, 18);
+                card.Controls.Add(lblTrend);
+
+                card.Location = new Point(0 + i * (statW + gap), statY);
+                card.Size = new Size(statW, statHeight);
+
+                // ConfigureKpiHover(card);
             }
 
             // B. Toolbar Card
-            pnlToolbar.Location = new Point(0, statY + 72 + 16);
-            pnlToolbar.Size = new Size(listW - 12, 52);
+            pnlToolbar.Location = new Point(0, statY + statHeight + 16);
+            pnlToolbar.Size = new Size(scrollContentW, 52);
 
-            btnPillAll.Location = new Point(14, 8);
-            btnPillUnread.Location = new Point(124, 8);
-            btnPillUrgent.Location = new Point(234, 8);
+            btnPillAll.Location = new Point(14, 10);
+            btnPillUnread.Location = new Point(124, 10);
+            btnPillUrgent.Location = new Point(234, 10);
             
-            cboSort.Location = new Point(listW - 320, 10);
-            btnMarkAll.Location = new Point(listW - 146, 10);
+            cboSort.Location = new Point(scrollContentW - 188 - 14, 9);
 
             // Re-render the notification rows
             RenderNotificationsList();
@@ -535,6 +564,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnl.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
 
             var lblT = KtvTheme.Label(text, 10, 9, 8.8F, active ? FontStyle.Bold : FontStyle.Regular, active ? KtvTheme.Teal : KtvTheme.TextMid);
+            lblT.Cursor = Cursors.Hand;
             lblT.Click += (s, e) => SwitchCategory(catCode);
             lblT.MouseEnter += (s, e) => SetCategoryHover(pnl, true, active);
             lblT.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
@@ -545,13 +575,15 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 Size = new Size(34, 20),
                 Location = new Point(232, 8),
                 BorderRadius = 10,
-                FillColor = badgeFill
+                FillColor = badgeFill,
+                Cursor = Cursors.Hand
             };
             pnlCount.ShadowDecoration.Enabled = active || countBg.HasValue;
             pnlCount.ShadowDecoration.Color = badgeFill;
             pnlCount.ShadowDecoration.Depth = 3;
 
             var lblC = KtvTheme.Label(count, 0, 0, 7.5F, FontStyle.Bold, badgeFore);
+            lblC.Cursor = Cursors.Hand;
             lblC.AutoSize = false;
             lblC.Location = new Point(0, 0);
             lblC.Size = new Size(34, 20);
@@ -609,6 +641,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 query = query.Where(x => x.Title.ToLowerInvariant().Contains(searchKey) || x.Body.ToLowerInvariant().Contains(searchKey));
             }
 
+            // Sort
+            if (cboSort != null)
+            {
+                if (cboSort.SelectedIndex == 1) // Cũ nhất trước
+                {
+                    query = query.OrderByDescending(x => allNotifs.IndexOf(x));
+                }
+                else // Mới nhất trước (Index == 0)
+                {
+                    query = query.OrderBy(x => allNotifs.IndexOf(x));
+                }
+            }
+
             // Toolbar Pills Filter
             if (activePill == "unread") query = query.Where(x => x.IsUnread);
             else if (activePill == "urgent") query = query.Where(x => x.IsUrgent);
@@ -623,7 +668,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             var list = query.ToList();
 
             int yRow = pnlToolbar.Bottom + 16;
-            int cardW = pnlNotifScroll.Width - 14;
+            int cardW = pnlNotifScroll.Width - 28; // Match the 28px scrollbar gutter to prevent vertical overlap and horizontal scroll
 
             // Group by Date Groups
             var groups = list.GroupBy(x => x.DateGroup).ToList();
@@ -673,13 +718,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                         BorderRadius = 12,
                         BorderColor = notif.IsUrgent ? Color.FromArgb(248, 204, 204) : (notif.IsUnread ? Color.FromArgb(196, 224, 214) : KtvTheme.Border),
                         BorderThickness = 1,
-                        FillColor = notif.IsUnread ? Color.FromArgb(242, 250, 247) : Color.White
+                        FillColor = notif.IsUnread ? Color.FromArgb(242, 250, 247) : Color.White,
+                        Cursor = Cursors.Hand
                     };
 
                     // Shadow effect
                     notifCard.ShadowDecoration.Enabled = true;
                     notifCard.ShadowDecoration.Color = KtvTheme.Teal;
-                    notifCard.ShadowDecoration.Depth = 4;
+                    notifCard.ShadowDecoration.Depth = 6;
                     notifCard.ShadowDecoration.Shadow = new Padding(0, 2, 6, 2);
 
                     // Unread vertical bar
@@ -751,70 +797,102 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                             lblTagText.Width = (int)sz.Width + 18;
                         }
 
+                        // Attach hover events for tag panel and tag label
+                        pnlTag.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                        pnlTag.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+                        lblTagText.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                        lblTagText.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
                         notifCard.Controls.Add(pnlTag);
                         tagX += pnlTag.Width + 6;
                     }
 
-                    // Action buttons (under or inside row)
-                    int rightPad = 24;
-                    int readW = 88;
-                    int actionW = 154;
-                    int readX = cardW - rightPad - readW;
-                    int actionX = cardW - rightPad - actionW;
-                    if (notif.IsUnread)
+                    // Append "Đã đọc" tag if the notification is read
+                    if (!notif.IsUnread)
                     {
-                        var btnRead = new Guna2Button
+                        var pnlReadTag = new Guna2Panel
                         {
-                            Text = "Đã đọc",
-                            Size = new Size(readW, 26),
-                            Location = new Point(readX, rowH - 43),
-                            BorderRadius = 6,
-                            FillColor = Color.White,
-                            ForeColor = KtvTheme.TextMid,
-                            BorderColor = KtvTheme.Border,
-                            BorderThickness = 1,
-                            Font = new Font("Segoe UI", 8F, FontStyle.Bold),
-                            TextAlign = HorizontalAlignment.Center,
-                            TextOffset = new Point(0, 0),
-                            Padding = new Padding(0),
-                            Cursor = Cursors.Hand
+                            Location = new Point(tagX, 94),
+                            Size = new Size(80, 20),
+                            BorderRadius = 10,
+                            FillColor = Color.FromArgb(240, 244, 242),
+                            BorderColor = Color.FromArgb(208, 220, 214),
+                            BorderThickness = 1
                         };
-                        btnRead.Click += (s, e) => MarkNotifRead(notif);
-                        notifCard.Controls.Add(btnRead);
-                        actionX = readX - actionW - 10;
+                        var lblReadTagText = KtvTheme.Label("✓ Đã đọc", 0, 0, 7.2F, FontStyle.Bold, Color.FromArgb(88, 120, 102));
+                        lblReadTagText.Size = new Size(80, 20);
+                        lblReadTagText.TextAlign = ContentAlignment.MiddleCenter;
+                        pnlReadTag.Controls.Add(lblReadTagText);
+
+                        // Attach hover events to ReadTag to prevent flickering
+                        pnlReadTag.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                        pnlReadTag.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+                        lblReadTagText.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                        lblReadTagText.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                        notifCard.Controls.Add(pnlReadTag);
+                        tagX += pnlReadTag.Width + 6;
                     }
 
-                    if (!string.IsNullOrEmpty(notif.ActionText))
+                    // Action buttons (under or inside row)
+                    int rightPad = 18;
+                    int btnWidth = 145;
+                    var btnDetail = new Guna2Button
                     {
-                        var btnAction = new Guna2Button
+                        Text = "🔍 Xem chi tiết",
+                        Size = new Size(btnWidth, 30),
+                        Location = new Point(cardW - rightPad - btnWidth, rowH - 46),
+                        BorderRadius = 6,
+                        FillColor = KtvTheme.Teal,
+                        ForeColor = Color.White,
+                        Font = new Font("Segoe UI", 8F, FontStyle.Bold),
+                        TextAlign = HorizontalAlignment.Center,
+                        TextOffset = new Point(0, 0),
+                        Cursor = Cursors.Hand
+                    };
+                    btnDetail.HoverState.FillColor = KtvTheme.TealDark;
+                    btnDetail.Click += (s, e) => {
+                        using (var frm = new frmKtvNotificationDetail(notif.Title, notif.Type, notif.Time, string.Join(", ", notif.Tags), notif.Body))
                         {
-                            Text = notif.ActionText,
-                            Size = new Size(actionW, 26),
-                            Location = new Point(actionX, rowH - 43),
-                            BorderRadius = 6,
-                            FillColor = KtvTheme.Teal,
-                            ForeColor = Color.White,
-                            Font = new Font("Segoe UI", 8F, FontStyle.Bold),
-                            TextAlign = HorizontalAlignment.Center,
-                            TextOffset = new Point(0, 0),
-                            Cursor = Cursors.Hand
-                        };
-                        btnAction.Click += (s, e) => {
-                            MarkNotifRead(notif); // Automatically mark read
-                            if (notif.ActionType == "view_result")
-                            {
-                                ShowToastNotification("🔬 Chuyển sang phân hệ Nhập kết quả lâm sàng!");
-                            }
-                            else if (notif.ActionType == "view_assignment")
-                            {
-                                ShowToastNotification("📋 Chuyển sang danh mục Dịch vụ được phân công!");
-                            }
-                            else
-                            {
-                                ShowToastNotification($"✅ Đăng ký thành công: {notif.Title}");
-                            }
-                        };
-                        notifCard.Controls.Add(btnAction);
+                            frm.ShowDialog(this.ParentForm);
+                        }
+                        MarkNotifRead(notif);
+                    };
+                    notifCard.Controls.Add(btnDetail);
+
+                    // Attach hover events to the main card and its child controls to prevent flickering
+                    notifCard.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    notifCard.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    pnlUnreadBar.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    pnlUnreadBar.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    pnlIcon.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    pnlIcon.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    lblEmoji.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    lblEmoji.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    lblTitle.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    lblTitle.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    lblTime.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    lblTime.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    lblBody.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    lblBody.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    btnDetail.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
+                    btnDetail.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
+
+                    // Propagate Hand cursor recursively to all controls inside the card
+                    foreach (Control child in notifCard.Controls)
+                    {
+                        child.Cursor = Cursors.Hand;
+                        foreach (Control subChild in child.Controls)
+                        {
+                            subChild.Cursor = Cursors.Hand;
+                        }
                     }
 
                     pnlNotifScroll.Controls.Add(notifCard);
@@ -845,6 +923,30 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlPage.Controls.AddRange(new Control[] { btnPrev, btnP1, btnNext });
 
             pnlNotifScroll.Controls.Add(pnlPage);
+        }
+
+        private void SetCardHover(Guna2Panel card, bool isUrgent, bool isUnread, bool hover)
+        {
+            if (card == null) return;
+            if (hover)
+            {
+                // Smooth transition to hover state
+                card.FillColor = isUnread ? Color.FromArgb(230, 245, 240) : Color.FromArgb(246, 249, 248);
+                card.BorderColor = isUrgent ? Color.FromArgb(235, 160, 160) : (isUnread ? Color.FromArgb(145, 205, 185) : Color.FromArgb(185, 200, 195));
+            }
+            else
+            {
+                // Prevent flickering: check if the mouse pointer is still inside the card's client rectangle
+                Point clientPos = card.PointToClient(Cursor.Position);
+                if (card.ClientRectangle.Contains(clientPos))
+                {
+                    return; // Ignore MouseLeave if cursor is still within card bounds (e.g., hovering child controls)
+                }
+
+                // Smooth transition back to normal state
+                card.FillColor = isUnread ? Color.FromArgb(242, 250, 247) : Color.White;
+                card.BorderColor = isUrgent ? Color.FromArgb(248, 204, 204) : (isUnread ? Color.FromArgb(196, 224, 214) : KtvTheme.Border);
+            }
         }
 
         private void MarkNotifRead(KtvNotification notif)
@@ -987,6 +1089,78 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     tmrToast.Stop();
                 }
             }
+        }
+
+        private void CboSort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RenderNotificationsList();
+        }
+
+        private void KpiCard_Paint(object sender, PaintEventArgs e)
+        {
+            var card = (Guna2Panel)sender;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            using (var path = GetRoundedRectPath(new RectangleF(0, 0, card.Width, card.Height), 14))
+            {
+                e.Graphics.SetClip(path);
+
+                var arcRect = new Rectangle(card.Width - 110, -40, 160, 160);
+                using (var brush = new SolidBrush(Color.FromArgb(242, 244, 243)))
+                {
+                    e.Graphics.FillEllipse(brush, arcRect);
+                }
+
+                if (card.Tag is Color accentColor)
+                {
+                    using (var brush = new SolidBrush(accentColor))
+                    {
+                        e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
+                    }
+                }
+
+                e.Graphics.ResetClip();
+            }
+        }
+
+        private static GraphicsPath GetRoundedRectPath(RectangleF rect, float radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            float diameter = radius * 2;
+            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
+            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
+            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+
+        private void ConfigureKpiHover(Guna2Panel card)
+        {
+            card.Cursor = Cursors.Hand;
+            card.ShadowDecoration.Enabled = true;
+            card.ShadowDecoration.Color = Color.FromArgb(40, 15, 110, 86);
+            card.ShadowDecoration.Depth = 5;
+            card.ShadowDecoration.Shadow = new Padding(0, 2, 8, 4);
+
+            card.MouseEnter += (s, e) => SetKpiHoverState(card, true);
+            card.MouseLeave += (s, e) => SetKpiHoverState(card, false);
+
+            foreach (Control child in card.Controls)
+            {
+                child.Cursor = Cursors.Hand;
+                child.MouseEnter += (s, e) => SetKpiHoverState(card, true);
+                child.MouseLeave += (s, e) => SetKpiHoverState(card, false);
+            }
+        }
+
+        private void SetKpiHoverState(Guna2Panel card, bool hovered)
+        {
+            card.FillColor = hovered ? Color.FromArgb(248, 252, 250) : Color.White;
+            card.BorderColor = hovered ? Color.FromArgb(15, 110, 86) : Color.FromArgb(218, 232, 226);
+            card.ShadowDecoration.Enabled = true;
+            card.ShadowDecoration.Depth = hovered ? 12 : 5;
+            card.ShadowDecoration.Shadow = hovered ? new Padding(0, 4, 14, 8) : new Padding(0, 2, 8, 4);
         }
     }
 }
