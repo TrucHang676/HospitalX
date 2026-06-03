@@ -399,7 +399,6 @@
     <Compile Include="GUI\PH2\DieuPhoiVien\frmNotificationDetail.Designer.cs">
       <DependentUpon>frmNotificationDetail.cs</DependentUpon>
     </Compile>
-
     <Compile Include="GUI\PH2\QuanTriVien\ucSaoLuuPhucHoi.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -602,6 +601,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BenhNhan\ucHSCN.resx">
       <DependentUpon>ucHSCN.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvDashboard.resx">
+      <DependentUpon>ucKtvDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\ucKtvHoSo.resx">
       <DependentUpon>ucKtvHoSo.cs</DependentUpon>

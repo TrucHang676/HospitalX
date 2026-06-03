@@ -22,6 +22,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private readonly Label[] lblStatValues = new Label[4];
         private readonly Label[] lblStatLabels = new Label[4];
         private readonly Label[] lblStatTrends = new Label[4];
+        private readonly Label[] lblStatTrendsVal = new Label[4];
+        private readonly Label[] lblStatTrendsTxt = new Label[4];
 
         // Hàng 1
         private Label lblTaskTitle;
@@ -51,6 +53,27 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             statCards[1] = this.cardStat2;
             statCards[2] = this.cardStat3;
             statCards[3] = this.cardStat4;
+            
+            // Link custom designer labels
+            lblStatLabels[0] = this.lblStat1Title;
+            lblStatLabels[1] = this.lblStat2Title;
+            lblStatLabels[2] = this.lblStat3Title;
+            lblStatLabels[3] = this.lblStat4Title;
+
+            lblStatValues[0] = this.lblStat1Value;
+            lblStatValues[1] = this.lblStat2Value;
+            lblStatValues[2] = this.lblStat3Value;
+            lblStatValues[3] = this.lblStat4Value;
+
+            lblStatTrendsVal[0] = this.lblStat1TrendValue;
+            lblStatTrendsVal[1] = this.lblStat2TrendValue;
+            lblStatTrendsVal[2] = this.lblStat3TrendValue;
+            lblStatTrendsVal[3] = this.lblStat4TrendValue;
+
+            lblStatTrendsTxt[0] = this.lblStat1TrendText;
+            lblStatTrendsTxt[1] = this.lblStat2TrendText;
+            lblStatTrendsTxt[2] = this.lblStat3TrendText;
+            lblStatTrendsTxt[3] = this.lblStat4TrendText;
 
             // Bật tự động cuộn trang (AutoScroll) cho UserControl
             this.AutoScroll = true;
@@ -93,10 +116,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             activityCard.Controls.Clear();
             scheduleCard.Controls.Clear();
             progressCard.Controls.Clear();
-            for (int i = 0; i < 4; i++)
-            {
-                statCards[i].Controls.Clear();
-            }
 
             // 1. Khởi tạo Banner (Đồng bộ cấu hình Avatar trái của phân hệ Bác sĩ, xóa bỏ emoji lỗi font)
 
@@ -119,8 +138,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlBannerAvatar.Controls.Add(lblBannerAvatarText);
             banner.Controls.Add(pnlBannerAvatar);
 
-            lblBannerTitle = TextLabel("Chào buổi sáng!", 110, 32, 500, 34, 18F, FontStyle.Bold, Color.White);
-            lblBannerSub = TextLabel("Đang tải dữ liệu ca làm việc...", 110, 68, 700, 24, 10F, FontStyle.Regular, Color.FromArgb(218, 242, 235));
+            lblBannerTitle = TextLabel("Chào buổi sáng!", 110, 26, 500, 34, 18F, FontStyle.Bold, Color.White);
+            lblBannerTitle.AutoSize = true;
+            lblBannerSub = TextLabel("Đang tải dữ liệu ca làm việc...", 110, 70, 700, 24, 10F, FontStyle.Regular, Color.FromArgb(218, 242, 235));
+            lblBannerSub.AutoSize = true;
             
             banner.Controls.Add(lblBannerTitle);
             banner.Controls.Add(lblBannerSub);
@@ -151,7 +172,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             for (int i = 0; i < 4; i++)
             {
                 var card = statCards[i];
-                card.Controls.Clear();
                 card.ShadowDecoration.Enabled = false;
                 card.BorderThickness = 1;
                 card.BorderColor = Color.FromArgb(218, 232, 226);
@@ -163,43 +183,64 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 card.Paint -= KpiCard_Paint;
                 card.Paint += KpiCard_Paint;
 
-                // Create round icon box
-                statDots[i] = new Guna2Panel
+                // Check if dot already exists to avoid duplication
+                string dotName = $"statDot_{i}";
+                Guna2Panel dot = card.Controls.Find(dotName, true).FirstOrDefault() as Guna2Panel;
+                if (dot == null)
                 {
-                    Size = new Size(36, 36),
-                    Location = new Point(18, 14),
-                    BorderRadius = 10,
-                    FillColor = iconBgs[i],
-                    BackColor = Color.Transparent
-                };
-                PrepareRoundedPanel(statDots[i]);
-                var lblEmoji = new Label
+                    // Create round icon box
+                    dot = new Guna2Panel
+                    {
+                        Name = dotName,
+                        Size = new Size(36, 36),
+                        Location = new Point(18, 14),
+                        BorderRadius = 10,
+                        FillColor = iconBgs[i],
+                        BackColor = Color.Transparent
+                    };
+                    PrepareRoundedPanel(dot);
+                    var lblEmoji = new Label
+                    {
+                        Text = statEmojis[i],
+                        Name = "lblEmoji",
+                        Dock = DockStyle.Fill,
+                        Font = new Font("Segoe UI", 11F),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        BackColor = Color.Transparent
+                    };
+                    dot.Controls.Add(lblEmoji);
+                    card.Controls.Add(dot);
+                }
+                statDots[i] = dot;
+
+                // Configure style of static labels
+                if (lblStatLabels[i] != null)
                 {
-                    Text = statEmojis[i],
-                    Name = "lblEmoji",
-                    Dock = DockStyle.Fill,
-                    Font = new Font("Segoe UI", 11F),
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    BackColor = Color.Transparent
-                };
-                statDots[i].Controls.Add(lblEmoji);
-                card.Controls.Add(statDots[i]);
-
-                // Small uppercase caption
-                lblStatLabels[i] = TextLabel(statLbls[i], 18, 50, 200, 16, 8.25F, FontStyle.Bold, Color.FromArgb(122, 149, 137));
-                card.Controls.Add(lblStatLabels[i]);
-
-                // Large bold value
-                lblStatValues[i] = TextLabel("-", 18, 66, 200, 38, 18F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
-                card.Controls.Add(lblStatValues[i]);
-
-                // Trend/subtitle
-                lblStatTrends[i] = TextLabel("-", 18, 108, 200, 18, 8.5F, FontStyle.Bold, trendColors[i]);
-                card.Controls.Add(lblStatTrends[i]);
+                    lblStatLabels[i].ForeColor = Color.FromArgb(122, 149, 137);
+                    lblStatLabels[i].Font = new Font("Segoe UI", 8.25F, FontStyle.Bold);
+                }
+                if (lblStatValues[i] != null)
+                {
+                    lblStatValues[i].ForeColor = Color.FromArgb(24, 48, 42);
+                    lblStatValues[i].Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+                }
+                if (lblStatTrendsTxt[i] != null)
+                {
+                    lblStatTrendsTxt[i].ForeColor = trendColors[i];
+                    lblStatTrendsTxt[i].Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+                }
+                if (lblStatTrendsVal[i] != null)
+                {
+                    lblStatTrendsVal[i].ForeColor = trendColors[i];
+                    lblStatTrendsVal[i].Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+                }
 
                 // ConfigureKpiHover(card);
 
-                Controls.Add(card);
+                if (!Controls.Contains(card))
+                {
+                    Controls.Add(card);
+                }
             }
 
             // 3. Khởi tạo Task Card (Dịch vụ hôm nay) - Xóa hover của card cha
@@ -394,9 +435,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             banner.Size = new Size(availWidth, 118);
             
             pnlBannerAvatar.Location = new Point(30, 29);
-            lblBannerTitle.Location = new Point(110, 32);
+            lblBannerTitle.Location = new Point(110, 26);
             lblBannerTitle.Width = banner.Width - 150;
-            lblBannerSub.Location = new Point(110, 68);
+            lblBannerSub.Location = new Point(110, 70);
             lblBannerSub.Width = banner.Width - 150;
 
             // 2. Layout 4 Stat Cards
@@ -415,7 +456,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 {
                     if (ctrl is Label lbl && lbl.Name != "lblEmoji")
                     {
-                        lbl.Width = cardWidth - 30;
+                        lbl.Width = cardWidth - 76;
+                    }
+                    else if (ctrl is FlowLayoutPanel flp)
+                    {
+                        flp.Width = cardWidth - 76;
                     }
                 }
             }
@@ -565,16 +610,17 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblBannerSub.Text = $"{DateTime.Now:dd/MM/yyyy} · {totalToday} dịch vụ được phân công · {pendingKq} kết quả chờ cập nhật";
 
             lblStatValues[0].Text = totalToday.ToString();
-            lblStatTrends[0].Text = "Trong ca trực";
+            lblStatTrendsVal[0].Text = "";
 
             lblStatValues[1].Text = pendingKq.ToString();
-            lblStatTrends[1].Text = pendingKq > 0 ? "Cần nhập KQ" : "Đã xong";
+            lblStatTrendsVal[1].Text = "";
+            lblStatTrendsTxt[1].Text = pendingKq > 0 ? "Cần nhập KQ" : "Đã xong";
 
             lblStatValues[2].Text = completed.ToString();
-            lblStatTrends[2].Text = "Đã hoàn thành";
+            lblStatTrendsVal[2].Text = "";
 
             lblStatValues[3].Text = $"{progress}%";
-            lblStatTrends[3].Text = $"{completed}/{totalToday} dịch vụ";
+            lblStatTrendsVal[3].Text = $"{completed}/{totalToday}";
 
             // Vòng tiến độ: Ring 0=Hoàn thành, Ring 1=Chờ thực hiện, Ring 2=% Tổng tiến độ
             int ring0Val = totalToday > 0 ? (completed  * 100 / totalToday) : 0;
@@ -869,12 +915,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             using (var path = GetRoundedRectPath(new RectangleF(0, 0, card.Width, card.Height), 14))
             {
                 e.Graphics.SetClip(path);
-
-                var arcRect = new Rectangle(card.Width - 110, -40, 160, 160);
-                using (var brush = new SolidBrush(Color.FromArgb(242, 244, 243)))
-                {
-                    e.Graphics.FillEllipse(brush, arcRect);
-                }
 
                 if (card.Tag is Color accentColor)
                 {

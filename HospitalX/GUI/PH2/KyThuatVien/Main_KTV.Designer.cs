@@ -364,18 +364,26 @@ namespace HospitalX.GUI.PH2
             // 
             // btnLogout
             // 
-            this.btnLogout.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
-            this.btnLogout.BorderRadius = 6;
+            this.btnLogout.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(110)))), ((int)(((byte)(110)))));
+            this.btnLogout.BorderRadius = 10;
             this.btnLogout.BorderThickness = 1;
+            this.btnLogout.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton;
+            this.btnLogout.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnLogout.CheckedState.ForeColor = System.Drawing.Color.White;
             this.btnLogout.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLogout.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogout.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLogout.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnLogout.FillColor = System.Drawing.Color.Transparent;
-            this.btnLogout.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.btnLogout.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btnLogout.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.btnLogout.HoverState.FillColor = System.Drawing.Color.Maroon;
             this.btnLogout.HoverState.ForeColor = System.Drawing.Color.White;
             this.btnLogout.Location = new System.Drawing.Point(10, 776);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(200, 42);
+            this.btnLogout.Size = new System.Drawing.Size(200, 38);
             this.btnLogout.TabIndex = 11;
             this.btnLogout.Text = "Đăng xuất";
             // 
@@ -388,7 +396,7 @@ namespace HospitalX.GUI.PH2
             this.pnlTopbar.FillColor = System.Drawing.Color.White;
             this.pnlTopbar.Location = new System.Drawing.Point(220, 0);
             this.pnlTopbar.Name = "pnlTopbar";
-            this.pnlTopbar.Size = new System.Drawing.Size(1075, 65);
+            this.pnlTopbar.Size = new System.Drawing.Size(1075, 72);
             this.pnlTopbar.TabIndex = 1;
             // 
             // btnExit
@@ -401,7 +409,7 @@ namespace HospitalX.GUI.PH2
             this.btnExit.ForeColor = System.Drawing.Color.Black;
             this.btnExit.HoverState.FillColor = System.Drawing.Color.DarkSeaGreen;
             this.btnExit.IconColor = System.Drawing.Color.DarkGreen;
-            this.btnExit.Location = new System.Drawing.Point(1023, 16);
+            this.btnExit.Location = new System.Drawing.Point(1023, 20);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(33, 32);
             this.btnExit.TabIndex = 15;
@@ -412,7 +420,7 @@ namespace HospitalX.GUI.PH2
             this.lblPageTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Bold);
             this.lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(39)))), ((int)(((byte)(51)))));
-            this.lblPageTitle.Location = new System.Drawing.Point(24, 4);
+            this.lblPageTitle.Location = new System.Drawing.Point(24, 6);
             this.lblPageTitle.Name = "lblPageTitle";
             this.lblPageTitle.Size = new System.Drawing.Size(119, 31);
             this.lblPageTitle.TabIndex = 0;
@@ -424,7 +432,7 @@ namespace HospitalX.GUI.PH2
             this.lblSubtitle.BackColor = System.Drawing.Color.Transparent;
             this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(152)))), ((int)(((byte)(170)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(26, 42);
+            this.lblSubtitle.Location = new System.Drawing.Point(26, 46);
             this.lblSubtitle.Name = "lblSubtitle";
             this.lblSubtitle.Size = new System.Drawing.Size(286, 15);
             this.lblSubtitle.TabIndex = 1;
@@ -434,9 +442,9 @@ namespace HospitalX.GUI.PH2
             // 
             this.pnlContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(250)))));
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlContent.Location = new System.Drawing.Point(220, 65);
+            this.pnlContent.Location = new System.Drawing.Point(220, 72);
             this.pnlContent.Name = "pnlContent";
-            this.pnlContent.Size = new System.Drawing.Size(1075, 785);
+            this.pnlContent.Size = new System.Drawing.Size(1075, 778);
             this.pnlContent.TabIndex = 0;
             // 
             // Main_KTV

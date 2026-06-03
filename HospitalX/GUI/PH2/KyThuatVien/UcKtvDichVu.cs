@@ -20,6 +20,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private readonly Guna2Panel[] stripDots = new Guna2Panel[4];
 
         private readonly Label[] lblStatTrends = new Label[3];
+        private readonly Label[] lblStatTrendsVal = new Label[4];
+        private readonly Label[] lblStatTrendsTxt = new Label[4];
 
         // 3. Bảng dữ liệu chính (Main Grid Card)
 
@@ -68,12 +70,27 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblStripVals[0] = this.lblStat1Value;
             lblStripVals[1] = this.lblStat2Value;
             lblStripVals[2] = this.lblStat3Value;
-            lblStripLabels[0] = this.lblStat1Text;
-            lblStripLabels[1] = this.lblStat2Text;
-            lblStripLabels[2] = this.lblStat3Text;
+            lblStripVals[3] = this.lblStat4Value;
+
+            lblStripLabels[0] = this.lblStat1Title;
+            lblStripLabels[1] = this.lblStat2Title;
+            lblStripLabels[2] = this.lblStat3Title;
+            lblStripLabels[3] = this.lblStat4Title;
+
             stripDots[0] = this.dotStat1;
             stripDots[1] = this.dotStat2;
             stripDots[2] = this.dotStat3;
+            stripDots[3] = this.dotStat4;
+
+            lblStatTrendsVal[0] = this.lblStat1TrendValue;
+            lblStatTrendsVal[1] = this.lblStat2TrendValue;
+            lblStatTrendsVal[2] = this.lblStat3TrendValue;
+            lblStatTrendsVal[3] = this.lblStat4TrendValue;
+
+            lblStatTrendsTxt[0] = this.lblStat1TrendText;
+            lblStatTrendsTxt[1] = this.lblStat2TrendText;
+            lblStatTrendsTxt[2] = this.lblStat3TrendText;
+            lblStatTrendsTxt[3] = this.lblStat4TrendText;
 
             BuildControls();
             LoadRows();
@@ -123,7 +140,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             for (int i = 0; i < 3; i++)
             {
                 var card = stripCards[i];
-                card.Controls.Clear();
                 card.ShadowDecoration.Enabled = false;
                 card.BorderThickness = 1;
                 card.BorderColor = Color.FromArgb(218, 232, 226);
@@ -135,68 +151,60 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 card.Paint -= KpiCard_Paint;
                 card.Paint += KpiCard_Paint;
 
-                // Create round icon box
-                var pnlIcon = new Guna2Panel
+                // Setup dynamic icon box only if not present
+                string pnlIconName = $"pnlIcon_{i}";
+                Guna2Panel pnlIcon = card.Controls.Find(pnlIconName, true).FirstOrDefault() as Guna2Panel;
+                if (pnlIcon == null)
                 {
-                    Size = new Size(36, 36),
-                    Location = new Point(18, 14),
-                    BorderRadius = 10,
-                    FillColor = iconBgs[i],
-                    BackColor = Color.Transparent
-                };
-                pnlIcon.BackColor = Color.Transparent;
-                pnlIcon.UseTransparentBackground = true;
-                
-                var lblEmoji = new Label
-                {
-                    Text = statEmojis[i],
-                    Name = "lblEmoji",
-                    Dock = DockStyle.Fill,
-                    Font = new Font("Segoe UI", 11F),
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    BackColor = Color.Transparent
-                };
-                pnlIcon.Controls.Add(lblEmoji);
-                card.Controls.Add(pnlIcon);
+                    pnlIcon = new Guna2Panel
+                    {
+                        Name = pnlIconName,
+                        Size = new Size(36, 36),
+                        Location = new Point(18, 14),
+                        BorderRadius = 10,
+                        FillColor = iconBgs[i],
+                        BackColor = Color.Transparent
+                    };
+                    pnlIcon.UseTransparentBackground = true;
+                    var lblEmoji = new Label
+                    {
+                        Text = statEmojis[i],
+                        Name = "lblEmoji",
+                        Dock = DockStyle.Fill,
+                        Font = new Font("Segoe UI", 11F),
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        BackColor = Color.Transparent
+                    };
+                    pnlIcon.Controls.Add(lblEmoji);
+                    card.Controls.Add(pnlIcon);
+                }
 
-                // Small uppercase caption
-                lblStripLabels[i] = new Label
+                // Configure style of static labels
+                if (lblStripLabels[i] != null)
                 {
-                    Text = statLbls[i],
-                    Location = new Point(18, 54),
-                    Size = new Size(200, 18),
-                    Font = new Font("Segoe UI", 8.25F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(122, 149, 137),
-                    BackColor = Color.Transparent,
-                    TextAlign = ContentAlignment.MiddleLeft
-                };
-                card.Controls.Add(lblStripLabels[i]);
+                    lblStripLabels[i].ForeColor = Color.FromArgb(122, 149, 137);
+                    lblStripLabels[i].Font = new Font("Segoe UI", 8.25F, FontStyle.Bold);
+                }
+                if (lblStripVals[i] != null)
+                {
+                    lblStripVals[i].ForeColor = Color.FromArgb(24, 48, 42);
+                    lblStripVals[i].Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+                }
+                if (lblStatTrendsTxt[i] != null)
+                {
+                    lblStatTrendsTxt[i].ForeColor = trendColors[i];
+                    lblStatTrendsTxt[i].Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+                }
+                if (lblStatTrendsVal[i] != null)
+                {
+                    lblStatTrendsVal[i].ForeColor = trendColors[i];
+                    lblStatTrendsVal[i].Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+                }
 
-                // Large bold value
-                lblStripVals[i] = new Label
+                if (stripDots[i] != null)
                 {
-                    Text = "-",
-                    Location = new Point(18, 72),
-                    Size = new Size(200, 34),
-                    Font = new Font("Segoe UI", 18F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(24, 48, 42),
-                    BackColor = Color.Transparent,
-                    TextAlign = ContentAlignment.MiddleLeft
-                };
-                card.Controls.Add(lblStripVals[i]);
-
-                // Trend/subtitle
-                lblStatTrends[i] = new Label
-                {
-                    Text = trends[i],
-                    Location = new Point(18, 106),
-                    Size = new Size(200, 18),
-                    Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                    ForeColor = trendColors[i],
-                    BackColor = Color.Transparent,
-                    TextAlign = ContentAlignment.MiddleLeft
-                };
-                card.Controls.Add(lblStatTrends[i]);
+                    stripDots[i].Visible = false;
+                }
 
                 // ConfigureKpiHover(card);
             }
@@ -343,6 +351,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 stripCards[i].Location = new Point(margin + i * (stripWidth + gap), stripY);
                 stripCards[i].Size = new Size(stripWidth, 140);
                 stripDots[i].Location = new Point(22, 46);
+
+                foreach (Control ctrl in stripCards[i].Controls)
+                {
+                    if (ctrl is FlowLayoutPanel flp)
+                    {
+                        flp.Width = stripWidth - 76;
+                    }
+                }
             }
 
             // 3. Layout Bảng biểu chính
@@ -435,8 +451,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             int done = allServices.Count(x => x.Status == "Hoàn thành");
 
             lblStripVals[0].Text = total.ToString();
+            lblStatTrendsVal[0].Text = "";
+
             lblStripVals[1].Text = pending.ToString();
+            lblStatTrendsVal[1].Text = "";
+            lblStatTrendsTxt[1].Text = pending > 0 ? "Cần nhập KQ" : "Đã xong";
+
             lblStripVals[2].Text = done.ToString();
+            lblStatTrendsVal[2].Text = "";
 
             btnTabAll.Text = $"Tất cả ({total})";
             btnTabPending.Text = $"Chờ thực hiện ({pending})";
@@ -1042,12 +1064,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             using (var path = GetRoundedRectPath(new RectangleF(0, 0, card.Width, card.Height), 14))
             {
                 e.Graphics.SetClip(path);
-
-                var arcRect = new Rectangle(card.Width - 110, -40, 160, 160);
-                using (var brush = new SolidBrush(Color.FromArgb(242, 244, 243)))
-                {
-                    e.Graphics.FillEllipse(brush, arcRect);
-                }
 
                 if (card.Tag is Color accentColor)
                 {

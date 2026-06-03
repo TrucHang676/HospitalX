@@ -1,6 +1,3 @@
-using Guna.UI2.WinForms;
-using System.Windows.Forms;
-
 namespace HospitalX.GUI.PH2.KyThuatVien
 {
     partial class ucKtvThongBao
@@ -9,246 +6,191 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null)) components.Dispose();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
-            this.pnlHero = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblDesignerHeroTitle = new System.Windows.Forms.Label();
-            this.lblDesignerHeroSub = new System.Windows.Forms.Label();
-            this.pnlFilter = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblDesignerFilterTitle = new System.Windows.Forms.Label();
-            this.txtDesignerSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucKtvThongBao));
             this.pnlToolbar = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnDesignerAll = new Guna.UI2.WinForms.Guna2Button();
-            this.btnDesignerUnread = new Guna.UI2.WinForms.Guna2Button();
-            this.btnDesignerUrgent = new Guna.UI2.WinForms.Guna2Button();
-            this.pnlNotifScroll = new System.Windows.Forms.Panel();
-            this.pnlToast = new Guna.UI2.WinForms.Guna2Panel();
-            this.cboSort = new Guna.UI2.WinForms.Guna2ComboBox();
-            
-            // 4 Stats Cards
-            this.cardStat1 = new Guna.UI2.WinForms.Guna2Panel();
-            this.cardStat2 = new Guna.UI2.WinForms.Guna2Panel();
-            this.cardStat3 = new Guna.UI2.WinForms.Guna2Panel();
-            this.cardStat4 = new Guna.UI2.WinForms.Guna2Panel();
-
-            this.pnlHero.SuspendLayout();
-            this.pnlFilter.SuspendLayout();
+            this.lblResultCount = new System.Windows.Forms.Label();
+            this.cmbStatus = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.cmbLevel = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.cmbDateRange = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            this.flpNotificationList = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlToolbar.SuspendLayout();
             this.SuspendLayout();
-
-            // 
-            // pnlHero
-            // 
-            this.pnlHero.BorderRadius = 14;
-            this.pnlHero.FillColor = System.Drawing.Color.FromArgb(15, 110, 86); // TealDark
-            this.pnlHero.Location = new System.Drawing.Point(28, 28);
-            this.pnlHero.Size = new System.Drawing.Size(1072, 92);
-            this.pnlHero.Name = "pnlHero";
-            this.pnlHero.Controls.Add(this.lblDesignerHeroTitle);
-            this.pnlHero.Controls.Add(this.lblDesignerHeroSub);
-
-            this.lblDesignerHeroTitle.AutoSize = true;
-            this.lblDesignerHeroTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblDesignerHeroTitle.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Bold);
-            this.lblDesignerHeroTitle.ForeColor = System.Drawing.Color.White;
-            this.lblDesignerHeroTitle.Location = new System.Drawing.Point(24, 16);
-            this.lblDesignerHeroTitle.Name = "lblDesignerHeroTitle";
-            this.lblDesignerHeroTitle.Text = "Trung tâm thông báo";
-
-            this.lblDesignerHeroSub.AutoSize = true;
-            this.lblDesignerHeroSub.BackColor = System.Drawing.Color.Transparent;
-            this.lblDesignerHeroSub.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblDesignerHeroSub.ForeColor = System.Drawing.Color.FromArgb(214, 239, 232);
-            this.lblDesignerHeroSub.Location = new System.Drawing.Point(24, 56);
-            this.lblDesignerHeroSub.Name = "lblDesignerHeroSub";
-            this.lblDesignerHeroSub.Text = "Theo dõi phân công, cảnh báo xét nghiệm và cập nhật nghiệp vụ.";
-
-            // 
-            // pnlFilter
-            // 
-            this.pnlFilter.BorderRadius = 12;
-            this.pnlFilter.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.pnlFilter.BorderThickness = 1;
-            this.pnlFilter.FillColor = System.Drawing.Color.White;
-            this.pnlFilter.Location = new System.Drawing.Point(28, 138);
-            this.pnlFilter.Size = new System.Drawing.Size(300, 600);
-            this.pnlFilter.Name = "pnlFilter";
-            this.pnlFilter.Controls.Add(this.lblDesignerFilterTitle);
-            this.pnlFilter.Controls.Add(this.txtDesignerSearch);
-
-            this.lblDesignerFilterTitle.AutoSize = true;
-            this.lblDesignerFilterTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblDesignerFilterTitle.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
-            this.lblDesignerFilterTitle.ForeColor = System.Drawing.Color.FromArgb(24, 48, 42);
-            this.lblDesignerFilterTitle.Location = new System.Drawing.Point(20, 18);
-            this.lblDesignerFilterTitle.Name = "lblDesignerFilterTitle";
-            this.lblDesignerFilterTitle.Text = "Phân loại thông báo";
-
-            this.txtDesignerSearch.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.txtDesignerSearch.BorderRadius = 8;
-            this.txtDesignerSearch.FillColor = System.Drawing.Color.FromArgb(244, 247, 250);
-            this.txtDesignerSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtDesignerSearch.Location = new System.Drawing.Point(20, 52);
-            this.txtDesignerSearch.Name = "txtDesignerSearch";
-            this.txtDesignerSearch.PlaceholderText = "Tìm kiếm thông báo...";
-            this.txtDesignerSearch.Size = new System.Drawing.Size(260, 36);
-
-            // 
-            // pnlNotifScroll
-            // 
-            this.pnlNotifScroll.BackColor = System.Drawing.Color.Transparent;
-            this.pnlNotifScroll.Location = new System.Drawing.Point(348, 138);
-            this.pnlNotifScroll.Size = new System.Drawing.Size(752, 600);
-            this.pnlNotifScroll.Name = "pnlNotifScroll";
-            this.pnlNotifScroll.AutoScroll = true;
-
             // 
             // pnlToolbar
             // 
-            this.pnlToolbar.BorderRadius = 12;
-            this.pnlToolbar.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
+            this.pnlToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlToolbar.BackColor = System.Drawing.Color.Transparent;
+            this.pnlToolbar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlToolbar.BorderRadius = 10;
             this.pnlToolbar.BorderThickness = 1;
+            this.pnlToolbar.Controls.Add(this.lblResultCount);
+            this.pnlToolbar.Controls.Add(this.cmbStatus);
+            this.pnlToolbar.Controls.Add(this.cmbLevel);
+            this.pnlToolbar.Controls.Add(this.cmbDateRange);
+            this.pnlToolbar.Controls.Add(this.txtSearch);
             this.pnlToolbar.FillColor = System.Drawing.Color.White;
-            this.pnlToolbar.Location = new System.Drawing.Point(0, 88);
-            this.pnlToolbar.Size = new System.Drawing.Size(740, 52);
+            this.pnlToolbar.Location = new System.Drawing.Point(24, 18);
             this.pnlToolbar.Name = "pnlToolbar";
-            this.pnlToolbar.Controls.Add(this.btnDesignerAll);
-            this.pnlToolbar.Controls.Add(this.btnDesignerUnread);
-            this.pnlToolbar.Controls.Add(this.btnDesignerUrgent);
-            this.pnlToolbar.Controls.Add(this.cboSort);
-
-            this.btnDesignerAll.BorderRadius = 16;
-            this.btnDesignerAll.FillColor = System.Drawing.Color.FromArgb(15, 110, 86);
-            this.btnDesignerAll.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
-            this.btnDesignerAll.ForeColor = System.Drawing.Color.White;
-            this.btnDesignerAll.Location = new System.Drawing.Point(14, 8);
-            this.btnDesignerAll.Name = "btnDesignerAll";
-            this.btnDesignerAll.Size = new System.Drawing.Size(104, 32);
-            this.btnDesignerAll.Text = "Tất cả";
-            this.btnDesignerAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-
-            this.btnDesignerUnread.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.btnDesignerUnread.BorderRadius = 16;
-            this.btnDesignerUnread.BorderThickness = 1;
-            this.btnDesignerUnread.FillColor = System.Drawing.Color.White;
-            this.btnDesignerUnread.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
-            this.btnDesignerUnread.ForeColor = System.Drawing.Color.FromArgb(74, 85, 104);
-            this.btnDesignerUnread.Location = new System.Drawing.Point(124, 8);
-            this.btnDesignerUnread.Name = "btnDesignerUnread";
-            this.btnDesignerUnread.Size = new System.Drawing.Size(104, 32);
-            this.btnDesignerUnread.Text = "Chưa đọc";
-            this.btnDesignerUnread.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-
-            this.btnDesignerUrgent.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.btnDesignerUrgent.BorderRadius = 16;
-            this.btnDesignerUrgent.BorderThickness = 1;
-            this.btnDesignerUrgent.FillColor = System.Drawing.Color.White;
-            this.btnDesignerUrgent.Font = new System.Drawing.Font("Segoe UI", 8.2F, System.Drawing.FontStyle.Bold);
-            this.btnDesignerUrgent.ForeColor = System.Drawing.Color.FromArgb(74, 85, 104);
-            this.btnDesignerUrgent.Location = new System.Drawing.Point(234, 8);
-            this.btnDesignerUrgent.Name = "btnDesignerUrgent";
-            this.btnDesignerUrgent.Size = new System.Drawing.Size(104, 32);
-            this.btnDesignerUrgent.Text = "Khẩn cấp";
-            this.btnDesignerUrgent.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-
+            this.pnlToolbar.Size = new System.Drawing.Size(1080, 116);
+            this.pnlToolbar.TabIndex = 0;
             // 
-            // cboSort
+            // lblResultCount
             // 
-            this.cboSort.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(235)))), ((int)(((byte)(240)))));
-            this.cboSort.BorderRadius = 6;
-            this.cboSort.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.cboSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(85)))), ((int)(((byte)(104)))));
-            this.cboSort.Items.AddRange(new object[] {
-            "Mới nhất trước",
-            "Cũ nhất trước"});
-            this.cboSort.SelectedIndex = 0;
-            this.cboSort.Size = new System.Drawing.Size(188, 34);
-            this.cboSort.Name = "cboSort";
-
-
+            this.lblResultCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblResultCount.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
+            this.lblResultCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblResultCount.Location = new System.Drawing.Point(802, 78);
+            this.lblResultCount.Name = "lblResultCount";
+            this.lblResultCount.Size = new System.Drawing.Size(248, 22);
+            this.lblResultCount.TabIndex = 4;
+            this.lblResultCount.Text = "Hiển thị 0 thông báo";
+            this.lblResultCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // pnlToast
+            // cmbStatus
             // 
-            this.pnlToast.BorderRadius = 10;
-            this.pnlToast.FillColor = System.Drawing.Color.FromArgb(15, 110, 86);
-            this.pnlToast.Location = new System.Drawing.Point(740, 720);
-            this.pnlToast.Size = new System.Drawing.Size(360, 52);
-            this.pnlToast.Name = "pnlToast";
-            this.pnlToast.Visible = false;
-
-            this.cardStat1.BorderRadius = 12;
-            this.cardStat1.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.cardStat1.BorderThickness = 1;
-            this.cardStat1.FillColor = System.Drawing.Color.White;
-            this.cardStat1.Location = new System.Drawing.Point(0, 0);
-            this.cardStat1.Size = new System.Drawing.Size(175, 72);
-            this.cardStat1.Name = "cardStat1";
-            this.pnlNotifScroll.Controls.Add(this.cardStat1);
-
-            this.cardStat2.BorderRadius = 12;
-            this.cardStat2.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.cardStat2.BorderThickness = 1;
-            this.cardStat2.FillColor = System.Drawing.Color.White;
-            this.cardStat2.Location = new System.Drawing.Point(185, 0);
-            this.cardStat2.Size = new System.Drawing.Size(175, 72);
-            this.cardStat2.Name = "cardStat2";
-            this.pnlNotifScroll.Controls.Add(this.cardStat2);
-
-            this.cardStat3.BorderRadius = 12;
-            this.cardStat3.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.cardStat3.BorderThickness = 1;
-            this.cardStat3.FillColor = System.Drawing.Color.White;
-            this.cardStat3.Location = new System.Drawing.Point(370, 0);
-            this.cardStat3.Size = new System.Drawing.Size(175, 72);
-            this.cardStat3.Name = "cardStat3";
-            this.pnlNotifScroll.Controls.Add(this.cardStat3);
-
-            this.cardStat4.BorderRadius = 12;
-            this.cardStat4.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
-            this.cardStat4.BorderThickness = 1;
-            this.cardStat4.FillColor = System.Drawing.Color.White;
-            this.cardStat4.Location = new System.Drawing.Point(555, 0);
-            this.cardStat4.Size = new System.Drawing.Size(175, 72);
-            this.cardStat4.Name = "cardStat4";
-            this.pnlNotifScroll.Controls.Add(this.cardStat4);
-
-            this.pnlNotifScroll.Controls.Add(this.pnlToolbar);
-
-            this.Controls.Add(this.pnlHero);
-            this.Controls.Add(this.pnlFilter);
-            this.Controls.Add(this.pnlNotifScroll);
-            this.Controls.Add(this.pnlToast);
-
+            this.cmbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbStatus.BackColor = System.Drawing.Color.Transparent;
+            this.cmbStatus.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cmbStatus.BorderRadius = 8;
+            this.cmbStatus.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStatus.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.cmbStatus.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbStatus.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbStatus.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
+            this.cmbStatus.ItemHeight = 32;
+            this.cmbStatus.Items.AddRange(new object[] {
+            "Tất cả trạng thái",
+            "Chưa đọc",
+            "Đã đọc"});
+            this.cmbStatus.Location = new System.Drawing.Point(820, 28);
+            this.cmbStatus.Name = "cmbStatus";
+            this.cmbStatus.Size = new System.Drawing.Size(230, 38);
+            this.cmbStatus.StartIndex = 0;
+            this.cmbStatus.TabIndex = 3;
+            // 
+            // cmbLevel
+            // 
+            this.cmbLevel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbLevel.BackColor = System.Drawing.Color.Transparent;
+            this.cmbLevel.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cmbLevel.BorderRadius = 8;
+            this.cmbLevel.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbLevel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.cmbLevel.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbLevel.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbLevel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
+            this.cmbLevel.ItemHeight = 32;
+            this.cmbLevel.Items.AddRange(new object[] {
+            "Tất cả cấp",
+            "Cơ sở y tế",
+            "Khoa"});
+            this.cmbLevel.Location = new System.Drawing.Point(632, 28);
+            this.cmbLevel.Name = "cmbLevel";
+            this.cmbLevel.Size = new System.Drawing.Size(172, 38);
+            this.cmbLevel.StartIndex = 0;
+            this.cmbLevel.TabIndex = 2;
+            // 
+            // cmbDateRange
+            // 
+            this.cmbDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbDateRange.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDateRange.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cmbDateRange.BorderRadius = 8;
+            this.cmbDateRange.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDateRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDateRange.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.cmbDateRange.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbDateRange.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cmbDateRange.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbDateRange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(82)))), ((int)(((byte)(73)))));
+            this.cmbDateRange.ItemHeight = 32;
+            this.cmbDateRange.Items.AddRange(new object[] {
+            "Tháng này",
+            "7 ngày gần đây",
+            "Hôm nay",
+            "Tất cả"});
+            this.cmbDateRange.Location = new System.Drawing.Point(444, 28);
+            this.cmbDateRange.Name = "cmbDateRange";
+            this.cmbDateRange.Size = new System.Drawing.Size(172, 38);
+            this.cmbDateRange.StartIndex = 0;
+            this.cmbDateRange.TabIndex = 1;
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtSearch.BorderRadius = 8;
+            this.txtSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSearch.DefaultText = "";
+            this.txtSearch.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtSearch.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
+            this.txtSearch.IconLeftOffset = new System.Drawing.Point(10, 0);
+            this.txtSearch.IconLeftSize = new System.Drawing.Size(18, 18);
+            this.txtSearch.Location = new System.Drawing.Point(24, 28);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.txtSearch.PlaceholderText = "Tìm theo tiêu đề, nội dung, địa điểm...";
+            this.txtSearch.SelectedText = "";
+            this.txtSearch.Size = new System.Drawing.Size(256, 38);
+            this.txtSearch.TabIndex = 0;
+            // 
+            // flpNotificationList
+            // 
+            this.flpNotificationList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flpNotificationList.AutoScroll = true;
+            this.flpNotificationList.BackColor = System.Drawing.Color.Transparent;
+            this.flpNotificationList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpNotificationList.Location = new System.Drawing.Point(24, 152);
+            this.flpNotificationList.Name = "flpNotificationList";
+            this.flpNotificationList.Padding = new System.Windows.Forms.Padding(0, 0, 8, 16);
+            this.flpNotificationList.Size = new System.Drawing.Size(1080, 606);
+            this.flpNotificationList.TabIndex = 1;
+            this.flpNotificationList.WrapContents = false;
+            // 
+            // ucKtvThongBao
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
+            this.Controls.Add(this.flpNotificationList);
+            this.Controls.Add(this.pnlToolbar);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "ucKtvThongBao";
             this.Size = new System.Drawing.Size(1128, 782);
-            this.pnlHero.ResumeLayout(false);
-            this.pnlHero.PerformLayout();
-            this.pnlFilter.ResumeLayout(false);
-            this.pnlFilter.PerformLayout();
+            this.Load += new System.EventHandler(this.ucKtvThongBao_Load);
             this.pnlToolbar.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
-        private Guna.UI2.WinForms.Guna2Panel pnlHero;
-        private System.Windows.Forms.Label lblDesignerHeroTitle;
-        private System.Windows.Forms.Label lblDesignerHeroSub;
-        private Guna.UI2.WinForms.Guna2Panel pnlFilter;
-        private System.Windows.Forms.Label lblDesignerFilterTitle;
-        private Guna.UI2.WinForms.Guna2TextBox txtDesignerSearch;
         private Guna.UI2.WinForms.Guna2Panel pnlToolbar;
-        private Guna.UI2.WinForms.Guna2Button btnDesignerAll;
-        private Guna.UI2.WinForms.Guna2Button btnDesignerUnread;
-        private Guna.UI2.WinForms.Guna2Button btnDesignerUrgent;
-        private System.Windows.Forms.Panel pnlNotifScroll;
-        private Guna.UI2.WinForms.Guna2Panel pnlToast;
-        private Guna.UI2.WinForms.Guna2Panel cardStat1;
-        private Guna.UI2.WinForms.Guna2Panel cardStat2;
-        private Guna.UI2.WinForms.Guna2Panel cardStat3;
-        private Guna.UI2.WinForms.Guna2Panel cardStat4;
-        private Guna.UI2.WinForms.Guna2ComboBox cboSort;
+        private Guna.UI2.WinForms.Guna2TextBox txtSearch;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbDateRange;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbLevel;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbStatus;
+        private System.Windows.Forms.Label lblResultCount;
+        private System.Windows.Forms.FlowLayoutPanel flpNotificationList;
     }
 }
