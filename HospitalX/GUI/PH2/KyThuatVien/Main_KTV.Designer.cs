@@ -40,8 +40,9 @@ namespace HospitalX.GUI.PH2
 
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main_KTV));
-            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm();
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlLogo = new Guna.UI2.WinForms.Guna2Panel();
             this.ptbChuThap = new Guna.UI2.WinForms.Guna2PictureBox();
@@ -60,10 +61,10 @@ namespace HospitalX.GUI.PH2
             this.btnThongBao = new Guna.UI2.WinForms.Guna2Button();
             this.btnLogout = new Guna.UI2.WinForms.Guna2Button();
             this.pnlTopbar = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.lblSubtitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlSidebar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).BeginInit();
@@ -390,6 +391,21 @@ namespace HospitalX.GUI.PH2
             this.pnlTopbar.Size = new System.Drawing.Size(1075, 65);
             this.pnlTopbar.TabIndex = 1;
             // 
+            // btnExit
+            // 
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExit.BackColor = System.Drawing.Color.Transparent;
+            this.btnExit.BorderRadius = 15;
+            this.btnExit.CustomIconSize = 20F;
+            this.btnExit.FillColor = System.Drawing.Color.Transparent;
+            this.btnExit.ForeColor = System.Drawing.Color.Black;
+            this.btnExit.HoverState.FillColor = System.Drawing.Color.DarkSeaGreen;
+            this.btnExit.IconColor = System.Drawing.Color.DarkGreen;
+            this.btnExit.Location = new System.Drawing.Point(1023, 16);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(33, 32);
+            this.btnExit.TabIndex = 15;
+            // 
             // lblPageTitle
             // 
             this.lblPageTitle.AutoSize = true;
@@ -423,21 +439,6 @@ namespace HospitalX.GUI.PH2
             this.pnlContent.Size = new System.Drawing.Size(1075, 785);
             this.pnlContent.TabIndex = 0;
             // 
-            // btnExit
-            // 
-            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExit.BackColor = System.Drawing.Color.Transparent;
-            this.btnExit.BorderRadius = 15;
-            this.btnExit.CustomIconSize = 20F;
-            this.btnExit.FillColor = System.Drawing.Color.Transparent;
-            this.btnExit.ForeColor = System.Drawing.Color.Black;
-            this.btnExit.HoverState.FillColor = System.Drawing.Color.DarkSeaGreen;
-            this.btnExit.IconColor = System.Drawing.Color.DarkGreen;
-            this.btnExit.Location = new System.Drawing.Point(1023, 16);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(33, 32);
-            this.btnExit.TabIndex = 15;
-            // 
             // Main_KTV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -448,6 +449,7 @@ namespace HospitalX.GUI.PH2
             this.Controls.Add(this.pnlTopbar);
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main_KTV";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Kỹ thuật viên";
