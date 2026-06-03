@@ -158,7 +158,7 @@ namespace HospitalX.GUI.PH2
 
         private void NavigateToDashboard()
         {
-            LoadPage(new ucTrangChu(), "Trang chủ", "/ Dashboard");
+            LoadPage(new ucTrangChu(), "Trang chủ", "");
             btnDashboard.Checked = true;
         }
 
@@ -214,6 +214,7 @@ namespace HospitalX.GUI.PH2
             pnlContent.Controls.Add(control);
             lblPageTitle.Text = title;
             lblBreadcrumb.Text = breadcrumb;
+            lblBreadcrumb.Visible = !string.IsNullOrEmpty(breadcrumb);
             RefreshHeaderLayout();
 
             // Hide action buttons on the Patient List page (ucDanhSachBN)
@@ -232,7 +233,7 @@ namespace HospitalX.GUI.PH2
             guna2MessageDialog1.Caption = "Bệnh viện X";
             guna2MessageDialog1.Show($"Chức năng \"{feature}\" đang được phát triển.", "Thông báo");
 
-            LoadPage(new ucTrangChu(), "Trang chủ", "/ Dashboard");
+            LoadPage(new ucTrangChu(), "Trang chủ", "");
             activeMenu.Checked = true;
         }
 
