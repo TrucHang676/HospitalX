@@ -164,6 +164,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblTechnicianValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
             this.lblTechnicianValue.Size = new System.Drawing.Size(177, 32);
             this.lblTechnicianValue.TabIndex = 2;
+            this.lblTechnicianValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblTechnician
             // 
@@ -187,6 +188,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblDateValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
             this.lblDateValue.Size = new System.Drawing.Size(158, 32);
             this.lblDateValue.TabIndex = 4;
+            this.lblDateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDate
             // 
@@ -210,6 +212,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblServiceValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
             this.lblServiceValue.Size = new System.Drawing.Size(326, 32);
             this.lblServiceValue.TabIndex = 6;
+            this.lblServiceValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblService
             // 
@@ -232,7 +235,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblHsbaValue.Name = "lblHsbaValue";
             this.lblHsbaValue.Size = new System.Drawing.Size(158, 32);
             this.lblHsbaValue.TabIndex = 8;
-            this.lblHsbaValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblHsbaValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblHsba
             // 

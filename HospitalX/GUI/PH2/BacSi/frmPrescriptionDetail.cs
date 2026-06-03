@@ -6,13 +6,17 @@ namespace HospitalX.GUI.PH2.BacSi
     public partial class frmPrescriptionDetail : Form
     {
         private readonly ucDonThuoc.PrescriptionRecord _record;
+        private ucDonThuoc.DrugRecord _selectedDrug;
         private bool _changed;
+        private bool _isLoadingDrug;
 
         public frmPrescriptionDetail(ucDonThuoc.PrescriptionRecord record)
         {
             _record = record;
             InitializeComponent();
             LoadRecord();
+            WireInputState();
+            ClearInputs();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -27,22 +31,33 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void LoadRecord()
         {
-            lblMeta.Text = string.Format("{0} · {1} · {2:dd/MM/yyyy}", _record.HsbaId, _record.PatientName, _record.CreatedDate);
+            lblHsbaId.Text = _record.HsbaId;
+            lblMeta.Text = string.Format("{0} · {1:dd/MM/yyyy}", _record.PatientName, _record.CreatedDate);
             RefreshGrid();
         }
 
         private void RefreshGrid()
         {
+            _isLoadingDrug = true;
             dgvDrugs.Rows.Clear();
             foreach (ucDonThuoc.DrugRecord drug in _record.Drugs)
             {
                 int rowIndex = dgvDrugs.Rows.Add(drug.Name, drug.Dose);
                 dgvDrugs.Rows[rowIndex].Tag = drug;
             }
+            dgvDrugs.ClearSelection();
+            dgvDrugs.CurrentCell = null;
+            _selectedDrug = null;
+            _isLoadingDrug = false;
         }
 
         private void dgvDrugs_SelectionChanged(object sender, EventArgs e)
         {
+            if (_isLoadingDrug)
+            {
+                return;
+            }
+
             LoadSelectedDrug();
         }
 
@@ -50,12 +65,62 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             if (dgvDrugs.CurrentRow == null || dgvDrugs.CurrentRow.Tag == null)
             {
+                _selectedDrug = null;
+                UpdateActionButtons();
                 return;
             }
 
-            var drug = (ucDonThuoc.DrugRecord)dgvDrugs.CurrentRow.Tag;
-            txtMedicineName.Text = drug.Name;
-            txtDose.Text = drug.Dose;
+            _isLoadingDrug = true;
+            _selectedDrug = (ucDonThuoc.DrugRecord)dgvDrugs.CurrentRow.Tag;
+            txtMedicineName.Text = _selectedDrug.Name;
+            txtDose.Text = _selectedDrug.Dose;
+            _isLoadingDrug = false;
+            UpdateActionButtons();
+        }
+
+        private void WireInputState()
+        {
+            txtMedicineName.TextChanged += PrescriptionInputChanged;
+            txtDose.TextChanged += PrescriptionInputChanged;
+        }
+
+        private void PrescriptionInputChanged(object sender, EventArgs e)
+        {
+            if (_isLoadingDrug)
+            {
+                return;
+            }
+
+            UpdateActionButtons();
+        }
+
+        private void UpdateActionButtons()
+        {
+            bool hasCompleteInput = HasCompleteInput();
+            bool hasSelectedDrug = _selectedDrug != null;
+            bool canUpdate = hasSelectedDrug && hasCompleteInput && SelectedDrugChanged();
+
+            btnAdd.Visible = !hasSelectedDrug && hasCompleteInput;
+            btnUpdate.Visible = canUpdate;
+            btnDelete.Visible = hasSelectedDrug && !canUpdate;
+            btnNewMedicine.Visible = true;
+        }
+
+        private bool HasCompleteInput()
+        {
+            return !string.IsNullOrWhiteSpace(txtMedicineName.Text)
+                && !string.IsNullOrWhiteSpace(txtDose.Text);
+        }
+
+        private bool SelectedDrugChanged()
+        {
+            if (_selectedDrug == null)
+            {
+                return false;
+            }
+
+            return !string.Equals(txtMedicineName.Text.Trim(), _selectedDrug.Name, StringComparison.Ordinal)
+                || !string.Equals(txtDose.Text.Trim(), _selectedDrug.Dose, StringComparison.Ordinal);
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -65,6 +130,14 @@ namespace HospitalX.GUI.PH2.BacSi
                 msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning;
                 msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
                 msgDialog.Show("Vui lòng nhập tên thuốc.", "Thiếu thông tin");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDose.Text))
+            {
+                msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning;
+                msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                msgDialog.Show("Vui lòng nhập liều lượng.", "Thiếu thông tin");
                 return;
             }
 
@@ -82,10 +155,19 @@ namespace HospitalX.GUI.PH2.BacSi
             }
 
             var drug = (ucDonThuoc.DrugRecord)dgvDrugs.CurrentRow.Tag;
+            if (string.IsNullOrWhiteSpace(txtMedicineName.Text) || string.IsNullOrWhiteSpace(txtDose.Text))
+            {
+                msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Warning;
+                msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                msgDialog.Show("Vui lòng nhập đầy đủ tên thuốc và liều lượng.", "Thiếu thông tin");
+                return;
+            }
+
             drug.Name = txtMedicineName.Text.Trim();
             drug.Dose = txtDose.Text.Trim();
             _changed = true;
             RefreshGrid();
+            ClearInputs();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -102,10 +184,22 @@ namespace HospitalX.GUI.PH2.BacSi
             ClearInputs();
         }
 
+        private void btnNewMedicine_Click(object sender, EventArgs e)
+        {
+            ClearInputs();
+        }
+
         private void ClearInputs()
         {
+            _isLoadingDrug = true;
+            _selectedDrug = null;
+            dgvDrugs.ClearSelection();
+            dgvDrugs.CurrentCell = null;
             txtMedicineName.Clear();
             txtDose.Clear();
+            _isLoadingDrug = false;
+            UpdateActionButtons();
+            txtMedicineName.Focus();
         }
     }
 }

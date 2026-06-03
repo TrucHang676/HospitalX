@@ -278,6 +278,12 @@
     <Compile Include="GUI\PH2\BenhNhan\frmDonThuocDetailBN.Designer.cs">
       <DependentUpon>frmDonThuocDetailBN.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmPatientAddressEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\BenhNhan\frmPatientAddressEdit.Designer.cs">
+      <DependentUpon>frmPatientAddressEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\BenhNhan\ucBenhAnBN.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -560,6 +566,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\BacSi\ucTongQuan.resx">
       <DependentUpon>ucTongQuan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\BenhNhan\frmPatientAddressEdit.resx">
+      <DependentUpon>frmPatientAddressEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\frmKtvNotificationDetail.resx">
       <DependentUpon>frmKtvNotificationDetail.cs</DependentUpon>

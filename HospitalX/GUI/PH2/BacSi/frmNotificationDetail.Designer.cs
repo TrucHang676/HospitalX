@@ -72,7 +72,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblSender.BackColor = System.Drawing.Color.Transparent;
             this.lblSender.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblSender.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblSender.Location = new System.Drawing.Point(30, 96);
+            this.lblSender.Location = new System.Drawing.Point(30, 92);
             this.lblSender.Name = "lblSender";
             this.lblSender.Size = new System.Drawing.Size(620, 24);
             this.lblSender.TabIndex = 2;
@@ -121,16 +121,18 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnMarkRead
             // 
+            this.btnMarkRead.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMarkRead.BackColor = System.Drawing.Color.Transparent;
             this.btnMarkRead.BorderRadius = 8;
             this.btnMarkRead.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMarkRead.DefaultAutoSize = true;
             this.btnMarkRead.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnMarkRead.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMarkRead.ForeColor = System.Drawing.Color.White;
             this.btnMarkRead.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnMarkRead.Location = new System.Drawing.Point(549, 415);
+            this.btnMarkRead.Location = new System.Drawing.Point(635, 415);
             this.btnMarkRead.Name = "btnMarkRead";
-            this.btnMarkRead.Size = new System.Drawing.Size(240, 37);
+            this.btnMarkRead.Size = new System.Drawing.Size(154, 31);
             this.btnMarkRead.TabIndex = 6;
             this.btnMarkRead.Text = "Đánh dấu đã đọc";
             this.btnMarkRead.Click += new System.EventHandler(this.btnMarkRead_Click);

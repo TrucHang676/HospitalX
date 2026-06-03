@@ -56,22 +56,22 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi4Sub = new System.Windows.Forms.Label();
             this.lblKpi4Val = new System.Windows.Forms.Label();
             this.lblKpi4Cap = new System.Windows.Forms.Label();
-            this.ptbKpi4 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.lblKpi4Icon = new System.Windows.Forms.Label();
             this.pnlKpi3 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblKpi3Sub = new System.Windows.Forms.Label();
             this.lblKpi3Val = new System.Windows.Forms.Label();
             this.lblKpi3Cap = new System.Windows.Forms.Label();
-            this.ptbKpi3 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.lblKpi3Icon = new System.Windows.Forms.Label();
             this.pnlKpi2 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblKpi2Sub = new System.Windows.Forms.Label();
             this.lblKpi2Val = new System.Windows.Forms.Label();
             this.lblKpi2Cap = new System.Windows.Forms.Label();
-            this.ptbKpi2 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.lblKpi2Icon = new System.Windows.Forms.Label();
             this.pnlKpi1 = new Guna.UI2.WinForms.Guna2Panel();
             this.lblKpi1Sub = new System.Windows.Forms.Label();
             this.lblKpi1Val = new System.Windows.Forms.Label();
             this.lblKpi1Cap = new System.Windows.Forms.Label();
-            this.ptbKpi1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.lblKpi1Icon = new System.Windows.Forms.Label();
             this.pnlScroll.SuspendLayout();
             this.pnlActivity.SuspendLayout();
             this.pnlMiddle.SuspendLayout();
@@ -84,24 +84,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ((System.ComponentModel.ISupportInitialize)(this.ptbQuickTitleIcon)).BeginInit();
             this.pnlKpiRow.SuspendLayout();
             this.pnlKpi4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi4)).BeginInit();
             this.pnlKpi3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi3)).BeginInit();
             this.pnlKpi2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi2)).BeginInit();
             this.pnlKpi1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlScroll
             // 
             this.pnlScroll.AutoScroll = true;
-            this.pnlScroll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
+            this.pnlScroll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.pnlScroll.Controls.Add(this.pnlActivity);
             this.pnlScroll.Controls.Add(this.pnlMiddle);
             this.pnlScroll.Controls.Add(this.pnlKpiRow);
             this.pnlScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlScroll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
+            this.pnlScroll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.pnlScroll.Location = new System.Drawing.Point(0, 0);
             this.pnlScroll.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlScroll.Name = "pnlScroll";
@@ -248,7 +244,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // colBacSi
             // 
             this.colBacSi.FillWeight = 19F;
-            this.colBacSi.HeaderText = "DỊCH VỤ CẦN";
+            this.colBacSi.HeaderText = "LOẠI DỊCH VỤ";
             this.colBacSi.MinimumWidth = 6;
             this.colBacSi.Name = "colBacSi";
             this.colBacSi.ReadOnly = true;
@@ -595,7 +591,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlKpi4.Controls.Add(this.lblKpi4Sub);
             this.pnlKpi4.Controls.Add(this.lblKpi4Val);
             this.pnlKpi4.Controls.Add(this.lblKpi4Cap);
-            this.pnlKpi4.Controls.Add(this.ptbKpi4);
+            this.pnlKpi4.Controls.Add(this.lblKpi4Icon);
             this.pnlKpi4.FillColor = System.Drawing.Color.White;
             this.pnlKpi4.Location = new System.Drawing.Point(1056, 0);
             this.pnlKpi4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
@@ -637,17 +633,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi4Cap.TabIndex = 1;
             this.lblKpi4Cap.Text = "HOÀN THÀNH HÔM NAY";
             // 
-            // ptbKpi4
             // 
-            this.ptbKpi4.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.ptbKpi4.ImageRotate = 0F;
-            this.ptbKpi4.Location = new System.Drawing.Point(24, 20);
-            this.ptbKpi4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ptbKpi4.Name = "ptbKpi4";
-            this.ptbKpi4.Size = new System.Drawing.Size(64, 59);
-            this.ptbKpi4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbKpi4.TabIndex = 0;
-            this.ptbKpi4.TabStop = false;
             // 
             // pnlKpi3
             // 
@@ -657,7 +643,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlKpi3.Controls.Add(this.lblKpi3Sub);
             this.pnlKpi3.Controls.Add(this.lblKpi3Val);
             this.pnlKpi3.Controls.Add(this.lblKpi3Cap);
-            this.pnlKpi3.Controls.Add(this.ptbKpi3);
+            this.pnlKpi3.Controls.Add(this.lblKpi3Icon);
             this.pnlKpi3.FillColor = System.Drawing.Color.White;
             this.pnlKpi3.Location = new System.Drawing.Point(704, 0);
             this.pnlKpi3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
@@ -699,17 +685,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi3Cap.TabIndex = 1;
             this.lblKpi3Cap.Text = "CHỜ CHỈ ĐỊNH KTV";
             // 
-            // ptbKpi3
             // 
-            this.ptbKpi3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(227)))), ((int)(((byte)(242)))), ((int)(((byte)(253)))));
-            this.ptbKpi3.ImageRotate = 0F;
-            this.ptbKpi3.Location = new System.Drawing.Point(24, 20);
-            this.ptbKpi3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ptbKpi3.Name = "ptbKpi3";
-            this.ptbKpi3.Size = new System.Drawing.Size(64, 59);
-            this.ptbKpi3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbKpi3.TabIndex = 0;
-            this.ptbKpi3.TabStop = false;
             // 
             // pnlKpi2
             // 
@@ -719,7 +695,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlKpi2.Controls.Add(this.lblKpi2Sub);
             this.pnlKpi2.Controls.Add(this.lblKpi2Val);
             this.pnlKpi2.Controls.Add(this.lblKpi2Cap);
-            this.pnlKpi2.Controls.Add(this.ptbKpi2);
+            this.pnlKpi2.Controls.Add(this.lblKpi2Icon);
             this.pnlKpi2.FillColor = System.Drawing.Color.White;
             this.pnlKpi2.Location = new System.Drawing.Point(352, 0);
             this.pnlKpi2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
@@ -761,17 +737,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi2Cap.TabIndex = 1;
             this.lblKpi2Cap.Text = "KTV ĐANG LÀM VIỆC";
             // 
-            // ptbKpi2
             // 
-            this.ptbKpi2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(224)))));
-            this.ptbKpi2.ImageRotate = 0F;
-            this.ptbKpi2.Location = new System.Drawing.Point(24, 20);
-            this.ptbKpi2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ptbKpi2.Name = "ptbKpi2";
-            this.ptbKpi2.Size = new System.Drawing.Size(64, 59);
-            this.ptbKpi2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbKpi2.TabIndex = 0;
-            this.ptbKpi2.TabStop = false;
             // 
             // pnlKpi1
             // 
@@ -781,7 +747,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlKpi1.Controls.Add(this.lblKpi1Sub);
             this.pnlKpi1.Controls.Add(this.lblKpi1Val);
             this.pnlKpi1.Controls.Add(this.lblKpi1Cap);
-            this.pnlKpi1.Controls.Add(this.ptbKpi1);
+            this.pnlKpi1.Controls.Add(this.lblKpi1Icon);
             this.pnlKpi1.FillColor = System.Drawing.Color.White;
             this.pnlKpi1.Location = new System.Drawing.Point(0, 0);
             this.pnlKpi1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
@@ -824,24 +790,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKpi1Cap.TabIndex = 1;
             this.lblKpi1Cap.Text = "HSBA CẦN PHÂN CÔNG";
             // 
-            // ptbKpi1
             // 
-            this.ptbKpi1.BackColor = System.Drawing.Color.Transparent;
-            this.ptbKpi1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(249)))), ((int)(((byte)(196)))));
-            this.ptbKpi1.ImageRotate = 0F;
-            this.ptbKpi1.Location = new System.Drawing.Point(24, 20);
-            this.ptbKpi1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.ptbKpi1.Name = "ptbKpi1";
-            this.ptbKpi1.Size = new System.Drawing.Size(64, 59);
-            this.ptbKpi1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbKpi1.TabIndex = 0;
-            this.ptbKpi1.TabStop = false;
             // 
             // ucTrangChu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.Controls.Add(this.pnlScroll);
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ucTrangChu";
@@ -864,16 +819,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlKpiRow.ResumeLayout(false);
             this.pnlKpi4.ResumeLayout(false);
             this.pnlKpi4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi4)).EndInit();
             this.pnlKpi3.ResumeLayout(false);
             this.pnlKpi3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi3)).EndInit();
             this.pnlKpi2.ResumeLayout(false);
             this.pnlKpi2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi2)).EndInit();
             this.pnlKpi1.ResumeLayout(false);
             this.pnlKpi1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbKpi1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -883,22 +834,22 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Guna.UI2.WinForms.Guna2Panel pnlScroll;
         private Guna.UI2.WinForms.Guna2Panel pnlKpiRow;
         private Guna.UI2.WinForms.Guna2Panel pnlKpi1;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbKpi1;
+        private System.Windows.Forms.Label lblKpi1Icon;
         private System.Windows.Forms.Label lblKpi1Cap;
         private System.Windows.Forms.Label lblKpi1Val;
         private System.Windows.Forms.Label lblKpi1Sub;
         private Guna.UI2.WinForms.Guna2Panel pnlKpi2;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbKpi2;
+        private System.Windows.Forms.Label lblKpi2Icon;
         private System.Windows.Forms.Label lblKpi2Cap;
         private System.Windows.Forms.Label lblKpi2Val;
         private System.Windows.Forms.Label lblKpi2Sub;
         private Guna.UI2.WinForms.Guna2Panel pnlKpi3;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbKpi3;
+        private System.Windows.Forms.Label lblKpi3Icon;
         private System.Windows.Forms.Label lblKpi3Cap;
         private System.Windows.Forms.Label lblKpi3Val;
         private System.Windows.Forms.Label lblKpi3Sub;
         private Guna.UI2.WinForms.Guna2Panel pnlKpi4;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbKpi4;
+        private System.Windows.Forms.Label lblKpi4Icon;
         private System.Windows.Forms.Label lblKpi4Cap;
         private System.Windows.Forms.Label lblKpi4Val;
         private System.Windows.Forms.Label lblKpi4Sub;

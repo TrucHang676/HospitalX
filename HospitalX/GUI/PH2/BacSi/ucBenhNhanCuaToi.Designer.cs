@@ -181,14 +181,14 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // colPatient
             // 
-            this.colPatient.FillWeight = 28F;
+            this.colPatient.FillWeight = 26F;
             this.colPatient.HeaderText = "BỆNH NHÂN";
             this.colPatient.Name = "colPatient";
             this.colPatient.ReadOnly = true;
             // 
             // colGender
             // 
-            this.colGender.FillWeight = 10F;
+            this.colGender.FillWeight = 15F;
             this.colGender.HeaderText = "GIỚI TÍNH";
             this.colGender.Name = "colGender";
             this.colGender.ReadOnly = true;
@@ -209,7 +209,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // colRxCount
             // 
-            this.colRxCount.FillWeight = 10F;
+            this.colRxCount.FillWeight = 15F;
             this.colRxCount.HeaderText = "ĐƠN THUỐC";
             this.colRxCount.Name = "colRxCount";
             this.colRxCount.ReadOnly = true;

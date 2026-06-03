@@ -51,6 +51,7 @@ namespace HospitalX.GUI.PH2
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
+            this.lbl = new System.Windows.Forms.Label();
             this.pnlSidebar.SuspendLayout();
             this.pnl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).BeginInit();
@@ -88,7 +89,7 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLine1
             // 
-            this.pnlLine1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.pnlLine1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
             this.pnlLine1.FillThickness = 5;
             this.pnlLine1.Location = new System.Drawing.Point(0, 135);
             this.pnlLine1.Name = "pnlLine1";
@@ -98,6 +99,7 @@ namespace HospitalX.GUI.PH2
             // pnl2
             // 
             this.pnl2.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.pnl2.Controls.Add(this.lbl);
             this.pnl2.Controls.Add(this.lblTenBS);
             this.pnl2.Controls.Add(this.ptbAdmin);
             this.pnl2.CustomBorderColor = System.Drawing.Color.WhiteSmoke;
@@ -111,7 +113,7 @@ namespace HospitalX.GUI.PH2
             this.lblTenBS.AutoSize = true;
             this.lblTenBS.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenBS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(216)))));
-            this.lblTenBS.Location = new System.Drawing.Point(61, 29);
+            this.lblTenBS.Location = new System.Drawing.Point(62, 31);
             this.lblTenBS.Name = "lblTenBS";
             this.lblTenBS.Size = new System.Drawing.Size(48, 15);
             this.lblTenBS.TabIndex = 9;
@@ -315,7 +317,7 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLine2
             // 
-            this.pnlLine2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.pnlLine2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
             this.pnlLine2.FillThickness = 5;
             this.pnlLine2.Location = new System.Drawing.Point(0, 65);
             this.pnlLine2.Name = "pnlLine2";
@@ -336,7 +338,7 @@ namespace HospitalX.GUI.PH2
             // pnlLogo
             // 
             this.pnlLogo.BackColor = System.Drawing.Color.Transparent;
-            this.pnlLogo.BorderColor = System.Drawing.Color.Green;
+            this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
             this.pnlLogo.BorderRadius = 23;
             this.pnlLogo.BorderThickness = 1;
             this.pnlLogo.Controls.Add(this.ptbChuThap);
@@ -365,7 +367,7 @@ namespace HospitalX.GUI.PH2
             // 
             this.lblHospital.BackColor = System.Drawing.Color.Transparent;
             this.lblHospital.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHospital.ForeColor = System.Drawing.Color.Lime;
+            this.lblHospital.ForeColor = System.Drawing.Color.Cyan;
             this.lblHospital.Location = new System.Drawing.Point(66, 21);
             this.lblHospital.Name = "lblHospital";
             this.lblHospital.Size = new System.Drawing.Size(83, 14);
@@ -421,6 +423,17 @@ namespace HospitalX.GUI.PH2
             this.pnlContent.Size = new System.Drawing.Size(1128, 782);
             this.pnlContent.TabIndex = 3;
             // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbl.Location = new System.Drawing.Point(61, 13);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(128, 12);
+            this.lbl.TabIndex = 10;
+            this.lbl.Text = "Quản lý hệ thống bệnh viện X";
+            // 
             // Main_QTV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -473,5 +486,6 @@ namespace HospitalX.GUI.PH2
         private Guna.UI2.WinForms.Guna2ControlBox btnExit;
         private System.Windows.Forms.Label lblPageTitle;
         private System.Windows.Forms.Panel pnlContent;
+        private System.Windows.Forms.Label lbl;
     }
 }

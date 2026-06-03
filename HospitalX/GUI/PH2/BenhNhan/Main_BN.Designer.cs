@@ -36,7 +36,8 @@
             this.btnHSCN = new Guna.UI2.WinForms.Guna2Button();
             this.pnlLine1 = new Guna.UI2.WinForms.Guna2Separator();
             this.pnl2 = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblTenBS = new System.Windows.Forms.Label();
+            this.lblPhai_Tuoi = new System.Windows.Forms.Label();
+            this.lblTenBN = new System.Windows.Forms.Label();
             this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
             this.btnDT = new Guna.UI2.WinForms.Guna2Button();
             this.btnHSBA = new Guna.UI2.WinForms.Guna2Button();
@@ -169,7 +170,8 @@
             // pnl2
             // 
             this.pnl2.BorderColor = System.Drawing.Color.WhiteSmoke;
-            this.pnl2.Controls.Add(this.lblTenBS);
+            this.pnl2.Controls.Add(this.lblPhai_Tuoi);
+            this.pnl2.Controls.Add(this.lblTenBN);
             this.pnl2.Controls.Add(this.ptbAdmin);
             this.pnl2.CustomBorderColor = System.Drawing.Color.WhiteSmoke;
             this.pnl2.Location = new System.Drawing.Point(1, 75);
@@ -177,16 +179,27 @@
             this.pnl2.Size = new System.Drawing.Size(220, 53);
             this.pnl2.TabIndex = 6;
             // 
-            // lblTenBS
+            // lblPhai_Tuoi
             // 
-            this.lblTenBS.AutoSize = true;
-            this.lblTenBS.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenBS.ForeColor = System.Drawing.Color.White;
-            this.lblTenBS.Location = new System.Drawing.Point(61, 29);
-            this.lblTenBS.Name = "lblTenBS";
-            this.lblTenBS.Size = new System.Drawing.Size(63, 15);
-            this.lblTenBS.TabIndex = 9;
-            this.lblTenBS.Text = "BN. An An";
+            this.lblPhai_Tuoi.AutoSize = true;
+            this.lblPhai_Tuoi.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPhai_Tuoi.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblPhai_Tuoi.Location = new System.Drawing.Point(65, 30);
+            this.lblPhai_Tuoi.Name = "lblPhai_Tuoi";
+            this.lblPhai_Tuoi.Size = new System.Drawing.Size(59, 12);
+            this.lblPhai_Tuoi.TabIndex = 10;
+            this.lblPhai_Tuoi.Text = "Nam, 52 tuổi";
+            // 
+            // lblTenBN
+            // 
+            this.lblTenBN.AutoSize = true;
+            this.lblTenBN.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTenBN.ForeColor = System.Drawing.Color.White;
+            this.lblTenBN.Location = new System.Drawing.Point(62, 10);
+            this.lblTenBN.Name = "lblTenBN";
+            this.lblTenBN.Size = new System.Drawing.Size(63, 15);
+            this.lblTenBN.TabIndex = 9;
+            this.lblTenBN.Text = "BN. An An";
             // 
             // ptbAdmin
             // 
@@ -455,7 +468,7 @@
         private Guna.UI2.WinForms.Guna2Panel pnlSidebar;
         private Guna.UI2.WinForms.Guna2Separator pnlLine1;
         private Guna.UI2.WinForms.Guna2Panel pnl2;
-        private System.Windows.Forms.Label lblTenBS;
+        private System.Windows.Forms.Label lblTenBN;
         private Guna.UI2.WinForms.Guna2PictureBox ptbAdmin;
         private Guna.UI2.WinForms.Guna2Button btnDT;
         private Guna.UI2.WinForms.Guna2Button btnHSBA;
@@ -472,5 +485,6 @@
         private System.Windows.Forms.Panel pnlContent;
         private Guna.UI2.WinForms.Guna2Button btnHSCN;
         private Guna.UI2.WinForms.Guna2Button btnDV;
+        private System.Windows.Forms.Label lblPhai_Tuoi;
     }
 }
