@@ -4,6 +4,7 @@ using HospitalX.GUI.PH1;
 using HospitalX.GUI.PH2;
 using Oracle.ManagedDataAccess.Client;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -24,6 +25,7 @@ namespace HospitalX.GUI
             InitializeComponent();
             SetupBrandingAndIcons();
             ApplyRoleTheme();
+            ApplyTestCredential();
         }
 
         private static LoginRoleOption CreateDesignerRole()
@@ -347,22 +349,56 @@ namespace HospitalX.GUI
             Close();
         }
 
+        private void ApplyTestCredential()
+        {
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
+                return;
+            }
+
+            string username;
+            string password;
+            if (!TryGetTestCredential(out username, out password))
+            {
+                return;
+            }
+
+            txtUsername.Text = username;
+            txtPassword.Text = password;
+        }
+
+        private bool TryGetTestCredential(out string username, out string password)
+        {
+            username = null;
+            password = "123";
+
+            string key = _role?.Key;
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
+            if (key == "PH1_DBA") username = "admin_ph1";
+            else if (key == "PH2_DBA") username = "admin_ph2";
+            else if (key == "PH2_COORDINATOR") username = "DP0001";
+            else if (key == "PH2_DOCTOR") username = "BS0001";
+            else if (key == "PH2_TECHNICIAN") username = "KTV001";
+            else if (key == "PH2_PATIENT") username = "BN000001";
+
+            return !string.IsNullOrEmpty(username);
+        }
+
         private bool IsMockCredential(string username, string password, out string expectedUser)
         {
             expectedUser = null;
-            if (password != "123") return false;
 
-            string key = _role?.Key;
-            if (string.IsNullOrEmpty(key)) return false;
+            string expectedPassword;
+            if (!TryGetTestCredential(out expectedUser, out expectedPassword))
+            {
+                return false;
+            }
 
-            if (key == "PH1_DBA") expectedUser = "admin_ph1";
-            else if (key == "PH2_DBA") expectedUser = "admin_ph2";
-            else if (key == "PH2_COORDINATOR") expectedUser = "DP0001";
-            else if (key == "PH2_DOCTOR") expectedUser = "BS0001";
-            else if (key == "PH2_TECHNICIAN") expectedUser = "KTV001";
-            else if (key == "PH2_PATIENT") expectedUser = "BN000001";
-
-            if (expectedUser != null && username.Equals(expectedUser, StringComparison.OrdinalIgnoreCase))
+            if (password == expectedPassword && username.Equals(expectedUser, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
