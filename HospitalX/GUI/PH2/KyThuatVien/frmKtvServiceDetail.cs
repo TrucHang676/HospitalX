@@ -13,10 +13,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             this.recordId = recordId;
             InitializeComponent();
-            if (System.IO.File.Exists(@"d:\HospitalX\image\medical-team.ico"))
-            {
-                this.Icon = new System.Drawing.Icon(@"d:\HospitalX\image\medical-team.ico");
-            }
 
             // Populate data from constructor parameters
             lblHoTenVal.Text = patientName;

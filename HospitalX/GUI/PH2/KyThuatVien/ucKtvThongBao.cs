@@ -1,1166 +1,343 @@
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
+using HospitalX.GUI.PH2.DieuPhoiVien;
 
 namespace HospitalX.GUI.PH2.KyThuatVien
 {
     public partial class ucKtvThongBao : UserControl
     {
-        // Internal data class for notifications
-        private class KtvNotification
-        {
-            public string Id { get; set; }
-            public string Title { get; set; }
-            public string Body { get; set; }
-            public string Time { get; set; }
-            public string DateGroup { get; set; } // "Hôm nay", "Hôm qua"
-            public string Type { get; set; } // "Phân công", "Kết quả", "Khẩn cấp", "Hệ thống", "Chuyển ca", "Đào tạo"
-            public bool IsUnread { get; set; }
-            public bool IsUrgent { get; set; }
-            public string[] Tags { get; set; }
-            public string ActionText { get; set; }
-            public string ActionType { get; set; } // "view_result", "view_assignment", "register", "swap", "none"
-        }
-        // Layout UI controls
-        private Label lblHeroTitle;
-        private Label lblHeroSub;
-        private Guna2Button btnHeroMarkAll;
-        private Label lblFilterTitle;
-        private Guna2TextBox txtSearch;
-        private Guna2Panel divFilter;
-        private FlowLayoutPanel flpCategories;
-
-        // Stats Strip Cards (Top of list)
-        private Guna2Panel[] cardStats = new Guna2Panel[4];
-        private Label[] lblStatVals = new Label[4];
-
-        // List Toolbar
-        private Guna2Button btnPillAll;
-        private Guna2Button btnPillUnread;
-        private Guna2Button btnPillUrgent;
-
-
-        // Custom Toast Notification
-        private Label lblToastText;
-        private Timer tmrToast;
-        private int toastTicks = 0;
-        private bool isToastShowing = false;
-
-        // Local state
-        private List<KtvNotification> allNotifs = new List<KtvNotification>();
-        private string activePill = "all"; // "all", "unread", "urgent"
-        private string activeCategory = "all"; // "all", "unread", "read", "Phân công", "Kết quả", "Khẩn cấp", "Hệ thống", "Đào tạo"
-        private List<Guna2Panel> catItemPanels = new List<Guna2Panel>();
+        private readonly List<NotificationRecord> _notifications = new List<NotificationRecord>();
+        private bool _isLoaded;
 
         public ucKtvThongBao()
         {
             InitializeComponent();
-            DoubleBuffered = true;
-            BackColor = KtvTheme.Bg;
-            this.AutoScroll = false;
+        }
 
-            // Link the array cardStats to the designer-generated cardStat controls
-            cardStats[0] = this.cardStat1;
-            cardStats[1] = this.cardStat2;
-            cardStats[2] = this.cardStat3;
-            cardStats[3] = this.cardStat4;
-
-            if (IsInDesigner())
+        private void ucKtvThongBao_Load(object sender, EventArgs e)
+        {
+            if (_isLoaded)
             {
                 return;
             }
 
-            InitializeMockData();
-            BuildControls();
-            
-            this.Resize += UcKtvThongBao_Resize;
-            this.Load += UcKtvThongBao_Load;
+            _isLoaded = true;
+            SeedData();
+            WireEvents();
+            ApplyFilters();
         }
 
-        private bool IsInDesigner()
+        private void WireEvents()
         {
-            string processName = Process.GetCurrentProcess().ProcessName;
-            return LicenseManager.UsageMode == LicenseUsageMode.Designtime
-                || DesignMode
-                || processName.Equals("devenv", StringComparison.OrdinalIgnoreCase)
-                || processName.Equals("XDesProc", StringComparison.OrdinalIgnoreCase);
+            txtSearch.TextChanged += (s, e) => ApplyFilters();
+            cmbDateRange.SelectedIndexChanged += (s, e) => ApplyFilters();
+            cmbLevel.SelectedIndexChanged += (s, e) => ApplyFilters();
+            cmbStatus.SelectedIndexChanged += (s, e) => ApplyFilters();
+            flpNotificationList.Resize += (s, e) => ResizeCards();
         }
 
-        private void UcKtvThongBao_Load(object sender, EventArgs e)
+        private void SeedData()
         {
-            if (IsInDesigner()) return;
-            LayoutControls();
-            RenderNotificationsList();
-        }
-
-        private void UcKtvThongBao_Resize(object sender, EventArgs e)
-        {
-            if (IsInDesigner()) return;
-            LayoutControls();
-        }
-
-        private void InitializeMockData()
-        {
-            allNotifs.Clear();
-            allNotifs.Add(new KtvNotification
+            if (_notifications.Count > 0)
             {
-                Id = "n1",
-                Title = "Kết quả XN BẤT THƯỜNG — Cần xử lý ngay",
-                Time = "5 phút trước",
-                DateGroup = "HÔM NAY",
-                Type = "Khẩn cấp",
-                Body = "Kết quả Hemoglobin = 6.2 g/dL của bệnh nhân Trần Văn Bình (BV-2025-00412) vượt ngưỡng nguy hiểm. Bác sĩ Lê Minh Đức yêu cầu xác nhận lại mẫu và thông báo kết quả khẩn.",
-                IsUnread = true,
-                IsUrgent = true,
-                Tags = new[] { "🚨 Khẩn cấp", "🔬 Kết quả XN", "BV-2025-00412" },
-                ActionText = "🔬 Xem kết quả",
-                ActionType = "view_result"
+                return;
+            }
+
+            _notifications.Add(new NotificationRecord
+            {
+                Title = "Họp phổ biến quy trình cấp phát thuốc ngoại trú",
+                Level = "Cơ sở y tế",
+                Sender = "Ban Giám đốc bệnh viện",
+                Time = new DateTime(2026, 5, 21, 8, 0, 0),
+                Location = "Hội trường A - Tầng 2",
+                IsRead = false,
+                IsImportant = true,
+                Content = "Tất cả điều phối viên tham dự buổi họp phổ biến quy trình cấp phát thuốc ngoại trú mới. Nội dung tập trung vào phê duyệt đơn thuốc điện tử, quy trình đối soát dịch vụ và phối hợp với nhà thuốc bệnh viện."
             });
-
-            allNotifs.Add(new KtvNotification
+            _notifications.Add(new NotificationRecord
             {
-                Id = "n2",
-                Title = "Phân công khẩn — XN Nước tiểu",
-                Time = "22 phút trước",
-                DateGroup = "HÔM NAY",
-                Type = "Khẩn cấp",
-                Body = "Bác sĩ Nguyễn Thị Hoa vừa phân công gấp xét nghiệm Urinalysis (tổng phân tích nước tiểu) cho bệnh nhân Lê Văn Dũng (BV-2025-00421). Lý do: nghi ngờ nhiễm trùng đường tiết niệu cấp. Cần thực hiện trước 09:00.",
-                IsUnread = true,
-                IsUrgent = true,
-                Tags = new[] { "🚨 Khẩn cấp", "📋 Phân công mới" },
-                ActionText = "📋 Xem phân công",
-                ActionType = "view_assignment"
+                Title = "Triển khai hệ thống điều phối kỹ thuật viên mới",
+                Level = "Khoa",
+                Sender = "Trưởng phòng Điều phối",
+                Time = new DateTime(2026, 5, 21, 14, 0, 0),
+                Location = "Phòng họp số 3 - Tầng 1",
+                IsRead = false,
+                Content = "Giao ban chuyên môn tuần mới, tập huấn nghiệp vụ sử dụng module điều phối kỹ thuật viên tự động nhằm giảm thiểu thời gian chờ xét nghiệm của bệnh nhân."
             });
-
-            allNotifs.Add(new KtvNotification
+            _notifications.Add(new NotificationRecord
             {
-                Id = "n3",
-                Title = "Bác sĩ đã duyệt kết quả XN ngực",
-                Time = "1 giờ trước",
-                DateGroup = "HÔM NAY",
-                Type = "Kết quả",
-                Body = "Bác sĩ Trần Quốc Hùng đã duyệt và xác nhận kết quả Chụp X-quang ngực thẳng của bệnh nhân Phạm Thị Lan (BV-2025-00403). Kết quả đã được ghi vào hồ sơ bệnh án.",
-                IsUnread = true,
-                IsUrgent = false,
-                Tags = new[] { "✅ Đã duyệt", "BV-2025-00403" },
-                ActionText = "🖨 In kết quả",
-                ActionType = "none"
+                Title = "Đào tạo nghiệp vụ phân công KTV phòng chụp nâng cao",
+                Level = "Khoa",
+                Sender = "Trưởng phòng Điều phối",
+                Time = new DateTime(2026, 5, 20, 9, 0, 0),
+                Location = "Phòng đào tạo - Tầng 5",
+                IsRead = false,
+                Content = "Phòng Điều phối tổ chức tập huấn kỹ năng giải quyết xung đột lịch trực của kỹ thuật viên phòng chụp MRI và CT Scanner. Đề nghị các điều phối viên tham dự đầy đủ."
             });
-
-            allNotifs.Add(new KtvNotification
+            _notifications.Add(new NotificationRecord
             {
-                Id = "n4",
-                Title = "Phân công dịch vụ mới — Điện tim ECG",
-                Time = "2 giờ trước",
-                DateGroup = "HÔM NAY",
-                Type = "Phân công",
-                Body = "Bạn được phân công thực hiện Điện tim (ECG 12 chuyển đạo) cho bệnh nhân Vũ Thị Hằng (BV-2025-00435). Thời gian: 10:30 hôm nay tại Phòng Tim mạch. Bác sĩ chỉ định: Phạm Anh Tuấn.",
-                IsUnread = true,
-                IsUrgent = false,
-                Tags = new[] { "📋 Phân công mới", "Phòng Tim mạch" },
-                ActionText = "📋 Xem chi tiết",
-                ActionType = "view_assignment"
+                Title = "Họp bảo mật tài khoản và đổi mật khẩu định kỳ",
+                Level = "Cơ sở y tế",
+                Sender = "Phòng CNTT",
+                Time = new DateTime(2026, 5, 20, 15, 30, 0),
+                Location = "Phòng họp trực tuyến MS Teams",
+                IsRead = true,
+                Content = "Phòng CNTT nhắc lại quy định đổi mật khẩu định kỳ 90 ngày, cách xử lý tài khoản bị khóa và các yêu cầu bảo mật khi truy cập hệ thống bệnh viện."
             });
-
-            allNotifs.Add(new KtvNotification
+            _notifications.Add(new NotificationRecord
             {
-                Id = "n5",
-                Title = "Nhận bàn giao ca từ KTV Minh Anh",
-                Time = "3 giờ trước",
-                DateGroup = "HÔM NAY",
-                Type = "Chuyển ca",
-                Body = "KTV Nguyễn Minh Anh đã bàn giao 2 dịch vụ chưa hoàn thành cho bạn do nghỉ đột xuất: (1) Sinh hóa máu — BN Hoàng Thị Thu và (2) DEXA Scan — BN Phạm Văn Sơn. Vui lòng xác nhận.",
-                IsUnread = true,
-                IsUrgent = false,
-                Tags = new[] { "🔄 Chuyển ca", "2 dịch vụ" },
-                ActionText = "✅ Xác nhận nhận ca",
-                ActionType = "swap"
-            });
-
-            allNotifs.Add(new KtvNotification
-            {
-                Id = "n6",
-                Title = "Khen thưởng hiệu suất xuất sắc — Tháng 04/2025",
-                Time = "Hôm qua · 08:00",
-                DateGroup = "HÔM QUA",
-                Type = "Đào tạo",
-                Body = "Ban Giám đốc Khoa Xét nghiệm đánh giá bạn đạt hiệu suất xuất sắc trong tháng 04/2025 với 200 dịch vụ hoàn thành, tỷ lệ sai sót kỹ thuật 0%. Chúc mừng!",
-                IsUnread = false,
-                IsUrgent = false,
-                Tags = new[] { "🏆 Khen thưởng" },
-                ActionText = "",
-                ActionType = "none"
-            });
-
-            allNotifs.Add(new KtvNotification
-            {
-                Id = "n7",
-                Title = "Thông báo bảo trì hệ thống MedCore HIS",
-                Time = "Hôm qua · 16:30",
-                DateGroup = "HÔM QUA",
-                Type = "Hệ thống",
-                Body = "Hệ thống MedCore HIS sẽ được bảo trì định kỳ vào Chủ nhật 25/05/2025 từ 02:00 – 04:00 sáng. Trong thời gian này, một số phân hệ có thể không khả dụng. Vui lòng lưu hồ sơ trước 01:45.",
-                IsUnread = false,
-                IsUrgent = false,
-                Tags = new[] { "⚙️ Hệ thống", "Bảo trì" },
-                ActionText = "",
-                ActionType = "none"
-            });
-
-            allNotifs.Add(new KtvNotification
-            {
-                Id = "n8",
-                Title = "Lịch tập huấn — Kỹ năng XN miễn dịch nâng cao",
-                Time = "Hôm qua · 09:00",
-                DateGroup = "HÔM QUA",
-                Type = "Đào tạo",
-                Body = "Phòng Đào tạo thông báo lịch tập huấn 'Kỹ thuật xét nghiệm miễn dịch nâng cao' vào Thứ Ba 27/05/2025, từ 08:00 – 11:00 tại Hội trường A. Hạn chót đăng ký: 26/05.",
-                IsUnread = false,
-                IsUrgent = false,
-                Tags = new[] { "📚 Đào tạo" },
-                ActionText = "📝 Đăng ký tham dự",
-                ActionType = "register"
+                Title = "Họp tổng kết hoạt động chuyên môn tháng 5",
+                Level = "Cơ sở y tế",
+                Sender = "Phòng Kế hoạch Tổng hợp",
+                Time = new DateTime(2026, 5, 14, 14, 0, 0),
+                Location = "Hội trường B",
+                IsRead = true,
+                Content = "Tổng kết hoạt động khám chữa bệnh, rà soát chỉ số điều phối bệnh nhân ngoại trú và triển khai kế hoạch chuyên môn tháng tiếp theo."
             });
         }
 
-        private void BuildControls()
+        private void ApplyFilters()
         {
-            // Do NOT call Controls.Clear() and do NOT re-instantiate container panels because they are created in InitializeComponent()!
+            IEnumerable<NotificationRecord> query = _notifications;
+            string keyword = txtSearch.Text.Trim().ToLowerInvariant();
+            string level = cmbLevel.SelectedItem == null ? "Tất cả cấp" : cmbLevel.SelectedItem.ToString();
+            string status = cmbStatus.SelectedItem == null ? "Tất cả trạng thái" : cmbStatus.SelectedItem.ToString();
 
-            // Clear children of main container panels to rebuild dynamically at runtime
-            pnlHero.Controls.Clear();
-            pnlFilter.Controls.Clear();
-            pnlToolbar.Controls.Clear();
-            pnlToast.Controls.Clear();
-
-            pnlHero.BorderRadius = 14;
-            pnlHero.FillColor = KtvTheme.TealDark;
-            pnlHero.ShadowDecoration.Enabled = true;
-            pnlHero.ShadowDecoration.Color = Color.FromArgb(45, 15, 110, 86);
-            pnlHero.ShadowDecoration.Depth = 12;
-
-            lblHeroTitle = KtvTheme.Label("Trung tâm thông báo", 24, 16, 17F, FontStyle.Bold, Color.White);
-            lblHeroSub = KtvTheme.Label("Theo dõi phân công, cảnh báo xét nghiệm và cập nhật nghiệp vụ trong ca trực.", 24, 56, 9.5F, FontStyle.Regular, Color.FromArgb(214, 239, 232));
-            lblHeroSub.AutoSize = false;
-            lblHeroSub.Size = new Size(640, 28);
-
-            btnHeroMarkAll = new Guna2Button
+            if (!string.IsNullOrWhiteSpace(keyword))
             {
-                Text = "Đọc tất cả",
-                Size = new Size(116, 34),
-                BorderRadius = 8,
-                FillColor = Color.White,
-                ForeColor = KtvTheme.Teal,
-                Font = new Font("Segoe UI", 8.8F, FontStyle.Bold),
-                Cursor = Cursors.Hand,
-                HoverState = { FillColor = Color.FromArgb(232, 245, 240) }
-            };
-            btnHeroMarkAll.Click += BtnMarkAll_Click;
+                query = query.Where(n =>
+                    n.Title.ToLowerInvariant().Contains(keyword) ||
+                    n.Content.ToLowerInvariant().Contains(keyword) ||
+                    n.Location.ToLowerInvariant().Contains(keyword) ||
+                    n.Sender.ToLowerInvariant().Contains(keyword));
+            }
 
-            pnlHero.Controls.AddRange(new Control[] { lblHeroTitle, lblHeroSub, btnHeroMarkAll });
-
-            // 1. Filter Panel (Left)
-            pnlFilter.BorderColor = KtvTheme.Border;
-            pnlFilter.ShadowDecoration.Enabled = true;
-            pnlFilter.ShadowDecoration.Color = KtvTheme.Teal;
-            pnlFilter.ShadowDecoration.Depth = 8;
-            pnlFilter.ShadowDecoration.Shadow = new Padding(0, 2, 8, 2);
-
-            lblFilterTitle = KtvTheme.Label("🗂 Phân loại thông báo", 20, 18, 10.5F, FontStyle.Bold, KtvTheme.TextDark);
-            pnlFilter.Controls.Add(lblFilterTitle);
-
-            txtSearch = new Guna2TextBox
+            if (level != "Tất cả cấp")
             {
-                PlaceholderText = "Tìm kiếm thông báo…",
-                FillColor = Color.FromArgb(244, 247, 250),
-                BorderColor = KtvTheme.Border,
-                BorderRadius = 8,
-                Font = new Font("Segoe UI", 9F),
-                ForeColor = KtvTheme.TextDark,
-                PlaceholderForeColor = KtvTheme.TextLight,
-                Size = new Size(260, 36),
-                Location = new Point(20, 52)
-            };
-            txtSearch.TextChanged += TxtSearch_TextChanged;
-            pnlFilter.Controls.Add(txtSearch);
+                query = query.Where(n => n.Level == level);
+            }
 
-            divFilter = new Guna2Panel { Location = new Point(0, 102), Size = new Size(300, 1), FillColor = KtvTheme.Border };
-            pnlFilter.Controls.Add(divFilter);
-
-            flpCategories = new FlowLayoutPanel
+            if (status == "Chưa đọc")
             {
-                FlowDirection = FlowDirection.TopDown,
-                WrapContents = false,
-                AutoScroll = true,
-                BackColor = Color.White
-            };
-            pnlFilter.Controls.Add(flpCategories);
-
-            // 2. Build Toolbar (Right Column inside Scroll container)
-            pnlToolbar.ShadowDecoration.Enabled = true;
-            pnlToolbar.ShadowDecoration.Color = KtvTheme.Teal;
-            pnlToolbar.ShadowDecoration.Depth = 6;
-
-            btnPillAll = CreatePillButton("Tất cả (12)", true);
-            btnPillAll.Location = new Point(14, 10);
-            btnPillAll.Click += (s, e) => SwitchPill("all");
-
-            btnPillUnread = CreatePillButton("Chưa đọc (5)", false);
-            btnPillUnread.Location = new Point(116, 10);
-            btnPillUnread.Click += (s, e) => SwitchPill("unread");
-
-            btnPillUrgent = CreatePillButton("Khẩn cấp (2)", false);
-            btnPillUrgent.Location = new Point(228, 10);
-            btnPillUrgent.Click += (s, e) => SwitchPill("urgent");
-
-            pnlToolbar.Controls.AddRange(new Control[] { btnPillAll, btnPillUnread, btnPillUrgent });
-
-            cboSort.Items.Clear();
-            cboSort.Items.AddRange(new object[] { "Mới nhất trước", "Cũ nhất trước" });
-            cboSort.SelectedIndex = 0;
-            cboSort.SelectedIndexChanged += CboSort_SelectedIndexChanged;
-            pnlToolbar.Controls.Add(cboSort);
-
-            // Removed btnMarkAll (Đọc tất cả) from toolbar to match user layout request
-
-            // 3. Build Toast Notification
-            pnlToast.Size = new Size(360, 52);
-            pnlToast.BorderRadius = 10;
-            pnlToast.FillColor = KtvTheme.TealDark;
-            pnlToast.Visible = false;
-            pnlToast.ShadowDecoration.Enabled = true;
-            pnlToast.ShadowDecoration.Color = Color.Black;
-            pnlToast.ShadowDecoration.Depth = 12;
-
-            lblToastText = new Label
+                query = query.Where(n => !n.IsRead);
+            }
+            else if (status == "Đã đọc")
             {
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
-                Location = new Point(16, 16),
-                Size = new Size(328, 20),
-                TextAlign = ContentAlignment.MiddleLeft,
-                BackColor = Color.Transparent
-            };
-            pnlToast.Controls.Add(lblToastText);
+                query = query.Where(n => n.IsRead);
+            }
 
-            tmrToast = new Timer { Interval = 20 };
-            tmrToast.Tick += TmrToast_Tick;
+            DateTime fromDate;
+            DateTime toDate;
+            GetDateRange(out fromDate, out toDate);
+            query = query.Where(n => n.Time.Date >= fromDate.Date && n.Time.Date <= toDate.Date);
+
+            List<NotificationRecord> filtered = query.OrderByDescending(n => n.Time).ToList();
+            RenderCards(filtered);
+            lblResultCount.Text = "Hiển thị " + filtered.Count + " thông báo";
         }
 
-        private void LayoutControls()
+        private void GetDateRange(out DateTime fromDate, out DateTime toDate)
         {
-            int margin = 28;
-            int gap = 20;
-            int heroH = 92;
+            DateTime maxDate = _notifications.Count == 0 ? DateTime.Today : _notifications.Max(n => n.Time.Date);
+            string mode = cmbDateRange.SelectedItem == null ? "Tháng này" : cmbDateRange.SelectedItem.ToString();
 
-            pnlHero.Location = new Point(margin, margin);
-            pnlHero.Size = new Size(this.Width - 2 * margin, heroH);
-            btnHeroMarkAll.Location = new Point(pnlHero.Width - btnHeroMarkAll.Width - 24, 29);
-            lblHeroSub.Width = Math.Max(320, pnlHero.Width - btnHeroMarkAll.Width - 90);
-
-            int bodyY = margin + heroH + 18;
-            int availHeight = this.Height - bodyY - margin;
-            if (availHeight < 200) availHeight = 500;
-
-            // 1. Layout Left Categories panel
-            pnlFilter.Location = new Point(margin, bodyY);
-            pnlFilter.Size = new Size(300, availHeight);
-            
-            flpCategories.Location = new Point(1, 106);
-            flpCategories.Size = new Size(298, availHeight - 108);
-            BuildCategoriesList();
-
-            // 2. Layout Right Scroll panel container
-            int listX = pnlFilter.Right + gap;
-            int listW = this.Width - listX - margin;
-            if (listW < 400) listW = 400;
-
-            pnlNotifScroll.Location = new Point(listX, bodyY);
-            pnlNotifScroll.Size = new Size(listW, availHeight);
-
-            // A. Stats Cards (Top)
-            int scrollContentW = listW - 28; // Standard gutters to prevent horizontal scrollbar and vertical overlap
-            int statW = (scrollContentW - 3 * gap) / 4;
-            int statY = 0;
-            int statHeight = 130;
-            string[] statLbls = { "CHƯA ĐỌC", "KHẨN CẤP", "NHẬN HÔM NAY", "TỔNG TRONG THÁNG" };
-            string[] statVals = { GetUnreadCount().ToString(), "2", "12", "48" };
-            string[] statTrends = { 
-                GetUnreadCount() > 0 ? "Cần xử lý ngay" : "Đã đọc hết",
-                "Ưu tiên cao nhất",
-                "↑ 3 thông báo mới",
-                "↑ 8% so với tháng trước"
-            };
-            string[] statEmojis = { "📬", "🚨", "📅", "📈" };
-            Color[] accents = {
-                Color.FromArgb(15, 110, 86),   // Deep Teal
-                Color.FromArgb(229, 57, 53),   // Red
-                Color.FromArgb(255, 179, 0),   // Amber
-                Color.FromArgb(25, 118, 210)   // Blue
-            };
-            Color[] iconBgs = {
-                Color.FromArgb(230, 244, 240),
-                Color.FromArgb(253, 244, 244),
-                Color.FromArgb(255, 248, 225),
-                Color.FromArgb(227, 242, 253)
-            };
-            Color[] trendColors = {
-                Color.FromArgb(15, 110, 86),
-                Color.FromArgb(229, 57, 53),
-                Color.FromArgb(34, 197, 94),
-                Color.FromArgb(34, 197, 94)
-            };
-
-            for (int i = 0; i < 4; i++)
+            if (mode == "Tất cả")
             {
-                var card = cardStats[i];
-                card.Controls.Clear();
-                card.ShadowDecoration.Enabled = false;
-                card.BorderThickness = 1;
-                card.BorderColor = Color.FromArgb(218, 232, 226);
-                card.BorderRadius = 14;
-                card.FillColor = Color.White;
-                card.Padding = new Padding(0, 4, 0, 0);
-                card.Tag = accents[i];
-                
-                card.Paint -= KpiCard_Paint;
-                card.Paint += KpiCard_Paint;
+                fromDate = DateTime.MinValue;
+                toDate = DateTime.MaxValue;
+                return;
+            }
 
-                // Create round icon box
-                var pnlIcon = new Guna2Panel
+            if (mode == "Hôm nay")
+            {
+                fromDate = maxDate;
+                toDate = maxDate;
+                return;
+            }
+
+            if (mode == "7 ngày gần đây")
+            {
+                fromDate = maxDate.AddDays(-6);
+                toDate = maxDate;
+                return;
+            }
+
+            fromDate = new DateTime(maxDate.Year, maxDate.Month, 1);
+            toDate = fromDate.AddMonths(1).AddDays(-1);
+        }
+
+        private void RenderCards(List<NotificationRecord> records)
+        {
+            flpNotificationList.SuspendLayout();
+            flpNotificationList.Controls.Clear();
+
+            if (records.Count == 0)
+            {
+                flpNotificationList.Controls.Add(new Label
                 {
-                    Size = new Size(36, 36),
-                    Location = new Point(18, 14),
-                    BorderRadius = 10,
-                    FillColor = iconBgs[i],
-                    BackColor = Color.Transparent
-                };
-                var lblEmoji = KtvTheme.Label(statEmojis[i], 0, 0, 11F, FontStyle.Regular, Color.Black);
-                lblEmoji.AutoSize = false;
-                lblEmoji.Location = new Point(0, 0);
-                lblEmoji.Size = new Size(36, 36);
-                lblEmoji.TextAlign = ContentAlignment.MiddleCenter;
-                pnlIcon.Controls.Add(lblEmoji);
-                card.Controls.Add(pnlIcon);
-
-                // Small uppercase caption
-                var lblCap = KtvTheme.Label(statLbls[i], 18, 50, 8.25F, FontStyle.Bold, Color.FromArgb(122, 149, 137));
-                lblCap.AutoSize = false;
-                lblCap.Size = new Size(statW - 30, 16);
-                card.Controls.Add(lblCap);
-
-                // Large bold value
-                lblStatVals[i] = KtvTheme.Label(statVals[i], 18, 66, 18F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
-                lblStatVals[i].AutoSize = false;
-                lblStatVals[i].Size = new Size(statW - 30, 38);
-                card.Controls.Add(lblStatVals[i]);
-
-                // Trend/subtitle
-                var lblTrend = KtvTheme.Label(statTrends[i], 18, 106, 8.5F, FontStyle.Bold, trendColors[i]);
-                lblTrend.AutoSize = false;
-                lblTrend.Size = new Size(statW - 30, 18);
-                card.Controls.Add(lblTrend);
-
-                card.Location = new Point(0 + i * (statW + gap), statY);
-                card.Size = new Size(statW, statHeight);
-
-                // ConfigureKpiHover(card);
+                    AutoSize = false,
+                    Width = Math.Max(400, flpNotificationList.ClientSize.Width - 28),
+                    Height = 90,
+                    Text = "Không tìm thấy thông báo phù hợp.",
+                    Font = new Font("Segoe UI", 11F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(122, 149, 137),
+                    TextAlign = ContentAlignment.MiddleCenter
+                });
+                flpNotificationList.ResumeLayout();
+                return;
             }
 
-            // B. Toolbar Card
-            pnlToolbar.Location = new Point(0, statY + statHeight + 16);
-            pnlToolbar.Size = new Size(scrollContentW, 52);
-
-            btnPillAll.Location = new Point(14, 10);
-            btnPillUnread.Location = new Point(124, 10);
-            btnPillUrgent.Location = new Point(234, 10);
-            
-            cboSort.Location = new Point(scrollContentW - 188 - 14, 9);
-
-            // Re-render the notification rows
-            RenderNotificationsList();
-
-            // Setup toast placement
-            pnlToast.Location = new Point(this.Width - pnlToast.Width - margin, this.Height - pnlToast.Height - 16);
-            pnlToast.BringToFront();
-        }
-
-        private void BuildCategoriesList()
-        {
-            flpCategories.Controls.Clear();
-            catItemPanels.Clear();
-
-            int allCount = allNotifs.Count;
-            int unreadCount = GetUnreadCount();
-            int readCount = allCount - unreadCount;
-
-            // SECTION 1: TRẠNG THÁI
-            flpCategories.Controls.Add(CreateSectionHeader("TRẠNG THÁI"));
-            flpCategories.Controls.Add(CreateCategoryItem("🗂 Tất cả", allCount.ToString(), "all", activeCategory == "all"));
-            flpCategories.Controls.Add(CreateCategoryItem("💠 Chưa đọc", unreadCount.ToString(), "unread", activeCategory == "unread", KtvTheme.Teal));
-            flpCategories.Controls.Add(CreateCategoryItem("☑ Đã đọc", readCount.ToString(), "read", activeCategory == "read"));
-
-            // SECTION 2: LOẠI THÔNG BÁO
-            flpCategories.Controls.Add(CreateSectionHeader("LOẠI THÔNG BÁO"));
-            int cPrio = allNotifs.Count(x => x.Type == "Phân công");
-            int cRes = allNotifs.Count(x => x.Type == "Kết quả");
-            int cUrg = allNotifs.Count(x => x.Type == "Khẩn cấp");
-            int cSys = allNotifs.Count(x => x.Type == "Hệ thống");
-            int cEdu = allNotifs.Count(x => x.Type == "Đào tạo");
-
-            flpCategories.Controls.Add(CreateCategoryItem("🧾 Phân công dịch vụ", cPrio.ToString(), "Phân công", activeCategory == "Phân công"));
-            flpCategories.Controls.Add(CreateCategoryItem("🧪 Kết quả cần duyệt", cRes.ToString(), "Kết quả", activeCategory == "Kết quả"));
-            flpCategories.Controls.Add(CreateCategoryItem("🚑 Khẩn cấp", cUrg.ToString(), "Khẩn cấp", activeCategory == "Khẩn cấp", KtvTheme.Danger));
-            flpCategories.Controls.Add(CreateCategoryItem("⚙ Hệ thống", cSys.ToString(), "Hệ thống", activeCategory == "Hệ thống"));
-            flpCategories.Controls.Add(CreateCategoryItem("📣 Thông báo chung", cEdu.ToString(), "Đào tạo", activeCategory == "Đào tạo"));
-
-            // SECTION 3: THỜI GIAN
-            flpCategories.Controls.Add(CreateSectionHeader("THỜI GIAN"));
-            flpCategories.Controls.Add(CreateCategoryItem("🕘 Hôm nay", "5", "today", activeCategory == "today"));
-            flpCategories.Controls.Add(CreateCategoryItem("🗓 7 ngày qua", "8", "week", activeCategory == "week"));
-        }
-
-        private Label CreateSectionHeader(string text)
-        {
-            var lbl = KtvTheme.Label(text, 0, 0, 7.5F, FontStyle.Bold, KtvTheme.TextLight);
-            lbl.Margin = new Padding(12, 14, 12, 6);
-            return lbl;
-        }
-
-        private Guna2Panel CreateCategoryItem(string text, string count, string catCode, bool active, Color? countBg = null)
-        {
-            Color badgeFill = Color.FromArgb(228, 238, 244);
-            Color badgeFore = KtvTheme.TextLight;
-
-            if (active)
+            foreach (NotificationRecord record in records)
             {
-                badgeFill = KtvTheme.Teal;
-                badgeFore = Color.White;
-            }
-            else if (countBg.HasValue)
-            {
-                badgeFill = countBg.Value;
-                badgeFore = Color.White;
+                flpNotificationList.Controls.Add(CreateNotificationCard(record));
             }
 
-            var pnl = new Guna2Panel
-            {
-                Size = new Size(276, 36),
-                BorderRadius = 8,
-                FillColor = active ? KtvTheme.TealLight : Color.White,
-                BorderThickness = active ? 1 : 0,
-                BorderColor = active ? Color.FromArgb(194, 224, 214) : Color.Transparent,
-                Cursor = Cursors.Hand,
-                Margin = new Padding(10, 3, 10, 3)
-            };
-            pnl.Click += (s, e) => SwitchCategory(catCode);
-            pnl.MouseEnter += (s, e) => SetCategoryHover(pnl, true, active);
-            pnl.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
+            flpNotificationList.ResumeLayout();
+            BeginInvoke(new Action(ResizeCards));
+        }
 
-            var lblT = KtvTheme.Label(text, 10, 9, 8.8F, active ? FontStyle.Bold : FontStyle.Regular, active ? KtvTheme.Teal : KtvTheme.TextMid);
-            lblT.Cursor = Cursors.Hand;
-            lblT.Click += (s, e) => SwitchCategory(catCode);
-            lblT.MouseEnter += (s, e) => SetCategoryHover(pnl, true, active);
-            lblT.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
-            pnl.Controls.Add(lblT);
-
-            var pnlCount = new Guna2Panel
+        private Guna2Panel CreateNotificationCard(NotificationRecord record)
+        {
+            int cardWidth = GetCardWidth();
+            Color accent = record.IsImportant ? Color.FromArgb(217, 79, 61) : Color.FromArgb(15, 110, 86);
+            var card = new Guna2Panel
             {
-                Size = new Size(34, 20),
-                Location = new Point(232, 8),
+                BorderColor = Color.FromArgb(218, 232, 226),
                 BorderRadius = 10,
-                FillColor = badgeFill,
-                Cursor = Cursors.Hand
-            };
-            pnlCount.ShadowDecoration.Enabled = active || countBg.HasValue;
-            pnlCount.ShadowDecoration.Color = badgeFill;
-            pnlCount.ShadowDecoration.Depth = 3;
-
-            var lblC = KtvTheme.Label(count, 0, 0, 7.5F, FontStyle.Bold, badgeFore);
-            lblC.Cursor = Cursors.Hand;
-            lblC.AutoSize = false;
-            lblC.Location = new Point(0, 0);
-            lblC.Size = new Size(34, 20);
-            lblC.TextAlign = ContentAlignment.MiddleCenter;
-            pnlCount.Controls.Add(lblC);
-            pnl.Controls.Add(pnlCount);
-
-            lblC.Click += (s, e) => SwitchCategory(catCode);
-            pnlCount.Click += (s, e) => SwitchCategory(catCode);
-            pnlCount.MouseEnter += (s, e) => SetCategoryHover(pnl, true, active);
-            pnlCount.MouseLeave += (s, e) => SetCategoryHover(pnl, false, active);
-
-            catItemPanels.Add(pnl);
-            return pnl;
-        }
-
-        private void SetCategoryHover(Guna2Panel panel, bool hover, bool active)
-        {
-            if (panel == null || active) return;
-            panel.FillColor = hover ? Color.FromArgb(244, 250, 248) : Color.White;
-            panel.BorderThickness = hover ? 1 : 0;
-            panel.BorderColor = hover ? Color.FromArgb(218, 232, 226) : Color.Transparent;
-        }
-
-        private void RenderNotificationsList()
-        {
-            if (pnlNotifScroll == null) return;
-
-            // Remove previous rows (they are in pnlNotifScroll starting below the toolbar)
-            var toRemove = new List<Control>();
-            foreach (Control c in pnlNotifScroll.Controls)
-            {
-                if (c.Location.Y > pnlToolbar.Bottom)
-                {
-                    toRemove.Add(c);
-                }
-            }
-            foreach (var c in toRemove) c.Dispose();
-
-            // Refresh toolbar pills counts
-            btnPillAll.Text = $"Tất cả ({allNotifs.Count})";
-            btnPillUnread.Text = $"Chưa đọc ({GetUnreadCount()})";
-            btnPillUrgent.Text = $"Khẩn cấp ({allNotifs.Count(x => x.IsUrgent)})";
-
-            // Update stats cards numbers
-            if (lblStatVals[0] != null) lblStatVals[0].Text = GetUnreadCount().ToString();
-
-            // Filter data
-            string searchKey = txtSearch.Text.Trim().ToLowerInvariant();
-            var query = allNotifs.AsEnumerable();
-
-            // Sort or Search
-            if (!string.IsNullOrEmpty(searchKey))
-            {
-                query = query.Where(x => x.Title.ToLowerInvariant().Contains(searchKey) || x.Body.ToLowerInvariant().Contains(searchKey));
-            }
-
-            // Sort
-            if (cboSort != null)
-            {
-                if (cboSort.SelectedIndex == 1) // Cũ nhất trước
-                {
-                    query = query.OrderByDescending(x => allNotifs.IndexOf(x));
-                }
-                else // Mới nhất trước (Index == 0)
-                {
-                    query = query.OrderBy(x => allNotifs.IndexOf(x));
-                }
-            }
-
-            // Toolbar Pills Filter
-            if (activePill == "unread") query = query.Where(x => x.IsUnread);
-            else if (activePill == "urgent") query = query.Where(x => x.IsUrgent);
-
-            // Left Categories Filter
-            if (activeCategory == "unread") query = query.Where(x => x.IsUnread);
-            else if (activeCategory == "read") query = query.Where(x => !x.IsUnread);
-            else if (activeCategory == "today") query = query.Where(x => x.DateGroup == "HÔM NAY");
-            else if (activeCategory == "week") query = query.Where(x => x.DateGroup == "HÔM NAY" || x.DateGroup == "HÔM QUA");
-            else if (activeCategory != "all") query = query.Where(x => x.Type == activeCategory);
-
-            var list = query.ToList();
-
-            int yRow = pnlToolbar.Bottom + 16;
-            int cardW = pnlNotifScroll.Width - 28; // Match the 28px scrollbar gutter to prevent vertical overlap and horizontal scroll
-
-            // Group by Date Groups
-            var groups = list.GroupBy(x => x.DateGroup).ToList();
-
-            if (list.Count == 0)
-            {
-                // Empty state card
-                var cardEmpty = KtvTheme.Card(0, yRow, cardW, 180);
-                var lblE1 = KtvTheme.Label("📭 Hộp thư thông báo trống", 0, 50, 11F, FontStyle.Bold, KtvTheme.TextLight);
-                lblE1.Size = new Size(cardW, 28);
-                lblE1.TextAlign = ContentAlignment.MiddleCenter;
-                var lblE2 = KtvTheme.Label("Bạn không có thông báo nào phù hợp với bộ lọc hiện tại.", 0, 84, 9F, FontStyle.Regular, KtvTheme.TextLight);
-                lblE2.Size = new Size(cardW, 20);
-                lblE2.TextAlign = ContentAlignment.MiddleCenter;
-                cardEmpty.Controls.AddRange(new Control[] { lblE1, lblE2 });
-                pnlNotifScroll.Controls.Add(cardEmpty);
-                return;
-            }
-
-            foreach (var group in groups)
-            {
-                // Render Date Divider
-                var pnlDivider = new Guna2Panel
-                {
-                    Location = new Point(0, yRow),
-                    Size = new Size(cardW, 30),
-                    FillColor = KtvTheme.Bg,
-                    BorderRadius = 4,
-                    CustomBorderColor = KtvTheme.Border,
-                    CustomBorderThickness = new Padding(0, 1, 0, 1)
-                };
-                string divText = group.Key == "HÔM NAY" ? "📅 Hôm nay — Thứ Bảy, 24/05/2025" : "📅 Hôm qua — Thứ Sáu, 23/05/2025";
-                var lblDivText = KtvTheme.Label(divText, 16, 5, 8F, FontStyle.Bold, KtvTheme.TextLight);
-                pnlDivider.Controls.Add(lblDivText);
-                pnlNotifScroll.Controls.Add(pnlDivider);
-
-                yRow += 30 + 12;
-
-                foreach (var notif in group)
-                {
-                    // Render Notification Card
-                    int rowH = notif.IsUrgent ? 150 : 142;
-                    var notifCard = new Guna2Panel
-                    {
-                        Location = new Point(0, yRow),
-                        Size = new Size(cardW, rowH),
-                        BorderRadius = 12,
-                        BorderColor = notif.IsUrgent ? Color.FromArgb(248, 204, 204) : (notif.IsUnread ? Color.FromArgb(196, 224, 214) : KtvTheme.Border),
-                        BorderThickness = 1,
-                        FillColor = notif.IsUnread ? Color.FromArgb(242, 250, 247) : Color.White,
-                        Cursor = Cursors.Hand
-                    };
-
-                    // Shadow effect
-                    notifCard.ShadowDecoration.Enabled = true;
-                    notifCard.ShadowDecoration.Color = KtvTheme.Teal;
-                    notifCard.ShadowDecoration.Depth = 6;
-                    notifCard.ShadowDecoration.Shadow = new Padding(0, 2, 6, 2);
-
-                    // Unread vertical bar
-                    var pnlUnreadBar = new Guna2Panel
-                    {
-                        Size = new Size(4, 132),
-                        Location = new Point(0, 1),
-                        BorderRadius = 2,
-                        FillColor = notif.IsUnread ? (notif.IsUrgent ? KtvTheme.Danger : KtvTheme.Teal) : Color.Transparent
-                    };
-                    pnlUnreadBar.Height = rowH - 2;
-                    notifCard.Controls.Add(pnlUnreadBar);
-
-                    // Icon Circle
-                    var pnlIcon = new Guna2Panel
-                    {
-                        Size = new Size(42, 42),
-                        Location = new Point(18, 20),
-                        BorderRadius = 21,
-                        UseTransparentBackground = true,
-                        FillColor = notif.IsUrgent ? KtvTheme.DangerSoft : (notif.Type == "Phân công" ? KtvTheme.AccentSoft : (notif.Type == "Hệ thống" ? KtvTheme.InfoSoft : KtvTheme.TealLight))
-                    };
-                    string emoji = notif.IsUrgent ? "🚨" : (notif.Type == "Phân công" ? "📋" : (notif.Type == "Hệ thống" ? "🏥" : "✅"));
-                    var lblEmoji = KtvTheme.Label(emoji, 0, 0, 11F, FontStyle.Regular, Color.Black);
-                    lblEmoji.AutoSize = false;
-                    lblEmoji.Location = new Point(0, 0);
-                    lblEmoji.Size = new Size(42, 42);
-                    lblEmoji.TextAlign = ContentAlignment.MiddleCenter;
-                    pnlIcon.Controls.Add(lblEmoji);
-                    notifCard.Controls.Add(pnlIcon);
-
-                    // Title
-                    var lblTitle = KtvTheme.Label(notif.Title, 72, 14, 9.5F, notif.IsUnread ? FontStyle.Bold : FontStyle.Bold, notif.IsUnread ? KtvTheme.TextDark : KtvTheme.TextMid);
-                    notifCard.Controls.Add(lblTitle);
-
-                    // Time
-                    var lblTime = KtvTheme.Label(notif.Time, cardW - 130, 14, 8F, FontStyle.Regular, KtvTheme.TextLight);
-                    lblTime.Size = new Size(110, 18);
-                    lblTime.TextAlign = ContentAlignment.TopRight;
-                    notifCard.Controls.Add(lblTime);
-
-                    // Body Description
-                    var lblBody = KtvTheme.Label(notif.Body, 72, 40, 8.8F, FontStyle.Regular, KtvTheme.TextMid);
-                    lblBody.AutoSize = false;
-                    lblBody.Size = new Size(cardW - 104, 46);
-                    lblBody.AutoEllipsis = true;
-                    notifCard.Controls.Add(lblBody);
-
-                    // Tags stack (horizontal flow)
-                    int tagX = 72;
-                    foreach (var tag in notif.Tags)
-                    {
-                        var pnlTag = new Guna2Panel
-                        {
-                            Location = new Point(tagX, 94),
-                            Size = new Size(100, 20),
-                            BorderRadius = 10,
-                            FillColor = notif.IsUrgent ? KtvTheme.DangerSoft : KtvTheme.TealLight
-                        };
-                        var lblTagText = KtvTheme.Label(tag, 0, 0, 7.2F, FontStyle.Bold, notif.IsUrgent ? KtvTheme.Danger : KtvTheme.Teal);
-                        lblTagText.Size = new Size(100, 20);
-                        lblTagText.TextAlign = ContentAlignment.MiddleCenter;
-                        pnlTag.Controls.Add(lblTagText);
-
-                        using (var gr = CreateGraphics())
-                        {
-                            SizeF sz = gr.MeasureString(tag, lblTagText.Font);
-                            pnlTag.Width = (int)sz.Width + 18;
-                            lblTagText.Width = (int)sz.Width + 18;
-                        }
-
-                        // Attach hover events for tag panel and tag label
-                        pnlTag.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                        pnlTag.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-                        lblTagText.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                        lblTagText.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                        notifCard.Controls.Add(pnlTag);
-                        tagX += pnlTag.Width + 6;
-                    }
-
-                    // Append "Đã đọc" tag if the notification is read
-                    if (!notif.IsUnread)
-                    {
-                        var pnlReadTag = new Guna2Panel
-                        {
-                            Location = new Point(tagX, 94),
-                            Size = new Size(80, 20),
-                            BorderRadius = 10,
-                            FillColor = Color.FromArgb(240, 244, 242),
-                            BorderColor = Color.FromArgb(208, 220, 214),
-                            BorderThickness = 1
-                        };
-                        var lblReadTagText = KtvTheme.Label("✓ Đã đọc", 0, 0, 7.2F, FontStyle.Bold, Color.FromArgb(88, 120, 102));
-                        lblReadTagText.Size = new Size(80, 20);
-                        lblReadTagText.TextAlign = ContentAlignment.MiddleCenter;
-                        pnlReadTag.Controls.Add(lblReadTagText);
-
-                        // Attach hover events to ReadTag to prevent flickering
-                        pnlReadTag.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                        pnlReadTag.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-                        lblReadTagText.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                        lblReadTagText.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                        notifCard.Controls.Add(pnlReadTag);
-                        tagX += pnlReadTag.Width + 6;
-                    }
-
-                    // Action buttons (under or inside row)
-                    int rightPad = 18;
-                    int btnWidth = 145;
-                    var btnDetail = new Guna2Button
-                    {
-                        Text = "🔍 Xem chi tiết",
-                        Size = new Size(btnWidth, 30),
-                        Location = new Point(cardW - rightPad - btnWidth, rowH - 46),
-                        BorderRadius = 6,
-                        FillColor = KtvTheme.Teal,
-                        ForeColor = Color.White,
-                        Font = new Font("Segoe UI", 8F, FontStyle.Bold),
-                        TextAlign = HorizontalAlignment.Center,
-                        TextOffset = new Point(0, 0),
-                        Cursor = Cursors.Hand
-                    };
-                    btnDetail.HoverState.FillColor = KtvTheme.TealDark;
-                    btnDetail.Click += (s, e) => {
-                        using (var frm = new frmKtvNotificationDetail(notif.Title, notif.Type, notif.Time, string.Join(", ", notif.Tags), notif.Body))
-                        {
-                            frm.ShowDialog(this.ParentForm);
-                        }
-                        MarkNotifRead(notif);
-                    };
-                    notifCard.Controls.Add(btnDetail);
-
-                    // Attach hover events to the main card and its child controls to prevent flickering
-                    notifCard.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    notifCard.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    pnlUnreadBar.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    pnlUnreadBar.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    pnlIcon.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    pnlIcon.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    lblEmoji.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    lblEmoji.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    lblTitle.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    lblTitle.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    lblTime.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    lblTime.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    lblBody.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    lblBody.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    btnDetail.MouseEnter += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, true);
-                    btnDetail.MouseLeave += (s, e) => SetCardHover(notifCard, notif.IsUrgent, notif.IsUnread, false);
-
-                    // Propagate Hand cursor recursively to all controls inside the card
-                    foreach (Control child in notifCard.Controls)
-                    {
-                        child.Cursor = Cursors.Hand;
-                        foreach (Control subChild in child.Controls)
-                        {
-                            subChild.Cursor = Cursors.Hand;
-                        }
-                    }
-
-                    pnlNotifScroll.Controls.Add(notifCard);
-                    yRow += rowH + 14;
-                }
-            }
-
-            // Pagination footer at bottom
-            var pnlPage = new Guna2Panel
-            {
-                Location = new Point(0, yRow),
-                Size = new Size(cardW, 46),
-                FillColor = Color.White,
-                BorderRadius = 8,
-                BorderColor = KtvTheme.Border,
-                BorderThickness = 1
-            };
-            var lblPInfo = KtvTheme.Label($"Hiển thị {list.Count} / {allNotifs.Count} thông báo", 20, 13, 8.8F, FontStyle.Regular, KtvTheme.TextLight);
-            pnlPage.Controls.Add(lblPInfo);
-
-            // Circular page buttons
-            var btnPrev = CreatePageButton("‹", false);
-            btnPrev.Location = new Point(cardW - 130, 8);
-            var btnP1 = CreatePageButton("1", true);
-            btnP1.Location = new Point(cardW - 94, 8);
-            var btnNext = CreatePageButton("›", false);
-            btnNext.Location = new Point(cardW - 58, 8);
-            pnlPage.Controls.AddRange(new Control[] { btnPrev, btnP1, btnNext });
-
-            pnlNotifScroll.Controls.Add(pnlPage);
-        }
-
-        private void SetCardHover(Guna2Panel card, bool isUrgent, bool isUnread, bool hover)
-        {
-            if (card == null) return;
-            if (hover)
-            {
-                // Smooth transition to hover state
-                card.FillColor = isUnread ? Color.FromArgb(230, 245, 240) : Color.FromArgb(246, 249, 248);
-                card.BorderColor = isUrgent ? Color.FromArgb(235, 160, 160) : (isUnread ? Color.FromArgb(145, 205, 185) : Color.FromArgb(185, 200, 195));
-            }
-            else
-            {
-                // Prevent flickering: check if the mouse pointer is still inside the card's client rectangle
-                Point clientPos = card.PointToClient(Cursor.Position);
-                if (card.ClientRectangle.Contains(clientPos))
-                {
-                    return; // Ignore MouseLeave if cursor is still within card bounds (e.g., hovering child controls)
-                }
-
-                // Smooth transition back to normal state
-                card.FillColor = isUnread ? Color.FromArgb(242, 250, 247) : Color.White;
-                card.BorderColor = isUrgent ? Color.FromArgb(248, 204, 204) : (isUnread ? Color.FromArgb(196, 224, 214) : KtvTheme.Border);
-            }
-        }
-
-        private void MarkNotifRead(KtvNotification notif)
-        {
-            if (!notif.IsUnread) return;
-            notif.IsUnread = false;
-
-            // Trigger animation
-            ShowToastNotification("✅ Đã đánh dấu thông báo là đã đọc!");
-            RenderNotificationsList();
-            BuildCategoriesList();
-        }
-
-        private void BtnMarkAll_Click(object sender, EventArgs e)
-        {
-            int unreads = allNotifs.Count(x => x.IsUnread);
-            if (unreads == 0) return;
-
-            foreach (var n in allNotifs)
-            {
-                n.IsUnread = false;
-            }
-
-            ShowToastNotification("✅ Đã đánh dấu đọc toàn bộ thông báo!");
-            RenderNotificationsList();
-            BuildCategoriesList();
-        }
-
-        private void SwitchPill(string pill)
-        {
-            activePill = pill;
-            btnPillAll.Checked = (pill == "all");
-            btnPillUnread.Checked = (pill == "unread");
-            btnPillUrgent.Checked = (pill == "urgent");
-
-            RenderNotificationsList();
-        }
-
-        private void SwitchCategory(string catCode)
-        {
-            activeCategory = catCode;
-            BuildCategoriesList();
-            RenderNotificationsList();
-        }
-
-        private void TxtSearch_TextChanged(object sender, EventArgs e)
-        {
-            RenderNotificationsList();
-        }
-
-        private int GetUnreadCount()
-        {
-            return allNotifs.Count(x => x.IsUnread);
-        }
-
-        private Guna2Button CreatePillButton(string text, bool active)
-        {
-            var btn = new Guna2Button
-            {
-                Text = text,
-                Size = new Size(104, 32),
-                BorderRadius = 16,
                 BorderThickness = 1,
-                BorderColor = KtvTheme.Border,
-                FillColor = Color.White,
-                ForeColor = KtvTheme.TextMid,
-                Font = new Font("Segoe UI", 8.2F, FontStyle.Bold),
-                Cursor = Cursors.Hand,
-                ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.RadioButton,
-                Checked = active,
-                TextAlign = HorizontalAlignment.Center,
-                TextOffset = new Point(0, 0),
-                Padding = new Padding(0),
-                CheckedState = { FillColor = KtvTheme.Teal, ForeColor = Color.White, BorderColor = KtvTheme.Teal },
-                HoverState = { FillColor = KtvTheme.TealLight }
+                FillColor = record.IsRead ? Color.FromArgb(247, 249, 248) : Color.White,
+                Margin = new Padding(0, 0, 0, 12),
+                Size = new Size(cardWidth, 140),
+                Tag = record
             };
-            return btn;
-        }
-
-        private Guna2Button CreatePageButton(string text, bool active)
-        {
-            return new Guna2Button
-            {
-                Text = text,
-                Size = new Size(30, 30),
-                BorderRadius = 6,
-                BorderThickness = 1,
-                BorderColor = active ? KtvTheme.Teal : KtvTheme.Border,
-                FillColor = active ? KtvTheme.Teal : Color.White,
-                ForeColor = active ? Color.White : KtvTheme.TextMid,
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
-                Cursor = Cursors.Hand,
-                HoverState = { FillColor = active ? KtvTheme.Teal : KtvTheme.TealLight }
-            };
-        }
-
-        private void ShowToastNotification(string message)
-        {
-            lblToastText.Text = message;
-            pnlToast.Visible = true;
-            isToastShowing = true;
-            toastTicks = 0;
-            pnlToast.Location = new Point(this.Width - pnlToast.Width - 28, this.Height);
-            pnlToast.BringToFront();
-            tmrToast.Start();
-        }
-
-        private void TmrToast_Tick(object sender, EventArgs e)
-        {
-            int step = 6;
-            int targetY = this.Height - pnlToast.Height - 20;
-
-            if (isToastShowing)
-            {
-                if (pnlToast.Top - step > targetY)
-                {
-                    pnlToast.Top -= step;
-                }
-                else
-                {
-                    pnlToast.Top = targetY;
-                    toastTicks++;
-                    if (toastTicks > 120) // Display toast for ~2.4 seconds
-                    {
-                        isToastShowing = false;
-                    }
-                }
-            }
-            else
-            {
-                int exitY = this.Height + 10;
-                if (pnlToast.Top + step < exitY)
-                {
-                    pnlToast.Top += step;
-                }
-                else
-                {
-                    pnlToast.Top = exitY;
-                    pnlToast.Visible = false;
-                    tmrToast.Stop();
-                }
-            }
-        }
-
-        private void CboSort_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            RenderNotificationsList();
-        }
-
-        private void KpiCard_Paint(object sender, PaintEventArgs e)
-        {
-            var card = (Guna2Panel)sender;
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-            using (var path = GetRoundedRectPath(new RectangleF(0, 0, card.Width, card.Height), 14))
-            {
-                e.Graphics.SetClip(path);
-
-                var arcRect = new Rectangle(card.Width - 110, -40, 160, 160);
-                using (var brush = new SolidBrush(Color.FromArgb(242, 244, 243)))
-                {
-                    e.Graphics.FillEllipse(brush, arcRect);
-                }
-
-                if (card.Tag is Color accentColor)
-                {
-                    using (var brush = new SolidBrush(accentColor))
-                    {
-                        e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
-                    }
-                }
-
-                e.Graphics.ResetClip();
-            }
-        }
-
-        private static GraphicsPath GetRoundedRectPath(RectangleF rect, float radius)
-        {
-            GraphicsPath path = new GraphicsPath();
-            float diameter = radius * 2;
-            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
-            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
-            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
-            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
-            path.CloseFigure();
-            return path;
-        }
-
-        private void ConfigureKpiHover(Guna2Panel card)
-        {
-            card.Cursor = Cursors.Hand;
-            card.ShadowDecoration.Enabled = true;
-            card.ShadowDecoration.Color = Color.FromArgb(40, 15, 110, 86);
+            card.ShadowDecoration.Enabled = !record.IsRead;
+            card.ShadowDecoration.Color = Color.FromArgb(226, 239, 234);
             card.ShadowDecoration.Depth = 5;
-            card.ShadowDecoration.Shadow = new Padding(0, 2, 8, 4);
+            card.MouseEnter += (s, e) => card.BorderColor = Color.FromArgb(26, 148, 112);
+            card.MouseLeave += (s, e) => card.BorderColor = Color.FromArgb(218, 232, 226);
 
-            card.MouseEnter += (s, e) => SetKpiHoverState(card, true);
-            card.MouseLeave += (s, e) => SetKpiHoverState(card, false);
-
-            foreach (Control child in card.Controls)
+            var left = new Panel { BackColor = accent, Location = new Point(0, 0), Size = new Size(4, card.Height), Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom };
+            var pnlLevel = new Guna2Panel
             {
-                child.Cursor = Cursors.Hand;
-                child.MouseEnter += (s, e) => SetKpiHoverState(card, true);
-                child.MouseLeave += (s, e) => SetKpiHoverState(card, false);
+                BorderRadius = 6,
+                FillColor = record.Level == "Cơ sở y tế" ? Color.FromArgb(253, 236, 234) : Color.FromArgb(230, 244, 240),
+                Location = new Point(24, 18),
+                Size = new Size(112, 26)
+            };
+            var lblLevel = new Label
+            {
+                BackColor = Color.Transparent,
+                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
+                ForeColor = accent,
+                Dock = DockStyle.Fill,
+                Text = record.Level.ToUpperInvariant(),
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+            pnlLevel.Controls.Add(lblLevel);
+
+            var lblTitle = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(24, 48, 42),
+                Location = new Point(150, 16),
+                Size = new Size(cardWidth - 330, 35),
+                Text = record.Title
+            };
+            var lblMeta = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(122, 149, 137),
+                Location = new Point(150, 52),
+                Size = new Size(cardWidth - 330, 30),
+                Text = string.Format("{0} · {1:HH:mm dd/MM/yyyy} · {2}", record.Sender, record.Time, record.Location)
+            };
+            var lblBody = new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 9F),
+                ForeColor = Color.FromArgb(61, 82, 73),
+                Location = new Point(24, 90),
+                Size = new Size(cardWidth - 210, 35),
+                Text = record.Content
+            };
+            var btnDetail = CreateActionButton("Xem chi tiết", Color.FromArgb(15, 110, 86), Color.White);
+            btnDetail.Location = new Point(cardWidth - 166, 72);
+            btnDetail.Size = new Size(134, 36);
+            btnDetail.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnDetail.Click += (s, e) => OpenNotificationDetail(record);
+
+            card.Controls.Add(left);
+            card.Controls.Add(pnlLevel);
+            card.Controls.Add(lblTitle);
+            card.Controls.Add(lblMeta);
+            card.Controls.Add(lblBody);
+            card.Controls.Add(btnDetail);
+            return card;
+        }
+
+        private Guna2Button CreateActionButton(string text, Color fill, Color fore)
+        {
+            var button = new Guna2Button
+            {
+                BorderRadius = 8,
+                Cursor = Cursors.Hand,
+                FillColor = fill,
+                ForeColor = fore,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Text = text
+            };
+            button.HoverState.FillColor = Color.FromArgb(26, 148, 112);
+            button.PressedColor = Color.FromArgb(10, 79, 61);
+            return button;
+        }
+
+        private void OpenNotificationDetail(NotificationRecord record)
+        {
+            using (var form = new frmKtvNotificationDetail(
+                record.Title,
+                record.Level,
+                record.Time.ToString("HH:mm · dd/MM/yyyy"),
+                record.Sender,
+                record.Content))
+            {
+                record.IsRead = true;
+                if (form.ShowDialog(FindForm()) == DialogResult.OK)
+                {
+                    ApplyFilters();
+                }
             }
         }
 
-        private void SetKpiHoverState(Guna2Panel card, bool hovered)
+        private int GetCardWidth()
         {
-            card.FillColor = hovered ? Color.FromArgb(248, 252, 250) : Color.White;
-            card.BorderColor = hovered ? Color.FromArgb(15, 110, 86) : Color.FromArgb(218, 232, 226);
-            card.ShadowDecoration.Enabled = true;
-            card.ShadowDecoration.Depth = hovered ? 12 : 5;
-            card.ShadowDecoration.Shadow = hovered ? new Padding(0, 4, 14, 8) : new Padding(0, 2, 8, 4);
+            return Math.Max(780, flpNotificationList.Width - flpNotificationList.Padding.Horizontal - 28);
+        }
+
+        private void ResizeCards()
+        {
+            int cardWidth = GetCardWidth();
+            foreach (Control control in flpNotificationList.Controls)
+            {
+                control.Width = cardWidth;
+            }
+        }
+
+        public class NotificationRecord
+        {
+            public string Title { get; set; }
+            public string Level { get; set; }
+            public string Sender { get; set; }
+            public DateTime Time { get; set; }
+            public string Location { get; set; }
+            public string Content { get; set; }
+            public bool IsRead { get; set; }
+            public bool IsImportant { get; set; }
         }
     }
 }

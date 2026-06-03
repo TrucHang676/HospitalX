@@ -258,6 +258,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.btnCancel.Size = new System.Drawing.Size(116, 38);
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "Đóng";
+            this.btnCancel.Visible = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // frmKtvNotificationDetail
