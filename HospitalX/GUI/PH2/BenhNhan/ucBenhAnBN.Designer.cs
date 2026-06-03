@@ -182,10 +182,11 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // ucBenhAnBN
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.Controls.Add(this.pnlRoot);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "ucBenhAnBN";
             this.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.ResumeLayout(false);

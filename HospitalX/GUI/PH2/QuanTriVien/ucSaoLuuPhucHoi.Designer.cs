@@ -98,8 +98,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             // pnlRoot
             // 
-            this.pnlRoot.Controls.Add(this.pnlBackup);
             this.pnlRoot.Controls.Add(this.pnlRestore);
+            this.pnlRoot.Controls.Add(this.pnlBackup);
             this.pnlRoot.Controls.Add(this.pnlContent);
             this.pnlRoot.Controls.Add(this.pnlTabs);
             this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -113,7 +113,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.pnlRestore.Controls.Add(this.pnlRestoreRight);
             this.pnlRestore.Controls.Add(this.pnlRestoreLeft);
-            this.pnlRestore.Location = new System.Drawing.Point(21, 64);
+            this.pnlRestore.Location = new System.Drawing.Point(22, 64);
             this.pnlRestore.Name = "pnlRestore";
             this.pnlRestore.Size = new System.Drawing.Size(1084, 680);
             this.pnlRestore.TabIndex = 1;
@@ -288,7 +288,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.btnStartRestore.BorderRadius = 8;
             this.btnStartRestore.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStartRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.btnStartRestore.FillColor = System.Drawing.Color.Brown;
             this.btnStartRestore.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartRestore.ForeColor = System.Drawing.Color.White;
             this.btnStartRestore.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
@@ -622,7 +622,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.btnStartBackup.BackColor = System.Drawing.Color.Transparent;
             this.btnStartBackup.BorderRadius = 8;
+            this.btnStartBackup.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btnStartBackup.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartBackup.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btnStartBackup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnStartBackup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartBackup.ForeColor = System.Drawing.Color.White;
@@ -754,8 +756,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkIncremental.Size = new System.Drawing.Size(243, 23);
             this.chkIncremental.TabIndex = 9;
             this.chkIncremental.Text = "INCREMENTAL - Dữ liệu thay đổi";
+            this.chkIncremental.UncheckedState.BorderColor = System.Drawing.Color.Black;
             this.chkIncremental.UncheckedState.BorderRadius = 0;
-            this.chkIncremental.UncheckedState.BorderThickness = 0;
+            this.chkIncremental.UncheckedState.BorderThickness = 1;
+            this.chkIncremental.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkIncremental.UseVisualStyleBackColor = false;
             // 
             // chkFull
@@ -774,8 +778,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkFull.Size = new System.Drawing.Size(165, 23);
             this.chkFull.TabIndex = 10;
             this.chkFull.Text = "FULL - Toàn bộ CSDL";
+            this.chkFull.UncheckedState.BorderColor = System.Drawing.Color.Black;
             this.chkFull.UncheckedState.BorderRadius = 0;
-            this.chkFull.UncheckedState.BorderThickness = 0;
+            this.chkFull.UncheckedState.BorderThickness = 1;
+            this.chkFull.UncheckedState.FillColor = System.Drawing.Color.White;
             this.chkFull.UseVisualStyleBackColor = false;
             // 
             // lblManualTitle

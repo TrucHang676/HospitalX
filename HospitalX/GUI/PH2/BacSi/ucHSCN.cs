@@ -16,6 +16,10 @@ namespace HospitalX.GUI.PH2.BacSi
         private static readonly Color TextMuted = Color.FromArgb(122, 149, 137);
 
         private readonly List<ActivityItem> _activities = new List<ActivityItem>();
+        private Guna2MessageDialog _messageDialog;
+        private string _originalContactPhone;
+        private string _originalContactAddress;
+        private bool _isLoadingContact;
 
         private static string SavedPhone = "090 123 4567";
         private static string SavedAddress = "Q. Bình Thạnh, TP.HCM";
@@ -32,6 +36,8 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             InitializeComponent();
             DoubleBuffered = true;
+            txtContactPhone.TextChanged += ContactFieldChanged;
+            txtAddress.TextChanged += ContactFieldChanged;
         }
 
         private void ucHSCN_Load(object sender, EventArgs e)
@@ -39,7 +45,7 @@ namespace HospitalX.GUI.PH2.BacSi
             LoadProfileData();
             SetupStyles();
             LoadRecentActivities();
-            ucHSCN_Resize(null, null);
+            ConfigureScrolling();
         }
 
         private void LoadProfileData()
@@ -49,13 +55,16 @@ namespace HospitalX.GUI.PH2.BacSi
             lblDeptAndFacility.Text = "Khoa Thần kinh\r\nBV Đa Khoa Tỉnh";
 
             txtProfMaNV.Text = "NV-BS-0047";
-            txtProfHoTen.Text = "Nguyễn Thị Trúc";
+            txtProfHoTen.Text = "Nguyễn Thị Trúc Hằng";
             txtProfVaiTro.Text = "Bác sĩ";
-            txtProfGioiTinh.Text = "Thần kinh";
-            txtProfNgaySinh.Text = "BV Đa Khoa Tỉnh";
+            txtKhoa.Text = "Thần kinh";
+            txtProfGioiTinh.Text = "Nữ";
+            txtProfNgaySinh.Text = "12/04/1992";
 
             txtContactPhone.Text = SavedPhone;
-            txtContactAddress.Text = SavedAddress;
+            txtAddress.Text = SavedAddress;
+            txtProfCccd.Text = "079192004567";
+            AcceptCurrentContactValues();
 
             lblStat1Val.Text = "59";
             lblStat1Cap.Text = "HSBA liên quan";
@@ -108,24 +117,20 @@ namespace HospitalX.GUI.PH2.BacSi
             SetupReadOnlyField(txtProfMaNV);
             SetupReadOnlyField(txtProfHoTen);
             SetupReadOnlyField(txtProfVaiTro);
+            SetupReadOnlyField(txtKhoa);
             SetupReadOnlyField(txtProfGioiTinh);
             SetupReadOnlyField(txtProfNgaySinh);
             SetupReadOnlyField(txtProfCccd);
-            SetupReadOnlyField(txtProfQueQuan);
-
-            txtProfCccd.Visible = false;
-            txtProfQueQuan.Visible = false;
-            label6.Visible = false;
-            label7.Visible = false;
 
             txtContactPhone.Font = new Font("Segoe UI", 9.5F);
-            txtContactAddress.Font = new Font("Segoe UI", 9.5F);
+            txtAddress.Font = new Font("Segoe UI", 9.5F);
 
             btnUpdateContact.FillColor = ThemeGreen;
             btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdateContact.ForeColor = Color.White;
             btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
             btnUpdateContact.Cursor = Cursors.Hand;
+            btnUpdateContact.Visible = false;
 
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
@@ -198,13 +203,15 @@ namespace HospitalX.GUI.PH2.BacSi
         private void RenderActivities()
         {
             flpActivities.Controls.Clear();
+            int top = 0;
             foreach (var activity in _activities)
             {
-                int rowWidth = Math.Max(520, flpActivities.ClientSize.Width - 8);
+                int rowWidth = GetActivityRowWidth();
                 var row = new Panel
                 {
                     Width = rowWidth,
                     Height = 68,
+                    Location = new Point(0, top),
                     Margin = new Padding(0),
                     BackColor = Color.White
                 };
@@ -257,63 +264,155 @@ namespace HospitalX.GUI.PH2.BacSi
                 row.Controls.Add(lblCode);
                 row.Controls.Add(lblTime);
                 flpActivities.Controls.Add(row);
+                top += row.Height;
             }
+
+            flpActivities.AutoScrollMinSize = new Size(0, (_activities.Count * 68) + 8);
+            LayoutActivityRows();
+            HideActivityHorizontalScroll();
         }
 
         private void ucHSCN_Resize(object sender, EventArgs e)
         {
-            int totalWidth = pnlScroll.ClientSize.Width;
-            if (totalWidth <= 0)
-            {
-                return;
-            }
+            pnlScroll.AutoScrollMinSize = new Size(0, pnlRight.Bottom + 24);
+            LayoutActivityRows();
+            HideActivityHorizontalScroll();
+        }
 
-            int rightWidth = Math.Max(602, totalWidth - 368 - 24);
-            pnlRight.SetBounds(368, 24, rightWidth, pnlRight.Height);
-
-            pnlCardProfessional.Width = rightWidth;
-            pnlCardContact.Width = rightWidth;
-            pnlCardSecurity.Width = rightWidth;
-            pnlCardActivities.Width = rightWidth;
-
-            btnUpdateContact.Location = new Point(rightWidth - btnUpdateContact.Width - 24, btnUpdateContact.Top);
-            btnChangePassword.Location = new Point(rightWidth - btnChangePassword.Width - 24, btnChangePassword.Top);
-
-            txtContactAddress.Width = rightWidth - txtContactAddress.Left - 24;
-            txtProfNgaySinh.Width = rightWidth - txtProfNgaySinh.Left - 24;
-            flpActivities.Width = rightWidth - 40;
-
+        private void LayoutActivityRows()
+        {
+            int rowWidth = GetActivityRowWidth();
+            int top = 0;
             foreach (Control row in flpActivities.Controls)
             {
-                row.Width = Math.Max(520, flpActivities.ClientSize.Width - 8);
+                row.Location = new Point(0, top);
+                row.Width = rowWidth;
                 if (row.Controls.Count >= 3)
                 {
                     row.Controls[0].Width = row.Width - 230;
                     row.Controls[2].Left = row.Width - 170;
                 }
+                top += row.Height;
             }
+        }
+
+        private int GetActivityRowWidth()
+        {
+            int reserved = SystemInformation.VerticalScrollBarWidth;
+            return Math.Max(320, flpActivities.ClientSize.Width - reserved - 6);
+        }
+
+        private void ConfigureScrolling()
+        {
+            pnlScroll.AutoScroll = true;
+            pnlScroll.AutoScrollMargin = new Size(0, 24);
+            pnlScroll.AutoScrollMinSize = new Size(0, pnlRight.Bottom + 24);
+
+            flpActivities.AutoScroll = true;
+            flpActivities.AutoScrollMargin = new Size(0, 8);
+            flpActivities.AutoScrollMinSize = new Size(0, (_activities.Count * 68) + 8);
+            HideActivityHorizontalScroll();
+
+            pnlScroll.MouseWheel += ScrollRoot_MouseWheel;
+            pnlRight.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardProfessional.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardContact.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardSecurity.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardActivities.MouseWheel += ScrollRoot_MouseWheel;
+            flpActivities.MouseWheel += Activities_MouseWheel;
+        }
+
+        private void HideActivityHorizontalScroll()
+        {
+            flpActivities.HorizontalScroll.Enabled = false;
+            flpActivities.HorizontalScroll.Visible = false;
+            flpActivities.HorizontalScroll.Maximum = 0;
+            flpActivities.AutoScrollMinSize = new Size(0, flpActivities.AutoScrollMinSize.Height);
+        }
+
+        private void ScrollRoot_MouseWheel(object sender, MouseEventArgs e)
+        {
+            ScrollContainer(pnlScroll, e.Delta);
+        }
+
+        private void Activities_MouseWheel(object sender, MouseEventArgs e)
+        {
+            bool activityListNeedsScroll = flpActivities.DisplayRectangle.Height > flpActivities.ClientSize.Height;
+            ScrollContainer(activityListNeedsScroll ? (ScrollableControl)flpActivities : pnlScroll, e.Delta);
+        }
+
+        private static void ScrollContainer(ScrollableControl container, int delta)
+        {
+            int currentY = -container.AutoScrollPosition.Y;
+            int nextY = currentY - Math.Sign(delta) * 48;
+            if (nextY < 0)
+            {
+                nextY = 0;
+            }
+
+            container.AutoScrollPosition = new Point(0, nextY);
         }
 
         private void btnUpdateContact_Click(object sender, EventArgs e)
         {
             string phone = txtContactPhone.Text.Trim();
-            string address = txtContactAddress.Text.Trim();
+            string address = txtAddress.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(phone) || phone.Replace(" ", "").Length < 10 || !IsPhoneNumber(phone))
             {
-                ShowMessage("Số điện thoại liên hệ phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageBoxIcon.Warning);
+                ShowMessage("Số điện thoại liên hệ phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(address))
             {
-                ShowMessage("Địa chỉ cư trú không được bỏ trống.", "Lỗi nhập liệu", MessageBoxIcon.Warning);
+                ShowMessage("Địa chỉ cư trú không được bỏ trống.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
                 return;
             }
 
             SavedPhone = phone;
             SavedAddress = address;
-            ShowMessage("Cập nhật thông tin liên hệ thành công.", "HospitalX", MessageBoxIcon.Information);
+            ReloadContactData();
+            ShowMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+        }
+
+        private void ContactFieldChanged(object sender, EventArgs e)
+        {
+            if (_isLoadingContact)
+            {
+                return;
+            }
+
+            UpdateContactSaveButton();
+        }
+
+        private void ReloadContactData()
+        {
+            _isLoadingContact = true;
+            txtContactPhone.Text = SavedPhone;
+            txtAddress.Text = SavedAddress;
+            AcceptCurrentContactValues();
+            _isLoadingContact = false;
+            UpdateContactSaveButton();
+        }
+
+        private void AcceptCurrentContactValues()
+        {
+            _originalContactPhone = NormalizeContactText(txtContactPhone.Text);
+            _originalContactAddress = NormalizeContactText(txtAddress.Text);
+        }
+
+        private void UpdateContactSaveButton()
+        {
+            bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
+                || NormalizeContactText(txtAddress.Text) != _originalContactAddress;
+
+            btnUpdateContact.Visible = changed;
+        }
+
+        private static string NormalizeContactText(string value)
+        {
+            return (value ?? string.Empty).Trim();
         }
 
         private void btnChangePassword_Click(object sender, EventArgs e)
@@ -337,9 +436,19 @@ namespace HospitalX.GUI.PH2.BacSi
             return true;
         }
 
-        private void ShowMessage(string message, string title, MessageBoxIcon icon)
+        private void ShowMessage(string message, string title, MessageDialogIcon icon)
         {
-            MessageBox.Show(this, message, title, MessageBoxButtons.OK, icon);
+            if (_messageDialog == null)
+            {
+                _messageDialog = new Guna2MessageDialog();
+            }
+
+            _messageDialog.Parent = FindForm();
+            _messageDialog.Icon = icon;
+            _messageDialog.Buttons = MessageDialogButtons.OK;
+            _messageDialog.Caption = title;
+            _messageDialog.Style = MessageDialogStyle.Light;
+            _messageDialog.Show(message);
         }
     }
 }

@@ -106,7 +106,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblPatientMeta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.lblPatientMeta.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblPatientMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblPatientMeta.Location = new System.Drawing.Point(32, 88);
+            this.lblPatientMeta.Location = new System.Drawing.Point(33, 80);
             this.lblPatientMeta.Name = "lblPatientMeta";
             this.lblPatientMeta.Size = new System.Drawing.Size(690, 24);
             this.lblPatientMeta.TabIndex = 3;
@@ -182,6 +182,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblHistoryValue.Size = new System.Drawing.Size(457, 65);
             this.lblHistoryValue.TabIndex = 12;
             this.lblHistoryValue.Text = "Tăng huyết áp từ năm 2018. Không hút thuốc lá.";
+            this.lblHistoryValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblHistoryTitle
             // 
@@ -206,6 +207,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblAllergyValue.Size = new System.Drawing.Size(457, 50);
             this.lblAllergyValue.TabIndex = 10;
             this.lblAllergyValue.Text = "Không có dị ứng thuốc ghi nhận";
+            this.lblAllergyValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblAllergyTitle
             // 
@@ -455,9 +457,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblClinicalTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblClinicalTitle.Location = new System.Drawing.Point(29, 20);
             this.lblClinicalTitle.Name = "lblClinicalTitle";
-            this.lblClinicalTitle.Size = new System.Drawing.Size(141, 20);
+            this.lblClinicalTitle.Size = new System.Drawing.Size(157, 20);
             this.lblClinicalTitle.TabIndex = 0;
-            this.lblClinicalTitle.Text = "Chẩn đoán & điều trị";
+            this.lblClinicalTitle.Text = "Chẩn đoán và điều trị";
             // 
             // pnlLists
             // 
@@ -508,9 +510,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblRxTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblRxTitle.Location = new System.Drawing.Point(427, 18);
             this.lblRxTitle.Name = "lblRxTitle";
-            this.lblRxTitle.Size = new System.Drawing.Size(89, 19);
+            this.lblRxTitle.Size = new System.Drawing.Size(130, 19);
             this.lblRxTitle.TabIndex = 1;
-            this.lblRxTitle.Text = "Đơn hiện tại";
+            this.lblRxTitle.Text = "Đơn thuốc hiện tại";
             // 
             // lblServiceTitle
             // 
@@ -528,6 +530,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.btnSave.BorderRadius = 8;
             this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSave.DefaultAutoSize = true;
             this.btnSave.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(208)))), ((int)(((byte)(203)))));
             this.btnSave.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
             this.btnSave.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
@@ -538,7 +541,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnSave.Location = new System.Drawing.Point(944, 701);
             this.btnSave.Name = "btnSave";
             this.btnSave.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnSave.Size = new System.Drawing.Size(202, 46);
+            this.btnSave.Size = new System.Drawing.Size(122, 31);
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Lưu thay đổi";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -570,6 +573,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlLists.ResumeLayout(false);
             this.pnlLists.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

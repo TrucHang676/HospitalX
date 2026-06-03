@@ -9,10 +9,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             string title, string type, string time, string tags, string body)
         {
             InitializeComponent();
-            if (System.IO.File.Exists(@"d:\HospitalX\image\medical-team.ico"))
-            {
-                this.Icon = new System.Drawing.Icon(@"d:\HospitalX\image\medical-team.ico");
-            }
             LoadData(title, type, time, tags, body);
             ConfigureReadOnlyTextBoxes();
         }

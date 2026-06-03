@@ -151,6 +151,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblDoctorPhoneValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
             this.lblDoctorPhoneValue.Location = new System.Drawing.Point(124, 139);
             this.lblDoctorPhoneValue.Name = "lblDoctorPhoneValue";
+            this.lblDoctorPhoneValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
             this.lblDoctorPhoneValue.Size = new System.Drawing.Size(166, 22);
             this.lblDoctorPhoneValue.TabIndex = 0;
             this.lblDoctorPhoneValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

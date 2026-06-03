@@ -15,7 +15,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             Gender = "Nam",
             BirthDate = new DateTime(1974, 4, 12),
             Cccd = "079074012345",
-            Address = "12 Nguyễn Trãi, Q.1, TP.HCM",
+            Address = "12 Nguyễn Trãi, Quận 1, TP.HCM",
             MedicalHistory = "Tăng huyết áp từ năm 2018",
             FamilyHistory = "Cha có tiền sử tăng huyết áp",
             Allergy = "Không ghi nhận"
@@ -42,17 +42,34 @@ namespace HospitalX.GUI.PH2.BenhNhan
             new PrescriptionSummary("Aspirin 81mg", "1 viên/ngày", new DateTime(2026, 5, 21))
         };
 
+        private string originalAllergy;
+        private string originalMedicalHistory;
+        private string originalFamilyHistory;
+
         public ucHSCN()
         {
             InitializeComponent();
+            BringEditableControlsToFront();
             RenderDashboard();
+            SetHistoryEditing(false);
+            btnSaveProfile.Visible = false;
+        }
+
+        private void BringEditableControlsToFront()
+        {
+            txtAllergy.BringToFront();
+            txtMedicalHistory.BringToFront();
+            txtFamilyHistory.BringToFront();
+            btnEditHistory.BringToFront();
+            btnEditAddress.BringToFront();
+            btnSaveProfile.BringToFront();
         }
 
         private void RenderDashboard()
         {
             lblWelcomeName.Text = currentPatient.Name;
             lblWelcomeId.Text = currentPatient.Id;
-            lblWelcomeMeta.Text = $"{currentPatient.Gender} · {CalculateAge(currentPatient.BirthDate)} tuổi · TP.HCM";
+            lblWelcomeMeta.Text = $"{currentPatient.Gender} · {CalculateAge(currentPatient.BirthDate)} tuổi";
 
             lblPatientIdValue.Text = currentPatient.Id;
             lblPatientNameValue.Text = currentPatient.Name;
@@ -60,18 +77,92 @@ namespace HospitalX.GUI.PH2.BenhNhan
             lblDobValue.Text = currentPatient.BirthDate.ToString("dd/MM/yyyy");
             lblCccdValue.Text = currentPatient.Cccd;
             lblAddressValue.Text = currentPatient.Address;
+
+            txtAllergy.Text = currentPatient.Allergy;
+            txtMedicalHistory.Text = currentPatient.MedicalHistory;
+            txtFamilyHistory.Text = currentPatient.FamilyHistory;
             lblAllergyValue.Text = currentPatient.Allergy;
             lblMedicalHistoryValue.Text = currentPatient.MedicalHistory;
             lblFamilyHistoryValue.Text = currentPatient.FamilyHistory;
+            CaptureHistoryOriginals();
 
             lblKpiAllergyValue.Text = HasRecordedAllergy(currentPatient.Allergy) ? "1" : "0";
             lblKpiHsbaValue.Text = medicalRecords.Count.ToString();
             lblKpiServiceValue.Text = services.Count.ToString();
             lblKpiPrescriptionValue.Text = prescriptions.Count.ToString();
-
         }
 
+        private void CaptureHistoryOriginals()
+        {
+            originalAllergy = txtAllergy.Text.Trim();
+            originalMedicalHistory = txtMedicalHistory.Text.Trim();
+            originalFamilyHistory = txtFamilyHistory.Text.Trim();
+        }
 
+        private void SetHistoryEditing(bool enabled)
+        {
+            txtAllergy.ReadOnly = !enabled;
+            txtMedicalHistory.ReadOnly = !enabled;
+            txtFamilyHistory.ReadOnly = !enabled;
+
+            Color fill = enabled ? Color.White : Color.FromArgb(247, 250, 249);
+            txtAllergy.FillColor = fill;
+            txtMedicalHistory.FillColor = fill;
+            txtFamilyHistory.FillColor = fill;
+
+            if (enabled)
+            {
+                txtAllergy.Focus();
+            }
+        }
+
+        private void btnEditHistory_Click(object sender, EventArgs e)
+        {
+            SetHistoryEditing(true);
+        }
+
+        private void HistoryField_TextChanged(object sender, EventArgs e)
+        {
+            btnSaveProfile.Visible = HasHistoryChanges();
+        }
+
+        private bool HasHistoryChanges()
+        {
+            return !string.Equals(txtAllergy.Text.Trim(), originalAllergy, StringComparison.Ordinal)
+                || !string.Equals(txtMedicalHistory.Text.Trim(), originalMedicalHistory, StringComparison.Ordinal)
+                || !string.Equals(txtFamilyHistory.Text.Trim(), originalFamilyHistory, StringComparison.Ordinal);
+        }
+
+        private void btnSaveProfile_Click(object sender, EventArgs e)
+        {
+            currentPatient.Allergy = txtAllergy.Text.Trim();
+            currentPatient.MedicalHistory = txtMedicalHistory.Text.Trim();
+            currentPatient.FamilyHistory = txtFamilyHistory.Text.Trim();
+
+            lblAllergyValue.Text = currentPatient.Allergy;
+            lblMedicalHistoryValue.Text = currentPatient.MedicalHistory;
+            lblFamilyHistoryValue.Text = currentPatient.FamilyHistory;
+            lblKpiAllergyValue.Text = HasRecordedAllergy(currentPatient.Allergy) ? "1" : "0";
+
+            CaptureHistoryOriginals();
+            SetHistoryEditing(false);
+            btnSaveProfile.Visible = false;
+        }
+
+        private void btnEditAddress_Click(object sender, EventArgs e)
+        {
+            AddressParts parts = AddressParts.Parse(currentPatient.Address);
+            using (var dialog = new frmPatientAddressEdit(parts.HouseNumber, parts.StreetName, parts.District, parts.City))
+            {
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                currentPatient.Address = dialog.FullAddress;
+                lblAddressValue.Text = currentPatient.Address;
+            }
+        }
 
         private Control CreateMedicalRecordCard(MedicalRecordSummary record)
         {
@@ -186,6 +277,28 @@ namespace HospitalX.GUI.PH2.BenhNhan
             public string MedicalHistory { get; set; }
             public string FamilyHistory { get; set; }
             public string Allergy { get; set; }
+        }
+
+        private class AddressParts
+        {
+            public string HouseNumber { get; set; }
+            public string StreetName { get; set; }
+            public string District { get; set; }
+            public string City { get; set; }
+
+            public static AddressParts Parse(string address)
+            {
+                string[] parts = (address ?? string.Empty).Split(',');
+                string[] streetParts = parts.Length > 0 ? parts[0].Trim().Split(new[] { ' ' }, 2) : new string[0];
+
+                return new AddressParts
+                {
+                    HouseNumber = streetParts.Length > 0 ? streetParts[0].Trim() : string.Empty,
+                    StreetName = streetParts.Length > 1 ? streetParts[1].Trim() : string.Empty,
+                    District = parts.Length > 1 ? parts[1].Trim() : string.Empty,
+                    City = parts.Length > 2 ? parts[2].Trim() : string.Empty
+                };
+            }
         }
 
         private class MedicalRecordSummary

@@ -13,6 +13,7 @@ namespace HospitalX.GUI.PH2.BacSi
             _record = record;
             InitializeComponent();
             LoadRecord();
+            WireInputState();
         }
 
         private void LoadRecord()
@@ -22,12 +23,43 @@ namespace HospitalX.GUI.PH2.BacSi
             lblHsbaId.Text = _record.Id;
             lblPatient.Text = _record.PatientName + " · " + _record.PatientCode;
             RefreshServices();
+            ResetInputFields();
         }
 
         private void RefreshServices()
         {
             lstCurrentServices.Items.Clear();
             lstCurrentServices.Items.AddRange(_record.Services.ToArray());
+        }
+
+        private void WireInputState()
+        {
+            txtServiceName.TextChanged += ServiceInputChanged;
+            txtServiceNote.TextChanged += ServiceInputChanged;
+        }
+
+        private void ServiceInputChanged(object sender, EventArgs e)
+        {
+            UpdateAddButtonVisibility();
+        }
+
+        private void UpdateAddButtonVisibility()
+        {
+            btnAdd.Visible = HasCompleteServiceInput();
+        }
+
+        private bool HasCompleteServiceInput()
+        {
+            return !string.IsNullOrWhiteSpace(txtServiceName.Text)
+                && !string.IsNullOrWhiteSpace(txtServiceNote.Text);
+        }
+
+        private void ResetInputFields()
+        {
+            txtServiceName.Clear();
+            txtServiceNote.Clear();
+            UpdateAddButtonVisibility();
+            txtServiceName.Focus();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -43,9 +75,16 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            _record.Services.Add(string.IsNullOrWhiteSpace(note) ? serviceName + " - Chờ kết quả" : serviceName + " - " + note);
-            txtServiceName.Clear();
-            txtServiceNote.Clear();
+            if (string.IsNullOrWhiteSpace(note))
+            {
+                msgDialog.Icon = MessageDialogIcon.Warning;
+                msgDialog.Buttons = MessageDialogButtons.OK;
+                msgDialog.Show("Vui lòng nhập ghi chú hoặc kết quả ban đầu.", "Thiếu thông tin");
+                return;
+            }
+
+            _record.Services.Add(serviceName + " - " + note);
+            ResetInputFields();
             RefreshServices();
             msgDialog.Icon = MessageDialogIcon.Information;
             msgDialog.Buttons = MessageDialogButtons.OK;

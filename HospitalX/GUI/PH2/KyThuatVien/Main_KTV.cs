@@ -1,5 +1,6 @@
 using Guna.UI2.WinForms;
 using HospitalX.GUI.PH2.KyThuatVien;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,10 +13,6 @@ namespace HospitalX.GUI.PH2
         public Main_KTV()
         {
             InitializeComponent();
-            if (System.IO.File.Exists(@"d:\HospitalX\image\medical-team.ico"))
-            {
-                this.Icon = new System.Drawing.Icon(@"d:\HospitalX\image\medical-team.ico");
-            }
             Instance = this;
 
             SetButtonImages(this.btnDashboard, KtvIcons.SidebarDashboardNormal, KtvIcons.SidebarDashboardActive);
@@ -37,6 +34,24 @@ namespace HospitalX.GUI.PH2
             btnKetQua.Click += (s, e) => SwitchToTab(btnKetQua, new ucKtvKetQua(), "Cập nhật kết quả dịch vụ", "3 kết quả đang chờ cập nhật");
             btnHoSo.Click += (s, e) => SwitchToTab(btnHoSo, new ucKtvHoSo(), "Hồ sơ cá nhân", "Quản lý thông tin cá nhân và tài khoản");
             btnThongBao.Click += (s, e) => SwitchToTab(btnThongBao, new ucKtvThongBao(), "Thông báo", "Trung tâm thông báo nghiệp vụ");
+            btnLogout.Click += BtnLogout_Click;
+        }
+
+        private void BtnLogout_Click(object sender, EventArgs e)
+        {
+            using (var confirmDialog = new Guna2MessageDialog())
+            {
+                confirmDialog.Parent = this;
+                confirmDialog.Icon = MessageDialogIcon.Question;
+                confirmDialog.Buttons = MessageDialogButtons.YesNo;
+                confirmDialog.Caption = "Xác nhận đăng xuất";
+                confirmDialog.Text = "Bạn có chắc chắn muốn đăng xuất không?";
+
+                if (confirmDialog.Show() == DialogResult.Yes)
+                {
+                    Application.Exit();
+                }
+            }
         }
 
         public void SwitchToTab(Guna2Button targetButton, UserControl control, string title, string subtitle)
@@ -71,16 +86,16 @@ namespace HospitalX.GUI.PH2
             pnlTopbar.Left = pnlSidebar.Width;
             pnlTopbar.Width = ClientSize.Width - pnlSidebar.Width;
             pnlContent.Left = pnlSidebar.Width;
-            pnlContent.Top = 65;
+            pnlContent.Top = 72;
             pnlContent.Width = ClientSize.Width - pnlSidebar.Width;
             pnlContent.Height = ClientSize.Height - pnlContent.Top;
 
-            pnlTopbar.Height = 65;
-            lblPageTitle.Location = new Point(18, 12);
+            pnlTopbar.Height = 72;
+            lblPageTitle.Location = new Point(18, 10);
             lblPageTitle.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            lblSubtitle.Location = new Point(20, 45);
+            lblSubtitle.Location = new Point(20, 46);
             btnExit.Size = new Size(33, 32);
-            btnExit.Location = new Point(pnlTopbar.Width - 50, 17);
+            btnExit.Location = new Point(pnlTopbar.Width - 50, 20);
 
             pnlLogo.Size = new Size(46, 46);
             pnlLogo.BorderRadius = 8;
@@ -122,15 +137,24 @@ namespace HospitalX.GUI.PH2
             AddOrUpdateSidebarSeparator("ktvProfileLine", 135);
 
             ConfigureSidebarButton(btnDashboard, "TỔNG QUAN", 186);
-            ConfigureSidebarButton(btnDichVu, "DỊCH VỤ PHÂN CÔNG   7", 246);
-            ConfigureSidebarButton(btnKetQua, "CẬP NHẬT KẾT QUẢ   3", 306);
+            ConfigureSidebarButton(btnDichVu, "DỊCH VỤ PHÂN CÔNG", 246);
+            ConfigureSidebarButton(btnKetQua, "CẬP NHẬT KẾT QUẢ", 306);
             ConfigureSidebarButton(btnHoSo, "HỒ SƠ CÁ NHÂN", 366);
-            ConfigureSidebarButton(btnThongBao, "THÔNG BÁO   5", 426);
+            ConfigureSidebarButton(btnThongBao, "THÔNG BÁO", 426);
 
-            btnLogout.Size = new Size(200, 38);
-            btnLogout.Location = new Point(12, ClientSize.Height - 62);
+            btnLogout.BorderColor = Color.FromArgb(255, 110, 110);
             btnLogout.BorderRadius = 10;
+            btnLogout.BorderThickness = 1;
+            btnLogout.FillColor = Color.Transparent;
             btnLogout.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            btnLogout.ForeColor = Color.FromArgb(255, 128, 128);
+            btnLogout.HoverState.BorderColor = Color.FromArgb(255, 80, 80);
+            btnLogout.HoverState.FillColor = Color.Maroon;
+            btnLogout.HoverState.ForeColor = Color.White;
+            btnLogout.Image = HospitalX.GUI.PH2.DieuPhoiVien.DpvAssets.Load("logout.png");
+            btnLogout.ImageSize = new Size(24, 24);
+            btnLogout.Size = new Size(200, 38);
+            btnLogout.Location = new Point((pnlSidebar.Width - btnLogout.Width) / 2, ClientSize.Height - 62);
         }
 
         private void ConfigureSidebarButton(Guna2Button button, string text, int top)

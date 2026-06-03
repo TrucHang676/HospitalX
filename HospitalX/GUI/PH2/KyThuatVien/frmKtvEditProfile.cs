@@ -23,10 +23,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             string shift, string skills)
         {
             InitializeComponent();
-            if (System.IO.File.Exists(@"d:\HospitalX\image\medical-team.ico"))
-            {
-                this.Icon = new System.Drawing.Icon(@"d:\HospitalX\image\medical-team.ico");
-            }
             LoadData(name, phone, email, dob, address, gender, shift, skills);
         }
 
