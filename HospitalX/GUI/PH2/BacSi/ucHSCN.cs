@@ -55,7 +55,7 @@ namespace HospitalX.GUI.PH2.BacSi
             txtProfNgaySinh.Text = "BV Đa Khoa Tỉnh";
 
             txtContactPhone.Text = SavedPhone;
-            txtContactAddress.Text = SavedAddress;
+            txtAddress.Text = SavedAddress;
 
             lblStat1Val.Text = "59";
             lblStat1Cap.Text = "HSBA liên quan";
@@ -111,15 +111,13 @@ namespace HospitalX.GUI.PH2.BacSi
             SetupReadOnlyField(txtProfGioiTinh);
             SetupReadOnlyField(txtProfNgaySinh);
             SetupReadOnlyField(txtProfCccd);
-            SetupReadOnlyField(txtProfQueQuan);
 
             txtProfCccd.Visible = false;
-            txtProfQueQuan.Visible = false;
             label6.Visible = false;
             label7.Visible = false;
 
             txtContactPhone.Font = new Font("Segoe UI", 9.5F);
-            txtContactAddress.Font = new Font("Segoe UI", 9.5F);
+            txtAddress.Font = new Font("Segoe UI", 9.5F);
 
             btnUpdateContact.FillColor = ThemeGreen;
             btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -279,7 +277,7 @@ namespace HospitalX.GUI.PH2.BacSi
             btnUpdateContact.Location = new Point(rightWidth - btnUpdateContact.Width - 24, btnUpdateContact.Top);
             btnChangePassword.Location = new Point(rightWidth - btnChangePassword.Width - 24, btnChangePassword.Top);
 
-            txtContactAddress.Width = rightWidth - txtContactAddress.Left - 24;
+            txtAddress.Width = rightWidth - txtAddress.Left - 24;
             txtProfNgaySinh.Width = rightWidth - txtProfNgaySinh.Left - 24;
             flpActivities.Width = rightWidth - 40;
 
@@ -297,7 +295,7 @@ namespace HospitalX.GUI.PH2.BacSi
         private void btnUpdateContact_Click(object sender, EventArgs e)
         {
             string phone = txtContactPhone.Text.Trim();
-            string address = txtContactAddress.Text.Trim();
+            string address = txtAddress.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(phone) || phone.Replace(" ", "").Length < 10 || !IsPhoneNumber(phone))
             {

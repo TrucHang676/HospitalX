@@ -228,14 +228,15 @@ namespace HospitalX.GUI.PH2.BacSi
             // btnSave
             // 
             this.btnSave.BorderRadius = 10;
+            this.btnSave.DefaultAutoSize = true;
             this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnSave.Location = new System.Drawing.Point(1084, 769);
+            this.btnSave.Location = new System.Drawing.Point(1128, 768);
             this.btnSave.Name = "btnSave";
             this.btnSave.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnSave.Size = new System.Drawing.Size(165, 44);
+            this.btnSave.Size = new System.Drawing.Size(122, 31);
             this.btnSave.TabIndex = 2;
             this.btnSave.Text = "Lưu thay đổi";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -259,6 +260,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlBody.ResumeLayout(false);
             this.pnlBody.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

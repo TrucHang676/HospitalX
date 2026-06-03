@@ -36,6 +36,7 @@
             this.btnHSCN = new Guna.UI2.WinForms.Guna2Button();
             this.pnlLine1 = new Guna.UI2.WinForms.Guna2Separator();
             this.pnl2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.lbl = new System.Windows.Forms.Label();
             this.lblTenBS = new System.Windows.Forms.Label();
             this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
             this.btnDT = new Guna.UI2.WinForms.Guna2Button();
@@ -51,7 +52,6 @@
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.lbl = new System.Windows.Forms.Label();
             this.pnlSidebar.SuspendLayout();
             this.pnl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).BeginInit();
@@ -179,12 +179,23 @@
             this.pnl2.Size = new System.Drawing.Size(220, 53);
             this.pnl2.TabIndex = 6;
             // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbl.Location = new System.Drawing.Point(62, 30);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(52, 12);
+            this.lbl.TabIndex = 10;
+            this.lbl.Text = "Nữ, 55 tuổi";
+            // 
             // lblTenBS
             // 
             this.lblTenBS.AutoSize = true;
             this.lblTenBS.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenBS.ForeColor = System.Drawing.Color.White;
-            this.lblTenBS.Location = new System.Drawing.Point(61, 29);
+            this.lblTenBS.Location = new System.Drawing.Point(62, 10);
             this.lblTenBS.Name = "lblTenBS";
             this.lblTenBS.Size = new System.Drawing.Size(63, 15);
             this.lblTenBS.TabIndex = 9;
@@ -421,17 +432,6 @@
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(1128, 782);
             this.pnlContent.TabIndex = 3;
-            // 
-            // lbl
-            // 
-            this.lbl.AutoSize = true;
-            this.lbl.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbl.Location = new System.Drawing.Point(60, 10);
-            this.lbl.Name = "lbl";
-            this.lbl.Size = new System.Drawing.Size(100, 12);
-            this.lbl.TabIndex = 10;
-            this.lbl.Text = "Chuyên khoa thần kinh";
             // 
             // Main_BN
             // 
