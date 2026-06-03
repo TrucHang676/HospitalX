@@ -17,8 +17,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucHSCN));
             this.pnlRoot = new System.Windows.Forms.Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnEditHistory = new Guna.UI2.WinForms.Guna2Button();
+            this.txtFamilyHistory = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtMedicalHistory = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtAllergy = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblFamilyHistoryValue = new System.Windows.Forms.Label();
             this.lblFamilyHistoryCaption = new System.Windows.Forms.Label();
             this.lblMedicalHistoryValue = new System.Windows.Forms.Label();
@@ -27,6 +32,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblAllergyCaption = new System.Windows.Forms.Label();
             this.lblHistoryTitle = new System.Windows.Forms.Label();
             this.pnlProfile = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnEditAddress = new Guna.UI2.WinForms.Guna2Button();
             this.lblAddressValue = new System.Windows.Forms.Label();
             this.lblAddressCaption = new System.Windows.Forms.Label();
             this.lblCccdValue = new System.Windows.Forms.Label();
@@ -60,6 +66,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblWelcomeMeta = new System.Windows.Forms.Label();
             this.lblWelcomeName = new System.Windows.Forms.Label();
             this.lblWelcomeId = new System.Windows.Forms.Label();
+            this.btnSaveProfile = new Guna.UI2.WinForms.Guna2Button();
             this.pnlRoot.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             this.pnlProfile.SuspendLayout();
@@ -80,6 +87,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlRoot.Controls.Add(this.pnlKpiHsba);
             this.pnlRoot.Controls.Add(this.pnlKpiAllergy);
             this.pnlRoot.Controls.Add(this.pnlWelcome);
+            this.pnlRoot.Controls.Add(this.btnSaveProfile);
             this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRoot.Location = new System.Drawing.Point(0, 0);
             this.pnlRoot.Name = "pnlRoot";
@@ -94,6 +102,10 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlHistory.BorderRadius = 8;
             this.pnlHistory.BorderThickness = 1;
+            this.pnlHistory.Controls.Add(this.btnEditHistory);
+            this.pnlHistory.Controls.Add(this.txtFamilyHistory);
+            this.pnlHistory.Controls.Add(this.txtMedicalHistory);
+            this.pnlHistory.Controls.Add(this.txtAllergy);
             this.pnlHistory.Controls.Add(this.lblFamilyHistoryValue);
             this.pnlHistory.Controls.Add(this.lblFamilyHistoryCaption);
             this.pnlHistory.Controls.Add(this.lblMedicalHistoryValue);
@@ -106,6 +118,99 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlHistory.Name = "pnlHistory";
             this.pnlHistory.Size = new System.Drawing.Size(560, 406);
             this.pnlHistory.TabIndex = 6;
+            // 
+            // btnEditHistory
+            // 
+            this.btnEditHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEditHistory.BackColor = System.Drawing.Color.Transparent;
+            this.btnEditHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.btnEditHistory.BorderRadius = 8;
+            this.btnEditHistory.BorderThickness = 1;
+            this.btnEditHistory.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEditHistory.FillColor = System.Drawing.Color.White;
+            this.btnEditHistory.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnEditHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnEditHistory.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
+            this.btnEditHistory.Image = ((System.Drawing.Image)(resources.GetObject("btnEditHistory.Image")));
+            this.btnEditHistory.ImageSize = new System.Drawing.Size(35, 35);
+            this.btnEditHistory.Location = new System.Drawing.Point(490, 17);
+            this.btnEditHistory.Name = "btnEditHistory";
+            this.btnEditHistory.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
+            this.btnEditHistory.Size = new System.Drawing.Size(38, 32);
+            this.btnEditHistory.TabIndex = 10;
+            this.btnEditHistory.Click += new System.EventHandler(this.btnEditHistory_Click);
+            // 
+            // txtFamilyHistory
+            // 
+            this.txtFamilyHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFamilyHistory.BackColor = System.Drawing.Color.Transparent;
+            this.txtFamilyHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtFamilyHistory.BorderRadius = 8;
+            this.txtFamilyHistory.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtFamilyHistory.DefaultText = "Cha tăng huyết áp";
+            this.txtFamilyHistory.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtFamilyHistory.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtFamilyHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.txtFamilyHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.txtFamilyHistory.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtFamilyHistory.Location = new System.Drawing.Point(20, 315);
+            this.txtFamilyHistory.Multiline = true;
+            this.txtFamilyHistory.Name = "txtFamilyHistory";
+            this.txtFamilyHistory.PlaceholderText = "";
+            this.txtFamilyHistory.ReadOnly = true;
+            this.txtFamilyHistory.SelectedText = "";
+            this.txtFamilyHistory.Size = new System.Drawing.Size(508, 64);
+            this.txtFamilyHistory.TabIndex = 9;
+            this.txtFamilyHistory.TextChanged += new System.EventHandler(this.HistoryField_TextChanged);
+            // 
+            // txtMedicalHistory
+            // 
+            this.txtMedicalHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMedicalHistory.BackColor = System.Drawing.Color.Transparent;
+            this.txtMedicalHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtMedicalHistory.BorderRadius = 8;
+            this.txtMedicalHistory.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtMedicalHistory.DefaultText = "Tăng huyết áp từ 2018";
+            this.txtMedicalHistory.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtMedicalHistory.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtMedicalHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.txtMedicalHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.txtMedicalHistory.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtMedicalHistory.Location = new System.Drawing.Point(20, 204);
+            this.txtMedicalHistory.Multiline = true;
+            this.txtMedicalHistory.Name = "txtMedicalHistory";
+            this.txtMedicalHistory.PlaceholderText = "";
+            this.txtMedicalHistory.ReadOnly = true;
+            this.txtMedicalHistory.SelectedText = "";
+            this.txtMedicalHistory.Size = new System.Drawing.Size(508, 62);
+            this.txtMedicalHistory.TabIndex = 8;
+            this.txtMedicalHistory.TextChanged += new System.EventHandler(this.HistoryField_TextChanged);
+            // 
+            // txtAllergy
+            // 
+            this.txtAllergy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAllergy.BackColor = System.Drawing.Color.Transparent;
+            this.txtAllergy.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtAllergy.BorderRadius = 8;
+            this.txtAllergy.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtAllergy.DefaultText = "Không ghi nhận";
+            this.txtAllergy.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtAllergy.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtAllergy.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.txtAllergy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.txtAllergy.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtAllergy.Location = new System.Drawing.Point(20, 90);
+            this.txtAllergy.Multiline = true;
+            this.txtAllergy.Name = "txtAllergy";
+            this.txtAllergy.PlaceholderText = "";
+            this.txtAllergy.ReadOnly = true;
+            this.txtAllergy.SelectedText = "";
+            this.txtAllergy.Size = new System.Drawing.Size(508, 63);
+            this.txtAllergy.TabIndex = 7;
+            this.txtAllergy.TextChanged += new System.EventHandler(this.HistoryField_TextChanged);
             // 
             // lblFamilyHistoryValue
             // 
@@ -120,6 +225,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblFamilyHistoryValue.Size = new System.Drawing.Size(508, 64);
             this.lblFamilyHistoryValue.TabIndex = 6;
             this.lblFamilyHistoryValue.Text = "Cha tăng huyết áp";
+            this.lblFamilyHistoryValue.Visible = false;
             // 
             // lblFamilyHistoryCaption
             // 
@@ -146,6 +252,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblMedicalHistoryValue.Size = new System.Drawing.Size(508, 62);
             this.lblMedicalHistoryValue.TabIndex = 4;
             this.lblMedicalHistoryValue.Text = "Tăng huyết áp từ 2018";
+            this.lblMedicalHistoryValue.Visible = false;
             // 
             // lblMedicalHistoryCaption
             // 
@@ -172,6 +279,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblAllergyValue.Size = new System.Drawing.Size(508, 63);
             this.lblAllergyValue.TabIndex = 2;
             this.lblAllergyValue.Text = "Không ghi nhận";
+            this.lblAllergyValue.Visible = false;
             // 
             // lblAllergyCaption
             // 
@@ -202,6 +310,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlProfile.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlProfile.BorderRadius = 8;
             this.pnlProfile.BorderThickness = 1;
+            this.pnlProfile.Controls.Add(this.btnEditAddress);
             this.pnlProfile.Controls.Add(this.lblAddressValue);
             this.pnlProfile.Controls.Add(this.lblAddressCaption);
             this.pnlProfile.Controls.Add(this.lblCccdValue);
@@ -220,6 +329,26 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlProfile.Name = "pnlProfile";
             this.pnlProfile.Size = new System.Drawing.Size(472, 406);
             this.pnlProfile.TabIndex = 5;
+            // 
+            // btnEditAddress
+            // 
+            this.btnEditAddress.BackColor = System.Drawing.Color.Transparent;
+            this.btnEditAddress.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.btnEditAddress.BorderRadius = 8;
+            this.btnEditAddress.BorderThickness = 1;
+            this.btnEditAddress.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEditAddress.FillColor = System.Drawing.Color.White;
+            this.btnEditAddress.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnEditAddress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnEditAddress.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
+            this.btnEditAddress.Image = ((System.Drawing.Image)(resources.GetObject("btnEditAddress.Image")));
+            this.btnEditAddress.ImageSize = new System.Drawing.Size(35, 35);
+            this.btnEditAddress.Location = new System.Drawing.Point(414, 282);
+            this.btnEditAddress.Name = "btnEditAddress";
+            this.btnEditAddress.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
+            this.btnEditAddress.Size = new System.Drawing.Size(37, 28);
+            this.btnEditAddress.TabIndex = 13;
+            this.btnEditAddress.Click += new System.EventHandler(this.btnEditAddress_Click);
             // 
             // lblAddressValue
             // 
@@ -599,9 +728,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblWelcomeMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
             this.lblWelcomeMeta.Location = new System.Drawing.Point(34, 84);
             this.lblWelcomeMeta.Name = "lblWelcomeMeta";
-            this.lblWelcomeMeta.Size = new System.Drawing.Size(171, 20);
+            this.lblWelcomeMeta.Size = new System.Drawing.Size(105, 20);
             this.lblWelcomeMeta.TabIndex = 3;
-            this.lblWelcomeMeta.Text = "Nam · 52 tuổi · TP.HCM";
+            this.lblWelcomeMeta.Text = "Nam · 52 tuổi";
             // 
             // lblWelcomeName
             // 
@@ -628,6 +757,26 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblWelcomeId.Text = "BN-00341";
             this.lblWelcomeId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // btnSaveProfile
+            // 
+            this.btnSaveProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveProfile.BackColor = System.Drawing.Color.Transparent;
+            this.btnSaveProfile.BorderRadius = 8;
+            this.btnSaveProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSaveProfile.DefaultAutoSize = true;
+            this.btnSaveProfile.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnSaveProfile.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSaveProfile.ForeColor = System.Drawing.Color.White;
+            this.btnSaveProfile.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnSaveProfile.Location = new System.Drawing.Point(969, 713);
+            this.btnSaveProfile.Name = "btnSaveProfile";
+            this.btnSaveProfile.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
+            this.btnSaveProfile.Size = new System.Drawing.Size(111, 29);
+            this.btnSaveProfile.TabIndex = 7;
+            this.btnSaveProfile.Text = "Lưu thay đổi";
+            this.btnSaveProfile.Visible = false;
+            this.btnSaveProfile.Click += new System.EventHandler(this.btnSaveProfile_Click);
+            // 
             // ucHSCN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -637,6 +786,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.Name = "ucHSCN";
             this.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.ResumeLayout(false);
+            this.pnlRoot.PerformLayout();
             this.pnlHistory.ResumeLayout(false);
             this.pnlHistory.PerformLayout();
             this.pnlProfile.ResumeLayout(false);
@@ -658,6 +808,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
         #endregion
 
         private System.Windows.Forms.Panel pnlRoot;
+        private Guna.UI2.WinForms.Guna2Button btnSaveProfile;
         private Guna.UI2.WinForms.Guna2Panel pnlWelcome;
         private System.Windows.Forms.Label lblWelcomeId;
         private System.Windows.Forms.Label lblWelcomeName;
@@ -690,15 +841,20 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private System.Windows.Forms.Label lblDobCaption;
         private System.Windows.Forms.Label lblCccdValue;
         private System.Windows.Forms.Label lblCccdCaption;
+        private Guna.UI2.WinForms.Guna2Button btnEditAddress;
         private System.Windows.Forms.Label lblAddressValue;
         private System.Windows.Forms.Label lblAddressCaption;
         private Guna.UI2.WinForms.Guna2Panel pnlHistory;
         private System.Windows.Forms.Label lblHistoryTitle;
         private System.Windows.Forms.Label lblAllergyCaption;
+        private Guna.UI2.WinForms.Guna2TextBox txtAllergy;
         private System.Windows.Forms.Label lblAllergyValue;
+        private Guna.UI2.WinForms.Guna2TextBox txtMedicalHistory;
         private System.Windows.Forms.Label lblMedicalHistoryValue;
         private System.Windows.Forms.Label lblMedicalHistoryCaption;
+        private Guna.UI2.WinForms.Guna2TextBox txtFamilyHistory;
         private System.Windows.Forms.Label lblFamilyHistoryValue;
         private System.Windows.Forms.Label lblFamilyHistoryCaption;
+        private Guna.UI2.WinForms.Guna2Button btnEditHistory;
     }
 }
