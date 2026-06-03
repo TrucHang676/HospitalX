@@ -182,6 +182,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblHistoryValue.Size = new System.Drawing.Size(457, 65);
             this.lblHistoryValue.TabIndex = 12;
             this.lblHistoryValue.Text = "Tăng huyết áp từ năm 2018. Không hút thuốc lá.";
+            this.lblHistoryValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblHistoryTitle
             // 
@@ -206,6 +207,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblAllergyValue.Size = new System.Drawing.Size(457, 50);
             this.lblAllergyValue.TabIndex = 10;
             this.lblAllergyValue.Text = "Không có dị ứng thuốc ghi nhận";
+            this.lblAllergyValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblAllergyTitle
             // 

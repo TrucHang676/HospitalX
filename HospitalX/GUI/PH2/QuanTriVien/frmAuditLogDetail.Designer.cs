@@ -20,6 +20,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.components = new System.ComponentModel.Container();
             this.borderlessForm = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblHeaderMeta = new System.Windows.Forms.Label();
             this.lblAuditId = new System.Windows.Forms.Label();
             this.pnlBody = new Guna.UI2.WinForms.Guna2Panel();
@@ -41,7 +42,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblAction = new System.Windows.Forms.Label();
             this.lblUserValue = new System.Windows.Forms.Label();
             this.lblUser = new System.Windows.Forms.Label();
-            this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlHeader.SuspendLayout();
             this.pnlBody.SuspendLayout();
             this.SuspendLayout();
@@ -64,6 +64,21 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(720, 92);
             this.pnlHeader.TabIndex = 0;
+            // 
+            // btnExit
+            // 
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExit.BackColor = System.Drawing.Color.Transparent;
+            this.btnExit.BorderRadius = 15;
+            this.btnExit.CustomIconSize = 20F;
+            this.btnExit.FillColor = System.Drawing.Color.Transparent;
+            this.btnExit.ForeColor = System.Drawing.Color.Black;
+            this.btnExit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
+            this.btnExit.IconColor = System.Drawing.Color.DodgerBlue;
+            this.btnExit.Location = new System.Drawing.Point(675, 12);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(33, 32);
+            this.btnExit.TabIndex = 15;
             // 
             // lblHeaderMeta
             // 
@@ -165,6 +180,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblResultValue.Name = "lblResultValue";
             this.lblResultValue.Size = new System.Drawing.Size(220, 26);
             this.lblResultValue.TabIndex = 2;
+            this.lblResultValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblTimeValue
             // 
@@ -175,6 +191,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblTimeValue.Name = "lblTimeValue";
             this.lblTimeValue.Size = new System.Drawing.Size(220, 26);
             this.lblTimeValue.TabIndex = 16;
+            this.lblTimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblResult
             // 
@@ -195,6 +212,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblPolicyValue.Name = "lblPolicyValue";
             this.lblPolicyValue.Size = new System.Drawing.Size(220, 26);
             this.lblPolicyValue.TabIndex = 4;
+            this.lblPolicyValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblPolicy
             // 
@@ -215,6 +233,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblIpValue.Name = "lblIpValue";
             this.lblIpValue.Size = new System.Drawing.Size(160, 26);
             this.lblIpValue.TabIndex = 6;
+            this.lblIpValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblIp
             // 
@@ -235,6 +254,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblRowsValue.Name = "lblRowsValue";
             this.lblRowsValue.Size = new System.Drawing.Size(170, 26);
             this.lblRowsValue.TabIndex = 8;
+            this.lblRowsValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblRows
             // 
@@ -255,6 +275,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblObjectValue.Name = "lblObjectValue";
             this.lblObjectValue.Size = new System.Drawing.Size(220, 26);
             this.lblObjectValue.TabIndex = 10;
+            this.lblObjectValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblObject
             // 
@@ -275,6 +296,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblActionValue.Name = "lblActionValue";
             this.lblActionValue.Size = new System.Drawing.Size(160, 26);
             this.lblActionValue.TabIndex = 12;
+            this.lblActionValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblAction
             // 
@@ -295,6 +317,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblUserValue.Name = "lblUserValue";
             this.lblUserValue.Size = new System.Drawing.Size(170, 26);
             this.lblUserValue.TabIndex = 14;
+            this.lblUserValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblUser
             // 
@@ -305,21 +328,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblUser.Size = new System.Drawing.Size(100, 20);
             this.lblUser.TabIndex = 15;
             this.lblUser.Text = "USER";
-            // 
-            // btnExit
-            // 
-            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExit.BackColor = System.Drawing.Color.Transparent;
-            this.btnExit.BorderRadius = 15;
-            this.btnExit.CustomIconSize = 20F;
-            this.btnExit.FillColor = System.Drawing.Color.Transparent;
-            this.btnExit.ForeColor = System.Drawing.Color.Black;
-            this.btnExit.HoverState.FillColor = System.Drawing.Color.LightBlue;
-            this.btnExit.IconColor = System.Drawing.Color.CornflowerBlue;
-            this.btnExit.Location = new System.Drawing.Point(675, 12);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(33, 32);
-            this.btnExit.TabIndex = 15;
             // 
             // frmAuditLogDetail
             // 

@@ -30,14 +30,9 @@
             this.lblUserRole = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.ptbAvatar = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.pnlRight = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlRight = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlCardProfessional = new Guna.UI2.WinForms.Guna2Panel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtProfCccd = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtProfNgaySinh = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtProfGioiTinh = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtKhoa = new Guna.UI2.WinForms.Guna2TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtProfVaiTro = new Guna.UI2.WinForms.Guna2TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -47,19 +42,25 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblTitleProf = new System.Windows.Forms.Label();
             this.pnlCardContact = new Guna.UI2.WinForms.Guna2Panel();
+            this.txtProfGioiTinh = new Guna.UI2.WinForms.Guna2TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtProfCccd = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtProfNgaySinh = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblProfCccd = new System.Windows.Forms.Label();
+            this.lblProfNgaySinh = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.btnUpdateContact = new Guna.UI2.WinForms.Guna2Button();
             this.txtAddress = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtContactPhone = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label8 = new System.Windows.Forms.Label();
+            this.lblContactPhone = new System.Windows.Forms.Label();
             this.lblTitleContact = new System.Windows.Forms.Label();
             this.pnlCardSecurity = new Guna.UI2.WinForms.Guna2Panel();
             this.btnChangePassword = new Guna.UI2.WinForms.Guna2Button();
             this.lblPasswordMock = new System.Windows.Forms.Label();
             this.lblTitleSecurity = new System.Windows.Forms.Label();
             this.pnlCardActivities = new Guna.UI2.WinForms.Guna2Panel();
-            this.flpActivities = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpActivities = new System.Windows.Forms.Panel();
             this.lblTitleActivities = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.pnlScroll.SuspendLayout();
             this.pnlLeftCard.SuspendLayout();
             this.pnlStat2.SuspendLayout();
@@ -80,7 +81,7 @@
             this.pnlScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlScroll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.pnlScroll.Location = new System.Drawing.Point(0, 0);
-            this.pnlScroll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlScroll.Margin = new System.Windows.Forms.Padding(2);
             this.pnlScroll.Name = "pnlScroll";
             this.pnlScroll.Size = new System.Drawing.Size(1128, 782);
             this.pnlScroll.TabIndex = 0;
@@ -96,10 +97,10 @@
             this.pnlLeftCard.Controls.Add(this.lblUserName);
             this.pnlLeftCard.Controls.Add(this.ptbAvatar);
             this.pnlLeftCard.FillColor = System.Drawing.Color.White;
-            this.pnlLeftCard.Location = new System.Drawing.Point(18, 20);
-            this.pnlLeftCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlLeftCard.Location = new System.Drawing.Point(24, 20);
+            this.pnlLeftCard.Margin = new System.Windows.Forms.Padding(2);
             this.pnlLeftCard.Name = "pnlLeftCard";
-            this.pnlLeftCard.Size = new System.Drawing.Size(240, 422);
+            this.pnlLeftCard.Size = new System.Drawing.Size(240, 396);
             this.pnlLeftCard.TabIndex = 0;
             // 
             // lblStatusBadge
@@ -110,8 +111,8 @@
             this.lblStatusBadge.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusBadge.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblStatusBadge.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblStatusBadge.Location = new System.Drawing.Point(56, 374);
-            this.lblStatusBadge.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblStatusBadge.Location = new System.Drawing.Point(57, 349);
+            this.lblStatusBadge.Margin = new System.Windows.Forms.Padding(2);
             this.lblStatusBadge.Name = "lblStatusBadge";
             this.lblStatusBadge.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.lblStatusBadge.Size = new System.Drawing.Size(128, 24);
@@ -123,7 +124,7 @@
             this.pnlStat2.Controls.Add(this.lblStat2Cap);
             this.pnlStat2.Controls.Add(this.lblStat2Val);
             this.pnlStat2.Location = new System.Drawing.Point(124, 268);
-            this.pnlStat2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlStat2.Margin = new System.Windows.Forms.Padding(2);
             this.pnlStat2.Name = "pnlStat2";
             this.pnlStat2.Size = new System.Drawing.Size(98, 77);
             this.pnlStat2.TabIndex = 5;
@@ -159,7 +160,7 @@
             this.pnlStat1.Controls.Add(this.lblStat1Cap);
             this.pnlStat1.Controls.Add(this.lblStat1Val);
             this.pnlStat1.Location = new System.Drawing.Point(19, 268);
-            this.pnlStat1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlStat1.Margin = new System.Windows.Forms.Padding(2);
             this.pnlStat1.Name = "pnlStat1";
             this.pnlStat1.Size = new System.Drawing.Size(98, 77);
             this.pnlStat1.TabIndex = 4;
@@ -197,7 +198,7 @@
             this.lblDeptAndFacility.Name = "lblDeptAndFacility";
             this.lblDeptAndFacility.Size = new System.Drawing.Size(210, 37);
             this.lblDeptAndFacility.TabIndex = 3;
-            this.lblDeptAndFacility.Text = "Khoa Thần kinh\r\nBV Đa Khoa Tỉnh";
+            this.lblDeptAndFacility.Text = "Khoa Thần kinh";
             this.lblDeptAndFacility.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblUserRole
@@ -224,7 +225,7 @@
             // 
             this.ptbAvatar.ImageRotate = 0F;
             this.ptbAvatar.Location = new System.Drawing.Point(75, 32);
-            this.ptbAvatar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ptbAvatar.Margin = new System.Windows.Forms.Padding(2);
             this.ptbAvatar.Name = "ptbAvatar";
             this.ptbAvatar.Size = new System.Drawing.Size(90, 98);
             this.ptbAvatar.TabIndex = 0;
@@ -232,28 +233,25 @@
             // 
             // pnlRight
             // 
+            this.pnlRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlRight.BackColor = System.Drawing.Color.Transparent;
             this.pnlRight.Controls.Add(this.pnlCardProfessional);
             this.pnlRight.Controls.Add(this.pnlCardContact);
             this.pnlRight.Controls.Add(this.pnlCardSecurity);
             this.pnlRight.Controls.Add(this.pnlCardActivities);
-            this.pnlRight.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.pnlRight.Location = new System.Drawing.Point(276, 20);
-            this.pnlRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlRight.Location = new System.Drawing.Point(288, 20);
+            this.pnlRight.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRight.Name = "pnlRight";
-            this.pnlRight.Size = new System.Drawing.Size(456, 999);
+            this.pnlRight.Size = new System.Drawing.Size(799, 924);
             this.pnlRight.TabIndex = 1;
-            this.pnlRight.WrapContents = false;
             // 
             // pnlCardProfessional
             // 
+            this.pnlCardProfessional.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCardProfessional.BackColor = System.Drawing.Color.Transparent;
-            this.pnlCardProfessional.Controls.Add(this.label7);
-            this.pnlCardProfessional.Controls.Add(this.txtProfCccd);
-            this.pnlCardProfessional.Controls.Add(this.label6);
-            this.pnlCardProfessional.Controls.Add(this.txtProfNgaySinh);
-            this.pnlCardProfessional.Controls.Add(this.label5);
-            this.pnlCardProfessional.Controls.Add(this.txtProfGioiTinh);
+            this.pnlCardProfessional.Controls.Add(this.txtKhoa);
             this.pnlCardProfessional.Controls.Add(this.label4);
             this.pnlCardProfessional.Controls.Add(this.txtProfVaiTro);
             this.pnlCardProfessional.Controls.Add(this.label3);
@@ -263,130 +261,43 @@
             this.pnlCardProfessional.Controls.Add(this.label1);
             this.pnlCardProfessional.Controls.Add(this.lblTitleProf);
             this.pnlCardProfessional.FillColor = System.Drawing.Color.White;
-            this.pnlCardProfessional.Location = new System.Drawing.Point(2, 2);
-            this.pnlCardProfessional.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlCardProfessional.Location = new System.Drawing.Point(0, 0);
+            this.pnlCardProfessional.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardProfessional.Name = "pnlCardProfessional";
-            this.pnlCardProfessional.Size = new System.Drawing.Size(452, 313);
+            this.pnlCardProfessional.Size = new System.Drawing.Size(799, 187);
             this.pnlCardProfessional.TabIndex = 0;
             // 
-            // label7
+            // txtKhoa
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label7.Location = new System.Drawing.Point(18, 242);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(0, 13);
-            this.label7.TabIndex = 13;
-            this.label7.Visible = false;
-            // 
-            // txtProfCccd
-            // 
-            this.txtProfCccd.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
-            this.txtProfCccd.BorderRadius = 8;
-            this.txtProfCccd.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtProfCccd.DefaultText = "";
-            this.txtProfCccd.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtProfCccd.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtProfCccd.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfCccd.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfCccd.Enabled = false;
-            this.txtProfCccd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtProfCccd.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfCccd.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
-            this.txtProfCccd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
-            this.txtProfCccd.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfCccd.Location = new System.Drawing.Point(236, 195);
-            this.txtProfCccd.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtProfCccd.Name = "txtProfCccd";
-            this.txtProfCccd.PlaceholderText = "";
-            this.txtProfCccd.ReadOnly = true;
-            this.txtProfCccd.SelectedText = "";
-            this.txtProfCccd.Size = new System.Drawing.Size(198, 31);
-            this.txtProfCccd.TabIndex = 12;
-            this.txtProfCccd.Visible = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label6.Location = new System.Drawing.Point(236, 177);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(0, 13);
-            this.label6.TabIndex = 11;
-            this.label6.Visible = false;
-            // 
-            // txtProfNgaySinh
-            // 
-            this.txtProfNgaySinh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
-            this.txtProfNgaySinh.BorderRadius = 8;
-            this.txtProfNgaySinh.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtProfNgaySinh.DefaultText = "BV Đa Khoa Tỉnh";
-            this.txtProfNgaySinh.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtProfNgaySinh.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtProfNgaySinh.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfNgaySinh.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfNgaySinh.Enabled = false;
-            this.txtProfNgaySinh.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtProfNgaySinh.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfNgaySinh.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
-            this.txtProfNgaySinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
-            this.txtProfNgaySinh.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfNgaySinh.Location = new System.Drawing.Point(18, 195);
-            this.txtProfNgaySinh.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtProfNgaySinh.Name = "txtProfNgaySinh";
-            this.txtProfNgaySinh.PlaceholderText = "";
-            this.txtProfNgaySinh.ReadOnly = true;
-            this.txtProfNgaySinh.SelectedText = "";
-            this.txtProfNgaySinh.Size = new System.Drawing.Size(416, 31);
-            this.txtProfNgaySinh.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label5.Location = new System.Drawing.Point(18, 177);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "CƠ SỞ Y TẾ";
-            // 
-            // txtProfGioiTinh
-            // 
-            this.txtProfGioiTinh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
-            this.txtProfGioiTinh.BorderRadius = 8;
-            this.txtProfGioiTinh.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtProfGioiTinh.DefaultText = "Thần kinh";
-            this.txtProfGioiTinh.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtProfGioiTinh.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtProfGioiTinh.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfGioiTinh.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfGioiTinh.Enabled = false;
-            this.txtProfGioiTinh.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtProfGioiTinh.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfGioiTinh.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
-            this.txtProfGioiTinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
-            this.txtProfGioiTinh.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfGioiTinh.Location = new System.Drawing.Point(236, 130);
-            this.txtProfGioiTinh.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtProfGioiTinh.Name = "txtProfGioiTinh";
-            this.txtProfGioiTinh.PlaceholderText = "";
-            this.txtProfGioiTinh.ReadOnly = true;
-            this.txtProfGioiTinh.SelectedText = "";
-            this.txtProfGioiTinh.Size = new System.Drawing.Size(198, 31);
-            this.txtProfGioiTinh.TabIndex = 8;
+            this.txtKhoa.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
+            this.txtKhoa.BorderRadius = 8;
+            this.txtKhoa.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtKhoa.DefaultText = "Thần kinh";
+            this.txtKhoa.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtKhoa.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtKhoa.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtKhoa.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtKhoa.Enabled = false;
+            this.txtKhoa.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtKhoa.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtKhoa.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.txtKhoa.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
+            this.txtKhoa.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtKhoa.Location = new System.Drawing.Point(239, 130);
+            this.txtKhoa.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.txtKhoa.Name = "txtKhoa";
+            this.txtKhoa.PlaceholderText = "";
+            this.txtKhoa.ReadOnly = true;
+            this.txtKhoa.SelectedText = "";
+            this.txtKhoa.Size = new System.Drawing.Size(198, 31);
+            this.txtKhoa.TabIndex = 8;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label4.Location = new System.Drawing.Point(236, 112);
+            this.label4.Location = new System.Drawing.Point(239, 112);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(86, 13);
@@ -452,7 +363,7 @@
             this.txtProfHoTen.PlaceholderText = "";
             this.txtProfHoTen.ReadOnly = true;
             this.txtProfHoTen.SelectedText = "";
-            this.txtProfHoTen.Size = new System.Drawing.Size(198, 31);
+            this.txtProfHoTen.Size = new System.Drawing.Size(201, 31);
             this.txtProfHoTen.TabIndex = 4;
             // 
             // label2
@@ -517,29 +428,161 @@
             // 
             // pnlCardContact
             // 
+            this.pnlCardContact.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCardContact.BackColor = System.Drawing.Color.Transparent;
+            this.pnlCardContact.Controls.Add(this.txtProfGioiTinh);
+            this.pnlCardContact.Controls.Add(this.label7);
+            this.pnlCardContact.Controls.Add(this.txtProfCccd);
+            this.pnlCardContact.Controls.Add(this.txtProfNgaySinh);
+            this.pnlCardContact.Controls.Add(this.lblProfCccd);
+            this.pnlCardContact.Controls.Add(this.lblProfNgaySinh);
             this.pnlCardContact.Controls.Add(this.label10);
             this.pnlCardContact.Controls.Add(this.btnUpdateContact);
             this.pnlCardContact.Controls.Add(this.txtAddress);
             this.pnlCardContact.Controls.Add(this.txtContactPhone);
-            this.pnlCardContact.Controls.Add(this.label8);
+            this.pnlCardContact.Controls.Add(this.lblContactPhone);
             this.pnlCardContact.Controls.Add(this.lblTitleContact);
             this.pnlCardContact.FillColor = System.Drawing.Color.White;
-            this.pnlCardContact.Location = new System.Drawing.Point(2, 319);
-            this.pnlCardContact.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlCardContact.Location = new System.Drawing.Point(0, 199);
+            this.pnlCardContact.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardContact.Name = "pnlCardContact";
-            this.pnlCardContact.Size = new System.Drawing.Size(452, 187);
+            this.pnlCardContact.Size = new System.Drawing.Size(799, 257);
             this.pnlCardContact.TabIndex = 1;
+            // 
+            // txtProfGioiTinh
+            // 
+            this.txtProfGioiTinh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
+            this.txtProfGioiTinh.BorderRadius = 8;
+            this.txtProfGioiTinh.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtProfGioiTinh.DefaultText = "Nữ";
+            this.txtProfGioiTinh.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtProfGioiTinh.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtProfGioiTinh.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtProfGioiTinh.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtProfGioiTinh.Enabled = false;
+            this.txtProfGioiTinh.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtProfGioiTinh.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtProfGioiTinh.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.txtProfGioiTinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
+            this.txtProfGioiTinh.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtProfGioiTinh.Location = new System.Drawing.Point(18, 75);
+            this.txtProfGioiTinh.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.txtProfGioiTinh.Name = "txtProfGioiTinh";
+            this.txtProfGioiTinh.PlaceholderText = "";
+            this.txtProfGioiTinh.ReadOnly = true;
+            this.txtProfGioiTinh.SelectedText = "";
+            this.txtProfGioiTinh.Size = new System.Drawing.Size(198, 31);
+            this.txtProfGioiTinh.TabIndex = 14;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.label7.Location = new System.Drawing.Point(18, 57);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(57, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "GIỚI TÍNH";
+            // 
+            // txtProfCccd
+            // 
+            this.txtProfCccd.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
+            this.txtProfCccd.BorderRadius = 8;
+            this.txtProfCccd.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtProfCccd.DefaultText = "079192004567";
+            this.txtProfCccd.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtProfCccd.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtProfCccd.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtProfCccd.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtProfCccd.Enabled = false;
+            this.txtProfCccd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtProfCccd.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtProfCccd.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.txtProfCccd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
+            this.txtProfCccd.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtProfCccd.Location = new System.Drawing.Point(18, 137);
+            this.txtProfCccd.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.txtProfCccd.Name = "txtProfCccd";
+            this.txtProfCccd.PlaceholderText = "";
+            this.txtProfCccd.ReadOnly = true;
+            this.txtProfCccd.SelectedText = "";
+            this.txtProfCccd.Size = new System.Drawing.Size(198, 31);
+            this.txtProfCccd.TabIndex = 16;
+            // 
+            // txtProfNgaySinh
+            // 
+            this.txtProfNgaySinh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
+            this.txtProfNgaySinh.BorderRadius = 8;
+            this.txtProfNgaySinh.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtProfNgaySinh.DefaultText = "12/04/1992";
+            this.txtProfNgaySinh.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtProfNgaySinh.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtProfNgaySinh.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtProfNgaySinh.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtProfNgaySinh.Enabled = false;
+            this.txtProfNgaySinh.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtProfNgaySinh.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtProfNgaySinh.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.txtProfNgaySinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
+            this.txtProfNgaySinh.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtProfNgaySinh.Location = new System.Drawing.Point(239, 75);
+            this.txtProfNgaySinh.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.txtProfNgaySinh.Name = "txtProfNgaySinh";
+            this.txtProfNgaySinh.PlaceholderText = "";
+            this.txtProfNgaySinh.ReadOnly = true;
+            this.txtProfNgaySinh.SelectedText = "";
+            this.txtProfNgaySinh.Size = new System.Drawing.Size(198, 31);
+            this.txtProfNgaySinh.TabIndex = 12;
+            // 
+            // lblProfCccd
+            // 
+            this.lblProfCccd.AutoSize = true;
+            this.lblProfCccd.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblProfCccd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblProfCccd.Location = new System.Drawing.Point(18, 119);
+            this.lblProfCccd.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblProfCccd.Name = "lblProfCccd";
+            this.lblProfCccd.Size = new System.Drawing.Size(97, 13);
+            this.lblProfCccd.TabIndex = 15;
+            this.lblProfCccd.Text = "SỐ CCCD / CMND";
+            // 
+            // lblProfNgaySinh
+            // 
+            this.lblProfNgaySinh.AutoSize = true;
+            this.lblProfNgaySinh.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblProfNgaySinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblProfNgaySinh.Location = new System.Drawing.Point(239, 57);
+            this.lblProfNgaySinh.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblProfNgaySinh.Name = "lblProfNgaySinh";
+            this.lblProfNgaySinh.Size = new System.Drawing.Size(63, 13);
+            this.lblProfNgaySinh.TabIndex = 11;
+            this.lblProfNgaySinh.Text = "NGÀY SINH";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.label10.Location = new System.Drawing.Point(18, 184);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(63, 13);
+            this.label10.TabIndex = 15;
+            this.label10.Text = "QUÊ QUÁN";
             // 
             // btnUpdateContact
             // 
+            this.btnUpdateContact.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUpdateContact.BorderRadius = 8;
             this.btnUpdateContact.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnUpdateContact.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnUpdateContact.ForeColor = System.Drawing.Color.White;
             this.btnUpdateContact.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
-            this.btnUpdateContact.Location = new System.Drawing.Point(336, 12);
-            this.btnUpdateContact.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnUpdateContact.Location = new System.Drawing.Point(673, 12);
+            this.btnUpdateContact.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdateContact.Name = "btnUpdateContact";
             this.btnUpdateContact.Size = new System.Drawing.Size(98, 29);
             this.btnUpdateContact.TabIndex = 10;
@@ -548,6 +591,8 @@
             // 
             // txtAddress
             // 
+            this.txtAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAddress.BorderRadius = 8;
             this.txtAddress.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtAddress.DefaultText = "Q. Bình Thạnh, TP.HCM";
@@ -558,12 +603,12 @@
             this.txtAddress.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtAddress.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtAddress.Location = new System.Drawing.Point(18, 130);
+            this.txtAddress.Location = new System.Drawing.Point(18, 205);
             this.txtAddress.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.PlaceholderText = "Địa chỉ cư trú...";
             this.txtAddress.SelectedText = "";
-            this.txtAddress.Size = new System.Drawing.Size(416, 31);
+            this.txtAddress.Size = new System.Drawing.Size(747, 31);
             this.txtAddress.TabIndex = 9;
             // 
             // txtContactPhone
@@ -578,7 +623,7 @@
             this.txtContactPhone.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtContactPhone.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtContactPhone.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtContactPhone.Location = new System.Drawing.Point(18, 65);
+            this.txtContactPhone.Location = new System.Drawing.Point(239, 137);
             this.txtContactPhone.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtContactPhone.Name = "txtContactPhone";
             this.txtContactPhone.PlaceholderText = "Số điện thoại...";
@@ -586,17 +631,17 @@
             this.txtContactPhone.Size = new System.Drawing.Size(198, 31);
             this.txtContactPhone.TabIndex = 7;
             // 
-            // label8
+            // lblContactPhone
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label8.Location = new System.Drawing.Point(18, 47);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(84, 13);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "SỐ ĐIỆN THOẠI";
+            this.lblContactPhone.AutoSize = true;
+            this.lblContactPhone.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblContactPhone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblContactPhone.Location = new System.Drawing.Point(239, 119);
+            this.lblContactPhone.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblContactPhone.Name = "lblContactPhone";
+            this.lblContactPhone.Size = new System.Drawing.Size(84, 13);
+            this.lblContactPhone.TabIndex = 6;
+            this.lblContactPhone.Text = "SỐ ĐIỆN THOẠI";
             // 
             // lblTitleContact
             // 
@@ -605,25 +650,28 @@
             this.lblTitleContact.Location = new System.Drawing.Point(15, 15);
             this.lblTitleContact.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTitleContact.Name = "lblTitleContact";
-            this.lblTitleContact.Size = new System.Drawing.Size(127, 20);
+            this.lblTitleContact.Size = new System.Drawing.Size(135, 20);
             this.lblTitleContact.TabIndex = 5;
-            this.lblTitleContact.Text = "Thông tin liên hệ";
+            this.lblTitleContact.Text = "Thông tin cá nhân";
             // 
             // pnlCardSecurity
             // 
+            this.pnlCardSecurity.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCardSecurity.BackColor = System.Drawing.Color.Transparent;
             this.pnlCardSecurity.Controls.Add(this.btnChangePassword);
             this.pnlCardSecurity.Controls.Add(this.lblPasswordMock);
             this.pnlCardSecurity.Controls.Add(this.lblTitleSecurity);
             this.pnlCardSecurity.FillColor = System.Drawing.Color.White;
-            this.pnlCardSecurity.Location = new System.Drawing.Point(2, 510);
-            this.pnlCardSecurity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlCardSecurity.Location = new System.Drawing.Point(0, 468);
+            this.pnlCardSecurity.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardSecurity.Name = "pnlCardSecurity";
-            this.pnlCardSecurity.Size = new System.Drawing.Size(452, 89);
+            this.pnlCardSecurity.Size = new System.Drawing.Size(799, 89);
             this.pnlCardSecurity.TabIndex = 2;
             // 
             // btnChangePassword
             // 
+            this.btnChangePassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnChangePassword.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnChangePassword.BorderRadius = 8;
             this.btnChangePassword.BorderThickness = 1;
@@ -631,8 +679,8 @@
             this.btnChangePassword.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnChangePassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnChangePassword.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnChangePassword.Location = new System.Drawing.Point(336, 12);
-            this.btnChangePassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnChangePassword.Location = new System.Drawing.Point(673, 12);
+            this.btnChangePassword.Margin = new System.Windows.Forms.Padding(2);
             this.btnChangePassword.Name = "btnChangePassword";
             this.btnChangePassword.Size = new System.Drawing.Size(98, 29);
             this.btnChangePassword.TabIndex = 11;
@@ -664,26 +712,28 @@
             // 
             // pnlCardActivities
             // 
+            this.pnlCardActivities.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCardActivities.BackColor = System.Drawing.Color.Transparent;
             this.pnlCardActivities.Controls.Add(this.flpActivities);
             this.pnlCardActivities.Controls.Add(this.lblTitleActivities);
             this.pnlCardActivities.FillColor = System.Drawing.Color.White;
-            this.pnlCardActivities.Location = new System.Drawing.Point(2, 603);
-            this.pnlCardActivities.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlCardActivities.Location = new System.Drawing.Point(0, 569);
+            this.pnlCardActivities.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardActivities.Name = "pnlCardActivities";
-            this.pnlCardActivities.Size = new System.Drawing.Size(452, 272);
+            this.pnlCardActivities.Size = new System.Drawing.Size(799, 353);
             this.pnlCardActivities.TabIndex = 3;
             // 
             // flpActivities
             // 
+            this.flpActivities.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flpActivities.AutoScroll = true;
-            this.flpActivities.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpActivities.Location = new System.Drawing.Point(15, 49);
-            this.flpActivities.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.flpActivities.Location = new System.Drawing.Point(11, 49);
+            this.flpActivities.Margin = new System.Windows.Forms.Padding(2);
             this.flpActivities.Name = "flpActivities";
-            this.flpActivities.Size = new System.Drawing.Size(422, 203);
+            this.flpActivities.Size = new System.Drawing.Size(768, 281);
             this.flpActivities.TabIndex = 8;
-            this.flpActivities.WrapContents = false;
             // 
             // lblTitleActivities
             // 
@@ -696,25 +746,14 @@
             this.lblTitleActivities.TabIndex = 6;
             this.lblTitleActivities.Text = "Hoạt động gần đây";
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label10.Location = new System.Drawing.Point(18, 109);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(63, 13);
-            this.label10.TabIndex = 15;
-            this.label10.Text = "QUÊ QUÁN";
-            // 
             // ucHSCN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.Controls.Add(this.pnlScroll);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ucHSCN";
             this.Size = new System.Drawing.Size(1128, 782);
             this.Load += new System.EventHandler(this.ucHSCN_Load);
@@ -752,7 +791,7 @@
         private System.Windows.Forms.Label lblStat2Val;
         private System.Windows.Forms.Label lblStat2Cap;
         private Guna.UI2.WinForms.Guna2Button lblStatusBadge;
-        private System.Windows.Forms.FlowLayoutPanel pnlRight;
+        private Guna.UI2.WinForms.Guna2Panel pnlRight;
         private Guna.UI2.WinForms.Guna2Panel pnlCardProfessional;
         private System.Windows.Forms.Label lblTitleProf;
         private Guna.UI2.WinForms.Guna2TextBox txtProfMaNV;
@@ -761,17 +800,12 @@
         private System.Windows.Forms.Label label2;
         private Guna.UI2.WinForms.Guna2TextBox txtProfVaiTro;
         private System.Windows.Forms.Label label3;
-        private Guna.UI2.WinForms.Guna2TextBox txtProfGioiTinh;
+        private Guna.UI2.WinForms.Guna2TextBox txtKhoa;
         private System.Windows.Forms.Label label4;
-        private Guna.UI2.WinForms.Guna2TextBox txtProfNgaySinh;
-        private System.Windows.Forms.Label label5;
-        private Guna.UI2.WinForms.Guna2TextBox txtProfCccd;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
         private Guna.UI2.WinForms.Guna2Panel pnlCardContact;
         private System.Windows.Forms.Label lblTitleContact;
         private Guna.UI2.WinForms.Guna2TextBox txtContactPhone;
-        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblContactPhone;
         private Guna.UI2.WinForms.Guna2TextBox txtAddress;
         private Guna.UI2.WinForms.Guna2Button btnUpdateContact;
         private Guna.UI2.WinForms.Guna2Panel pnlCardSecurity;
@@ -780,8 +814,14 @@
         private Guna.UI2.WinForms.Guna2Button btnChangePassword;
         private Guna.UI2.WinForms.Guna2Panel pnlCardActivities;
         private System.Windows.Forms.Label lblTitleActivities;
-        private System.Windows.Forms.FlowLayoutPanel flpActivities;
+        private System.Windows.Forms.Panel flpActivities;
         private System.Windows.Forms.Label label10;
+        private Guna.UI2.WinForms.Guna2TextBox txtProfCccd;
+        private System.Windows.Forms.Label lblProfCccd;
+        private Guna.UI2.WinForms.Guna2TextBox txtProfNgaySinh;
+        private System.Windows.Forms.Label lblProfNgaySinh;
+        private Guna.UI2.WinForms.Guna2TextBox txtProfGioiTinh;
+        private System.Windows.Forms.Label label7;
     }
 }
 

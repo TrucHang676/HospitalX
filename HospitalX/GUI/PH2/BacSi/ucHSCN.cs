@@ -39,7 +39,7 @@ namespace HospitalX.GUI.PH2.BacSi
             LoadProfileData();
             SetupStyles();
             LoadRecentActivities();
-            ucHSCN_Resize(null, null);
+            ConfigureScrolling();
         }
 
         private void LoadProfileData()
@@ -49,13 +49,15 @@ namespace HospitalX.GUI.PH2.BacSi
             lblDeptAndFacility.Text = "Khoa Thần kinh\r\nBV Đa Khoa Tỉnh";
 
             txtProfMaNV.Text = "NV-BS-0047";
-            txtProfHoTen.Text = "Nguyễn Thị Trúc";
+            txtProfHoTen.Text = "Nguyễn Thị Trúc Hằng";
             txtProfVaiTro.Text = "Bác sĩ";
-            txtProfGioiTinh.Text = "Thần kinh";
-            txtProfNgaySinh.Text = "BV Đa Khoa Tỉnh";
+            txtKhoa.Text = "Thần kinh";
+            txtProfGioiTinh.Text = "Nữ";
+            txtProfNgaySinh.Text = "12/04/1992";
 
             txtContactPhone.Text = SavedPhone;
             txtAddress.Text = SavedAddress;
+            txtProfCccd.Text = "079192004567";
 
             lblStat1Val.Text = "59";
             lblStat1Cap.Text = "HSBA liên quan";
@@ -108,13 +110,10 @@ namespace HospitalX.GUI.PH2.BacSi
             SetupReadOnlyField(txtProfMaNV);
             SetupReadOnlyField(txtProfHoTen);
             SetupReadOnlyField(txtProfVaiTro);
+            SetupReadOnlyField(txtKhoa);
             SetupReadOnlyField(txtProfGioiTinh);
             SetupReadOnlyField(txtProfNgaySinh);
             SetupReadOnlyField(txtProfCccd);
-
-            txtProfCccd.Visible = false;
-            label6.Visible = false;
-            label7.Visible = false;
 
             txtContactPhone.Font = new Font("Segoe UI", 9.5F);
             txtAddress.Font = new Font("Segoe UI", 9.5F);
@@ -196,13 +195,15 @@ namespace HospitalX.GUI.PH2.BacSi
         private void RenderActivities()
         {
             flpActivities.Controls.Clear();
+            int top = 0;
             foreach (var activity in _activities)
             {
-                int rowWidth = Math.Max(520, flpActivities.ClientSize.Width - 8);
+                int rowWidth = GetActivityRowWidth();
                 var row = new Panel
                 {
                     Width = rowWidth,
                     Height = 68,
+                    Location = new Point(0, top),
                     Margin = new Padding(0),
                     BackColor = Color.White
                 };
@@ -255,41 +256,93 @@ namespace HospitalX.GUI.PH2.BacSi
                 row.Controls.Add(lblCode);
                 row.Controls.Add(lblTime);
                 flpActivities.Controls.Add(row);
+                top += row.Height;
             }
+
+            flpActivities.AutoScrollMinSize = new Size(0, (_activities.Count * 68) + 8);
+            LayoutActivityRows();
+            HideActivityHorizontalScroll();
         }
 
         private void ucHSCN_Resize(object sender, EventArgs e)
         {
-            int totalWidth = pnlScroll.ClientSize.Width;
-            if (totalWidth <= 0)
-            {
-                return;
-            }
+            pnlScroll.AutoScrollMinSize = new Size(0, pnlRight.Bottom + 24);
+            LayoutActivityRows();
+            HideActivityHorizontalScroll();
+        }
 
-            int rightWidth = Math.Max(602, totalWidth - 368 - 24);
-            pnlRight.SetBounds(368, 24, rightWidth, pnlRight.Height);
-
-            pnlCardProfessional.Width = rightWidth;
-            pnlCardContact.Width = rightWidth;
-            pnlCardSecurity.Width = rightWidth;
-            pnlCardActivities.Width = rightWidth;
-
-            btnUpdateContact.Location = new Point(rightWidth - btnUpdateContact.Width - 24, btnUpdateContact.Top);
-            btnChangePassword.Location = new Point(rightWidth - btnChangePassword.Width - 24, btnChangePassword.Top);
-
-            txtAddress.Width = rightWidth - txtAddress.Left - 24;
-            txtProfNgaySinh.Width = rightWidth - txtProfNgaySinh.Left - 24;
-            flpActivities.Width = rightWidth - 40;
-
+        private void LayoutActivityRows()
+        {
+            int rowWidth = GetActivityRowWidth();
+            int top = 0;
             foreach (Control row in flpActivities.Controls)
             {
-                row.Width = Math.Max(520, flpActivities.ClientSize.Width - 8);
+                row.Location = new Point(0, top);
+                row.Width = rowWidth;
                 if (row.Controls.Count >= 3)
                 {
                     row.Controls[0].Width = row.Width - 230;
                     row.Controls[2].Left = row.Width - 170;
                 }
+                top += row.Height;
             }
+        }
+
+        private int GetActivityRowWidth()
+        {
+            int reserved = SystemInformation.VerticalScrollBarWidth;
+            return Math.Max(320, flpActivities.ClientSize.Width - reserved - 6);
+        }
+
+        private void ConfigureScrolling()
+        {
+            pnlScroll.AutoScroll = true;
+            pnlScroll.AutoScrollMargin = new Size(0, 24);
+            pnlScroll.AutoScrollMinSize = new Size(0, pnlRight.Bottom + 24);
+
+            flpActivities.AutoScroll = true;
+            flpActivities.AutoScrollMargin = new Size(0, 8);
+            flpActivities.AutoScrollMinSize = new Size(0, (_activities.Count * 68) + 8);
+            HideActivityHorizontalScroll();
+
+            pnlScroll.MouseWheel += ScrollRoot_MouseWheel;
+            pnlRight.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardProfessional.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardContact.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardSecurity.MouseWheel += ScrollRoot_MouseWheel;
+            pnlCardActivities.MouseWheel += ScrollRoot_MouseWheel;
+            flpActivities.MouseWheel += Activities_MouseWheel;
+        }
+
+        private void HideActivityHorizontalScroll()
+        {
+            flpActivities.HorizontalScroll.Enabled = false;
+            flpActivities.HorizontalScroll.Visible = false;
+            flpActivities.HorizontalScroll.Maximum = 0;
+            flpActivities.AutoScrollMinSize = new Size(0, flpActivities.AutoScrollMinSize.Height);
+        }
+
+        private void ScrollRoot_MouseWheel(object sender, MouseEventArgs e)
+        {
+            ScrollContainer(pnlScroll, e.Delta);
+        }
+
+        private void Activities_MouseWheel(object sender, MouseEventArgs e)
+        {
+            bool activityListNeedsScroll = flpActivities.DisplayRectangle.Height > flpActivities.ClientSize.Height;
+            ScrollContainer(activityListNeedsScroll ? (ScrollableControl)flpActivities : pnlScroll, e.Delta);
+        }
+
+        private static void ScrollContainer(ScrollableControl container, int delta)
+        {
+            int currentY = -container.AutoScrollPosition.Y;
+            int nextY = currentY - Math.Sign(delta) * 48;
+            if (nextY < 0)
+            {
+                nextY = 0;
+            }
+
+            container.AutoScrollPosition = new Point(0, nextY);
         }
 
         private void btnUpdateContact_Click(object sender, EventArgs e)

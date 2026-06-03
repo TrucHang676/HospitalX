@@ -121,6 +121,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnMarkRead
             // 
+            this.btnMarkRead.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMarkRead.BackColor = System.Drawing.Color.Transparent;
             this.btnMarkRead.BorderRadius = 8;
             this.btnMarkRead.Cursor = System.Windows.Forms.Cursors.Hand;
