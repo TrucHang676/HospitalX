@@ -117,6 +117,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             if (IsInDesigner()) return;
 
+            lblTitle.Visible = false;
+            lblSubtitle.Visible = false;
+
             // 2. Setup 3 premium KPI Cards
             string[] statLbls = { "TỔNG DỊCH VỤ", "CHỜ THỰC HIỆN", "HOÀN THÀNH" };
             string[] statEmojis = { "📋", "⏳", "✅" };
@@ -148,8 +151,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 card.Padding = new Padding(0, 4, 0, 0);
                 card.Tag = accents[i];
 
-                card.Paint -= KpiCard_Paint;
-                card.Paint += KpiCard_Paint;
+                // card.Paint -= KpiCard_Paint;
+                // card.Paint += KpiCard_Paint;
 
                 // Setup dynamic icon box only if not present
                 string pnlIconName = $"pnlIcon_{i}";
@@ -1065,13 +1068,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 e.Graphics.SetClip(path);
 
-                if (card.Tag is Color accentColor)
-                {
-                    using (var brush = new SolidBrush(accentColor))
-                    {
-                        e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
-                    }
-                }
+                // if (card.Tag is Color accentColor)
+                // {
+                //     using (var brush = new SolidBrush(accentColor))
+                //     {
+                //         e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
+                //     }
+                // }
 
                 e.Graphics.ResetClip();
             }

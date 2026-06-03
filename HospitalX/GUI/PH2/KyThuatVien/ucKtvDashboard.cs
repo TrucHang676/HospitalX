@@ -180,8 +180,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 card.Padding = new Padding(0, 4, 0, 0);
                 card.Tag = accents[i];
 
-                card.Paint -= KpiCard_Paint;
-                card.Paint += KpiCard_Paint;
+                // card.Paint -= KpiCard_Paint;
+                // card.Paint += KpiCard_Paint;
 
                 // Check if dot already exists to avoid duplication
                 string dotName = $"statDot_{i}";
@@ -916,13 +916,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 e.Graphics.SetClip(path);
 
-                if (card.Tag is Color accentColor)
-                {
-                    using (var brush = new SolidBrush(accentColor))
-                    {
-                        e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
-                    }
-                }
+                // if (card.Tag is Color accentColor)
+                // {
+                //     using (var brush = new SolidBrush(accentColor))
+                //     {
+                //         e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
+                //     }
+                // }
 
                 e.Graphics.ResetClip();
             }

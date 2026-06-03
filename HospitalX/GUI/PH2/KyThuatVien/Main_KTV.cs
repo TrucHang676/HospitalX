@@ -49,7 +49,7 @@ namespace HospitalX.GUI.PH2
 
                 if (confirmDialog.Show() == DialogResult.Yes)
                 {
-                    Application.Exit();
+                    this.Close();
                 }
             }
         }
@@ -91,9 +91,9 @@ namespace HospitalX.GUI.PH2
             pnlContent.Height = ClientSize.Height - pnlContent.Top;
 
             pnlTopbar.Height = 72;
-            lblPageTitle.Location = new Point(18, 10);
+            lblPageTitle.Location = new Point(18, 20);
             lblPageTitle.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            lblSubtitle.Location = new Point(20, 46);
+            lblSubtitle.Visible = false;
             btnExit.Size = new Size(33, 32);
             btnExit.Location = new Point(pnlTopbar.Width - 50, 20);
 
