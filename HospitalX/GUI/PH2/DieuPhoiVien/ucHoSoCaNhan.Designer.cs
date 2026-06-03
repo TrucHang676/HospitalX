@@ -32,8 +32,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.ptbAvatar = new Guna.UI2.WinForms.Guna2PictureBox();
             this.pnlRight = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlCardProfessional = new Guna.UI2.WinForms.Guna2Panel();
-            this.txtProfQueQuan = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.txtKhoa = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblKhoa = new System.Windows.Forms.Label();
             this.txtProfCccd = new Guna.UI2.WinForms.Guna2TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtProfNgaySinh = new Guna.UI2.WinForms.Guna2TextBox();
@@ -48,7 +48,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.label1 = new System.Windows.Forms.Label();
             this.lblTitleProf = new System.Windows.Forms.Label();
             this.pnlCardContact = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnUpdateContact = new Guna.UI2.WinForms.Guna2Button();
             this.txtContactAddress = new Guna.UI2.WinForms.Guna2TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtContactPhone = new Guna.UI2.WinForms.Guna2TextBox();
@@ -235,14 +234,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // pnlCardProfessional
             // 
             this.pnlCardProfessional.BackColor = System.Drawing.Color.Transparent;
-            this.pnlCardProfessional.Controls.Add(this.txtProfQueQuan);
-            this.pnlCardProfessional.Controls.Add(this.label7);
-            this.pnlCardProfessional.Controls.Add(this.txtProfCccd);
-            this.pnlCardProfessional.Controls.Add(this.label6);
-            this.pnlCardProfessional.Controls.Add(this.txtProfNgaySinh);
-            this.pnlCardProfessional.Controls.Add(this.label5);
-            this.pnlCardProfessional.Controls.Add(this.txtProfGioiTinh);
-            this.pnlCardProfessional.Controls.Add(this.label4);
+            this.pnlCardProfessional.Controls.Add(this.txtKhoa);
+            this.pnlCardProfessional.Controls.Add(this.lblKhoa);
             this.pnlCardProfessional.Controls.Add(this.txtProfVaiTro);
             this.pnlCardProfessional.Controls.Add(this.label3);
             this.pnlCardProfessional.Controls.Add(this.txtProfHoTen);
@@ -253,45 +246,45 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlCardProfessional.FillColor = System.Drawing.Color.White;
             this.pnlCardProfessional.Location = new System.Drawing.Point(3, 3);
             this.pnlCardProfessional.Name = "pnlCardProfessional";
-            this.pnlCardProfessional.Size = new System.Drawing.Size(602, 385);
+            this.pnlCardProfessional.Size = new System.Drawing.Size(602, 220);
             this.pnlCardProfessional.TabIndex = 0;
             // 
             // txtProfQueQuan
             // 
-            this.txtProfQueQuan.BorderRadius = 8;
-            this.txtProfQueQuan.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtProfQueQuan.DefaultText = "Quận Hải Châu, TP. Đà Nẵng";
-            this.txtProfQueQuan.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtProfQueQuan.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtProfQueQuan.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfQueQuan.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtProfQueQuan.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfQueQuan.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
-            this.txtProfQueQuan.Enabled = false;
-            this.txtProfQueQuan.ReadOnly = true;
-            this.txtProfQueQuan.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.txtProfQueQuan.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
-            this.txtProfQueQuan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
-            this.txtProfQueQuan.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfQueQuan.Location = new System.Drawing.Point(24, 320);
-            this.txtProfQueQuan.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtProfQueQuan.Name = "txtProfQueQuan";
-            this.txtProfQueQuan.PasswordChar = '\0';
-            this.txtProfQueQuan.PlaceholderText = "";
-            this.txtProfQueQuan.SelectedText = "";
-            this.txtProfQueQuan.Size = new System.Drawing.Size(554, 38);
-            this.txtProfQueQuan.TabIndex = 14;
+            this.txtKhoa.BorderRadius = 8;
+            this.txtKhoa.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtKhoa.DefaultText = "Phòng Điều phối Y tế";
+            this.txtKhoa.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtKhoa.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtKhoa.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtKhoa.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtKhoa.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtKhoa.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.txtKhoa.Enabled = false;
+            this.txtKhoa.ReadOnly = true;
+            this.txtKhoa.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtKhoa.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
+            this.txtKhoa.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
+            this.txtKhoa.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtKhoa.Location = new System.Drawing.Point(314, 160);
+            this.txtKhoa.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtKhoa.Name = "txtKhoa";
+            this.txtKhoa.PasswordChar = '\0';
+            this.txtKhoa.PlaceholderText = "";
+            this.txtKhoa.SelectedText = "";
+            this.txtKhoa.Size = new System.Drawing.Size(264, 38);
+            this.txtKhoa.TabIndex = 8;
             // 
-            // label7
+            // lblKhoa
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label7.Location = new System.Drawing.Point(24, 298);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(83, 19);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "QUÊ QUÁN";
+            this.lblKhoa.AutoSize = true;
+            this.lblKhoa.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblKhoa.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblKhoa.Location = new System.Drawing.Point(314, 138);
+            this.lblKhoa.Name = "lblKhoa";
+            this.lblKhoa.Size = new System.Drawing.Size(100, 19);
+            this.lblKhoa.TabIndex = 7;
+            this.lblKhoa.Text = "KHOA / PHÒNG";
             // 
             // txtProfCccd
             // 
@@ -310,7 +303,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtProfCccd.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
             this.txtProfCccd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
             this.txtProfCccd.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfCccd.Location = new System.Drawing.Point(314, 240);
+            this.txtProfCccd.Location = new System.Drawing.Point(24, 160);
             this.txtProfCccd.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtProfCccd.Name = "txtProfCccd";
             this.txtProfCccd.PasswordChar = '\0';
@@ -324,7 +317,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label6.Location = new System.Drawing.Point(314, 218);
+            this.label6.Location = new System.Drawing.Point(24, 138);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(107, 19);
             this.label6.TabIndex = 11;
@@ -347,7 +340,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtProfNgaySinh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
             this.txtProfNgaySinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
             this.txtProfNgaySinh.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfNgaySinh.Location = new System.Drawing.Point(24, 240);
+            this.txtProfNgaySinh.Location = new System.Drawing.Point(314, 80);
             this.txtProfNgaySinh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtProfNgaySinh.Name = "txtProfNgaySinh";
             this.txtProfNgaySinh.PasswordChar = '\0';
@@ -361,7 +354,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label5.Location = new System.Drawing.Point(24, 218);
+            this.label5.Location = new System.Drawing.Point(314, 58);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(83, 19);
             this.label5.TabIndex = 9;
@@ -384,7 +377,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtProfGioiTinh.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
             this.txtProfGioiTinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(110)))), ((int)(((byte)(100)))));
             this.txtProfGioiTinh.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtProfGioiTinh.Location = new System.Drawing.Point(314, 160);
+            this.txtProfGioiTinh.Location = new System.Drawing.Point(24, 80);
             this.txtProfGioiTinh.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtProfGioiTinh.Name = "txtProfGioiTinh";
             this.txtProfGioiTinh.PasswordChar = '\0';
@@ -398,7 +391,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label4.Location = new System.Drawing.Point(314, 138);
+            this.label4.Location = new System.Drawing.Point(24, 58);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(73, 19);
             this.label4.TabIndex = 7;
@@ -527,33 +520,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // pnlCardContact
             // 
-            this.pnlCardContact.BackColor = System.Drawing.Color.Transparent;
-            this.pnlCardContact.Controls.Add(this.btnUpdateContact);
+            this.pnlCardContact.Controls.Add(this.txtProfGioiTinh);
+            this.pnlCardContact.Controls.Add(this.label4);
+            this.pnlCardContact.Controls.Add(this.txtProfNgaySinh);
+            this.pnlCardContact.Controls.Add(this.label5);
+            this.pnlCardContact.Controls.Add(this.txtProfCccd);
+            this.pnlCardContact.Controls.Add(this.label6);
             this.pnlCardContact.Controls.Add(this.txtContactAddress);
             this.pnlCardContact.Controls.Add(this.label9);
             this.pnlCardContact.Controls.Add(this.txtContactPhone);
             this.pnlCardContact.Controls.Add(this.label8);
             this.pnlCardContact.Controls.Add(this.lblTitleContact);
             this.pnlCardContact.FillColor = System.Drawing.Color.White;
-            this.pnlCardContact.Location = new System.Drawing.Point(3, 394);
+            this.pnlCardContact.Location = new System.Drawing.Point(3, 235);
             this.pnlCardContact.Name = "pnlCardContact";
-            this.pnlCardContact.Size = new System.Drawing.Size(602, 230);
+            this.pnlCardContact.Size = new System.Drawing.Size(602, 305);
             this.pnlCardContact.TabIndex = 1;
             // 
-            // btnUpdateContact
-            // 
-            this.btnUpdateContact.BorderRadius = 8;
-            this.btnUpdateContact.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnUpdateContact.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnUpdateContact.ForeColor = System.Drawing.Color.White;
-            this.btnUpdateContact.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
-            this.btnUpdateContact.Location = new System.Drawing.Point(448, 15);
-            this.btnUpdateContact.Name = "btnUpdateContact";
-            this.btnUpdateContact.Size = new System.Drawing.Size(130, 36);
-            this.btnUpdateContact.TabIndex = 10;
-            this.btnUpdateContact.Text = "Cập nhật";
-            this.btnUpdateContact.Click += new System.EventHandler(this.btnUpdateContact_Click);
-            // 
+
             // txtContactAddress
             // 
             this.txtContactAddress.BorderRadius = 8;
@@ -566,7 +550,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtContactAddress.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtContactAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtContactAddress.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtContactAddress.Location = new System.Drawing.Point(24, 160);
+            this.txtContactAddress.Location = new System.Drawing.Point(24, 240);
             this.txtContactAddress.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtContactAddress.Name = "txtContactAddress";
             this.txtContactAddress.PasswordChar = '\0';
@@ -580,11 +564,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label9.Location = new System.Drawing.Point(24, 138);
+            this.label9.Location = new System.Drawing.Point(24, 218);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(121, 19);
+            this.label9.Size = new System.Drawing.Size(83, 19);
             this.label9.TabIndex = 8;
-            this.label9.Text = "ĐỊA CHỈ CƯ TRÚ";
+            this.label9.Text = "QUÊ QUÁN";
             // 
             // txtContactPhone
             // 
@@ -598,7 +582,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtContactPhone.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtContactPhone.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtContactPhone.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtContactPhone.Location = new System.Drawing.Point(24, 80);
+            this.txtContactPhone.Location = new System.Drawing.Point(314, 160);
             this.txtContactPhone.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtContactPhone.Name = "txtContactPhone";
             this.txtContactPhone.PasswordChar = '\0';
@@ -612,7 +596,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 8.25F, System.Drawing.FontStyle.Bold);
             this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.label8.Location = new System.Drawing.Point(24, 58);
+            this.label8.Location = new System.Drawing.Point(314, 138);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(107, 19);
             this.label8.TabIndex = 6;
@@ -624,9 +608,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblTitleContact.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold);
             this.lblTitleContact.Location = new System.Drawing.Point(20, 18);
             this.lblTitleContact.Name = "lblTitleContact";
-            this.lblTitleContact.Size = new System.Drawing.Size(171, 25);
+            this.lblTitleContact.Size = new System.Drawing.Size(135, 20);
             this.lblTitleContact.TabIndex = 5;
-            this.lblTitleContact.Text = "Thông tin liên hệ";
+            this.lblTitleContact.Text = "Thông tin cá nhân";
             // 
             // pnlCardSecurity
             // 
@@ -766,15 +750,14 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Label label5;
         private Guna.UI2.WinForms.Guna2TextBox txtProfCccd;
         private System.Windows.Forms.Label label6;
-        private Guna.UI2.WinForms.Guna2TextBox txtProfQueQuan;
-        private System.Windows.Forms.Label label7;
+        private Guna.UI2.WinForms.Guna2TextBox txtKhoa;
+        private System.Windows.Forms.Label lblKhoa;
         private Guna.UI2.WinForms.Guna2Panel pnlCardContact;
         private System.Windows.Forms.Label lblTitleContact;
         private Guna.UI2.WinForms.Guna2TextBox txtContactPhone;
         private System.Windows.Forms.Label label8;
         private Guna.UI2.WinForms.Guna2TextBox txtContactAddress;
         private System.Windows.Forms.Label label9;
-        private Guna.UI2.WinForms.Guna2Button btnUpdateContact;
         private Guna.UI2.WinForms.Guna2Panel pnlCardSecurity;
         private System.Windows.Forms.Label lblTitleSecurity;
         private System.Windows.Forms.Label lblPasswordMock;

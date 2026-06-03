@@ -33,6 +33,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             InitializeComponent();
             DoubleBuffered = true;
+            txtContactPhone.TextChanged += txtContactPhone_TextChanged;
+            txtContactAddress.TextChanged += txtContactAddress_TextChanged;
         }
 
         private void ucHoSoCaNhan_Load(object sender, EventArgs e)
@@ -96,22 +98,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             SetupReadOnlyField(txtProfMaNV);
             SetupReadOnlyField(txtProfHoTen);
             SetupReadOnlyField(txtProfVaiTro);
+            SetupReadOnlyField(txtKhoa);
             SetupReadOnlyField(txtProfGioiTinh);
             SetupReadOnlyField(txtProfNgaySinh);
             SetupReadOnlyField(txtProfCccd);
-            SetupReadOnlyField(txtProfQueQuan);
 
             // Setup editable contact text fields styling
             txtContactPhone.Font = new Font("Segoe UI", 9.5F);
             txtContactAddress.Font = new Font("Segoe UI", 9.5F);
 
             // Style buttons
-            btnUpdateContact.FillColor = ThemeGreen;
-            btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnUpdateContact.ForeColor = Color.White;
-            btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
-            btnUpdateContact.Cursor = Cursors.Hand;
-
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
             btnChangePassword.FillColor = Color.Transparent;
@@ -161,10 +157,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             txtProfMaNV.Text = "NV-DPV-0047";
             txtProfHoTen.Text = "Lê Hoài Thương";
             txtProfVaiTro.Text = "Điều phối viên";
+            txtKhoa.Text = "Phòng Điều phối Y tế";
             txtProfGioiTinh.Text = "Nữ";
             txtProfNgaySinh.Text = "12/04/1992";
             txtProfCccd.Text = "079192004567";
-            txtProfQueQuan.Text = "Quận Hải Châu, TP. Đà Nẵng";
 
             txtContactPhone.Text = SavedPhone;
             txtContactAddress.Text = SavedAddress;
@@ -268,7 +264,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     Font = new Font("Segoe UI", 10F),
                     ForeColor = TextDark,
                     Location = new Point(52, 6),
-                    Size = new Size(row.Width - 80, 30),
+                    Size = new Size(row.Width - 230, 30),
                     AutoSize = false,
                     BackColor = Color.Transparent
                 };
@@ -311,7 +307,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 var lblMeta = new Label
                 {
                     Name = "lblMeta",
-                    Text = $"{timeText} — {log.MetaText}",
+                    Text = log.MetaText,
                     Font = new Font("Segoe UI", 8.5F),
                     ForeColor = TextMuted,
                     Location = new Point(52, 36),
@@ -319,24 +315,37 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     BackColor = Color.Transparent
                 };
 
+                var lblTime = new Label
+                {
+                    Name = "lblTime",
+                    Text = timeText,
+                    Font = new Font("Segoe UI", 8.7F),
+                    ForeColor = TextMuted,
+                    Location = new Point(row.Width - 170, 20),
+                    Size = new Size(140, 24),
+                    TextAlign = ContentAlignment.MiddleRight,
+                    BackColor = Color.Transparent
+                };
+
                 row.Controls.Add(lblText);
                 row.Controls.Add(lblMeta);
+                row.Controls.Add(lblTime);
                 flpActivities.Controls.Add(row);
             }
         }
 
         private static string FormatTimestamp(DateTime dt)
         {
-            var diff = DateTime.Now - dt;
-            if (diff.TotalMinutes < 60)
+            var today = DateTime.Today;
+            if (dt.Date == today)
             {
-                return $"{(int)Math.Max(1, diff.TotalMinutes)} phút trước";
+                return $"Hôm nay, {dt:HH:mm}";
             }
-            if (diff.TotalHours < 24)
+            if (dt.Date == today.AddDays(-1))
             {
-                return $"{(int)diff.TotalHours} giờ trước";
+                return $"Hôm qua, {dt:HH:mm}";
             }
-            return dt.ToString("HH:mm dd/MM/yyyy");
+            return dt.ToString("dd/MM/yyyy, HH:mm");
         }
 
         private void ucHoSoCaNhan_Resize(object sender, EventArgs e)
@@ -352,7 +361,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlCardSecurity.Width = rightW;
             pnlCardActivities.Width = rightW;
 
-            btnUpdateContact.Location = new Point(rightW - btnUpdateContact.Width - 24, btnUpdateContact.Top);
             btnChangePassword.Location = new Point(rightW - btnChangePassword.Width - 24, btnChangePassword.Top);
 
             flpActivities.Width = rightW - 40;
@@ -361,34 +369,35 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 ctrl.Width = flpActivities.ClientSize.Width - 8;
                 if (ctrl.Controls["lblText"] is Label lbl)
                 {
-                    lbl.Width = ctrl.Width - 80;
+                    lbl.Width = ctrl.Width - 230;
+                }
+                if (ctrl.Controls["lblTime"] is Label lblT)
+                {
+                    lblT.Location = new Point(ctrl.Width - 170, 20);
                 }
             }
         }
 
-        private void btnUpdateContact_Click(object sender, EventArgs e)
+        private void txtContactPhone_TextChanged(object sender, EventArgs e)
         {
             string phone = txtContactPhone.Text.Trim();
+            if (phone.Length >= 10 && IsNumeric(phone))
+            {
+                SavedPhone = phone;
+                // BLL integration point for saving to database:
+                // NhanVienBLL.UpdatePhone(Session.CurrentNhanVienId, phone);
+            }
+        }
+
+        private void txtContactAddress_TextChanged(object sender, EventArgs e)
+        {
             string address = txtContactAddress.Text.Trim();
-
-            if (string.IsNullOrEmpty(phone) || phone.Length < 10 || !IsNumeric(phone))
+            if (!string.IsNullOrEmpty(address))
             {
-                ShowInfoMessage("Số điện thoại liên hệ phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
-                return;
+                SavedAddress = address;
+                // BLL integration point for saving to database:
+                // NhanVienBLL.UpdateAddress(Session.CurrentNhanVienId, address);
             }
-
-            if (string.IsNullOrEmpty(address))
-            {
-                ShowInfoMessage("Địa chỉ cư trú không được bỏ trống.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
-                return;
-            }
-
-            // Save to static store
-            SavedPhone = phone;
-            SavedAddress = address;
-
-            // Simulate save success
-            ShowInfoMessage("Cập nhật thông tin liên hệ thành công!", "Thông báo", MessageDialogIcon.Information);
         }
 
         private void btnChangePassword_Click(object sender, EventArgs e)
