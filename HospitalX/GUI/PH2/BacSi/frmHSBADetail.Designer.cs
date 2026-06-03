@@ -106,7 +106,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblPatientMeta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.lblPatientMeta.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblPatientMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblPatientMeta.Location = new System.Drawing.Point(33, 80);
+            this.lblPatientMeta.Location = new System.Drawing.Point(33, 90);
             this.lblPatientMeta.Name = "lblPatientMeta";
             this.lblPatientMeta.Size = new System.Drawing.Size(690, 24);
             this.lblPatientMeta.TabIndex = 3;
@@ -528,10 +528,12 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnSave
             // 
+            this.btnSave.BorderColor = System.Drawing.Color.DarkGreen;
             this.btnSave.BorderRadius = 8;
+            this.btnSave.BorderThickness = 2;
             this.btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSave.DefaultAutoSize = true;
-            this.btnSave.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(196)))), ((int)(((byte)(208)))), ((int)(((byte)(203)))));
+            this.btnSave.DisabledState.BorderColor = System.Drawing.Color.Silver;
             this.btnSave.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
             this.btnSave.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));

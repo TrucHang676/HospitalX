@@ -37,7 +37,7 @@ namespace HospitalX.GUI.PH2.BacSi
             _originalAllergy = txtAllergy.Text.Trim();
             _originalMedicalHistory = txtMedicalHistory.Text.Trim();
             _originalFamilyHistory = txtFamilyHistory.Text.Trim();
-            btnSave.Visible = false;
+            UpdateSaveButtonState();
             msgDialog.Parent = this;
             _isLoadingPatient = false;
         }
@@ -56,7 +56,15 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            btnSave.Visible = HasPendingChanges();
+            UpdateSaveButtonState();
+        }
+
+        private void UpdateSaveButtonState()
+        {
+            bool canSave = HasPendingChanges();
+            btnSave.Visible = true;
+            btnSave.Enabled = canSave;
+            btnSave.Cursor = canSave ? Cursors.Hand : Cursors.Default;
         }
 
         private bool HasPendingChanges()
@@ -68,13 +76,19 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void btnSave_Click(object sender, System.EventArgs e)
         {
+            if (!HasPendingChanges())
+            {
+                UpdateSaveButtonState();
+                return;
+            }
+
             _patient.Allergy = txtAllergy.Text.Trim();
             _patient.MedicalHistory = txtMedicalHistory.Text.Trim();
             _patient.FamilyHistory = txtFamilyHistory.Text.Trim();
             _originalAllergy = _patient.Allergy;
             _originalMedicalHistory = _patient.MedicalHistory;
             _originalFamilyHistory = _patient.FamilyHistory;
-            btnSave.Visible = false;
+            UpdateSaveButtonState();
             msgDialog.Icon = MessageDialogIcon.Information;
             msgDialog.Buttons = MessageDialogButtons.OK;
             msgDialog.Show("Đã cập nhật tiền sử bệnh.", "HospitalX");

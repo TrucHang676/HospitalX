@@ -227,13 +227,18 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // btnSave
             // 
-            this.btnSave.BorderRadius = 10;
+            this.btnSave.BorderColor = System.Drawing.Color.DarkGreen;
+            this.btnSave.BorderRadius = 8;
+            this.btnSave.BorderThickness = 2;
             this.btnSave.DefaultAutoSize = true;
+            this.btnSave.DisabledState.BorderColor = System.Drawing.Color.Silver;
+            this.btnSave.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(230)))), ((int)(((byte)(228)))));
+            this.btnSave.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.btnSave.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnSave.Location = new System.Drawing.Point(1128, 768);
+            this.btnSave.Location = new System.Drawing.Point(1086, 772);
             this.btnSave.Name = "btnSave";
             this.btnSave.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnSave.Size = new System.Drawing.Size(122, 31);

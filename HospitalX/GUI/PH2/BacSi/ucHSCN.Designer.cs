@@ -243,7 +243,7 @@
             this.pnlRight.Location = new System.Drawing.Point(288, 20);
             this.pnlRight.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRight.Name = "pnlRight";
-            this.pnlRight.Size = new System.Drawing.Size(765, 924);
+            this.pnlRight.Size = new System.Drawing.Size(748, 924);
             this.pnlRight.TabIndex = 1;
             // 
             // pnlCardProfessional
@@ -264,7 +264,7 @@
             this.pnlCardProfessional.Location = new System.Drawing.Point(0, 0);
             this.pnlCardProfessional.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardProfessional.Name = "pnlCardProfessional";
-            this.pnlCardProfessional.Size = new System.Drawing.Size(765, 187);
+            this.pnlCardProfessional.Size = new System.Drawing.Size(748, 187);
             this.pnlCardProfessional.TabIndex = 0;
             // 
             // txtKhoa
@@ -447,7 +447,7 @@
             this.pnlCardContact.Location = new System.Drawing.Point(0, 199);
             this.pnlCardContact.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardContact.Name = "pnlCardContact";
-            this.pnlCardContact.Size = new System.Drawing.Size(765, 257);
+            this.pnlCardContact.Size = new System.Drawing.Size(748, 257);
             this.pnlCardContact.TabIndex = 1;
             // 
             // txtProfGioiTinh
@@ -576,12 +576,17 @@
             // btnUpdateContact
             // 
             this.btnUpdateContact.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUpdateContact.BorderColor = System.Drawing.Color.DarkGreen;
             this.btnUpdateContact.BorderRadius = 8;
+            this.btnUpdateContact.BorderThickness = 2;
+            this.btnUpdateContact.DisabledState.BorderColor = System.Drawing.Color.Silver;
+            this.btnUpdateContact.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.btnUpdateContact.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.btnUpdateContact.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnUpdateContact.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnUpdateContact.ForeColor = System.Drawing.Color.White;
             this.btnUpdateContact.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
-            this.btnUpdateContact.Location = new System.Drawing.Point(639, 12);
+            this.btnUpdateContact.Location = new System.Drawing.Point(622, 12);
             this.btnUpdateContact.Margin = new System.Windows.Forms.Padding(2);
             this.btnUpdateContact.Name = "btnUpdateContact";
             this.btnUpdateContact.Size = new System.Drawing.Size(98, 29);
@@ -608,7 +613,7 @@
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.PlaceholderText = "Địa chỉ cư trú...";
             this.txtAddress.SelectedText = "";
-            this.txtAddress.Size = new System.Drawing.Size(458, 31);
+            this.txtAddress.Size = new System.Drawing.Size(441, 31);
             this.txtAddress.TabIndex = 9;
             // 
             // txtContactPhone
@@ -666,7 +671,7 @@
             this.pnlCardSecurity.Location = new System.Drawing.Point(0, 468);
             this.pnlCardSecurity.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardSecurity.Name = "pnlCardSecurity";
-            this.pnlCardSecurity.Size = new System.Drawing.Size(765, 89);
+            this.pnlCardSecurity.Size = new System.Drawing.Size(748, 89);
             this.pnlCardSecurity.TabIndex = 2;
             // 
             // btnChangePassword
@@ -679,7 +684,7 @@
             this.btnChangePassword.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnChangePassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnChangePassword.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnChangePassword.Location = new System.Drawing.Point(639, 12);
+            this.btnChangePassword.Location = new System.Drawing.Point(622, 12);
             this.btnChangePassword.Margin = new System.Windows.Forms.Padding(2);
             this.btnChangePassword.Name = "btnChangePassword";
             this.btnChangePassword.Size = new System.Drawing.Size(98, 29);
@@ -721,7 +726,7 @@
             this.pnlCardActivities.Location = new System.Drawing.Point(0, 569);
             this.pnlCardActivities.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCardActivities.Name = "pnlCardActivities";
-            this.pnlCardActivities.Size = new System.Drawing.Size(765, 353);
+            this.pnlCardActivities.Size = new System.Drawing.Size(748, 353);
             this.pnlCardActivities.TabIndex = 3;
             // 
             // flpActivities
@@ -732,7 +737,7 @@
             this.flpActivities.Location = new System.Drawing.Point(11, 49);
             this.flpActivities.Margin = new System.Windows.Forms.Padding(2);
             this.flpActivities.Name = "flpActivities";
-            this.flpActivities.Size = new System.Drawing.Size(734, 288);
+            this.flpActivities.Size = new System.Drawing.Size(717, 288);
             this.flpActivities.TabIndex = 8;
             // 
             // lblTitleActivities

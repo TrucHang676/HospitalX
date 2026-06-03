@@ -40,12 +40,15 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void PrescriptionInputChanged(object sender, EventArgs e)
         {
-            UpdateAddButtonVisibility();
+            UpdateAddButtonState();
         }
 
-        private void UpdateAddButtonVisibility()
+        private void UpdateAddButtonState()
         {
-            btnAdd.Visible = HasCompletePrescriptionInput();
+            bool canAdd = HasCompletePrescriptionInput();
+            btnAdd.Visible = true;
+            btnAdd.Enabled = canAdd;
+            btnAdd.Cursor = canAdd ? Cursors.Hand : Cursors.Default;
         }
 
         private bool HasCompletePrescriptionInput()
@@ -58,7 +61,7 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             txtMedicineName.Clear();
             txtDose.Clear();
-            UpdateAddButtonVisibility();
+            UpdateAddButtonState();
             txtMedicineName.Focus();
         }
 

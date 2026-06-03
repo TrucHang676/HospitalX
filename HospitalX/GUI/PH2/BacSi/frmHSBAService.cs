@@ -40,12 +40,15 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void ServiceInputChanged(object sender, EventArgs e)
         {
-            UpdateAddButtonVisibility();
+            UpdateAddButtonState();
         }
 
-        private void UpdateAddButtonVisibility()
+        private void UpdateAddButtonState()
         {
-            btnAdd.Visible = HasCompleteServiceInput();
+            bool canAdd = HasCompleteServiceInput();
+            btnAdd.Visible = true;
+            btnAdd.Enabled = canAdd;
+            btnAdd.Cursor = canAdd ? Cursors.Hand : Cursors.Default;
         }
 
         private bool HasCompleteServiceInput()
@@ -58,7 +61,7 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             txtServiceName.Clear();
             txtServiceNote.Clear();
-            UpdateAddButtonVisibility();
+            UpdateAddButtonState();
             txtServiceName.Focus();
         }
 
