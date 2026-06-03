@@ -12,6 +12,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private bool _isEditMode = false;
         private string _preloadedPatientId = null;
 
+        // Original fields to track patient information changes
+        private string _origHoDem = "";
+        private string _origTen = "";
+        private DateTime _origNgaySinh = new DateTime(1990, 1, 1);
+        private int _origGioiTinhIndex = 0;
+        private string _origCccd = "";
+        private string _origSoNha = "";
+        private string _origTenDuong = "";
+        private string _origQuanHuyen = "";
+        private string _origTinhTP = "";
+        private string _origTienSuBN = "";
+        private string _origTienSuGD = "";
+        private string _origDiUng = "";
+
         public void PreloadPatient(string patientId)
         {
             _preloadedPatientId = patientId;
@@ -32,6 +46,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Prevent cursor caret from showing on read-only MaBN while keeping focus/glow
             txtMaBN.Enter += (s, ev) => HideCaret(txtMaBN.Handle);
             txtMaBN.GotFocus += (s, ev) => HideCaret(txtMaBN.Handle);
+
+            // Wire change events for checking edit changes
+            WireChangeEvents();
 
             // Wire Search Panel events
             btnSearch.Click += (s, ev) => ExecuteSearch();
@@ -70,6 +87,47 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dtpNgaySinh.Value = new DateTime(1990, 1, 1);
         }
 
+        private void WireChangeEvents()
+        {
+            txtHoDem.TextChanged += (s, e) => CheckForChanges();
+            txtTen.TextChanged += (s, e) => CheckForChanges();
+            dtpNgaySinh.ValueChanged += (s, e) => CheckForChanges();
+            cboGioiTinh.SelectedIndexChanged += (s, e) => CheckForChanges();
+            txtCccd.TextChanged += (s, e) => CheckForChanges();
+            txtSoNha.TextChanged += (s, e) => CheckForChanges();
+            txtTenDuong.TextChanged += (s, e) => CheckForChanges();
+            txtQuanHuyen.TextChanged += (s, e) => CheckForChanges();
+            txtTinhTP.TextChanged += (s, e) => CheckForChanges();
+            txtTienSuBN.TextChanged += (s, e) => CheckForChanges();
+            txtTienSuGD.TextChanged += (s, e) => CheckForChanges();
+            txtDiUng.TextChanged += (s, e) => CheckForChanges();
+        }
+
+        private void CheckForChanges()
+        {
+            if (!_isEditMode)
+            {
+                btnSave.Enabled = true;
+                return;
+            }
+
+            bool hasChanged = 
+                txtHoDem.Text != _origHoDem ||
+                txtTen.Text != _origTen ||
+                dtpNgaySinh.Value != _origNgaySinh ||
+                cboGioiTinh.SelectedIndex != _origGioiTinhIndex ||
+                txtCccd.Text != _origCccd ||
+                txtSoNha.Text != _origSoNha ||
+                txtTenDuong.Text != _origTenDuong ||
+                txtQuanHuyen.Text != _origQuanHuyen ||
+                txtTinhTP.Text != _origTinhTP ||
+                txtTienSuBN.Text != _origTienSuBN ||
+                txtTienSuGD.Text != _origTienSuGD ||
+                txtDiUng.Text != _origDiUng;
+
+            btnSave.Enabled = hasChanged;
+        }
+
         private void ApplyButtonIcons()
         {
             // Tab Add button (No Icon, Perfectly Centered)
@@ -104,17 +162,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 btnSearch.Text = "Tìm";
             }
 
-            // Save button icon
-            Image imgSave = DpvAssets.Load("buttonTick.png");
-            if (imgSave != null)
-            {
-                btnSave.Image = imgSave;
-                btnSave.ImageSize = new Size(20, 20);
-                btnSave.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-                btnSave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-                btnSave.ImageOffset = new Point(16, 0);
-                btnSave.TextOffset = new Point(8, 0);
-            }
+            // Save button (No Icon, Perfectly Centered)
+            btnSave.Image = null;
+            btnSave.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnSave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnSave.ImageOffset = new Point(0, 0);
+            btnSave.TextOffset = new Point(0, 0);
         }
 
         private void SetMode(bool editMode)
@@ -142,8 +195,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 // Clear all fields initially in edit mode to wait for search query
                 ClearAllFields();
                 btnSave.Text = "Lưu thay đổi";
-                btnSave.ImageOffset = new Point(16, 0);
-                btnSave.TextOffset = new Point(8, 0);
+                btnSave.ImageOffset = new Point(0, 0);
+                btnSave.TextOffset = new Point(0, 0);
+                btnSave.Enabled = false;
                 UpdateMainFormHeader("Sửa thông tin bệnh nhân");
             }
             else
@@ -166,8 +220,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 // Clear all fields
                 ClearAllFields();
                 btnSave.Text = "Thêm bệnh nhân";
-                btnSave.ImageOffset = new Point(14, 0);
-                btnSave.TextOffset = new Point(12, 0);
+                btnSave.ImageOffset = new Point(0, 0);
+                btnSave.TextOffset = new Point(0, 0);
+                btnSave.Enabled = true;
                 UpdateMainFormHeader("Thêm bệnh nhân mới");
             }
 
@@ -206,6 +261,29 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             txtTienSuBN.Text = "";
             txtTienSuGD.Text = "";
             txtDiUng.Text = "";
+
+            // Reset original values
+            _origHoDem = "";
+            _origTen = "";
+            _origNgaySinh = new DateTime(1990, 1, 1);
+            _origGioiTinhIndex = 0;
+            _origCccd = "";
+            _origSoNha = "";
+            _origTenDuong = "";
+            _origQuanHuyen = "";
+            _origTinhTP = "";
+            _origTienSuBN = "";
+            _origTienSuGD = "";
+            _origDiUng = "";
+
+            if (_isEditMode)
+            {
+                btnSave.Enabled = false;
+            }
+            else
+            {
+                btnSave.Enabled = true;
+            }
         }
 
         private void btnTabAdd_Click(object sender, EventArgs e)
@@ -552,11 +630,26 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
                 found = true;
                 foundName = foundPatient.Name;
+
+                // Save original loaded values to track future modifications
+                _origHoDem = txtHoDem.Text;
+                _origTen = txtTen.Text;
+                _origNgaySinh = dtpNgaySinh.Value;
+                _origGioiTinhIndex = cboGioiTinh.SelectedIndex;
+                _origCccd = txtCccd.Text;
+                _origSoNha = txtSoNha.Text;
+                _origTenDuong = txtTenDuong.Text;
+                _origQuanHuyen = txtQuanHuyen.Text;
+                _origTinhTP = txtTinhTP.Text;
+                _origTienSuBN = txtTienSuBN.Text;
+                _origTienSuGD = txtTienSuGD.Text;
+                _origDiUng = txtDiUng.Text;
             }
 
             if (found)
             {
                 btnSave.Text = "Lưu thay đổi";
+                btnSave.Enabled = false;
 
                 if (!silent)
                 {

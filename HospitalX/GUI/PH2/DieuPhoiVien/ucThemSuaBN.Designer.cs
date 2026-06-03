@@ -468,10 +468,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnSave.Text = "Thêm bệnh nhân";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             this.btnSave.BackColor = System.Drawing.Color.Transparent;
-            this.btnSave.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSave.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnSave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnSave.ImageOffset = new System.Drawing.Point(14, 0);
-            this.btnSave.TextOffset = new System.Drawing.Point(12, 0);
+            this.btnSave.ImageOffset = new System.Drawing.Point(0, 0);
+            this.btnSave.TextOffset = new System.Drawing.Point(0, 0);
 
             // 
             // guna2MessageDialog1
