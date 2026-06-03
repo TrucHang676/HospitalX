@@ -266,10 +266,10 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnAdd.Location = new System.Drawing.Point(1085, 741);
+            this.btnAdd.Location = new System.Drawing.Point(1073, 741);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnAdd.Size = new System.Drawing.Size(165, 44);
+            this.btnAdd.Size = new System.Drawing.Size(177, 44);
             this.btnAdd.TabIndex = 3;
             this.btnAdd.Text = "Thêm dịch vụ";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
