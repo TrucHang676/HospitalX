@@ -345,6 +345,28 @@ namespace HospitalX.GUI
             Close();
         }
 
+        private bool IsMockCredential(string username, string password, out string expectedUser)
+        {
+            expectedUser = null;
+            if (password != "123") return false;
+
+            string key = _role?.Key;
+            if (string.IsNullOrEmpty(key)) return false;
+
+            if (key == "PH1_DBA") expectedUser = "admin_ph1";
+            else if (key == "PH2_DBA") expectedUser = "admin_ph2";
+            else if (key == "PH2_COORDINATOR") expectedUser = "DP0001";
+            else if (key == "PH2_DOCTOR") expectedUser = "BS0001";
+            else if (key == "PH2_TECHNICIAN") expectedUser = "KTV001";
+            else if (key == "PH2_PATIENT") expectedUser = "BN000001";
+
+            if (expectedUser != null && username.Equals(expectedUser, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            return false;
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text.Trim();
@@ -356,6 +378,18 @@ namespace HospitalX.GUI
                 return;
             }
 
+            // Check if mock credential is used to bypass database check for easier testing
+            string expectedUser;
+            if (IsMockCredential(username, password, out expectedUser))
+            {
+                string mockConnStr = "User Id=" + expectedUser + ";Password=" + password + ";Data Source=localhost:1521/PDBHOSX;";
+                DataProvider.Instance.SetConnectionString(mockConnStr);
+                DataProvider.Instance.CurrentUser = expectedUser;
+                OpenMainForm(mockConnStr);
+                return;
+            }
+
+            // Otherwise, proceed with real Oracle database connection
             string connStr = BuildConnectionString(username, password);
 
             try
