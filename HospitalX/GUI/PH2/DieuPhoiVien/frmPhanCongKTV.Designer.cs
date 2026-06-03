@@ -39,7 +39,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKtvTitle = new System.Windows.Forms.Label();
             this.cboKtv = new Guna.UI2.WinForms.Guna2ComboBox();
             this.btnConfirm = new Guna.UI2.WinForms.Guna2Button();
-            this.btnCancel = new Guna.UI2.WinForms.Guna2Button();
 
             this.pnlHeader.SuspendLayout();
             this.pnlInfo.SuspendLayout();
@@ -204,10 +203,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.cboKtv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 
             // 
+            // 
             // btnConfirm
             // 
             this.btnConfirm.Size = new System.Drawing.Size(260, 42);
-            this.btnConfirm.Location = new System.Drawing.Point(20, 330);
+            this.btnConfirm.Location = new System.Drawing.Point(160, 330);
             this.btnConfirm.BorderRadius = 8;
             this.btnConfirm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnConfirm.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
@@ -217,21 +217,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnConfirm.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
 
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Size = new System.Drawing.Size(260, 42);
-            this.btnCancel.Location = new System.Drawing.Point(300, 330);
-            this.btnCancel.BorderRadius = 8;
-            this.btnCancel.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnCancel.BorderThickness = 1;
-            this.btnCancel.FillColor = System.Drawing.Color.Transparent;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnCancel.Text = "Hủy";
-            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+
 
             // 
             // frmPhanCongKTV
@@ -240,7 +226,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.ClientSize = new System.Drawing.Size(580, 400);
-            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnConfirm);
             this.Controls.Add(this.cboKtv);
             this.Controls.Add(this.lblKtvTitle);
@@ -281,6 +266,5 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Label lblKtvTitle;
         private Guna.UI2.WinForms.Guna2ComboBox cboKtv;
         private Guna.UI2.WinForms.Guna2Button btnConfirm;
-        private Guna.UI2.WinForms.Guna2Button btnCancel;
     }
 }

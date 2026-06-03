@@ -51,8 +51,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.line4 = new System.Windows.Forms.Panel();
             this.line5 = new System.Windows.Forms.Panel();
             this.line6 = new System.Windows.Forms.Panel();
-            
-            this.btnCloseBottom = new Guna.UI2.WinForms.Guna2Button();
 
             this.pnlHeader.SuspendLayout();
             this.pnlInfo.SuspendLayout();
@@ -318,20 +316,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKetQuaVal.BackColor = System.Drawing.Color.Transparent;
 
             // 
-            // btnCloseBottom
-            // 
-            this.btnCloseBottom.Size = new System.Drawing.Size(160, 40);
-            this.btnCloseBottom.Location = new System.Drawing.Point(210, 420);
-            this.btnCloseBottom.BorderRadius = 8;
-            this.btnCloseBottom.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.btnCloseBottom.BorderThickness = 1;
-            this.btnCloseBottom.FillColor = System.Drawing.Color.Transparent;
-            this.btnCloseBottom.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.btnCloseBottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
-            this.btnCloseBottom.Text = "Đóng";
-            this.btnCloseBottom.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCloseBottom.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
-            this.btnCloseBottom.Click += new System.EventHandler(this.btnCloseBottom_Click);
+
 
             // 
             // frmChiTietYeuCau
@@ -339,8 +324,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
-            this.ClientSize = new System.Drawing.Size(580, 490);
-            this.Controls.Add(this.btnCloseBottom);
+            this.ClientSize = new System.Drawing.Size(580, 416);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -389,7 +373,5 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Panel line4;
         private System.Windows.Forms.Panel line5;
         private System.Windows.Forms.Panel line6;
-        
-        private Guna.UI2.WinForms.Guna2Button btnCloseBottom;
     }
 }

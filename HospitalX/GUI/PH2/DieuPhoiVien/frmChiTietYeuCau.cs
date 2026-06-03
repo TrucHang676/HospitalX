@@ -21,9 +21,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblKetQuaVal.Text = string.IsNullOrEmpty(req.Result) ? "chưa có" : req.Result;
         }
 
-        private void btnCloseBottom_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+
     }
 }
