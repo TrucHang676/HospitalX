@@ -48,9 +48,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
                     },
                     Prescriptions = new List<RecordPrescription>
                     {
-                        new RecordPrescription(new DateTime(2026, 5, 21), "Amlodipine 5mg", "1 viên/ngày"),
-                        new RecordPrescription(new DateTime(2026, 5, 21), "Bisoprolol 2.5mg", "1 viên/ngày"),
-                        new RecordPrescription(new DateTime(2026, 5, 21), "Aspirin 81mg", "1 viên/ngày")
+                        new RecordPrescription(new DateTime(2026, 5, 21), "Amlodipine 5mg", "1 viên/ngày, uống sau khi ăn"),
+                        new RecordPrescription(new DateTime(2026, 5, 21), "Bisoprolol 2.5mg", "1 viên/ngày, uống vào buổi sáng"),
+                        new RecordPrescription(new DateTime(2026, 5, 21), "Aspirin 81mg", "1 viên/ngày, uống sau khi ăn")
                     }
                 },
                 new PatientMedicalRecord

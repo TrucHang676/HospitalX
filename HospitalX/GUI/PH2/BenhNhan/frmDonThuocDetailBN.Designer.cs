@@ -209,6 +209,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblHsbaValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
             this.lblHsbaValue.Location = new System.Drawing.Point(26, 38);
             this.lblHsbaValue.Name = "lblHsbaValue";
+            this.lblHsbaValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
             this.lblHsbaValue.Size = new System.Drawing.Size(158, 32);
             this.lblHsbaValue.TabIndex = 6;
             this.lblHsbaValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -235,7 +236,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlMedicines.FillColor = System.Drawing.Color.White;
             this.pnlMedicines.Location = new System.Drawing.Point(24, 334);
             this.pnlMedicines.Name = "pnlMedicines";
-            this.pnlMedicines.Size = new System.Drawing.Size(832, 290);
+            this.pnlMedicines.Size = new System.Drawing.Size(832, 340);
             this.pnlMedicines.TabIndex = 2;
             // 
             // flowMedicines
@@ -243,9 +244,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.flowMedicines.AutoScroll = true;
             this.flowMedicines.BackColor = System.Drawing.Color.White;
             this.flowMedicines.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowMedicines.Location = new System.Drawing.Point(24, 62);
+            this.flowMedicines.Location = new System.Drawing.Point(24, 66);
             this.flowMedicines.Name = "flowMedicines";
-            this.flowMedicines.Size = new System.Drawing.Size(784, 204);
+            this.flowMedicines.Size = new System.Drawing.Size(784, 248);
             this.flowMedicines.TabIndex = 1;
             this.flowMedicines.WrapContents = false;
             // 
@@ -266,7 +267,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(880, 648);
+            this.ClientSize = new System.Drawing.Size(880, 700);
             this.Controls.Add(this.pnlMedicines);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.pnlHeader);

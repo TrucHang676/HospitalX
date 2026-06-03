@@ -233,6 +233,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblHsbaValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
             this.lblHsbaValue.Location = new System.Drawing.Point(26, 48);
             this.lblHsbaValue.Name = "lblHsbaValue";
+            this.lblHsbaValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
             this.lblHsbaValue.Size = new System.Drawing.Size(158, 32);
             this.lblHsbaValue.TabIndex = 8;
             this.lblHsbaValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
