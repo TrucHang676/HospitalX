@@ -288,6 +288,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             // 
             this.btnStartRestore.BorderRadius = 8;
             this.btnStartRestore.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartRestore.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.btnStartRestore.DisabledState.ForeColor = System.Drawing.Color.White;
             this.btnStartRestore.FillColor = System.Drawing.Color.Brown;
             this.btnStartRestore.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartRestore.ForeColor = System.Drawing.Color.White;
