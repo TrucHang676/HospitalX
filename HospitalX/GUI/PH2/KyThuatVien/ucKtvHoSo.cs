@@ -21,6 +21,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private static string SavedPhone = "0914 567 890";
         private static string SavedAddress = "45 Đường Lê Lợi, P.3, Biên Hòa, Đồng Nai";
 
+        private string _originalContactPhone;
+        private string _originalContactAddress;
+        private bool _isLoadingContact;
+
         public class AuditLogItem
         {
             public string IconName { get; set; }
@@ -34,6 +38,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             InitializeComponent();
             DoubleBuffered = true;
+            txtContactPhone.TextChanged += ContactFieldChanged;
+            txtContactAddress.TextChanged += ContactFieldChanged;
         }
 
         private void ucKtvHoSo_Load(object sender, EventArgs e)
@@ -102,7 +108,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             SetupReadOnlyField(txtProfGioiTinh);
             SetupReadOnlyField(txtProfNgaySinh);
             SetupReadOnlyField(txtProfCccd);
-            SetupReadOnlyField(txtProfQueQuan);
 
             // Setup editable contact text fields styling
             txtContactPhone.Font = new Font("Segoe UI", 9.5F);
@@ -114,6 +119,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnUpdateContact.ForeColor = Color.White;
             btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
             btnUpdateContact.Cursor = Cursors.Hand;
+            btnUpdateContact.Visible = false;
 
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
@@ -167,10 +173,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             txtProfGioiTinh.Text = "Nữ";
             txtProfNgaySinh.Text = "15/08/1992";
             txtProfCccd.Text = "079292013456";
-            txtProfQueQuan.Text = "45 Đường Lê Lợi, P.3, Biên Hòa, Đồng Nai";
 
             txtContactPhone.Text = SavedPhone;
             txtContactAddress.Text = SavedAddress;
+            AcceptCurrentContactValues();
 
             // Load dynamically calculated stats
             lblStat1Val.Text = "12";
@@ -374,24 +380,59 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             string phone = txtContactPhone.Text.Trim();
             string address = txtContactAddress.Text.Trim();
 
-            if (string.IsNullOrEmpty(phone) || phone.Length < 10 || !IsNumeric(phone))
+            if (string.IsNullOrWhiteSpace(phone) || phone.Replace(" ", "").Length < 10 || !IsPhoneNumber(phone))
             {
-                ShowInfoMessage("Số điện thoại liên hệ phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
+                ShowInfoMessage("Số điện thoại phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
                 return;
             }
 
-            if (string.IsNullOrEmpty(address))
+            if (string.IsNullOrWhiteSpace(address))
             {
-                ShowInfoMessage("Địa chỉ cư trú không được bỏ trống.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
+                ShowInfoMessage("Quê quán không được bỏ trống.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
                 return;
             }
 
             // Save to static store
             SavedPhone = phone;
             SavedAddress = address;
+            ReloadContactData();
 
             // Simulate save success
-            ShowInfoMessage("Cập nhật thông tin liên hệ thành công!", "Thông báo", MessageDialogIcon.Information);
+            ShowInfoMessage("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageDialogIcon.Information);
+        }
+
+        private void ContactFieldChanged(object sender, EventArgs e)
+        {
+            if (_isLoadingContact) return;
+            UpdateContactSaveButton();
+        }
+
+        private void ReloadContactData()
+        {
+            _isLoadingContact = true;
+            txtContactPhone.Text = SavedPhone;
+            txtContactAddress.Text = SavedAddress;
+            AcceptCurrentContactValues();
+            _isLoadingContact = false;
+            UpdateContactSaveButton();
+        }
+
+        private void AcceptCurrentContactValues()
+        {
+            _originalContactPhone = NormalizeContactText(txtContactPhone.Text);
+            _originalContactAddress = NormalizeContactText(txtContactAddress.Text);
+        }
+
+        private void UpdateContactSaveButton()
+        {
+            bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
+                || NormalizeContactText(txtContactAddress.Text) != _originalContactAddress;
+            btnUpdateContact.Visible = changed;
+        }
+
+        private static string NormalizeContactText(string value)
+        {
+            return (value ?? string.Empty).Trim();
         }
 
         private void btnChangePassword_Click(object sender, EventArgs e)
@@ -403,11 +444,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             }
         }
 
-        private static bool IsNumeric(string val)
+        private static bool IsPhoneNumber(string value)
         {
-            foreach (char c in val)
+            foreach (char c in value)
             {
-                if (c < '0' || c > '9') return false;
+                if (c != ' ' && (c < '0' || c > '9')) return false;
             }
             return true;
         }
