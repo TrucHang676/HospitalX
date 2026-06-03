@@ -16,6 +16,10 @@ namespace HospitalX.GUI.PH2.BacSi
         private static readonly Color TextMuted = Color.FromArgb(122, 149, 137);
 
         private readonly List<ActivityItem> _activities = new List<ActivityItem>();
+        private Guna2MessageDialog _messageDialog;
+        private string _originalContactPhone;
+        private string _originalContactAddress;
+        private bool _isLoadingContact;
 
         private static string SavedPhone = "090 123 4567";
         private static string SavedAddress = "Q. Bình Thạnh, TP.HCM";
@@ -32,6 +36,8 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             InitializeComponent();
             DoubleBuffered = true;
+            txtContactPhone.TextChanged += ContactFieldChanged;
+            txtAddress.TextChanged += ContactFieldChanged;
         }
 
         private void ucHSCN_Load(object sender, EventArgs e)
@@ -58,6 +64,7 @@ namespace HospitalX.GUI.PH2.BacSi
             txtContactPhone.Text = SavedPhone;
             txtAddress.Text = SavedAddress;
             txtProfCccd.Text = "079192004567";
+            AcceptCurrentContactValues();
 
             lblStat1Val.Text = "59";
             lblStat1Cap.Text = "HSBA liên quan";
@@ -123,6 +130,7 @@ namespace HospitalX.GUI.PH2.BacSi
             btnUpdateContact.ForeColor = Color.White;
             btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
             btnUpdateContact.Cursor = Cursors.Hand;
+            btnUpdateContact.Visible = false;
 
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
@@ -352,19 +360,59 @@ namespace HospitalX.GUI.PH2.BacSi
 
             if (string.IsNullOrWhiteSpace(phone) || phone.Replace(" ", "").Length < 10 || !IsPhoneNumber(phone))
             {
-                ShowMessage("Số điện thoại liên hệ phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageBoxIcon.Warning);
+                ShowMessage("Số điện thoại liên hệ phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(address))
             {
-                ShowMessage("Địa chỉ cư trú không được bỏ trống.", "Lỗi nhập liệu", MessageBoxIcon.Warning);
+                ShowMessage("Địa chỉ cư trú không được bỏ trống.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
                 return;
             }
 
             SavedPhone = phone;
             SavedAddress = address;
-            ShowMessage("Cập nhật thông tin liên hệ thành công.", "HospitalX", MessageBoxIcon.Information);
+            ReloadContactData();
+            ShowMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+        }
+
+        private void ContactFieldChanged(object sender, EventArgs e)
+        {
+            if (_isLoadingContact)
+            {
+                return;
+            }
+
+            UpdateContactSaveButton();
+        }
+
+        private void ReloadContactData()
+        {
+            _isLoadingContact = true;
+            txtContactPhone.Text = SavedPhone;
+            txtAddress.Text = SavedAddress;
+            AcceptCurrentContactValues();
+            _isLoadingContact = false;
+            UpdateContactSaveButton();
+        }
+
+        private void AcceptCurrentContactValues()
+        {
+            _originalContactPhone = NormalizeContactText(txtContactPhone.Text);
+            _originalContactAddress = NormalizeContactText(txtAddress.Text);
+        }
+
+        private void UpdateContactSaveButton()
+        {
+            bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
+                || NormalizeContactText(txtAddress.Text) != _originalContactAddress;
+
+            btnUpdateContact.Visible = changed;
+        }
+
+        private static string NormalizeContactText(string value)
+        {
+            return (value ?? string.Empty).Trim();
         }
 
         private void btnChangePassword_Click(object sender, EventArgs e)
@@ -388,9 +436,19 @@ namespace HospitalX.GUI.PH2.BacSi
             return true;
         }
 
-        private void ShowMessage(string message, string title, MessageBoxIcon icon)
+        private void ShowMessage(string message, string title, MessageDialogIcon icon)
         {
-            MessageBox.Show(this, message, title, MessageBoxButtons.OK, icon);
+            if (_messageDialog == null)
+            {
+                _messageDialog = new Guna2MessageDialog();
+            }
+
+            _messageDialog.Parent = FindForm();
+            _messageDialog.Icon = icon;
+            _messageDialog.Buttons = MessageDialogButtons.OK;
+            _messageDialog.Caption = title;
+            _messageDialog.Style = MessageDialogStyle.Light;
+            _messageDialog.Show(message);
         }
     }
 }
