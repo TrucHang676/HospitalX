@@ -4,6 +4,7 @@ using HospitalX.GUI.PH1;
 using HospitalX.GUI.PH2;
 using Oracle.ManagedDataAccess.Client;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -24,6 +25,7 @@ namespace HospitalX.GUI
             InitializeComponent();
             SetupBrandingAndIcons();
             ApplyRoleTheme();
+            ApplyTestCredential();
         }
 
         private static LoginRoleOption CreateDesignerRole()
@@ -44,7 +46,8 @@ namespace HospitalX.GUI
             else
             {
                 // Fallback circular cross drawing
-                ptbChuThap.Paint += (s, e) => {
+                ptbChuThap.Paint += (s, e) =>
+                {
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     Color theme = _role?.ThemeColor ?? Color.FromArgb(20, 116, 91);
                     using (var brush = new SolidBrush(theme))
@@ -69,7 +72,8 @@ namespace HospitalX.GUI
             if (passImg != null) ptbIconPass.Image = passImg;
 
             // Setup dynamic vector icon for the role info card
-            ptbRoleIcon.Paint += (s, e) => {
+            ptbRoleIcon.Paint += (s, e) =>
+            {
                 Color theme = _role?.ThemeColor ?? Color.FromArgb(20, 116, 91);
                 DrawVectorIcon(e.Graphics, ptbRoleIcon.Width, ptbRoleIcon.Height, _role.Key, theme);
             };
@@ -102,7 +106,7 @@ namespace HospitalX.GUI
             Line.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
 
             // Hospital brand label colors matching module theme
-            lblHospital.ForeColor = isPh1 
+            lblHospital.ForeColor = isPh1
                 ? Color.FromArgb(147, 197, 253) // light blue (#93C5FD)
                 : Color.FromArgb(167, 243, 208); // light green (#A7F3D0)
             lblQTCSDLBV.ForeColor = Color.White;
@@ -145,7 +149,7 @@ namespace HospitalX.GUI
             // Back Button styling
             btnBack.ForeColor = theme;
             btnBack.BorderColor = theme;
-            btnBack.HoverState.FillColor = isPh1 
+            btnBack.HoverState.FillColor = isPh1
                 ? Color.FromArgb(30, 37, 74, 132)   // semi-transparent blue
                 : Color.FromArgb(30, 20, 116, 91);  // semi-transparent green
 
@@ -170,7 +174,7 @@ namespace HospitalX.GUI
             // Calculate gradient colors for left panel background
             Color theme = _role?.ThemeColor ?? Color.FromArgb(20, 116, 91);
             bool isPh1 = _role?.Module == LoginModule.Ph1;
-            
+
             Color color1, color2, accentColor;
             if (isPh1)
             {
@@ -345,22 +349,56 @@ namespace HospitalX.GUI
             Close();
         }
 
+        private void ApplyTestCredential()
+        {
+            if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+            {
+                return;
+            }
+
+            string username;
+            string password;
+            if (!TryGetTestCredential(out username, out password))
+            {
+                return;
+            }
+
+            txtUsername.Text = username;
+            txtPassword.Text = password;
+        }
+
+        private bool TryGetTestCredential(out string username, out string password)
+        {
+            username = null;
+            password = "123";
+
+            string key = _role?.Key;
+            if (string.IsNullOrEmpty(key))
+            {
+                return false;
+            }
+
+            if (key == "PH1_DBA") username = "admin_ph1";
+            else if (key == "PH2_DBA") username = "admin_ph2";
+            else if (key == "PH2_COORDINATOR") username = "DP0001";
+            else if (key == "PH2_DOCTOR") username = "BS0001";
+            else if (key == "PH2_TECHNICIAN") username = "KTV001";
+            else if (key == "PH2_PATIENT") username = "BN000001";
+
+            return !string.IsNullOrEmpty(username);
+        }
+
         private bool IsMockCredential(string username, string password, out string expectedUser)
         {
             expectedUser = null;
-            if (password != "123") return false;
 
-            string key = _role?.Key;
-            if (string.IsNullOrEmpty(key)) return false;
+            string expectedPassword;
+            if (!TryGetTestCredential(out expectedUser, out expectedPassword))
+            {
+                return false;
+            }
 
-            if (key == "PH1_DBA") expectedUser = "admin_ph1";
-            else if (key == "PH2_DBA") expectedUser = "admin_ph2";
-            else if (key == "PH2_COORDINATOR") expectedUser = "DP0001";
-            else if (key == "PH2_DOCTOR") expectedUser = "BS0001";
-            else if (key == "PH2_TECHNICIAN") expectedUser = "KTV001";
-            else if (key == "PH2_PATIENT") expectedUser = "BN000001";
-
-            if (expectedUser != null && username.Equals(expectedUser, StringComparison.OrdinalIgnoreCase))
+            if (password == expectedPassword && username.Equals(expectedUser, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
@@ -489,7 +527,7 @@ namespace HospitalX.GUI
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                
+
                 // Traverse up to find the "image" folder dynamically (portable support)
                 string currentDir = baseDir;
                 for (int i = 0; i < 5; i++)

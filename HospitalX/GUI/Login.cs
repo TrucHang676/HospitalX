@@ -1,11 +1,10 @@
 ﻿using Guna.UI2.WinForms;
+using HospitalX.DAO;
+using HospitalX.GUI.PH1;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using HospitalX.GUI.PH1;
-using HospitalX.DAO;
-using Oracle.ManagedDataAccess.Client;
-using System.Data;
 
 namespace HospitalX.GUI
 {
