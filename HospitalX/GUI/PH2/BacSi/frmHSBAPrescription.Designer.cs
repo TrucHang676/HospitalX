@@ -98,7 +98,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblPatient.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.lblPatient.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblPatient.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblPatient.Location = new System.Drawing.Point(32, 90);
+            this.lblPatient.Location = new System.Drawing.Point(33, 80);
             this.lblPatient.Name = "lblPatient";
             this.lblPatient.Size = new System.Drawing.Size(520, 24);
             this.lblPatient.TabIndex = 1;
