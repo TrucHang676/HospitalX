@@ -538,7 +538,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnSave.Location = new System.Drawing.Point(944, 701);
             this.btnSave.Name = "btnSave";
             this.btnSave.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnSave.Size = new System.Drawing.Size(202, 46);
+            this.btnSave.Size = new System.Drawing.Size(165, 44);
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Lưu thay đổi";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);

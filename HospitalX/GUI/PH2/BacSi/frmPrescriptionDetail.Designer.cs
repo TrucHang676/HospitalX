@@ -86,7 +86,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.lblMeta.Location = new System.Drawing.Point(30, 62);
             this.lblMeta.Name = "lblMeta";
-            this.lblMeta.Size = new System.Drawing.Size(620, 28);
+            this.lblMeta.Size = new System.Drawing.Size(423, 28);
             this.lblMeta.TabIndex = 1;
             this.lblMeta.Text = "HSBA-0000 · Tên bệnh nhân · 01/01/2026";
             // 

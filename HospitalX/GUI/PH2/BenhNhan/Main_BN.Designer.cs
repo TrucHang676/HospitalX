@@ -51,6 +51,7 @@
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
+            this.lbl = new System.Windows.Forms.Label();
             this.pnlSidebar.SuspendLayout();
             this.pnl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).BeginInit();
@@ -169,6 +170,7 @@
             // pnl2
             // 
             this.pnl2.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.pnl2.Controls.Add(this.lbl);
             this.pnl2.Controls.Add(this.lblTenBS);
             this.pnl2.Controls.Add(this.ptbAdmin);
             this.pnl2.CustomBorderColor = System.Drawing.Color.WhiteSmoke;
@@ -420,6 +422,17 @@
             this.pnlContent.Size = new System.Drawing.Size(1128, 782);
             this.pnlContent.TabIndex = 3;
             // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbl.Location = new System.Drawing.Point(60, 10);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(100, 12);
+            this.lbl.TabIndex = 10;
+            this.lbl.Text = "Chuyên khoa thần kinh";
+            // 
             // Main_BN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -472,5 +485,6 @@
         private System.Windows.Forms.Panel pnlContent;
         private Guna.UI2.WinForms.Guna2Button btnHSCN;
         private Guna.UI2.WinForms.Guna2Button btnDV;
+        private System.Windows.Forms.Label lbl;
     }
 }
