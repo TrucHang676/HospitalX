@@ -19,6 +19,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         {
             InitializeComponent();
             flowSent.Resize += (s, e) => RenderSentCards();
+            txtContent.TextChanged += (s, e) => UpdateSendButtonState();
         }
 
         private void ucThongBao_Load(object sender, EventArgs e)
@@ -34,6 +35,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             BindDesignerLabelButtons();
             RenderSentCards();
             UpdateSelectedCount();
+            UpdateSendButtonState();
         }
 
         private void LocalizeStaticText()
@@ -120,6 +122,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
 
             UpdateLabelButtons();
+            UpdateSendButtonState();
         }
 
         private void ToggleLabel(string code)
@@ -134,6 +137,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
 
             UpdateLabelButtons();
+            UpdateSendButtonState();
         }
 
         private void UpdateLabelButtons()
@@ -149,6 +153,17 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
 
             UpdateSelectedCount();
+            UpdateSendButtonState();
+        }
+
+        private void UpdateSendButtonState()
+        {
+            bool canSend = !string.IsNullOrWhiteSpace(txtContent.Text)
+                && _selectedLabels.Count > 0;
+
+            btnSend.Visible = true;
+            btnSend.Enabled = canSend;
+            btnSend.Cursor = canSend ? Cursors.Hand : Cursors.Default;
         }
 
         private void RenderSentCards()
@@ -277,6 +292,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             txtLocation.Clear();
             _selectedLabels.Clear();
             UpdateLabelButtons();
+            UpdateSendButtonState();
             RenderSentCards();
             ShowMessage("Thông báo OLS", "Đã gửi thông báo thành công.", MessageDialogIcon.Information);
         }

@@ -25,6 +25,7 @@
             this.lblHistoryTitle = new System.Windows.Forms.Label();
             this.pnlLeft = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlLabels = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnLabelAll = new Guna.UI2.WinForms.Guna2Button();
             this.btnSend = new Guna.UI2.WinForms.Guna2Button();
             this.flowLabels = new System.Windows.Forms.FlowLayoutPanel();
             this.btnLabelT1 = new Guna.UI2.WinForms.Guna2Button();
@@ -47,7 +48,6 @@
             this.lblContent = new System.Windows.Forms.Label();
             this.lblComposeTitle = new System.Windows.Forms.Label();
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
-            this.btnLabelAll = new Guna.UI2.WinForms.Guna2Button();
             this.pnlRoot.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             this.pnlHistoryHeader.SuspendLayout();
@@ -168,13 +168,44 @@
             this.pnlLabels.Size = new System.Drawing.Size(444, 375);
             this.pnlLabels.TabIndex = 1;
             // 
+            // btnLabelAll
+            // 
+            this.btnLabelAll.BackColor = System.Drawing.Color.Transparent;
+            this.btnLabelAll.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(216)))), ((int)(((byte)(203)))));
+            this.btnLabelAll.BorderRadius = 10;
+            this.btnLabelAll.BorderThickness = 1;
+            this.btnLabelAll.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
+            this.btnLabelAll.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelAll.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(243)))), ((int)(((byte)(236)))));
+            this.btnLabelAll.CheckedState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
+            this.btnLabelAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLabelAll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
+            this.btnLabelAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnLabelAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelAll.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnLabelAll.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnLabelAll.Location = new System.Drawing.Point(27, 73);
+            this.btnLabelAll.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
+            this.btnLabelAll.Name = "btnLabelAll";
+            this.btnLabelAll.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(232)))), ((int)(((byte)(222)))));
+            this.btnLabelAll.Size = new System.Drawing.Size(179, 34);
+            this.btnLabelAll.TabIndex = 12;
+            this.btnLabelAll.Tag = "ALL";
+            this.btnLabelAll.Text = "Chọn tất cả nhóm nhận";
+            this.btnLabelAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLabelAll.TextOffset = new System.Drawing.Point(14, 0);
+            // 
             // btnSend
             // 
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSend.BackColor = System.Drawing.Color.Transparent;
+            this.btnSend.BorderColor = System.Drawing.Color.DarkGreen;
             this.btnSend.BorderRadius = 8;
-            this.btnSend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSend.BorderThickness = 2;
+            this.btnSend.DisabledState.BorderColor = System.Drawing.Color.Silver;
+            this.btnSend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(230)))), ((int)(((byte)(228)))));
+            this.btnSend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.btnSend.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnSend.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSend.ForeColor = System.Drawing.Color.White;
@@ -553,33 +584,6 @@
             this.msgDialog.Parent = null;
             this.msgDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
             this.msgDialog.Text = null;
-            // 
-            // btnLabelAll
-            // 
-            this.btnLabelAll.BackColor = System.Drawing.Color.Transparent;
-            this.btnLabelAll.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(216)))), ((int)(((byte)(203)))));
-            this.btnLabelAll.BorderRadius = 10;
-            this.btnLabelAll.BorderThickness = 1;
-            this.btnLabelAll.ButtonMode = Guna.UI2.WinForms.Enums.ButtonMode.ToogleButton;
-            this.btnLabelAll.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnLabelAll.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(243)))), ((int)(((byte)(236)))));
-            this.btnLabelAll.CheckedState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
-            this.btnLabelAll.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLabelAll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
-            this.btnLabelAll.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnLabelAll.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnLabelAll.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnLabelAll.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnLabelAll.Location = new System.Drawing.Point(27, 73);
-            this.btnLabelAll.Margin = new System.Windows.Forms.Padding(3, 3, 3, 4);
-            this.btnLabelAll.Name = "btnLabelAll";
-            this.btnLabelAll.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(232)))), ((int)(((byte)(222)))));
-            this.btnLabelAll.Size = new System.Drawing.Size(179, 34);
-            this.btnLabelAll.TabIndex = 12;
-            this.btnLabelAll.Tag = "ALL";
-            this.btnLabelAll.Text = "Chọn tất cả nhóm nhận";
-            this.btnLabelAll.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnLabelAll.TextOffset = new System.Drawing.Point(14, 0);
             // 
             // ucThongBao
             // 

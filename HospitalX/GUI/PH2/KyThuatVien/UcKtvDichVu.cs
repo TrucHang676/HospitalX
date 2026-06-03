@@ -117,9 +117,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             if (IsInDesigner()) return;
 
-            lblTitle.Visible = false;
-            lblSubtitle.Visible = false;
-
             // 2. Setup 3 premium KPI Cards
             string[] statLbls = { "TỔNG DỊCH VỤ", "CHỜ THỰC HIỆN", "HOÀN THÀNH" };
             string[] statEmojis = { "📋", "⏳", "✅" };
@@ -234,11 +231,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // Wire up event handlers to designer-generated controls
             txtSearch.TextChanged += (s, e) => FilterAndLoadGrid();
             cboStatus.SelectedIndexChanged += (s, e) => FilterAndLoadGrid();
-            
-            btnReset.Click += (s, e) => { 
-                txtSearch.Clear(); 
-                cboStatus.SelectedIndex = 0; 
-                SwitchTab(btnTabAll, "all"); 
+
+            btnReset.Click += (s, e) =>
+            {
+                txtSearch.Clear();
+                cboStatus.SelectedIndex = 0;
+                SwitchTab(btnTabAll, "all");
             };
 
             btnTabAll.Click += (s, e) => SwitchTab((Guna2Button)s, "all");
@@ -247,22 +245,22 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             // Setup dgv columns (since designer doesn't have them pre-configured)
             dgv.Columns.Clear();
-            dgv.Columns.Add("colIndex",   "STT");
-            dgv.Columns.Add("colPatient",  "Bệnh nhân");
-            dgv.Columns.Add("colService",  "Dịch vụ (LOAIDV)");
-            dgv.Columns.Add("colMaHsba",   "Mã HSBA");   // MAHSBA từ HSBA_DV
-            dgv.Columns.Add("colTime",     "Ngày DV");   // NGAYDV
-            dgv.Columns.Add("colStatus",   "Trạng thái");
-            dgv.Columns.Add("colAction",   "Thao tác");
+            dgv.Columns.Add("colIndex", "STT");
+            dgv.Columns.Add("colPatient", "Bệnh nhân");
+            dgv.Columns.Add("colService", "Dịch vụ (LOAIDV)");
+            dgv.Columns.Add("colMaHsba", "Mã HSBA");   // MAHSBA từ HSBA_DV
+            dgv.Columns.Add("colTime", "Ngày DV");   // NGAYDV
+            dgv.Columns.Add("colStatus", "Trạng thái");
+            dgv.Columns.Add("colAction", "Thao tác");
 
             // Columns widths
-            dgv.Columns["colIndex"].FillWeight   =  8;
+            dgv.Columns["colIndex"].FillWeight = 8;
             dgv.Columns["colPatient"].FillWeight = 30;
             dgv.Columns["colService"].FillWeight = 30;
-            dgv.Columns["colMaHsba"].FillWeight  = 18;
-            dgv.Columns["colTime"].FillWeight    = 18;
-            dgv.Columns["colStatus"].FillWeight  = 20;
-            dgv.Columns["colAction"].FillWeight  = 28;
+            dgv.Columns["colMaHsba"].FillWeight = 18;
+            dgv.Columns["colTime"].FillWeight = 18;
+            dgv.Columns["colStatus"].FillWeight = 20;
+            dgv.Columns["colAction"].FillWeight = 28;
 
             foreach (DataGridViewColumn col in dgv.Columns)
             {
@@ -287,7 +285,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             dgv.MouseLeave += (s, e) => { dgv.Cursor = Cursors.Default; hoveredRowIndex = -1; dgv.Invalidate(); };
 
             // Ultra-premium smooth row enter/leave hover tracking
-            dgv.CellMouseEnter += (s, e) => {
+            dgv.CellMouseEnter += (s, e) =>
+            {
                 if (e.RowIndex >= 0 && e.RowIndex != hoveredRowIndex)
                 {
                     int oldIndex = hoveredRowIndex;
@@ -296,7 +295,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     dgv.InvalidateRow(hoveredRowIndex);
                 }
             };
-            dgv.CellMouseLeave += (s, e) => {
+            dgv.CellMouseLeave += (s, e) =>
+            {
                 if (hoveredRowIndex >= 0)
                 {
                     int oldIndex = hoveredRowIndex;
@@ -414,8 +414,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             string q = txtSearch.Text.Trim().ToLowerInvariant();
             if (q.Length > 0)
             {
-                query = query.Where(x => x.Patient.ToLowerInvariant().Contains(q) || 
-                                         x.MaHsba.ToLowerInvariant().Contains(q) || 
+                query = query.Where(x => x.Patient.ToLowerInvariant().Contains(q) ||
+                                         x.MaHsba.ToLowerInvariant().Contains(q) ||
                                          x.Service.ToLowerInvariant().Contains(q));
             }
 
@@ -527,7 +527,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             }
 
             Rectangle cell = e.CellBounds;
-            
+
             // Draw ultra-premium custom background based on selected / hovered state
             bool isSelected = (e.State & DataGridViewElementStates.Selected) == DataGridViewElementStates.Selected;
             bool isHovered = e.RowIndex == hoveredRowIndex;
@@ -540,7 +540,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 e.Graphics.FillRectangle(brush, cell);
             }
-            
+
             // Draw horizontal bottom border
             using (var pen = new Pen(Color.FromArgb(238, 242, 240)))
             {
@@ -679,12 +679,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             var mousePos = dgv.PointToClient(Cursor.Position);
             int clickX = mousePos.X - cellRect.X;
 
-            string patientName  = dgv.Rows[e.RowIndex].Cells["colPatientVal"].Value.ToString();
-            string recordId     = dgv.Rows[e.RowIndex].Cells["colRecordId"].Value.ToString();   // MAHSBA
-            string serviceName  = dgv.Rows[e.RowIndex].Cells["colServiceVal"].Value.ToString();
-            string maHsba       = dgv.Rows[e.RowIndex].Cells["colMaHsba"].Value.ToString();     // MAHSBA
-            string ngayDv       = dgv.Rows[e.RowIndex].Cells["colTime"].Value.ToString();       // NGAYDV
-            string status       = dgv.Rows[e.RowIndex].Cells["colStatusVal"].Value.ToString();
+            string patientName = dgv.Rows[e.RowIndex].Cells["colPatientVal"].Value.ToString();
+            string recordId = dgv.Rows[e.RowIndex].Cells["colRecordId"].Value.ToString();   // MAHSBA
+            string serviceName = dgv.Rows[e.RowIndex].Cells["colServiceVal"].Value.ToString();
+            string maHsba = dgv.Rows[e.RowIndex].Cells["colMaHsba"].Value.ToString();     // MAHSBA
+            string ngayDv = dgv.Rows[e.RowIndex].Cells["colTime"].Value.ToString();       // NGAYDV
+            string status = dgv.Rows[e.RowIndex].Cells["colStatusVal"].Value.ToString();
 
             // Xác định click vào nút nào dựa theo toạ độ ngang X của ô cell
             if (clickX >= 10 && clickX <= 82) // Button 1: Chi tiết
@@ -765,10 +765,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             activeRecordId = id;
             activeServiceName = svc;
 
-            lblDName.Text   = name;
-            lblDId.Text     = id;
-            lblDSvc.Text    = svc;
-            lblDTime.Text   = ngayDv;
+            lblDName.Text = name;
+            lblDId.Text = id;
+            lblDSvc.Text = svc;
+            lblDTime.Text = ngayDv;
             lblDStatus.Text = status;
 
             // Hiển thị Overlay
@@ -898,7 +898,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             drawY += 28;
 
             lblDName = CreateDrawerRow(pnlDrawerBody, "Họ tên (TENBN)", "—", ref drawY);
-            lblDId   = CreateDrawerRow(pnlDrawerBody, "Mã bệnh nhân", "—", ref drawY);
+            lblDId = CreateDrawerRow(pnlDrawerBody, "Mã bệnh nhân", "—", ref drawY);
             CreateDrawerRow(pnlDrawerBody, "Ngày sinh (NGAYSINH)", "—", ref drawY);
             CreateDrawerRow(pnlDrawerBody, "Giới tính (PHAI)", "—", ref drawY);
             CreateDrawerRow(pnlDrawerBody, "CCCD", "—", ref drawY);
@@ -908,10 +908,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlDrawerBody.Controls.Add(TextLabel("THÔNG TIN DỊCH VỤ (HSBA_DV)", 24, drawY, 360, 20, 8.5F, FontStyle.Bold, Color.FromArgb(122, 149, 137)));
             drawY += 28;
 
-            lblDSvc    = CreateDrawerRow(pnlDrawerBody, "Dịch vụ (LOAIDV)", "—", ref drawY);
-            lblDTime   = CreateDrawerRow(pnlDrawerBody, "Ngày DV (NGAYDV)", "—", ref drawY);
+            lblDSvc = CreateDrawerRow(pnlDrawerBody, "Dịch vụ (LOAIDV)", "—", ref drawY);
+            lblDTime = CreateDrawerRow(pnlDrawerBody, "Ngày DV (NGAYDV)", "—", ref drawY);
             lblDStatus = CreateDrawerRow(pnlDrawerBody, "Trạng thái", "—", ref drawY);
-            lblDId     = CreateDrawerRow(pnlDrawerBody, "Mã HSBA", "—", ref drawY);
+            lblDId = CreateDrawerRow(pnlDrawerBody, "Mã HSBA", "—", ref drawY);
 
             drawY += 20;
             // Phần 3: Ghi chú bác sĩ chỉ định
@@ -945,7 +945,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             var btnSubmitKq = KtvTheme.Button("🔬 Nhập kết quả", KtvTheme.Teal, Color.White);
             btnSubmitKq.Location = new Point(24, 15);
             btnSubmitKq.Size = new Size(176, 38);
-            btnSubmitKq.Click += (s, e) => {
+            btnSubmitKq.Click += (s, e) =>
+            {
                 CloseDrawer();
                 if (Main_KTV.Instance != null)
                 {

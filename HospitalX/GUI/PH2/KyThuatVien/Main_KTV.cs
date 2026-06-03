@@ -77,7 +77,6 @@ namespace HospitalX.GUI.PH2
             control.Dock = DockStyle.Fill;
             pnlContent.Controls.Add(control);
             lblPageTitle.Text = title;
-            lblSubtitle.Text = subtitle;
         }
 
         private void ApplyDoctorSidebarLayout()
@@ -93,7 +92,7 @@ namespace HospitalX.GUI.PH2
             pnlTopbar.Height = 72;
             lblPageTitle.Location = new Point(18, 20);
             lblPageTitle.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            lblSubtitle.Visible = false;
+
             btnExit.Size = new Size(33, 32);
             btnExit.Location = new Point(pnlTopbar.Width - 50, 20);
 
