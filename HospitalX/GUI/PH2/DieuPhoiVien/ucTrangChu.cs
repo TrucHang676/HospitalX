@@ -43,7 +43,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private int _hoveredPatientRow = -1;
 
         private readonly Guna2Panel[] _kpiCards;
-        private readonly Guna2PictureBox[] _kpiIcons;
+        private readonly Label[] _kpiIcons;
         private readonly Label[] _kpiCaps;
         private readonly Label[] _kpiVals;
         private readonly Label[] _kpiSubs;
@@ -64,7 +64,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             InitializeComponent();
             DoubleBuffered = true;
             _kpiCards = new[] { pnlKpi1, pnlKpi2, pnlKpi3, pnlKpi4 };
-            _kpiIcons = new[] { ptbKpi1, ptbKpi2, ptbKpi3, ptbKpi4 };
+            _kpiIcons = new[] { lblKpi1Icon, lblKpi2Icon, lblKpi3Icon, lblKpi4Icon };
             _kpiCaps = new[] { lblKpi1Cap, lblKpi2Cap, lblKpi3Cap, lblKpi4Cap };
             _kpiVals = new[] { lblKpi1Val, lblKpi2Val, lblKpi3Val, lblKpi4Val };
             _kpiSubs = new[] { lblKpi1Sub, lblKpi2Sub, lblKpi3Sub, lblKpi4Sub };
@@ -74,7 +74,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             ConfigureCardStyles();
             SetupKpiVisuals();
-            ApplyIcons();
             SetupSectionHeaders();
             SetupQuickActions();
             SetupPatientGrid();
@@ -102,9 +101,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 card.BorderColor = Color.FromArgb(218, 232, 226);
                 card.BorderRadius = 14;
                 card.FillColor = Color.White;
-                card.Padding = new Padding(0, 4, 0, 0);
-                card.Paint -= KpiCard_Paint;
-                card.Paint += KpiCard_Paint;
+                card.Padding = Padding.Empty;
             }
 
             ArrangeKpiRow();
@@ -129,33 +126,76 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 Color.FromArgb(25, 118, 210)
             };
 
+            string[] iconTexts = { "HS", "KT", "CĐ", "OK" };
+
             Color[] iconBacks =
             {
-                Color.FromArgb(255, 249, 196),
-                Color.FromArgb(255, 248, 225),
-                Color.FromArgb(255, 243, 224),
-                Color.FromArgb(227, 242, 253)
+                Color.FromArgb(230, 244, 240),  // Light teal
+                Color.FromArgb(255, 244, 220),  // Light orange/yellow
+                Color.FromArgb(227, 242, 253),  // Light blue
+                Color.FromArgb(230, 248, 246)   // Light teal/mint
+            };
+
+            Color[] iconFores =
+            {
+                Color.FromArgb(15, 110, 86),    // Dark teal
+                Color.FromArgb(232, 168, 56),   // Dark orange/yellow
+                Color.FromArgb(30, 136, 229),   // Dark blue
+                Color.FromArgb(43, 181, 160)    // Dark teal/mint
+            };
+
+            string[] subTexts =
+            {
+                "Cần xử lý ngay",
+                "▲ 5 hồ sơ mới",
+                "Cần xử lý ngay",
+                "▲ 8% tuần này"
+            };
+
+            Color[] subBacks =
+            {
+                Color.FromArgb(253, 236, 234),  // Light red
+                Color.FromArgb(230, 244, 240),  // Light green
+                Color.FromArgb(253, 236, 234),  // Light red
+                Color.FromArgb(230, 244, 240)   // Light green
+            };
+
+            Color[] subFores =
+            {
+                Color.FromArgb(217, 79, 61),   // Dark red
+                Color.FromArgb(15, 110, 86),    // Dark green
+                Color.FromArgb(217, 79, 61),   // Dark red
+                Color.FromArgb(15, 110, 86)     // Dark green
             };
 
             for (int i = 0; i < _kpiCards.Length; i++)
             {
                 _kpiCards[i].Tag = accents[i];
-                _kpiIcons[i].FillColor = iconBacks[i];
-                _kpiIcons[i].BorderRadius = 16;
-                _kpiIcons[i].SizeMode = PictureBoxSizeMode.Zoom;
+
+                // Configure Icon Badge
+                _kpiIcons[i].Text = iconTexts[i];
+                _kpiIcons[i].Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+                _kpiIcons[i].TextAlign = ContentAlignment.MiddleCenter;
+                _kpiIcons[i].BackColor = iconBacks[i];
+                _kpiIcons[i].ForeColor = iconFores[i];
+
+                // Configure Caption (bottom description)
                 _kpiCaps[i].Font = new Font("Segoe UI Semibold", 8.75F, FontStyle.Bold);
                 _kpiCaps[i].Padding = Padding.Empty;
                 _kpiCaps[i].ForeColor = Color.FromArgb(122, 149, 137);
+
+                // Configure Value
                 _kpiVals[i].Font = new Font("Segoe UI Semibold", 22F, FontStyle.Bold);
                 _kpiVals[i].ForeColor = Color.FromArgb(24, 48, 42);
-                _kpiSubs[i].Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            }
 
-            lblKpi1Sub.Text = "Cần xử lý ngay";
-            lblKpi1Sub.ForeColor = Color.FromArgb(229, 57, 53);
-            lblKpi2Sub.ForeColor = KpiTrendGreen;
-            lblKpi4Sub.ForeColor = KpiTrendGreen;
-            lblKpi3Sub.ForeColor = Color.FromArgb(229, 57, 53);
+                // Configure Sub Badge (top-right trend)
+                _kpiSubs[i].Text = subTexts[i];
+                _kpiSubs[i].Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                _kpiSubs[i].TextAlign = ContentAlignment.MiddleCenter;
+                _kpiSubs[i].BackColor = subBacks[i];
+                _kpiSubs[i].ForeColor = subFores[i];
+                _kpiSubs[i].AutoSize = false;
+            }
         }
 
 
@@ -175,40 +215,38 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlKpiRow.Height = KpiCardHeight + 8;
         }
 
-        private static void LayoutKpiCardContents(Guna2Panel card, Guna2PictureBox icon, Label cap, Label val, Label sub)
+        private static void LayoutKpiCardContents(Guna2Panel card, Label icon, Label cap, Label val, Label sub)
         {
-            const int pad = 18;
-            const int innerTop = 14;
+            const int pad = 22;
+            const int topMargin = 20;
             int cardW = card.ClientSize.Width > 0 ? card.ClientSize.Width : card.Width;
 
-            if (icon.Name == "ptbKpi4")
-            {
-                const int targetSize = 32;
-                int offset = (KpiIconSize - targetSize) / 2;
-                icon.Location = new Point(pad + offset, innerTop + offset);
-                icon.Size = new Size(targetSize, targetSize);
-            }
-            else
-            {
-                icon.Location = new Point(pad, innerTop);
-                icon.Size = new Size(KpiIconSize, KpiIconSize);
-            }
+            // 1. Icon Badge (top-left)
+            icon.Location = new Point(pad, topMargin);
+            icon.Size = new Size(48, 42);
 
-            int capW = cardW - pad * 2;
-            cap.AutoSize = false;
-            cap.Location = new Point(pad, innerTop + KpiIconSize + 8);
-            cap.Size = new Size(capW, 20);
-            cap.TextAlign = ContentAlignment.TopLeft;
+            // 2. Trend/Status Badge (top-right)
+            sub.AutoSize = false;
+            sub.Size = new Size(110, 24);
+            sub.TextAlign = ContentAlignment.MiddleCenter;
+            sub.Location = new Point(cardW - pad - sub.Width, topMargin + 9); // center vertically with 42px icon
 
+            // 3. Value Label (middle-left)
             val.AutoSize = true;
-            val.Location = new Point(pad, cap.Bottom + 4);
+            val.Location = new Point(pad, topMargin + 42 + 8); // 20 + 42 + 8 = 70
 
-            sub.AutoSize = true;
-            sub.MaximumSize = new Size(cardW - pad * 2, 0);
+            // 4. Caption Label (bottom-left)
+            cap.AutoSize = false;
+            cap.Size = new Size(cardW - pad * 2, 20);
+            cap.TextAlign = ContentAlignment.MiddleLeft;
 
-            // Luôn đặt subtitle bên dưới giá trị (khớp với thiết kế mẫu)
-            sub.Location = new Point(pad, val.Bottom + 4);
+            // Force dynamic layout update to read val.Bottom correctly
+            val.Update();
+            cap.Location = new Point(pad, val.Bottom + 4);
+
             icon.BringToFront();
+            sub.BringToFront();
+            val.BringToFront();
             cap.BringToFront();
         }
 
@@ -263,42 +301,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlScroll.AutoScrollMinSize = new Size(0, pnlActivity.Bottom + 32);
         }
 
-        private void ApplyIcons()
-        {
-            SetKpiIcon(ptbKpi1, 8);
-            SetKpiIcon(ptbKpi2, 4);
-            SetKpiIcon(ptbKpi3, 9);
-            ptbKpi4.Image = DpvAssets.Load("buttonTick.png");
-            ptbKpi4.SizeMode = PictureBoxSizeMode.Zoom;
-            ptbKpi4.FillColor = Color.Transparent;
-        }
+
 
         private void SetupSectionHeaders()
         {
-            ptbPatientsTitleIcon.Image = DpvAssets.Load(8);
-            ptbQuickTitleIcon.Image = DpvAssets.Load(11);
-            ptbWorkloadTitleIcon.Image = DpvAssets.Load(14);
+            // Hide section title icons
+            ptbPatientsTitleIcon.Visible = false;
+            ptbQuickTitleIcon.Visible = false;
+            ptbWorkloadTitleIcon.Visible = false;
 
-            // Cập nhật tiêu đề bảng HSBA cho phù hợp với vai trò điều phối viên
+            // Reposition titles to start at X=21 for left alignment (matching content padding)
+            lblPatientsTitle.Location = new Point(21, 22);
+            lblQuickTitle.Location = new Point(21, 20);
+            lblWorkloadTitle.Location = new Point(21, 18);
+
             lblPatientsTitle.Text = "Hồ sơ cần phân công KTV";
             lblActivityTitle.Text = "Hoạt động gần đây";
-            lblActivityTitle.Location = new Point(64, 20); // Dịch chuyển sang phải nhường chỗ cho icon
-
-            if (pnlActivity.Controls["ptbActivityTitleIcon"] == null)
-            {
-                var ptbActivityTitleIcon = new Guna2PictureBox
-                {
-                    Name = "ptbActivityTitleIcon",
-                    Image = DpvAssets.Load("reminder.png"),
-                    SizeMode = PictureBoxSizeMode.Zoom,
-                    BackColor = Color.Transparent,
-                    FillColor = Color.Transparent,
-                    Size = new Size(29, 27),
-                    Location = new Point(27, 18)
-                };
-                pnlActivity.Controls.Add(ptbActivityTitleIcon);
-                ptbActivityTitleIcon.BringToFront();
-            }
+            lblActivityTitle.Location = new Point(24, 22); // Bell icon is removed, so align label text to the left
         }
 
         private void LayoutMiddleSection()
@@ -418,20 +437,33 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void SetupQuickActions()
         {
-            WireQuickButton(btnQuick1, "Thêm bệnh nhân", "Đăng ký mới", 12);
-            WireQuickButton(btnQuick2, "Tạo HSBA", "Hồ sơ bệnh án", 4);
-            WireQuickButton(btnQuick3, "Phân công KTV", "Chẩn đoán hỗ trợ", 5);
-            WireQuickButton(btnQuick4, "Thông báo", "4 chưa đọc", 6);
+            WireQuickButton(btnQuick1, "Thêm bệnh nhân", "Đăng ký mới", 12, Color.FromArgb(15, 110, 86));    // Green
+            WireQuickButton(btnQuick2, "Tạo HSBA", "Hồ sơ bệnh án", 4, Color.FromArgb(255, 179, 0));       // Amber
+            WireQuickButton(btnQuick3, "Phân công KTV", "Chẩn đoán hỗ trợ", 5, Color.FromArgb(25, 118, 210)); // Blue
+            WireQuickButton(btnQuick4, "Thông báo", "4 chưa đọc", 6, Color.FromArgb(229, 57, 53));        // Red
         }
 
-        private static void WireQuickButton(Guna2Button button, string title, string subtitle, int iconIndex)
+        private static void WireQuickButton(Guna2Button button, string title, string subtitle, int iconIndex, Color accentColor)
         {
-            DpvAssets.ApplyButtonImage(button, iconIndex, 28);
-            button.ImageOffset = new Point(12, 0);
-            button.Tag = new object[] { title, subtitle, iconIndex };
+            button.Image = null; // Remove icons from buttons
+            button.Tag = new object[] { title, subtitle, iconIndex, accentColor };
             button.Text = string.Empty;
-            button.HoverState.FillColor = Color.FromArgb(230, 244, 240);
-            button.HoverState.BorderColor = Color.FromArgb(15, 110, 86);
+
+            // Dynamically assign matching light hover background based on accent color
+            Color hoverFill;
+            if (accentColor == Color.FromArgb(15, 110, 86))      // Green
+                hoverFill = Color.FromArgb(230, 244, 240);
+            else if (accentColor == Color.FromArgb(255, 179, 0)) // Amber
+                hoverFill = Color.FromArgb(255, 248, 225);
+            else if (accentColor == Color.FromArgb(25, 118, 210)) // Blue
+                hoverFill = Color.FromArgb(227, 242, 253);
+            else if (accentColor == Color.FromArgb(229, 57, 53))  // Red
+                hoverFill = Color.FromArgb(253, 236, 234);
+            else
+                hoverFill = Color.FromArgb(230, 244, 240);
+
+            button.HoverState.FillColor = hoverFill;
+            button.HoverState.BorderColor = accentColor;
             button.Paint -= QuickButton_Paint;
             button.Paint += QuickButton_Paint;
             button.Invalidate();
@@ -444,7 +476,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             string title = tag[0].ToString();
             string subtitle = tag[1].ToString();
-            const int textLeft = 54;
+            
+            // Draw left accent color bar inside the button's rounded corners (BorderRadius = 10)
+            if (tag.Length >= 4 && tag[3] is Color accentColor)
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var path = GetRoundedRectPath(new RectangleF(0, 0, button.Width, button.Height), 10))
+                {
+                    e.Graphics.SetClip(path);
+                    using (var brush = new SolidBrush(accentColor))
+                    {
+                        e.Graphics.FillRectangle(brush, 0, 0, 4, button.Height);
+                    }
+                    e.Graphics.ResetClip();
+                }
+            }
+
+            const int textLeft = 24; // Shift text to X=24 to leave padding after the 4px accent line!
             int textAreaW = button.Width - textLeft - 8;
 
             // Đo chiều cao title có word-wrap
@@ -464,11 +512,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 TextFormatFlags.Left | TextFormatFlags.NoPadding);
         }
 
-        private static void SetKpiIcon(Guna2PictureBox box, int index)
-        {
-            box.Image = DpvAssets.Load(index);
-            box.SizeMode = PictureBoxSizeMode.Zoom;
-        }
+
 
         private void SetupPatientGrid()
         {
@@ -898,16 +942,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             switch (status)
             {
                 case "Chờ phân công":
-                    back = Color.FromArgb(253, 236, 234);
-                    fore = dot = Color.FromArgb(229, 57, 53);
+                    back = Color.FromArgb(255, 247, 230);
+                    fore = dot = Color.FromArgb(240, 165, 0); // Orange/Yellow
                     break;
                 case "Đã phân công":
-                    back = Color.FromArgb(230, 244, 240);
-                    fore = dot = Color.FromArgb(15, 110, 86);
+                    back = Color.FromArgb(232, 240, 251);
+                    fore = dot = Color.FromArgb(45, 125, 210); // Blue
                     break;
                 case "Hoàn thành":
-                    back = Color.FromArgb(227, 242, 253);
-                    fore = dot = Color.FromArgb(25, 118, 210);
+                    back = Color.FromArgb(230, 244, 240);
+                    fore = dot = Color.FromArgb(15, 110, 86);  // Teal/Green
                     break;
             }
         }
