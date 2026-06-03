@@ -129,7 +129,7 @@ namespace HospitalX.GUI
             this.guna2BorderlessForm1.BorderRadius = 18;
             this.guna2BorderlessForm1.ContainerControl = this;
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
-            this.guna2BorderlessForm1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(120)))), ((int)(((byte)(116)))));
+            this.guna2BorderlessForm1.ShadowColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
             this.guna2BorderlessForm1.TransparentWhileDrag = true;
             
             // 
@@ -145,7 +145,7 @@ namespace HospitalX.GUI
             this.pnlShell.FillColor = System.Drawing.Color.White;
             this.pnlShell.Location = new System.Drawing.Point(18, 18);
             this.pnlShell.Name = "pnlShell";
-            this.pnlShell.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.pnlShell.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
             this.pnlShell.ShadowDecoration.Depth = 12;
             this.pnlShell.ShadowDecoration.Enabled = true;
             this.pnlShell.Size = new System.Drawing.Size(1164, 684);
@@ -178,8 +178,8 @@ namespace HospitalX.GUI
             
             // Apply design-time green gradient so it renders perfectly in Visual Studio Designer!
             this.pnlLeft.BackColor = System.Drawing.Color.Transparent;
-            this.pnlLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.pnlLeft.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(28)))), ((int)(((byte)(24)))));
+            this.pnlLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(76)))), ((int)(((byte)(145)))));
+            this.pnlLeft.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(65)))), ((int)(((byte)(50)))));
             this.pnlLeft.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
             
             this.pnlLeft.Location = new System.Drawing.Point(0, 0);
@@ -192,7 +192,7 @@ namespace HospitalX.GUI
             // 
             this.lblFooter.BackColor = System.Drawing.Color.Transparent;
             this.lblFooter.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblFooter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(224)))), ((int)(((byte)(212)))));
+            this.lblFooter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(210)))), ((int)(((byte)(225)))));
             this.lblFooter.Location = new System.Drawing.Point(44, 610);
             this.lblFooter.Name = "lblFooter";
             this.lblFooter.Size = new System.Drawing.Size(300, 24);
@@ -204,7 +204,7 @@ namespace HospitalX.GUI
             // 
             this.lblLeftNote.BackColor = System.Drawing.Color.Transparent;
             this.lblLeftNote.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.lblLeftNote.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(241)))), ((int)(((byte)(236)))));
+            this.lblLeftNote.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(235)))), ((int)(((byte)(245)))));
             this.lblLeftNote.Location = new System.Drawing.Point(44, 410);
             this.lblLeftNote.Name = "lblLeftNote";
             this.lblLeftNote.Size = new System.Drawing.Size(300, 100);
@@ -216,8 +216,8 @@ namespace HospitalX.GUI
             // 
             this.pnlLeftLine.BackColor = System.Drawing.Color.Transparent;
             this.pnlLeftLine.BorderRadius = 2;
-            this.pnlLeftLine.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(243)))), ((int)(((byte)(208))))); // Bright Mint Teal (#A7F3D0)
-            this.pnlLeftLine.FillColor2 = System.Drawing.Color.Transparent; // Fade out to the right
+            this.pnlLeftLine.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(189)))), ((int)(((byte)(248))))); // sky blue (#38BDF8)
+            this.pnlLeftLine.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(211)))), ((int)(((byte)(153))))); // mint green (#34D399)
             this.pnlLeftLine.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
             this.pnlLeftLine.Location = new System.Drawing.Point(49, 380);
             this.pnlLeftLine.Name = "pnlLeftLine";
@@ -275,7 +275,7 @@ namespace HospitalX.GUI
             this.pnlRight.Controls.Add(this.lblPh1Caption);
             this.pnlRight.Controls.Add(this.lblRightSub);
             this.pnlRight.Controls.Add(this.lblRightTitle);
-            this.pnlRight.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.pnlRight.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this.pnlRight.Location = new System.Drawing.Point(380, 0);
             this.pnlRight.Name = "pnlRight";
             this.pnlRight.Size = new System.Drawing.Size(784, 684);
@@ -297,7 +297,7 @@ namespace HospitalX.GUI
             // pnlDot1
             // 
             this.pnlDot1.BorderRadius = 4;
-            this.pnlDot1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(225)))), ((int)(((byte)(219)))));
+            this.pnlDot1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(74)))), ((int)(((byte)(132)))));
             this.pnlDot1.Location = new System.Drawing.Point(8, 2);
             this.pnlDot1.Name = "pnlDot1";
             this.pnlDot1.Size = new System.Drawing.Size(8, 8);
@@ -307,7 +307,7 @@ namespace HospitalX.GUI
             // pnlDot2
             // 
             this.pnlDot2.BorderRadius = 4;
-            this.pnlDot2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(225)))), ((int)(((byte)(219)))));
+            this.pnlDot2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(163)))), ((int)(((byte)(137)))));
             this.pnlDot2.Location = new System.Drawing.Point(24, 2);
             this.pnlDot2.Name = "pnlDot2";
             this.pnlDot2.Size = new System.Drawing.Size(8, 8);
@@ -317,7 +317,7 @@ namespace HospitalX.GUI
             // pnlDot3
             // 
             this.pnlDot3.BorderRadius = 4;
-            this.pnlDot3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.pnlDot3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(116)))), ((int)(((byte)(91)))));
             this.pnlDot3.Location = new System.Drawing.Point(40, 2);
             this.pnlDot3.Name = "pnlDot3";
             this.pnlDot3.Size = new System.Drawing.Size(8, 8);
@@ -339,7 +339,7 @@ namespace HospitalX.GUI
             this.btnPh1Dba.Location = new System.Drawing.Point(64, 188);
             this.btnPh1Dba.Name = "btnPh1Dba";
             this.btnPh1Dba.ShadowDecoration.BorderRadius = 12;
-            this.btnPh1Dba.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.btnPh1Dba.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
             this.btnPh1Dba.ShadowDecoration.Depth = 6;
             this.btnPh1Dba.ShadowDecoration.Enabled = true;
             this.btnPh1Dba.Size = new System.Drawing.Size(656, 88);
@@ -429,7 +429,7 @@ namespace HospitalX.GUI
             this.btnPh2Dba.Location = new System.Drawing.Point(64, 338);
             this.btnPh2Dba.Name = "btnPh2Dba";
             this.btnPh2Dba.ShadowDecoration.BorderRadius = 12;
-            this.btnPh2Dba.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.btnPh2Dba.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
             this.btnPh2Dba.ShadowDecoration.Depth = 6;
             this.btnPh2Dba.ShadowDecoration.Enabled = true;
             this.btnPh2Dba.Size = new System.Drawing.Size(316, 88);
@@ -508,7 +508,7 @@ namespace HospitalX.GUI
             this.btnPh2Coordinator.Location = new System.Drawing.Point(404, 338);
             this.btnPh2Coordinator.Name = "btnPh2Coordinator";
             this.btnPh2Coordinator.ShadowDecoration.BorderRadius = 12;
-            this.btnPh2Coordinator.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.btnPh2Coordinator.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
             this.btnPh2Coordinator.ShadowDecoration.Depth = 6;
             this.btnPh2Coordinator.ShadowDecoration.Enabled = true;
             this.btnPh2Coordinator.Size = new System.Drawing.Size(316, 88);
@@ -587,7 +587,7 @@ namespace HospitalX.GUI
             this.btnPh2Doctor.Location = new System.Drawing.Point(64, 450);
             this.btnPh2Doctor.Name = "btnPh2Doctor";
             this.btnPh2Doctor.ShadowDecoration.BorderRadius = 12;
-            this.btnPh2Doctor.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.btnPh2Doctor.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
             this.btnPh2Doctor.ShadowDecoration.Depth = 6;
             this.btnPh2Doctor.ShadowDecoration.Enabled = true;
             this.btnPh2Doctor.Size = new System.Drawing.Size(316, 88);
@@ -666,7 +666,7 @@ namespace HospitalX.GUI
             this.btnPh2Technician.Location = new System.Drawing.Point(404, 450);
             this.btnPh2Technician.Name = "btnPh2Technician";
             this.btnPh2Technician.ShadowDecoration.BorderRadius = 12;
-            this.btnPh2Technician.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.btnPh2Technician.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
             this.btnPh2Technician.ShadowDecoration.Depth = 6;
             this.btnPh2Technician.ShadowDecoration.Enabled = true;
             this.btnPh2Technician.Size = new System.Drawing.Size(316, 88);
@@ -745,7 +745,7 @@ namespace HospitalX.GUI
             this.btnPh2Patient.Location = new System.Drawing.Point(64, 562);
             this.btnPh2Patient.Name = "btnPh2Patient";
             this.btnPh2Patient.ShadowDecoration.BorderRadius = 12;
-            this.btnPh2Patient.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(194)))), ((int)(((byte)(188)))));
+            this.btnPh2Patient.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
             this.btnPh2Patient.ShadowDecoration.Depth = 6;
             this.btnPh2Patient.ShadowDecoration.Enabled = true;
             this.btnPh2Patient.Size = new System.Drawing.Size(316, 88);
@@ -838,7 +838,7 @@ namespace HospitalX.GUI
             // 
             this.lblRightSub.BackColor = System.Drawing.Color.Transparent;
             this.lblRightSub.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblRightSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblRightSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(115)))), ((int)(((byte)(130)))), ((int)(((byte)(150)))));
             this.lblRightSub.Location = new System.Drawing.Point(64, 100);
             this.lblRightSub.Name = "lblRightSub";
             this.lblRightSub.Size = new System.Drawing.Size(600, 30);

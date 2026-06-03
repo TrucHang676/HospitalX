@@ -6,6 +6,8 @@ namespace HospitalX.GUI
 {
     public partial class RoleSelection : Form
     {
+        private System.Collections.Generic.List<Action> _resetHoverActions = new System.Collections.Generic.List<Action>();
+
         public RoleSelection()
         {
             InitializeComponent();
@@ -23,10 +25,14 @@ namespace HospitalX.GUI
             }
             else
             {
-                // Fallback logo drawing (white cross inside rounded green circle)
+                // Fallback logo drawing (white cross inside rounded gradient blue-green circle)
                 picLeftLogo.Paint += (s, e) => {
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    using (var brush = new SolidBrush(Color.FromArgb(45, 150, 112)))
+                    using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                        new Point(0, 0),
+                        new Point(picLeftLogo.Width, picLeftLogo.Height),
+                        Ph1Color,
+                        Ph2Color))
                     {
                         e.Graphics.FillEllipse(brush, 2, 2, picLeftLogo.Width - 4, picLeftLogo.Height - 4);
                     }
@@ -53,6 +59,9 @@ namespace HospitalX.GUI
                     e.Graphics.DrawEllipse(pen, -50, 50, 580, 580);
                 }
             };
+
+            // Setup title color (premium slate-900 near-black)
+            lblRightTitle.ForeColor = Color.FromArgb(15, 23, 42);
 
             // Setup icons: We will draw flat vector icons dynamically inside paint handlers
         }
@@ -246,7 +255,7 @@ namespace HospitalX.GUI
                     panel.FillColor = defaultFill;
                     panel.Location = originalLoc;
                     panel.ShadowDecoration.Depth = 6;
-                    panel.ShadowDecoration.Color = Color.FromArgb(174, 194, 188);
+                    panel.ShadowDecoration.Color = Color.FromArgb(160, 180, 200);
                     
                     if (accent != null)
                     {
@@ -300,6 +309,12 @@ namespace HospitalX.GUI
 
             // Apply recursively to all child controls inside panel
             AttachHoverRecursively(panel, onMouseEnter, onMouseLeave, onClick);
+
+            // Register reset hover action for form activation/back navigation
+            _resetHoverActions.Add(() => {
+                isHovered = false;
+                updateState();
+            });
         }
 
         private void AttachHoverRecursively(Control parent, EventHandler onMouseEnter, EventHandler onMouseLeave, Action onClick)
@@ -371,6 +386,11 @@ namespace HospitalX.GUI
 
             if (!IsDisposed)
             {
+                // Reset all hover states to default to prevent stuck hover styles when returning
+                foreach (var resetAction in _resetHoverActions)
+                {
+                    resetAction();
+                }
                 Show();
             }
         }
