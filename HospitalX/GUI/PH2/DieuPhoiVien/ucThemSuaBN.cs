@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -238,7 +238,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             var main = form as Main_DPV;
             if (main != null)
             {
-                var controls = main.Controls.Find("lblHeaderTitle", true);
+                var controls = main.Controls.Find("lblPageTitle", true);
                 if (controls.Length > 0 && controls[0] is Label lbl)
                 {
                     lbl.Text = title;

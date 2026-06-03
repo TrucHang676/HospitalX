@@ -41,7 +41,6 @@ namespace HospitalX.GUI.PH2
             this.pnlLogo = new Guna.UI2.WinForms.Guna2Panel();
             this.ptbChuThap = new Guna.UI2.WinForms.Guna2PictureBox();
             this.pnlTopbar = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblBreadcrumb = new System.Windows.Forms.Label();
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.pnlContent = new System.Windows.Forms.Panel();
@@ -442,7 +441,6 @@ namespace HospitalX.GUI.PH2
             this.pnlTopbar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlTopbar.BackColor = System.Drawing.Color.White;
-            this.pnlTopbar.Controls.Add(this.lblBreadcrumb);
             this.pnlTopbar.Controls.Add(this.lblPageTitle);
             this.pnlTopbar.Controls.Add(this.btnExit);
             this.pnlTopbar.FillColor = System.Drawing.Color.White;
@@ -451,18 +449,6 @@ namespace HospitalX.GUI.PH2
             this.pnlTopbar.Name = "pnlTopbar";
             this.pnlTopbar.Size = new System.Drawing.Size(1507, 65);
             this.pnlTopbar.TabIndex = 1;
-            // 
-            // lblBreadcrumb
-            // 
-            this.lblBreadcrumb.AutoSize = true;
-            this.lblBreadcrumb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBreadcrumb.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblBreadcrumb.Location = new System.Drawing.Point(180, 22);
-            this.lblBreadcrumb.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblBreadcrumb.Name = "lblBreadcrumb";
-            this.lblBreadcrumb.Size = new System.Drawing.Size(116, 25);
-            this.lblBreadcrumb.TabIndex = 2;
-            this.lblBreadcrumb.Text = "/ Dashboard";
             // 
             // lblPageTitle
             // 
@@ -528,7 +514,6 @@ namespace HospitalX.GUI.PH2
             this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).EndInit();
             this.pnlTopbar.ResumeLayout(false);
-            this.pnlTopbar.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -559,7 +544,6 @@ namespace HospitalX.GUI.PH2
         private Guna.UI2.WinForms.Guna2Panel pnlTopbar;
         private Guna.UI2.WinForms.Guna2ControlBox btnExit;
         private System.Windows.Forms.Label lblPageTitle;
-        private System.Windows.Forms.Label lblBreadcrumb;
         private System.Windows.Forms.Panel pnlContent;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblHospital;
         private Guna.UI2.WinForms.Guna2Button btnLogout;

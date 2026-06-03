@@ -26,7 +26,6 @@ namespace HospitalX.GUI.PH2
         private void Main_DPV_Load(object sender, EventArgs e)
         {
             NavigateToDashboard();
-            RefreshHeaderLayout();
         }
 
         private void ApplySharedBranding()
@@ -92,21 +91,6 @@ namespace HospitalX.GUI.PH2
         {
             lblPageTitle.AutoSize = true;
             lblPageTitle.Location = new Point(24, 10);
-
-            lblBreadcrumb.AutoSize = true;
-            lblBreadcrumb.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
-            lblBreadcrumb.ForeColor = Color.FromArgb(122, 149, 137);
-        }
-
-        private void RefreshHeaderLayout()
-        {
-            using (Graphics g = lblPageTitle.CreateGraphics())
-            {
-                SizeF titleSize = g.MeasureString(lblPageTitle.Text, lblPageTitle.Font);
-                lblBreadcrumb.Location = new Point(
-                    lblPageTitle.Left + (int)Math.Ceiling(titleSize.Width) + 8,
-                    lblPageTitle.Top + 12);
-            }
         }
 
         private static void StyleNavButton(Guna2Button btn)
@@ -210,13 +194,10 @@ namespace HospitalX.GUI.PH2
             var old = pnlContent.Controls.Count > 0 ? pnlContent.Controls[0] : null;
             pnlContent.Controls.Clear();
             old?.Dispose();
+            lblPageTitle.Text = title;
             control.Dock = DockStyle.Fill;
             pnlContent.Controls.Add(control);
-            lblPageTitle.Text = title;
-            lblBreadcrumb.Text = breadcrumb;
-            lblBreadcrumb.Visible = !string.IsNullOrEmpty(breadcrumb);
-            RefreshHeaderLayout();
-
+ 
             // Hide action buttons on the Patient List page (ucDanhSachBN)
             if (btnThemBN != null) btnThemBN.Visible = false;
             if (btnNotif != null) btnNotif.Visible = false;
