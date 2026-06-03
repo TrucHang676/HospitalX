@@ -33,7 +33,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblNameTitle = new System.Windows.Forms.Label();
             this.txtServiceName = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblNewTitle = new System.Windows.Forms.Label();
-            this.btnClose = new Guna.UI2.WinForms.Guna2Button();
             this.btnAdd = new Guna.UI2.WinForms.Guna2Button();
             this.pnlHeader.SuspendLayout();
             this.pnlCurrent.SuspendLayout();
@@ -257,40 +256,20 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblNewTitle.TabIndex = 0;
             this.lblNewTitle.Text = "Dịch vụ mới";
             // 
-            // btnClose
-            // 
-            this.btnClose.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.btnClose.BorderRadius = 8;
-            this.btnClose.BorderThickness = 1;
-            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.FillColor = System.Drawing.Color.White;
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.btnClose.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(236)))), ((int)(((byte)(234)))));
-            this.btnClose.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnClose.Location = new System.Drawing.Point(1085, 747);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnClose.Size = new System.Drawing.Size(165, 44);
-            this.btnClose.TabIndex = 4;
-            this.btnClose.Text = "Đóng";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
             // btnAdd
             // 
             this.btnAdd.BorderRadius = 8;
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAdd.DefaultAutoSize = true;
             this.btnAdd.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
             this.btnAdd.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.btnAdd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnAdd.Location = new System.Drawing.Point(888, 747);
+            this.btnAdd.Location = new System.Drawing.Point(1085, 741);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
-            this.btnAdd.Size = new System.Drawing.Size(128, 31);
+            this.btnAdd.Size = new System.Drawing.Size(165, 44);
             this.btnAdd.TabIndex = 3;
             this.btnAdd.Text = "Thêm dịch vụ";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -301,7 +280,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.ClientSize = new System.Drawing.Size(1277, 840);
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.pnlNew);
             this.Controls.Add(this.pnlCurrent);
@@ -318,7 +296,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlNew.ResumeLayout(false);
             this.pnlNew.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -340,6 +317,5 @@ namespace HospitalX.GUI.PH2.BacSi
         private System.Windows.Forms.Label lblNoteTitle;
         private Guna.UI2.WinForms.Guna2TextBox txtServiceNote;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
-        private Guna.UI2.WinForms.Guna2Button btnClose;
     }
 }

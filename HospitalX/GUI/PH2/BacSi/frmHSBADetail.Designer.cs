@@ -455,9 +455,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblClinicalTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblClinicalTitle.Location = new System.Drawing.Point(29, 20);
             this.lblClinicalTitle.Name = "lblClinicalTitle";
-            this.lblClinicalTitle.Size = new System.Drawing.Size(141, 20);
+            this.lblClinicalTitle.Size = new System.Drawing.Size(157, 20);
             this.lblClinicalTitle.TabIndex = 0;
-            this.lblClinicalTitle.Text = "Chẩn đoán & điều trị";
+            this.lblClinicalTitle.Text = "Chẩn đoán và điều trị";
             // 
             // pnlLists
             // 
@@ -508,9 +508,9 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblRxTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblRxTitle.Location = new System.Drawing.Point(427, 18);
             this.lblRxTitle.Name = "lblRxTitle";
-            this.lblRxTitle.Size = new System.Drawing.Size(89, 19);
+            this.lblRxTitle.Size = new System.Drawing.Size(130, 19);
             this.lblRxTitle.TabIndex = 1;
-            this.lblRxTitle.Text = "Đơn hiện tại";
+            this.lblRxTitle.Text = "Đơn thuốc hiện tại";
             // 
             // lblServiceTitle
             // 

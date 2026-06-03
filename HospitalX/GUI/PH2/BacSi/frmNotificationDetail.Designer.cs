@@ -72,7 +72,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblSender.BackColor = System.Drawing.Color.Transparent;
             this.lblSender.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblSender.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblSender.Location = new System.Drawing.Point(30, 96);
+            this.lblSender.Location = new System.Drawing.Point(30, 92);
             this.lblSender.Name = "lblSender";
             this.lblSender.Size = new System.Drawing.Size(620, 24);
             this.lblSender.TabIndex = 2;
