@@ -16,8 +16,8 @@ namespace HospitalX.GUI.PH2.BacSi
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
@@ -131,7 +131,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlBody.FillColor = System.Drawing.Color.White;
             this.pnlBody.Location = new System.Drawing.Point(18, 150);
             this.pnlBody.Name = "pnlBody";
-            this.pnlBody.Size = new System.Drawing.Size(884, 413);
+            this.pnlBody.Size = new System.Drawing.Size(884, 461);
             this.pnlBody.TabIndex = 1;
             // 
             // btnNewMedicine
@@ -156,13 +156,19 @@ namespace HospitalX.GUI.PH2.BacSi
             // btnDelete
             // 
             this.btnDelete.BackColor = System.Drawing.Color.Transparent;
+            this.btnDelete.BorderColor = System.Drawing.Color.Maroon;
             this.btnDelete.BorderRadius = 8;
-            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnDelete.BorderThickness = 1;
+            this.btnDelete.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnDelete.DefaultAutoSize = true;
+            this.btnDelete.DisabledState.BorderColor = System.Drawing.Color.Silver;
+            this.btnDelete.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.btnDelete.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.btnDelete.Enabled = false;
             this.btnDelete.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(765, 323);
+            this.btnDelete.Location = new System.Drawing.Point(545, 389);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(52, 27);
             this.btnDelete.TabIndex = 8;
@@ -175,13 +181,17 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnUpdate.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnUpdate.BorderRadius = 8;
             this.btnUpdate.BorderThickness = 1;
-            this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnUpdate.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnUpdate.DefaultAutoSize = true;
+            this.btnUpdate.DisabledState.BorderColor = System.Drawing.Color.Silver;
+            this.btnUpdate.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.btnUpdate.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.btnUpdate.Enabled = false;
             this.btnUpdate.FillColor = System.Drawing.Color.White;
             this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnUpdate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnUpdate.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnUpdate.Location = new System.Drawing.Point(750, 322);
+            this.btnUpdate.Location = new System.Drawing.Point(411, 389);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(81, 27);
             this.btnUpdate.TabIndex = 7;
@@ -191,14 +201,20 @@ namespace HospitalX.GUI.PH2.BacSi
             // btnAdd
             // 
             this.btnAdd.BackColor = System.Drawing.Color.Transparent;
+            this.btnAdd.BorderColor = System.Drawing.Color.DarkGreen;
             this.btnAdd.BorderRadius = 8;
-            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdd.BorderThickness = 1;
+            this.btnAdd.Cursor = System.Windows.Forms.Cursors.Default;
             this.btnAdd.DefaultAutoSize = true;
+            this.btnAdd.DisabledState.BorderColor = System.Drawing.Color.Silver;
+            this.btnAdd.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
+            this.btnAdd.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.btnAdd.Enabled = false;
             this.btnAdd.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
             this.btnAdd.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnAdd.Location = new System.Drawing.Point(741, 323);
+            this.btnAdd.Location = new System.Drawing.Point(251, 389);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(99, 27);
             this.btnAdd.TabIndex = 6;
@@ -217,11 +233,11 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtDose.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtDose.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtDose.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.txtDose.Location = new System.Drawing.Point(427, 320);
+            this.txtDose.Location = new System.Drawing.Point(451, 320);
             this.txtDose.Name = "txtDose";
             this.txtDose.PlaceholderText = "Liều lượng";
             this.txtDose.SelectedText = "";
-            this.txtDose.Size = new System.Drawing.Size(243, 38);
+            this.txtDose.Size = new System.Drawing.Size(411, 38);
             this.txtDose.TabIndex = 2;
             // 
             // txtMedicineName
@@ -240,7 +256,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtMedicineName.Name = "txtMedicineName";
             this.txtMedicineName.PlaceholderText = "Tên thuốc";
             this.txtMedicineName.SelectedText = "";
-            this.txtMedicineName.Size = new System.Drawing.Size(390, 38);
+            this.txtMedicineName.Size = new System.Drawing.Size(407, 38);
             this.txtMedicineName.TabIndex = 1;
             // 
             // dgvDrugs
@@ -252,25 +268,25 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dgvDrugs.BackgroundColor = System.Drawing.Color.White;
             this.dgvDrugs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvDrugs.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.dgvDrugs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.dgvDrugs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvDrugs.ColumnHeadersHeight = 38;
             this.dgvDrugs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colName,
             this.colDose});
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDrugs.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDrugs.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvDrugs.EnableHeadersVisualStyles = false;
             this.dgvDrugs.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
             this.dgvDrugs.Location = new System.Drawing.Point(22, 22);
@@ -301,7 +317,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(920, 588);
+            this.ClientSize = new System.Drawing.Size(920, 635);
             this.Controls.Add(this.pnlBody);
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);

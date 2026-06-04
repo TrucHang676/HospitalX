@@ -15,14 +15,11 @@
 
         private void InitializeComponent()
         {
-            // Main scroll container
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucTaoHSBA));
             this.pnlScroll = new Guna.UI2.WinForms.Guna2Panel();
-
-            // Steps indicator
             this.pnlSteps = new Guna.UI2.WinForms.Guna2Panel();
-
-            // Step 1 — Patient search
             this.pnlStep1Card = new Guna.UI2.WinForms.Guna2Panel();
+            this.ptbStep1Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblStep1Title = new System.Windows.Forms.Label();
             this.txtSearchBN = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnSearchBN = new Guna.UI2.WinForms.Guna2Button();
@@ -31,8 +28,6 @@
             this.lblBNName = new System.Windows.Forms.Label();
             this.lblBNMeta = new System.Windows.Forms.Label();
             this.btnChangeBN = new Guna.UI2.WinForms.Guna2Button();
-
-            // Step 2 — HSBA info
             this.pnlStep2Card = new Guna.UI2.WinForms.Guna2Panel();
             this.lblStep2Title = new System.Windows.Forms.Label();
             this.lblMaHSBA = new System.Windows.Forms.Label();
@@ -45,48 +40,33 @@
             this.txtDieuTri = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblKetLuan = new System.Windows.Forms.Label();
             this.txtKetLuan = new Guna.UI2.WinForms.Guna2TextBox();
-
-            // Step 3 — Doctor assignment
             this.pnlStep3Card = new Guna.UI2.WinForms.Guna2Panel();
             this.lblStep3Title = new System.Windows.Forms.Label();
             this.lblKhoaDT = new System.Windows.Forms.Label();
             this.cboKhoaDT = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblChonBS = new System.Windows.Forms.Label();
             this.pnlDoctorGrid = new Guna.UI2.WinForms.Guna2Panel();
-
-            // Actions footer
             this.pnlActionsCard = new Guna.UI2.WinForms.Guna2Panel();
             this.lblDisclaimer = new System.Windows.Forms.Label();
             this.btnCreateHSBA = new Guna.UI2.WinForms.Guna2Button();
-
-            // Right side panels
             this.pnlSummaryCard = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlSummaryHeader = new Guna.UI2.WinForms.Guna2Panel();
             this.lblSummaryHeaderText = new System.Windows.Forms.Label();
             this.pnlSummaryBody = new Guna.UI2.WinForms.Guna2Panel();
-
             this.pnlPermCard = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlPermHeader = new Guna.UI2.WinForms.Guna2Panel();
+            this.ptbPermHeaderIcon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblPermHeaderText = new System.Windows.Forms.Label();
             this.pnlPermBody = new Guna.UI2.WinForms.Guna2Panel();
-
             this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
-            this.ptbStep1Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbStep2Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbStep3Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbSummaryHeaderIcon = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.ptbPermHeaderIcon = new Guna.UI2.WinForms.Guna2PictureBox();
- 
             this.pnlScroll.SuspendLayout();
-            this.pnlSteps.SuspendLayout();
             this.pnlStep1Card.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbStep1Icon)).BeginInit();
             this.pnlPatientFound.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBNAvatar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbStep1Icon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbSummaryHeaderIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbPermHeaderIcon)).BeginInit();
             this.pnlStep2Card.SuspendLayout();
             this.pnlStep3Card.SuspendLayout();
             this.pnlActionsCard.SuspendLayout();
@@ -94,185 +74,206 @@
             this.pnlSummaryHeader.SuspendLayout();
             this.pnlPermCard.SuspendLayout();
             this.pnlPermHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbPermHeaderIcon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbSummaryHeaderIcon)).BeginInit();
             this.SuspendLayout();
-
-            // Colors
-            var teal = System.Drawing.Color.FromArgb(15, 110, 86);
-            var bgColor = System.Drawing.Color.FromArgb(244, 247, 246);
-            var cardBorder = System.Drawing.Color.FromArgb(218, 232, 226);
-            var labelColor = System.Drawing.Color.FromArgb(122, 149, 137);
-            var inputFore = System.Drawing.Color.FromArgb(24, 48, 42);
-            var inputBg = System.Drawing.Color.FromArgb(247, 249, 248);
-            var tealLight = System.Drawing.Color.FromArgb(230, 243, 239);
-
-            // =============================================
+            // 
             // pnlScroll
-            // =============================================
+            // 
             this.pnlScroll.AutoScroll = true;
             this.pnlScroll.AutoScrollMargin = new System.Drawing.Size(0, 40);
-            this.pnlScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlScroll.FillColor = bgColor;
-            this.pnlScroll.Location = new System.Drawing.Point(0, 0);
-            this.pnlScroll.Name = "pnlScroll";
-            this.pnlScroll.Size = new System.Drawing.Size(1370, 850);
-            this.pnlScroll.TabIndex = 0;
             this.pnlScroll.Controls.Add(this.pnlSteps);
             this.pnlScroll.Controls.Add(this.pnlStep1Card);
             this.pnlScroll.Controls.Add(this.pnlStep2Card);
             this.pnlScroll.Controls.Add(this.pnlStep3Card);
             this.pnlScroll.Controls.Add(this.pnlActionsCard);
             this.pnlScroll.Controls.Add(this.pnlSummaryCard);
-
-            // =============================================
-            // pnlSteps — Steps indicator bar
-            // =============================================
-            this.pnlSteps.BorderColor = cardBorder;
+            this.pnlScroll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlScroll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
+            this.pnlScroll.Location = new System.Drawing.Point(0, 0);
+            this.pnlScroll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlScroll.Name = "pnlScroll";
+            this.pnlScroll.Size = new System.Drawing.Size(1028, 691);
+            this.pnlScroll.TabIndex = 0;
+            // 
+            // pnlSteps
+            // 
+            this.pnlSteps.BackColor = System.Drawing.Color.Transparent;
+            this.pnlSteps.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlSteps.BorderRadius = 12;
             this.pnlSteps.BorderThickness = 1;
             this.pnlSteps.FillColor = System.Drawing.Color.White;
-            this.pnlSteps.Location = new System.Drawing.Point(20, 15);
+            this.pnlSteps.Location = new System.Drawing.Point(15, 12);
+            this.pnlSteps.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlSteps.Name = "pnlSteps";
-            this.pnlSteps.Size = new System.Drawing.Size(1330, 60);
+            this.pnlSteps.Size = new System.Drawing.Size(998, 49);
             this.pnlSteps.TabIndex = 0;
-            this.pnlSteps.BackColor = System.Drawing.Color.Transparent;
-
-            // =============================================
-            // pnlStep1Card — Bước 1: Chọn bệnh nhân
-            // =============================================
-            this.pnlStep1Card.BorderColor = cardBorder;
+            // 
+            // pnlStep1Card
+            // 
+            this.pnlStep1Card.BackColor = System.Drawing.Color.Transparent;
+            this.pnlStep1Card.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlStep1Card.BorderRadius = 12;
             this.pnlStep1Card.BorderThickness = 1;
-            this.pnlStep1Card.FillColor = System.Drawing.Color.White;
-            this.pnlStep1Card.Location = new System.Drawing.Point(20, 91);
-            this.pnlStep1Card.Name = "pnlStep1Card";
-            this.pnlStep1Card.Size = new System.Drawing.Size(940, 180);
-            this.pnlStep1Card.TabIndex = 1;
-            this.pnlStep1Card.BackColor = System.Drawing.Color.Transparent;
             this.pnlStep1Card.Controls.Add(this.ptbStep1Icon);
             this.pnlStep1Card.Controls.Add(this.lblStep1Title);
             this.pnlStep1Card.Controls.Add(this.txtSearchBN);
             this.pnlStep1Card.Controls.Add(this.btnSearchBN);
             this.pnlStep1Card.Controls.Add(this.pnlPatientFound);
- 
+            this.pnlStep1Card.FillColor = System.Drawing.Color.White;
+            this.pnlStep1Card.Location = new System.Drawing.Point(15, 74);
+            this.pnlStep1Card.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlStep1Card.Name = "pnlStep1Card";
+            this.pnlStep1Card.Size = new System.Drawing.Size(705, 146);
+            this.pnlStep1Card.TabIndex = 1;
+            // 
             // ptbStep1Icon
+            // 
             this.ptbStep1Icon.BackColor = System.Drawing.Color.Transparent;
             this.ptbStep1Icon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbStep1Icon.Location = new System.Drawing.Point(20, 14);
+            this.ptbStep1Icon.ImageRotate = 0F;
+            this.ptbStep1Icon.Location = new System.Drawing.Point(15, 11);
+            this.ptbStep1Icon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ptbStep1Icon.Name = "ptbStep1Icon";
-            this.ptbStep1Icon.Size = new System.Drawing.Size(24, 24);
+            this.ptbStep1Icon.Size = new System.Drawing.Size(18, 20);
             this.ptbStep1Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbStep1Icon.TabIndex = 100;
             this.ptbStep1Icon.TabStop = false;
-
+            // 
             // lblStep1Title
+            // 
             this.lblStep1Title.AutoSize = true;
-            this.lblStep1Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblStep1Title.ForeColor = teal;
-            this.lblStep1Title.Location = new System.Drawing.Point(54, 16);
-            this.lblStep1Title.Text = "BƯỚC 1 — CHỌN BỆNH NHÂN";
             this.lblStep1Title.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblStep1Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblStep1Title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblStep1Title.Location = new System.Drawing.Point(40, 13);
+            this.lblStep1Title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStep1Title.Name = "lblStep1Title";
+            this.lblStep1Title.Size = new System.Drawing.Size(175, 15);
+            this.lblStep1Title.TabIndex = 101;
+            this.lblStep1Title.Text = "BƯỚC 1 — CHỌN BỆNH NHÂN";
+            // 
             // txtSearchBN
-            this.txtSearchBN.BorderRadius = 8;
-            this.txtSearchBN.BorderColor = cardBorder;
-            this.txtSearchBN.BorderThickness = 1;
-            this.txtSearchBN.FillColor = inputBg;
-            this.txtSearchBN.ForeColor = inputFore;
-            this.txtSearchBN.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
-            this.txtSearchBN.Location = new System.Drawing.Point(20, 52);
-            this.txtSearchBN.Name = "txtSearchBN";
-            this.txtSearchBN.Size = new System.Drawing.Size(710, 38);
-            this.txtSearchBN.TabIndex = 0;
-            this.txtSearchBN.PlaceholderText = "Tìm theo mã BN, họ tên, CCCD…";
-            this.txtSearchBN.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188);
+            // 
             this.txtSearchBN.BackColor = System.Drawing.Color.Transparent;
-            this.txtSearchBN.AutoSize = false;
+            this.txtSearchBN.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtSearchBN.BorderRadius = 8;
+            this.txtSearchBN.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSearchBN.DefaultText = "";
+            this.txtSearchBN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtSearchBN.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtSearchBN.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtSearchBN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.txtSearchBN.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtSearchBN.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearchBN.IconLeft")));
+            this.txtSearchBN.Location = new System.Drawing.Point(15, 42);
+            this.txtSearchBN.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtSearchBN.Name = "txtSearchBN";
+            this.txtSearchBN.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(195)))), ((int)(((byte)(188)))));
+            this.txtSearchBN.PlaceholderText = "Tìm theo mã BN, họ tên, CCCD…";
+            this.txtSearchBN.SelectedText = "";
+            this.txtSearchBN.Size = new System.Drawing.Size(532, 31);
+            this.txtSearchBN.TabIndex = 0;
             this.txtSearchBN.TextOffset = new System.Drawing.Point(8, 0);
-            this.txtSearchBN.HoverState.BorderColor = teal;
-            this.txtSearchBN.FocusedState.BorderColor = teal;
- 
+            // 
             // btnSearchBN
+            // 
+            this.btnSearchBN.BackColor = System.Drawing.Color.Transparent;
             this.btnSearchBN.BorderRadius = 8;
             this.btnSearchBN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSearchBN.FillColor = teal;
-            this.btnSearchBN.ForeColor = System.Drawing.Color.White;
+            this.btnSearchBN.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnSearchBN.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnSearchBN.Location = new System.Drawing.Point(740, 52);
+            this.btnSearchBN.ForeColor = System.Drawing.Color.White;
+            this.btnSearchBN.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
+            this.btnSearchBN.Location = new System.Drawing.Point(555, 42);
+            this.btnSearchBN.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSearchBN.Name = "btnSearchBN";
-            this.btnSearchBN.Size = new System.Drawing.Size(176, 38);
+            this.btnSearchBN.Size = new System.Drawing.Size(132, 31);
             this.btnSearchBN.TabIndex = 1;
             this.btnSearchBN.Text = "Tìm kiếm";
-            this.btnSearchBN.BackColor = System.Drawing.Color.Transparent;
-            this.btnSearchBN.HoverState.FillColor = System.Drawing.Color.FromArgb(10, 82, 64);
- 
+            // 
             // pnlPatientFound
-            this.pnlPatientFound.BorderColor = teal;
+            // 
+            this.pnlPatientFound.BackColor = System.Drawing.Color.Transparent;
+            this.pnlPatientFound.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlPatientFound.BorderRadius = 10;
             this.pnlPatientFound.BorderThickness = 2;
-            this.pnlPatientFound.FillColor = tealLight;
-            this.pnlPatientFound.Location = new System.Drawing.Point(20, 108);
-            this.pnlPatientFound.Name = "pnlPatientFound";
-            this.pnlPatientFound.Size = new System.Drawing.Size(896, 56);
-            this.pnlPatientFound.TabIndex = 2;
-            this.pnlPatientFound.BackColor = System.Drawing.Color.Transparent;
-            this.pnlPatientFound.Visible = false;
             this.pnlPatientFound.Controls.Add(this.picBNAvatar);
             this.pnlPatientFound.Controls.Add(this.lblBNName);
             this.pnlPatientFound.Controls.Add(this.lblBNMeta);
             this.pnlPatientFound.Controls.Add(this.btnChangeBN);
- 
+            this.pnlPatientFound.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(239)))));
+            this.pnlPatientFound.Location = new System.Drawing.Point(15, 88);
+            this.pnlPatientFound.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlPatientFound.Name = "pnlPatientFound";
+            this.pnlPatientFound.Size = new System.Drawing.Size(672, 46);
+            this.pnlPatientFound.TabIndex = 2;
+            this.pnlPatientFound.Visible = false;
+            // 
             // picBNAvatar
-            this.picBNAvatar.Location = new System.Drawing.Point(12, 10);
+            // 
+            this.picBNAvatar.BackColor = System.Drawing.Color.Transparent;
+            this.picBNAvatar.ImageRotate = 0F;
+            this.picBNAvatar.Location = new System.Drawing.Point(9, 8);
+            this.picBNAvatar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.picBNAvatar.Name = "picBNAvatar";
-            this.picBNAvatar.Size = new System.Drawing.Size(36, 36);
+            this.picBNAvatar.Size = new System.Drawing.Size(27, 29);
             this.picBNAvatar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picBNAvatar.TabIndex = 0;
-            this.picBNAvatar.BackColor = System.Drawing.Color.Transparent;
- 
+            this.picBNAvatar.TabStop = false;
+            // 
             // lblBNName
+            // 
             this.lblBNName.AutoSize = true;
-            this.lblBNName.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblBNName.ForeColor = teal;
-            this.lblBNName.Location = new System.Drawing.Point(58, 8);
-            this.lblBNName.Text = "Nguyễn Văn An";
             this.lblBNName.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblBNName.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblBNName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblBNName.Location = new System.Drawing.Point(44, 6);
+            this.lblBNName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblBNName.Name = "lblBNName";
+            this.lblBNName.Size = new System.Drawing.Size(104, 17);
+            this.lblBNName.TabIndex = 1;
+            this.lblBNName.Text = "Nguyễn Văn An";
+            // 
             // lblBNMeta
+            // 
             this.lblBNMeta.AutoSize = true;
-            this.lblBNMeta.Font = new System.Drawing.Font("Consolas", 8.5F);
-            this.lblBNMeta.ForeColor = System.Drawing.Color.FromArgb(74, 98, 89);
-            this.lblBNMeta.Location = new System.Drawing.Point(58, 32);
-            this.lblBNMeta.Text = "BN240001 · Nam · 15/03/1978 · Tim mạch";
             this.lblBNMeta.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblBNMeta.Font = new System.Drawing.Font("Consolas", 8.5F);
+            this.lblBNMeta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
+            this.lblBNMeta.Location = new System.Drawing.Point(44, 26);
+            this.lblBNMeta.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblBNMeta.Name = "lblBNMeta";
+            this.lblBNMeta.Size = new System.Drawing.Size(273, 14);
+            this.lblBNMeta.TabIndex = 2;
+            this.lblBNMeta.Text = "BN240001 · Nam · 15/03/1978 · Tim mạch";
+            // 
             // btnChangeBN
+            // 
+            this.btnChangeBN.BackColor = System.Drawing.Color.Transparent;
+            this.btnChangeBN.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnChangeBN.BorderRadius = 8;
             this.btnChangeBN.BorderThickness = 2;
-            this.btnChangeBN.BorderColor = teal;
-            this.btnChangeBN.FillColor = System.Drawing.Color.Transparent;
-            this.btnChangeBN.ForeColor = teal;
-            this.btnChangeBN.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.btnChangeBN.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnChangeBN.Location = new System.Drawing.Point(788, 11);
+            this.btnChangeBN.FillColor = System.Drawing.Color.Transparent;
+            this.btnChangeBN.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.btnChangeBN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnChangeBN.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(243)))), ((int)(((byte)(239)))));
+            this.btnChangeBN.Location = new System.Drawing.Point(591, 9);
+            this.btnChangeBN.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnChangeBN.Name = "btnChangeBN";
-            this.btnChangeBN.Size = new System.Drawing.Size(96, 34);
+            this.btnChangeBN.Size = new System.Drawing.Size(72, 28);
             this.btnChangeBN.TabIndex = 3;
             this.btnChangeBN.Text = "Đổi BN";
-            this.btnChangeBN.BackColor = System.Drawing.Color.Transparent;
-            this.btnChangeBN.HoverState.FillColor = tealLight;
-
-            // =============================================
-            // pnlStep2Card — Bước 2: Thông tin HSBA
-            // =============================================
-            this.pnlStep2Card.BorderColor = cardBorder;
+            // 
+            // pnlStep2Card
+            // 
+            this.pnlStep2Card.BackColor = System.Drawing.Color.Transparent;
+            this.pnlStep2Card.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlStep2Card.BorderRadius = 12;
             this.pnlStep2Card.BorderThickness = 1;
-            this.pnlStep2Card.FillColor = System.Drawing.Color.White;
-            this.pnlStep2Card.Location = new System.Drawing.Point(20, 287);
-            this.pnlStep2Card.Name = "pnlStep2Card";
-            this.pnlStep2Card.Size = new System.Drawing.Size(940, 460);
-            this.pnlStep2Card.TabIndex = 2;
-            this.pnlStep2Card.BackColor = System.Drawing.Color.Transparent;
             this.pnlStep2Card.Controls.Add(this.lblStep2Title);
             this.pnlStep2Card.Controls.Add(this.lblMaHSBA);
             this.pnlStep2Card.Controls.Add(this.txtMaHSBA);
@@ -284,390 +285,506 @@
             this.pnlStep2Card.Controls.Add(this.txtDieuTri);
             this.pnlStep2Card.Controls.Add(this.lblKetLuan);
             this.pnlStep2Card.Controls.Add(this.txtKetLuan);
- 
-            // ptbStep2Icon
-            this.ptbStep2Icon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbStep2Icon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbStep2Icon.Location = new System.Drawing.Point(20, 14);
-            this.ptbStep2Icon.Name = "ptbStep2Icon";
-            this.ptbStep2Icon.Size = new System.Drawing.Size(24, 24);
-            this.ptbStep2Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbStep2Icon.TabIndex = 101;
-            this.ptbStep2Icon.TabStop = false;
- 
+            this.pnlStep2Card.FillColor = System.Drawing.Color.White;
+            this.pnlStep2Card.Location = new System.Drawing.Point(15, 233);
+            this.pnlStep2Card.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlStep2Card.Name = "pnlStep2Card";
+            this.pnlStep2Card.Size = new System.Drawing.Size(705, 374);
+            this.pnlStep2Card.TabIndex = 2;
+            // 
             // lblStep2Title
+            // 
             this.lblStep2Title.AutoSize = true;
-            this.lblStep2Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblStep2Title.ForeColor = teal;
-            this.lblStep2Title.Location = new System.Drawing.Point(20, 16);
-            this.lblStep2Title.Text = "BƯỚC 2 — THÔNG TIN HỒ SƠ BỆNH ÁN";
             this.lblStep2Title.BackColor = System.Drawing.Color.Transparent;
- 
-            int col1X = 20;
-            int col2X = 470;
-            int fieldW = 430;
- 
+            this.lblStep2Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblStep2Title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblStep2Title.Location = new System.Drawing.Point(15, 13);
+            this.lblStep2Title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStep2Title.Name = "lblStep2Title";
+            this.lblStep2Title.Size = new System.Drawing.Size(229, 15);
+            this.lblStep2Title.TabIndex = 0;
+            this.lblStep2Title.Text = "BƯỚC 2 — THÔNG TIN HỒ SƠ BỆNH ÁN";
+            // 
             // lblMaHSBA
+            // 
             this.lblMaHSBA.AutoSize = true;
-            this.lblMaHSBA.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblMaHSBA.ForeColor = labelColor;
-            this.lblMaHSBA.Location = new System.Drawing.Point(col1X, 56);
-            this.lblMaHSBA.Text = "MÃ HSBA (TỰ ĐỘNG)";
             this.lblMaHSBA.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblMaHSBA.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblMaHSBA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblMaHSBA.Location = new System.Drawing.Point(15, 46);
+            this.lblMaHSBA.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblMaHSBA.Name = "lblMaHSBA";
+            this.lblMaHSBA.Size = new System.Drawing.Size(127, 15);
+            this.lblMaHSBA.TabIndex = 1;
+            this.lblMaHSBA.Text = "MÃ HSBA (TỰ ĐỘNG)";
+            // 
             // txtMaHSBA
-            this.txtMaHSBA.BorderRadius = 8;
-            this.txtMaHSBA.BorderColor = cardBorder;
-            this.txtMaHSBA.BorderThickness = 1;
-            this.txtMaHSBA.FillColor = System.Drawing.Color.FromArgb(240, 245, 243);
-            this.txtMaHSBA.ForeColor = teal;
-            this.txtMaHSBA.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
-            this.txtMaHSBA.Location = new System.Drawing.Point(col1X, 80);
-            this.txtMaHSBA.Name = "txtMaHSBA";
-            this.txtMaHSBA.Size = new System.Drawing.Size(fieldW, 38);
-            this.txtMaHSBA.Text = "HSBA-2026-0157";
-            this.txtMaHSBA.ReadOnly = true;
+            // 
             this.txtMaHSBA.BackColor = System.Drawing.Color.Transparent;
-            this.txtMaHSBA.AutoSize = false;
+            this.txtMaHSBA.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtMaHSBA.BorderRadius = 8;
+            this.txtMaHSBA.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtMaHSBA.DefaultText = "HSBA-2026-0157";
+            this.txtMaHSBA.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
+            this.txtMaHSBA.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
+            this.txtMaHSBA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtMaHSBA.Location = new System.Drawing.Point(15, 65);
+            this.txtMaHSBA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMaHSBA.Name = "txtMaHSBA";
+            this.txtMaHSBA.PlaceholderText = "";
+            this.txtMaHSBA.ReadOnly = true;
+            this.txtMaHSBA.SelectedText = "";
+            this.txtMaHSBA.Size = new System.Drawing.Size(322, 31);
+            this.txtMaHSBA.TabIndex = 2;
             this.txtMaHSBA.TextOffset = new System.Drawing.Point(8, 0);
- 
+            // 
             // lblNgayMo
+            // 
             this.lblNgayMo.AutoSize = true;
-            this.lblNgayMo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblNgayMo.ForeColor = labelColor;
-            this.lblNgayMo.Location = new System.Drawing.Point(col2X, 56);
-            this.lblNgayMo.Text = "NGÀY MỞ HỒ SƠ *";
             this.lblNgayMo.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblNgayMo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblNgayMo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblNgayMo.Location = new System.Drawing.Point(352, 46);
+            this.lblNgayMo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblNgayMo.Name = "lblNgayMo";
+            this.lblNgayMo.Size = new System.Drawing.Size(110, 15);
+            this.lblNgayMo.TabIndex = 3;
+            this.lblNgayMo.Text = "NGÀY MỞ HỒ SƠ *";
+            // 
             // dtpNgayMo
-            this.dtpNgayMo.BorderRadius = 8;
-            this.dtpNgayMo.BorderColor = cardBorder;
-            this.dtpNgayMo.BorderThickness = 1;
-            this.dtpNgayMo.FillColor = inputBg;
-            this.dtpNgayMo.ForeColor = inputFore;
-            this.dtpNgayMo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.dtpNgayMo.Location = new System.Drawing.Point(col2X, 80);
-            this.dtpNgayMo.Name = "dtpNgayMo";
-            this.dtpNgayMo.Size = new System.Drawing.Size(fieldW, 38);
-            this.dtpNgayMo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            // 
             this.dtpNgayMo.BackColor = System.Drawing.Color.Transparent;
+            this.dtpNgayMo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.dtpNgayMo.BorderRadius = 8;
+            this.dtpNgayMo.BorderThickness = 1;
+            this.dtpNgayMo.Checked = true;
+            this.dtpNgayMo.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
+            this.dtpNgayMo.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.dtpNgayMo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.dtpNgayMo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.dtpNgayMo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpNgayMo.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.dtpNgayMo.Location = new System.Drawing.Point(352, 65);
+            this.dtpNgayMo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpNgayMo.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
+            this.dtpNgayMo.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
+            this.dtpNgayMo.Name = "dtpNgayMo";
+            this.dtpNgayMo.Size = new System.Drawing.Size(322, 31);
+            this.dtpNgayMo.TabIndex = 4;
             this.dtpNgayMo.TextOffset = new System.Drawing.Point(8, 0);
-            this.dtpNgayMo.HoverState.BorderColor = teal;
- 
+            this.dtpNgayMo.Value = new System.DateTime(2026, 6, 4, 11, 50, 9, 116);
+            // 
             // lblChanDoan
+            // 
             this.lblChanDoan.AutoSize = true;
-            this.lblChanDoan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblChanDoan.ForeColor = labelColor;
-            this.lblChanDoan.Location = new System.Drawing.Point(col1X, 138);
-            this.lblChanDoan.Text = "CHẨN ĐOÁN SƠ BỘ *";
             this.lblChanDoan.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblChanDoan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblChanDoan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblChanDoan.Location = new System.Drawing.Point(15, 112);
+            this.lblChanDoan.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblChanDoan.Name = "lblChanDoan";
+            this.lblChanDoan.Size = new System.Drawing.Size(125, 15);
+            this.lblChanDoan.TabIndex = 5;
+            this.lblChanDoan.Text = "CHẨN ĐOÁN SƠ BỘ *";
+            // 
             // txtChanDoan
-            this.txtChanDoan.BorderRadius = 8;
-            this.txtChanDoan.BorderColor = cardBorder;
-            this.txtChanDoan.BorderThickness = 1;
-            this.txtChanDoan.FillColor = inputBg;
-            this.txtChanDoan.ForeColor = inputFore;
-            this.txtChanDoan.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
-            this.txtChanDoan.Location = new System.Drawing.Point(col1X, 162);
-            this.txtChanDoan.Name = "txtChanDoan";
-            this.txtChanDoan.Size = new System.Drawing.Size(880, 68);
-            this.txtChanDoan.Multiline = true;
-            this.txtChanDoan.PlaceholderText = "Nhập chẩn đoán ban đầu của điều dưỡng / điều phối viên…";
-            this.txtChanDoan.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188);
+            // 
             this.txtChanDoan.BackColor = System.Drawing.Color.Transparent;
-            this.txtChanDoan.AutoSize = false;
+            this.txtChanDoan.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtChanDoan.BorderRadius = 8;
+            this.txtChanDoan.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtChanDoan.DefaultText = "";
+            this.txtChanDoan.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtChanDoan.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtChanDoan.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtChanDoan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.txtChanDoan.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtChanDoan.Location = new System.Drawing.Point(15, 132);
+            this.txtChanDoan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtChanDoan.Multiline = true;
+            this.txtChanDoan.Name = "txtChanDoan";
+            this.txtChanDoan.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(195)))), ((int)(((byte)(188)))));
+            this.txtChanDoan.PlaceholderText = "Nhập chẩn đoán ban đầu của điều dưỡng / điều phối viên…";
+            this.txtChanDoan.SelectedText = "";
+            this.txtChanDoan.Size = new System.Drawing.Size(660, 55);
+            this.txtChanDoan.TabIndex = 6;
             this.txtChanDoan.TextOffset = new System.Drawing.Point(8, 0);
-            this.txtChanDoan.HoverState.BorderColor = teal;
-            this.txtChanDoan.FocusedState.BorderColor = teal;
- 
+            // 
             // lblDieuTri
+            // 
             this.lblDieuTri.AutoSize = true;
-            this.lblDieuTri.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblDieuTri.ForeColor = labelColor;
-            this.lblDieuTri.Location = new System.Drawing.Point(col1X, 244);
-            this.lblDieuTri.Text = "ĐIỀU TRỊ *";
             this.lblDieuTri.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblDieuTri.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDieuTri.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblDieuTri.Location = new System.Drawing.Point(15, 198);
+            this.lblDieuTri.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDieuTri.Name = "lblDieuTri";
+            this.lblDieuTri.Size = new System.Drawing.Size(65, 15);
+            this.lblDieuTri.TabIndex = 7;
+            this.lblDieuTri.Text = "ĐIỀU TRỊ *";
+            // 
             // txtDieuTri
-            this.txtDieuTri.BorderRadius = 8;
-            this.txtDieuTri.BorderColor = cardBorder;
-            this.txtDieuTri.BorderThickness = 1;
-            this.txtDieuTri.FillColor = inputBg;
-            this.txtDieuTri.ForeColor = inputFore;
-            this.txtDieuTri.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
-            this.txtDieuTri.Location = new System.Drawing.Point(col1X, 268);
-            this.txtDieuTri.Name = "txtDieuTri";
-            this.txtDieuTri.Size = new System.Drawing.Size(880, 68);
-            this.txtDieuTri.Multiline = true;
-            this.txtDieuTri.PlaceholderText = "Nhập hướng điều trị ban đầu…";
-            this.txtDieuTri.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188);
+            // 
             this.txtDieuTri.BackColor = System.Drawing.Color.Transparent;
-            this.txtDieuTri.AutoSize = false;
+            this.txtDieuTri.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtDieuTri.BorderRadius = 8;
+            this.txtDieuTri.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtDieuTri.DefaultText = "";
+            this.txtDieuTri.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtDieuTri.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtDieuTri.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtDieuTri.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.txtDieuTri.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtDieuTri.Location = new System.Drawing.Point(15, 218);
+            this.txtDieuTri.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDieuTri.Multiline = true;
+            this.txtDieuTri.Name = "txtDieuTri";
+            this.txtDieuTri.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(195)))), ((int)(((byte)(188)))));
+            this.txtDieuTri.PlaceholderText = "Nhập hướng điều trị ban đầu…";
+            this.txtDieuTri.SelectedText = "";
+            this.txtDieuTri.Size = new System.Drawing.Size(660, 55);
+            this.txtDieuTri.TabIndex = 8;
             this.txtDieuTri.TextOffset = new System.Drawing.Point(8, 0);
-            this.txtDieuTri.HoverState.BorderColor = teal;
-            this.txtDieuTri.FocusedState.BorderColor = teal;
- 
+            // 
             // lblKetLuan
+            // 
             this.lblKetLuan.AutoSize = true;
-            this.lblKetLuan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblKetLuan.ForeColor = labelColor;
-            this.lblKetLuan.Location = new System.Drawing.Point(col1X, 350);
-            this.lblKetLuan.Text = "KẾT LUẬN *";
             this.lblKetLuan.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblKetLuan.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblKetLuan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblKetLuan.Location = new System.Drawing.Point(15, 284);
+            this.lblKetLuan.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblKetLuan.Name = "lblKetLuan";
+            this.lblKetLuan.Size = new System.Drawing.Size(71, 15);
+            this.lblKetLuan.TabIndex = 9;
+            this.lblKetLuan.Text = "KẾT LUẬN *";
+            // 
             // txtKetLuan
-            this.txtKetLuan.BorderRadius = 8;
-            this.txtKetLuan.BorderColor = cardBorder;
-            this.txtKetLuan.BorderThickness = 1;
-            this.txtKetLuan.FillColor = inputBg;
-            this.txtKetLuan.ForeColor = inputFore;
-            this.txtKetLuan.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular);
-            this.txtKetLuan.Location = new System.Drawing.Point(col1X, 374);
-            this.txtKetLuan.Name = "txtKetLuan";
-            this.txtKetLuan.Size = new System.Drawing.Size(880, 68);
-            this.txtKetLuan.Multiline = true;
-            this.txtKetLuan.PlaceholderText = "Nhập kết luận ban đầu của y sĩ hoặc bác sĩ…";
-            this.txtKetLuan.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188);
+            // 
             this.txtKetLuan.BackColor = System.Drawing.Color.Transparent;
-            this.txtKetLuan.AutoSize = false;
+            this.txtKetLuan.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.txtKetLuan.BorderRadius = 8;
+            this.txtKetLuan.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtKetLuan.DefaultText = "";
+            this.txtKetLuan.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.txtKetLuan.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtKetLuan.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtKetLuan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.txtKetLuan.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtKetLuan.Location = new System.Drawing.Point(15, 304);
+            this.txtKetLuan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtKetLuan.Multiline = true;
+            this.txtKetLuan.Name = "txtKetLuan";
+            this.txtKetLuan.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(195)))), ((int)(((byte)(188)))));
+            this.txtKetLuan.PlaceholderText = "Nhập kết luận ban đầu của y sĩ hoặc bác sĩ…";
+            this.txtKetLuan.SelectedText = "";
+            this.txtKetLuan.Size = new System.Drawing.Size(660, 55);
+            this.txtKetLuan.TabIndex = 10;
             this.txtKetLuan.TextOffset = new System.Drawing.Point(8, 0);
-            this.txtKetLuan.HoverState.BorderColor = teal;
-            this.txtKetLuan.FocusedState.BorderColor = teal;
- 
- 
-            // =============================================
-            // pnlStep3Card — Bước 3: Chỉ định bác sĩ
-            // =============================================
-            this.pnlStep3Card.BorderColor = cardBorder;
+            // 
+            // pnlStep3Card
+            // 
+            this.pnlStep3Card.BackColor = System.Drawing.Color.Transparent;
+            this.pnlStep3Card.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlStep3Card.BorderRadius = 12;
             this.pnlStep3Card.BorderThickness = 1;
-            this.pnlStep3Card.FillColor = System.Drawing.Color.White;
-            this.pnlStep3Card.Location = new System.Drawing.Point(20, 763);
-            this.pnlStep3Card.Name = "pnlStep3Card";
-            this.pnlStep3Card.Size = new System.Drawing.Size(940, 542);
-            this.pnlStep3Card.TabIndex = 3;
-            this.pnlStep3Card.BackColor = System.Drawing.Color.Transparent;
             this.pnlStep3Card.Controls.Add(this.lblStep3Title);
             this.pnlStep3Card.Controls.Add(this.lblKhoaDT);
             this.pnlStep3Card.Controls.Add(this.cboKhoaDT);
             this.pnlStep3Card.Controls.Add(this.lblChonBS);
             this.pnlStep3Card.Controls.Add(this.pnlDoctorGrid);
- 
-            // ptbStep3Icon
-            this.ptbStep3Icon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbStep3Icon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbStep3Icon.Location = new System.Drawing.Point(20, 14);
-            this.ptbStep3Icon.Name = "ptbStep3Icon";
-            this.ptbStep3Icon.Size = new System.Drawing.Size(24, 24);
-            this.ptbStep3Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbStep3Icon.TabIndex = 102;
-            this.ptbStep3Icon.TabStop = false;
- 
+            this.pnlStep3Card.FillColor = System.Drawing.Color.White;
+            this.pnlStep3Card.Location = new System.Drawing.Point(15, 620);
+            this.pnlStep3Card.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlStep3Card.Name = "pnlStep3Card";
+            this.pnlStep3Card.Size = new System.Drawing.Size(705, 440);
+            this.pnlStep3Card.TabIndex = 3;
+            // 
             // lblStep3Title
+            // 
             this.lblStep3Title.AutoSize = true;
-            this.lblStep3Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblStep3Title.ForeColor = teal;
-            this.lblStep3Title.Location = new System.Drawing.Point(20, 16);
-            this.lblStep3Title.Text = "BƯỚC 3 — CHỈ ĐỊNH BÁC SĨ PHỤ TRÁCH";
             this.lblStep3Title.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblStep3Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblStep3Title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblStep3Title.Location = new System.Drawing.Point(15, 13);
+            this.lblStep3Title.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStep3Title.Name = "lblStep3Title";
+            this.lblStep3Title.Size = new System.Drawing.Size(232, 15);
+            this.lblStep3Title.TabIndex = 0;
+            this.lblStep3Title.Text = "BƯỚC 3 — CHỈ ĐỊNH BÁC SĨ PHỤ TRÁCH";
+            // 
             // lblKhoaDT
+            // 
             this.lblKhoaDT.AutoSize = true;
-            this.lblKhoaDT.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblKhoaDT.ForeColor = labelColor;
-            this.lblKhoaDT.Location = new System.Drawing.Point(col1X, 56);
-            this.lblKhoaDT.Text = "KHOA ĐIỀU TRỊ *";
             this.lblKhoaDT.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblKhoaDT.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblKhoaDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblKhoaDT.Location = new System.Drawing.Point(15, 46);
+            this.lblKhoaDT.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblKhoaDT.Name = "lblKhoaDT";
+            this.lblKhoaDT.Size = new System.Drawing.Size(102, 15);
+            this.lblKhoaDT.TabIndex = 1;
+            this.lblKhoaDT.Text = "KHOA ĐIỀU TRỊ *";
+            // 
             // cboKhoaDT
-            this.cboKhoaDT.BorderRadius = 8;
-            this.cboKhoaDT.BorderColor = cardBorder;
-            this.cboKhoaDT.BorderThickness = 1;
-            this.cboKhoaDT.FillColor = inputBg;
-            this.cboKhoaDT.ForeColor = inputFore;
-            this.cboKhoaDT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
-            this.cboKhoaDT.Location = new System.Drawing.Point(col1X, 80);
-            this.cboKhoaDT.Name = "cboKhoaDT";
-            this.cboKhoaDT.Size = new System.Drawing.Size(fieldW, 38);
+            // 
             this.cboKhoaDT.BackColor = System.Drawing.Color.Transparent;
-            this.cboKhoaDT.HoverState.BorderColor = teal;
-            this.cboKhoaDT.FocusedState.BorderColor = teal;
+            this.cboKhoaDT.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cboKhoaDT.BorderRadius = 8;
+            this.cboKhoaDT.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboKhoaDT.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboKhoaDT.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.cboKhoaDT.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboKhoaDT.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboKhoaDT.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.cboKhoaDT.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.cboKhoaDT.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.cboKhoaDT.ItemHeight = 32;
+            this.cboKhoaDT.Location = new System.Drawing.Point(15, 65);
+            this.cboKhoaDT.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboKhoaDT.Name = "cboKhoaDT";
+            this.cboKhoaDT.Size = new System.Drawing.Size(324, 38);
+            this.cboKhoaDT.TabIndex = 2;
             this.cboKhoaDT.TextOffset = new System.Drawing.Point(8, 0);
- 
- 
+            // 
             // lblChonBS
+            // 
             this.lblChonBS.AutoSize = true;
-            this.lblChonBS.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblChonBS.ForeColor = labelColor;
-            this.lblChonBS.Location = new System.Drawing.Point(col1X, 138);
-            this.lblChonBS.Text = "CHỌN BÁC SĨ PHỤ TRÁCH *";
             this.lblChonBS.BackColor = System.Drawing.Color.Transparent;
- 
-            // pnlDoctorGrid — 2x2 grid for doctor cards (populated in code)
-            this.pnlDoctorGrid.BorderThickness = 0;
-            this.pnlDoctorGrid.FillColor = System.Drawing.Color.White;
-            this.pnlDoctorGrid.Location = new System.Drawing.Point(col1X, 162);
-            this.pnlDoctorGrid.Name = "pnlDoctorGrid";
-            this.pnlDoctorGrid.Size = new System.Drawing.Size(900, 250);
+            this.lblChonBS.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblChonBS.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblChonBS.Location = new System.Drawing.Point(15, 112);
+            this.lblChonBS.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblChonBS.Name = "lblChonBS";
+            this.lblChonBS.Size = new System.Drawing.Size(159, 15);
+            this.lblChonBS.TabIndex = 3;
+            this.lblChonBS.Text = "CHỌN BÁC SĨ PHỤ TRÁCH *";
+            // 
+            // pnlDoctorGrid
+            // 
             this.pnlDoctorGrid.BackColor = System.Drawing.Color.Transparent;
- 
- 
-            // =============================================
-            // pnlActionsCard — Actions footer (bo tròn nền trắng)
-            // =============================================
-            this.pnlActionsCard.BorderColor = cardBorder;
+            this.pnlDoctorGrid.FillColor = System.Drawing.Color.White;
+            this.pnlDoctorGrid.Location = new System.Drawing.Point(15, 132);
+            this.pnlDoctorGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlDoctorGrid.Name = "pnlDoctorGrid";
+            this.pnlDoctorGrid.Size = new System.Drawing.Size(675, 203);
+            this.pnlDoctorGrid.TabIndex = 4;
+            // 
+            // pnlActionsCard
+            // 
+            this.pnlActionsCard.BackColor = System.Drawing.Color.Transparent;
+            this.pnlActionsCard.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlActionsCard.BorderRadius = 12;
             this.pnlActionsCard.BorderThickness = 1;
-            this.pnlActionsCard.FillColor = System.Drawing.Color.White;
-            this.pnlActionsCard.Location = new System.Drawing.Point(20, 1321);
-            this.pnlActionsCard.Name = "pnlActionsCard";
-            this.pnlActionsCard.Size = new System.Drawing.Size(940, 64);
-            this.pnlActionsCard.TabIndex = 4;
-            this.pnlActionsCard.BackColor = System.Drawing.Color.Transparent;
             this.pnlActionsCard.Controls.Add(this.lblDisclaimer);
             this.pnlActionsCard.Controls.Add(this.btnCreateHSBA);
- 
+            this.pnlActionsCard.FillColor = System.Drawing.Color.White;
+            this.pnlActionsCard.Location = new System.Drawing.Point(15, 1073);
+            this.pnlActionsCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlActionsCard.Name = "pnlActionsCard";
+            this.pnlActionsCard.Size = new System.Drawing.Size(705, 52);
+            this.pnlActionsCard.TabIndex = 4;
+            // 
             // lblDisclaimer
+            // 
             this.lblDisclaimer.AutoSize = true;
-            this.lblDisclaimer.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblDisclaimer.ForeColor = labelColor;
-            this.lblDisclaimer.Location = new System.Drawing.Point(20, 24);
-            this.lblDisclaimer.Text = "Điều phối viên có trách nhiệm xác nhận thông tin trước khi lưu.";
             this.lblDisclaimer.BackColor = System.Drawing.Color.Transparent;
- 
+            this.lblDisclaimer.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblDisclaimer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblDisclaimer.Location = new System.Drawing.Point(15, 20);
+            this.lblDisclaimer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDisclaimer.Name = "lblDisclaimer";
+            this.lblDisclaimer.Size = new System.Drawing.Size(334, 13);
+            this.lblDisclaimer.TabIndex = 0;
+            this.lblDisclaimer.Text = "Điều phối viên có trách nhiệm xác nhận thông tin trước khi lưu.";
+            // 
             // btnCreateHSBA
+            // 
+            this.btnCreateHSBA.BackColor = System.Drawing.Color.Transparent;
             this.btnCreateHSBA.BorderRadius = 8;
-            this.btnCreateHSBA.FillColor = teal;
-            this.btnCreateHSBA.ForeColor = System.Drawing.Color.White;
-            this.btnCreateHSBA.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnCreateHSBA.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCreateHSBA.Location = new System.Drawing.Point(705, 12);
+            this.btnCreateHSBA.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnCreateHSBA.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnCreateHSBA.ForeColor = System.Drawing.Color.White;
+            this.btnCreateHSBA.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
+            this.btnCreateHSBA.Location = new System.Drawing.Point(529, 10);
+            this.btnCreateHSBA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCreateHSBA.Name = "btnCreateHSBA";
-            this.btnCreateHSBA.Size = new System.Drawing.Size(210, 40);
+            this.btnCreateHSBA.Size = new System.Drawing.Size(158, 32);
             this.btnCreateHSBA.TabIndex = 1;
             this.btnCreateHSBA.Text = "Tạo hồ sơ bệnh án";
-            this.btnCreateHSBA.BackColor = System.Drawing.Color.Transparent;
-            this.btnCreateHSBA.HoverState.FillColor = System.Drawing.Color.FromArgb(10, 82, 64);
- 
-            // =============================================
-            // pnlSummaryCard — Right: Tóm tắt hồ sơ
-            // =============================================
-            this.pnlSummaryCard.BorderColor = cardBorder;
+            // 
+            // pnlSummaryCard
+            // 
+            this.pnlSummaryCard.BackColor = System.Drawing.Color.Transparent;
+            this.pnlSummaryCard.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlSummaryCard.BorderRadius = 12;
             this.pnlSummaryCard.BorderThickness = 1;
-            this.pnlSummaryCard.FillColor = System.Drawing.Color.White;
-            this.pnlSummaryCard.Location = new System.Drawing.Point(970, 91);
-            this.pnlSummaryCard.Name = "pnlSummaryCard";
-            this.pnlSummaryCard.Size = new System.Drawing.Size(380, 420);
-            this.pnlSummaryCard.TabIndex = 5;
-            this.pnlSummaryCard.BackColor = System.Drawing.Color.Transparent;
             this.pnlSummaryCard.Controls.Add(this.pnlSummaryHeader);
             this.pnlSummaryCard.Controls.Add(this.pnlSummaryBody);
- 
+            this.pnlSummaryCard.FillColor = System.Drawing.Color.White;
+            this.pnlSummaryCard.Location = new System.Drawing.Point(728, 74);
+            this.pnlSummaryCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlSummaryCard.Name = "pnlSummaryCard";
+            this.pnlSummaryCard.Size = new System.Drawing.Size(285, 341);
+            this.pnlSummaryCard.TabIndex = 5;
+            // 
             // pnlSummaryHeader
+            // 
+            this.pnlSummaryHeader.BackColor = System.Drawing.Color.Transparent;
             this.pnlSummaryHeader.BorderRadius = 12;
+            this.pnlSummaryHeader.Controls.Add(this.lblSummaryHeaderText);
             this.pnlSummaryHeader.CustomizableEdges.BottomLeft = false;
             this.pnlSummaryHeader.CustomizableEdges.BottomRight = false;
-            this.pnlSummaryHeader.BorderThickness = 0;
-            this.pnlSummaryHeader.FillColor = teal;
+            this.pnlSummaryHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlSummaryHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlSummaryHeader.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlSummaryHeader.Name = "pnlSummaryHeader";
-            this.pnlSummaryHeader.Size = new System.Drawing.Size(380, 40);
-            this.pnlSummaryHeader.BackColor = System.Drawing.Color.Transparent;
-            this.pnlSummaryHeader.Controls.Add(this.lblSummaryHeaderText);
- 
+            this.pnlSummaryHeader.Size = new System.Drawing.Size(285, 32);
+            this.pnlSummaryHeader.TabIndex = 0;
+            // 
             // lblSummaryHeaderText
+            // 
             this.lblSummaryHeaderText.AutoSize = true;
+            this.lblSummaryHeaderText.BackColor = System.Drawing.Color.Transparent;
             this.lblSummaryHeaderText.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblSummaryHeaderText.ForeColor = System.Drawing.Color.White;
-            this.lblSummaryHeaderText.Location = new System.Drawing.Point(14, 10);
+            this.lblSummaryHeaderText.Location = new System.Drawing.Point(10, 8);
+            this.lblSummaryHeaderText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblSummaryHeaderText.Name = "lblSummaryHeaderText";
+            this.lblSummaryHeaderText.Size = new System.Drawing.Size(94, 17);
+            this.lblSummaryHeaderText.TabIndex = 0;
             this.lblSummaryHeaderText.Text = "Tóm tắt hồ sơ";
-            this.lblSummaryHeaderText.BackColor = System.Drawing.Color.Transparent;
- 
+            // 
             // pnlSummaryBody
-            this.pnlSummaryBody.BorderThickness = 0;
-            this.pnlSummaryBody.FillColor = System.Drawing.Color.Transparent;
-            this.pnlSummaryBody.Location = new System.Drawing.Point(0, 40);
-            this.pnlSummaryBody.Name = "pnlSummaryBody";
-            this.pnlSummaryBody.Size = new System.Drawing.Size(380, 380);
+            // 
             this.pnlSummaryBody.BackColor = System.Drawing.Color.Transparent;
- 
-            // =============================================
-            // pnlPermCard — Right: Quyền VPD
-            // =============================================
-            this.pnlPermCard.BorderColor = cardBorder;
+            this.pnlSummaryBody.FillColor = System.Drawing.Color.Transparent;
+            this.pnlSummaryBody.Location = new System.Drawing.Point(0, 32);
+            this.pnlSummaryBody.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlSummaryBody.Name = "pnlSummaryBody";
+            this.pnlSummaryBody.Size = new System.Drawing.Size(285, 309);
+            this.pnlSummaryBody.TabIndex = 1;
+            // 
+            // pnlPermCard
+            // 
+            this.pnlPermCard.BackColor = System.Drawing.Color.Transparent;
+            this.pnlPermCard.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlPermCard.BorderRadius = 12;
             this.pnlPermCard.BorderThickness = 1;
+            this.pnlPermCard.Controls.Add(this.pnlPermHeader);
+            this.pnlPermCard.Controls.Add(this.pnlPermBody);
             this.pnlPermCard.FillColor = System.Drawing.Color.White;
             this.pnlPermCard.Location = new System.Drawing.Point(970, 527);
             this.pnlPermCard.Name = "pnlPermCard";
             this.pnlPermCard.Size = new System.Drawing.Size(380, 320);
             this.pnlPermCard.TabIndex = 6;
-            this.pnlPermCard.BackColor = System.Drawing.Color.Transparent;
-            this.pnlPermCard.Controls.Add(this.pnlPermHeader);
-            this.pnlPermCard.Controls.Add(this.pnlPermBody);
- 
+            // 
             // pnlPermHeader
+            // 
+            this.pnlPermHeader.BackColor = System.Drawing.Color.Transparent;
             this.pnlPermHeader.BorderRadius = 12;
+            this.pnlPermHeader.Controls.Add(this.ptbPermHeaderIcon);
+            this.pnlPermHeader.Controls.Add(this.lblPermHeaderText);
             this.pnlPermHeader.CustomizableEdges.BottomLeft = false;
             this.pnlPermHeader.CustomizableEdges.BottomRight = false;
-            this.pnlPermHeader.BorderThickness = 0;
-            this.pnlPermHeader.FillColor = teal;
+            this.pnlPermHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.pnlPermHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlPermHeader.Name = "pnlPermHeader";
             this.pnlPermHeader.Size = new System.Drawing.Size(380, 40);
-            this.pnlPermHeader.BackColor = System.Drawing.Color.Transparent;
-            this.pnlPermHeader.Controls.Add(this.ptbPermHeaderIcon);
-            this.pnlPermHeader.Controls.Add(this.lblPermHeaderText);
- 
+            this.pnlPermHeader.TabIndex = 0;
+            // 
             // ptbPermHeaderIcon
+            // 
             this.ptbPermHeaderIcon.BackColor = System.Drawing.Color.Transparent;
             this.ptbPermHeaderIcon.FillColor = System.Drawing.Color.Transparent;
+            this.ptbPermHeaderIcon.ImageRotate = 0F;
             this.ptbPermHeaderIcon.Location = new System.Drawing.Point(14, 11);
             this.ptbPermHeaderIcon.Name = "ptbPermHeaderIcon";
             this.ptbPermHeaderIcon.Size = new System.Drawing.Size(18, 18);
             this.ptbPermHeaderIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbPermHeaderIcon.TabIndex = 105;
             this.ptbPermHeaderIcon.TabStop = false;
-
+            // 
             // lblPermHeaderText
+            // 
             this.lblPermHeaderText.AutoSize = true;
+            this.lblPermHeaderText.BackColor = System.Drawing.Color.Transparent;
             this.lblPermHeaderText.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblPermHeaderText.ForeColor = System.Drawing.Color.White;
             this.lblPermHeaderText.Location = new System.Drawing.Point(38, 10);
+            this.lblPermHeaderText.Name = "lblPermHeaderText";
+            this.lblPermHeaderText.Size = new System.Drawing.Size(134, 17);
+            this.lblPermHeaderText.TabIndex = 106;
             this.lblPermHeaderText.Text = "Quyền VPD áp dụng";
-            this.lblPermHeaderText.BackColor = System.Drawing.Color.Transparent;
- 
+            // 
             // pnlPermBody
-            this.pnlPermBody.BorderThickness = 0;
+            // 
+            this.pnlPermBody.BackColor = System.Drawing.Color.Transparent;
             this.pnlPermBody.FillColor = System.Drawing.Color.Transparent;
             this.pnlPermBody.Location = new System.Drawing.Point(0, 40);
             this.pnlPermBody.Name = "pnlPermBody";
             this.pnlPermBody.Size = new System.Drawing.Size(380, 280);
-            this.pnlPermBody.BackColor = System.Drawing.Color.Transparent;
- 
-            // =============================================
-            // =============================================
+            this.pnlPermBody.TabIndex = 1;
+            // 
+            // guna2MessageDialog1
+            // 
+            this.guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+            this.guna2MessageDialog1.Caption = null;
+            this.guna2MessageDialog1.Icon = Guna.UI2.WinForms.MessageDialogIcon.None;
+            this.guna2MessageDialog1.Parent = null;
+            this.guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Default;
+            this.guna2MessageDialog1.Text = null;
+            // 
+            // ptbStep2Icon
+            // 
+            this.ptbStep2Icon.BackColor = System.Drawing.Color.Transparent;
+            this.ptbStep2Icon.FillColor = System.Drawing.Color.Transparent;
+            this.ptbStep2Icon.ImageRotate = 0F;
+            this.ptbStep2Icon.Location = new System.Drawing.Point(20, 14);
+            this.ptbStep2Icon.Name = "ptbStep2Icon";
+            this.ptbStep2Icon.Size = new System.Drawing.Size(24, 24);
+            this.ptbStep2Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbStep2Icon.TabIndex = 101;
+            this.ptbStep2Icon.TabStop = false;
+            // 
+            // ptbStep3Icon
+            // 
+            this.ptbStep3Icon.BackColor = System.Drawing.Color.Transparent;
+            this.ptbStep3Icon.FillColor = System.Drawing.Color.Transparent;
+            this.ptbStep3Icon.ImageRotate = 0F;
+            this.ptbStep3Icon.Location = new System.Drawing.Point(20, 14);
+            this.ptbStep3Icon.Name = "ptbStep3Icon";
+            this.ptbStep3Icon.Size = new System.Drawing.Size(24, 24);
+            this.ptbStep3Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbStep3Icon.TabIndex = 102;
+            this.ptbStep3Icon.TabStop = false;
+            // 
+            // ptbSummaryHeaderIcon
+            // 
+            this.ptbSummaryHeaderIcon.ImageRotate = 0F;
+            this.ptbSummaryHeaderIcon.Location = new System.Drawing.Point(0, 0);
+            this.ptbSummaryHeaderIcon.Name = "ptbSummaryHeaderIcon";
+            this.ptbSummaryHeaderIcon.Size = new System.Drawing.Size(300, 200);
+            this.ptbSummaryHeaderIcon.TabIndex = 0;
+            this.ptbSummaryHeaderIcon.TabStop = false;
+            // 
             // ucTaoHSBA
-            // =============================================
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlScroll);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ucTaoHSBA";
-            this.Size = new System.Drawing.Size(1370, 850);
+            this.Size = new System.Drawing.Size(1028, 691);
             this.Load += new System.EventHandler(this.ucTaoHSBA_Load);
-
             this.pnlScroll.ResumeLayout(false);
-            this.pnlSteps.ResumeLayout(false);
             this.pnlStep1Card.ResumeLayout(false);
             this.pnlStep1Card.PerformLayout();
-            this.pnlPatientFound.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picBNAvatar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep1Icon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).EndInit();
+            this.pnlPatientFound.ResumeLayout(false);
+            this.pnlPatientFound.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picBNAvatar)).EndInit();
             this.pnlStep2Card.ResumeLayout(false);
             this.pnlStep2Card.PerformLayout();
             this.pnlStep3Card.ResumeLayout(false);
@@ -680,7 +797,12 @@
             this.pnlPermCard.ResumeLayout(false);
             this.pnlPermHeader.ResumeLayout(false);
             this.pnlPermHeader.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbPermHeaderIcon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbSummaryHeaderIcon)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         // Main container
