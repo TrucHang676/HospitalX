@@ -157,23 +157,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnTabEdit.ImageOffset = new Point(0, 0);
             btnTabEdit.TextOffset = new Point(0, 0);
 
-            // Section Icons
-            ptbBasicIcon.Image = DpvAssets.Load("dpv_7.png");
-            ptbMedicalIcon.Image = DpvAssets.Load("medical-report.png");
-
-            // Search button and magnifying glass in the search panel
-            Image imgSearch = DpvAssets.Load("magnifying-glass.png");
-            if (imgSearch != null)
-            {
-                ptbSearchIcon.Image = imgSearch;
-                btnSearch.Image = imgSearch;
-                btnSearch.ImageSize = new Size(16, 16);
-                btnSearch.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-                btnSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-                btnSearch.ImageOffset = new Point(6, 0);
-                btnSearch.TextOffset = new Point(16, 0);
-                btnSearch.Text = "Tìm";
-            }
+            // Search button without icon in the search panel
+            btnSearch.Image = null;
+            btnSearch.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnSearch.ImageOffset = new Point(0, 0);
+            btnSearch.TextOffset = new Point(0, 0);
+            btnSearch.Text = "Tìm";
 
             // Save button (No Icon, Perfectly Centered)
             btnSave.Image = null;

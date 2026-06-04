@@ -30,7 +30,6 @@ namespace HospitalX.GUI.PH2
             this.btnDashboard = new Guna.UI2.WinForms.Guna2Button();
             this.pnlLine1 = new Guna.UI2.WinForms.Guna2Separator();
             this.pnlProfile = new Guna.UI2.WinForms.Guna2Panel();
-            this.lblVpdBadge = new System.Windows.Forms.Label();
             this.lblRole = new System.Windows.Forms.Label();
             this.lblTenDPV = new System.Windows.Forms.Label();
             this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
@@ -299,7 +298,6 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlProfile
             // 
-            this.pnlProfile.Controls.Add(this.lblVpdBadge);
             this.pnlProfile.Controls.Add(this.lblRole);
             this.pnlProfile.Controls.Add(this.lblTenDPV);
             this.pnlProfile.Controls.Add(this.ptbAdmin);
@@ -309,19 +307,6 @@ namespace HospitalX.GUI.PH2
             this.pnlProfile.Name = "pnlProfile";
             this.pnlProfile.Size = new System.Drawing.Size(293, 65);
             this.pnlProfile.TabIndex = 1;
-            // 
-            // lblVpdBadge
-            // 
-            this.lblVpdBadge.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(213)))), ((int)(((byte)(79)))));
-            this.lblVpdBadge.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblVpdBadge.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.lblVpdBadge.Location = new System.Drawing.Point(180, 16);
-            this.lblVpdBadge.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblVpdBadge.Name = "lblVpdBadge";
-            this.lblVpdBadge.Size = new System.Drawing.Size(38, 16);
-            this.lblVpdBadge.TabIndex = 3;
-            this.lblVpdBadge.Text = "VPD";
-            this.lblVpdBadge.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblRole
             // 
@@ -532,7 +517,6 @@ namespace HospitalX.GUI.PH2
         private Guna.UI2.WinForms.Guna2PictureBox ptbAdmin;
         private System.Windows.Forms.Label lblTenDPV;
         private System.Windows.Forms.Label lblRole;
-        private System.Windows.Forms.Label lblVpdBadge;
         private Guna.UI2.WinForms.Guna2Separator pnlLine1;
         private Guna.UI2.WinForms.Guna2Button btnDashboard;
         private Guna.UI2.WinForms.Guna2Button btnDanhSachBN;

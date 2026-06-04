@@ -244,38 +244,6 @@ namespace HospitalX.GUI.PH2
         {
             ptbAdmin.Image = DpvAssets.Load("female_doctor.png");
             ptbAdmin.SizeMode = PictureBoxSizeMode.Zoom;
-            lblVpdBadge.BackColor = Color.Transparent;
-
-            // Căn chỉnh vị trí nhãn VPD sát với chữ "Điều phối viên"
-            using (Graphics g = lblRole.CreateGraphics())
-            {
-                SizeF size = g.MeasureString(lblRole.Text, lblRole.Font);
-                int roleTextWidth = (int)Math.Ceiling(size.Width);
-                lblVpdBadge.Location = new Point(lblRole.Left + roleTextWidth + 6, lblRole.Top - 3);
-            }
-
-            // Vẽ bo tròn và đổi màu cho ô VPD
-            lblVpdBadge.Paint += (s, e) =>
-            {
-                var lbl = (Label)s;
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                using (var bgBrush = new SolidBrush(pnlSidebar.BackColor))
-                {
-                    e.Graphics.FillRectangle(bgBrush, lbl.ClientRectangle);
-                }
-
-                Color badgeColor = Color.FromArgb(254, 203, 70); // Vàng ấm tươi đẹp
-                Color textColor = Color.FromArgb(26, 26, 26);     // Chữ đen xám tối
-                using (var path = GetRoundedPath(lbl.ClientRectangle, 5)) // Bo nhẹ
-                using (var brush = new SolidBrush(badgeColor))
-                {
-                    e.Graphics.FillPath(brush, path);
-                }
-
-                TextRenderer.DrawText(e.Graphics, lbl.Text, lbl.Font, lbl.ClientRectangle, textColor,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            };
         }
 
         private Guna2Button btnThemBN;

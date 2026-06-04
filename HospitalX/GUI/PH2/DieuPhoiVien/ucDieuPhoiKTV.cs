@@ -108,20 +108,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Reset grid anchors to avoid bounds conflicts during custom resize layout
             dgvRequests.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
-            // Setup title icon using dpv_5.png (matching ucDanhSachBN alignment structure)
-            PictureBox ptbRequestTitleIcon = new PictureBox
-            {
-                Size = new Size(22, 22),
-                Location = new Point(20, 21),
-                SizeMode = PictureBoxSizeMode.Zoom,
-                Image = DpvAssets.Load("dpv_5.png")
-            };
-            pnlServiceRequests.Controls.Add(ptbRequestTitleIcon);
-
-            // Shift title and sub labels to the right of the icon and remove emoji
-            lblRequestTitle.Location = new Point(48, 18);
+            lblRequestTitle.Location = new Point(20, 18);
             lblRequestTitle.Text = "Danh sách yêu cầu dịch vụ hỗ trợ chẩn đoán";
-            lblRequestSub.Location = new Point(48, 44);
+            lblRequestSub.Location = new Point(20, 44);
             SetupPaginationControls();
             ConfigureStyles();
             ApplyFilter();

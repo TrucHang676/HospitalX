@@ -604,24 +604,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlBottomSpacer.Size = new Size(10, 24);
             pnlScroll.Controls.Add(pnlBottomSpacer);
 
-            // Setup Search glass icon inside textbox
-            txtSearch.IconLeft = DpvAssets.Load("magnifying-glass.png");
-            txtSearch.IconLeftSize = new Size(16, 16);
-            txtSearch.IconLeftOffset = new Point(10, 0);
-
-
-
-            // Setup Table Title Icon (replacing unicode emoji)
-            var ptbTableTitleIcon = new Guna.UI2.WinForms.Guna2PictureBox();
-            ptbTableTitleIcon.Image = DpvAssets.Load("dpv_2.png");
-            ptbTableTitleIcon.Size = new Size(22, 22);
-            ptbTableTitleIcon.Location = new Point(20, 17);
-            ptbTableTitleIcon.SizeMode = PictureBoxSizeMode.Zoom;
-            pnlTableCard.Controls.Add(ptbTableTitleIcon);
-
             lblTableTitle.Text = "Danh sách bệnh nhân";
-            lblTableTitle.Location = new Point(48, 18);
-            lblTableMeta.Location = new Point(48, 44);
+            lblTableTitle.Location = new Point(20, 18);
+            lblTableMeta.Location = new Point(20, 44);
 
             // Trigger initial resize calculation
             ucDanhSachBN_Resize(null, null);

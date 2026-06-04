@@ -22,11 +22,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnTabEdit = new Guna.UI2.WinForms.Guna2Button();
             this.pnlSearchCard = new Guna.UI2.WinForms.Guna2Panel();
             this.lblSearchTitle = new System.Windows.Forms.Label();
-            this.ptbSearchIcon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnSearch = new Guna.UI2.WinForms.Guna2Button();
             this.pnlFormCard = new Guna.UI2.WinForms.Guna2Panel();
-            this.ptbBasicIcon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblBasicTitle = new System.Windows.Forms.Label();
             this.lblHoDem = new System.Windows.Forms.Label();
             this.txtHoDem = new Guna.UI2.WinForms.Guna2TextBox();
@@ -48,7 +46,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtQuanHuyen = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblTinhTP = new System.Windows.Forms.Label();
             this.txtTinhTP = new Guna.UI2.WinForms.Guna2TextBox();
-            this.ptbMedicalIcon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblMedicalTitle = new System.Windows.Forms.Label();
             this.lblTienSuBN = new System.Windows.Forms.Label();
             this.txtTienSuBN = new Guna.UI2.WinForms.Guna2TextBox();
@@ -64,10 +61,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlScroll.SuspendLayout();
             this.pnlSegment.SuspendLayout();
             this.pnlSearchCard.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbSearchIcon)).BeginInit();
             this.pnlFormCard.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbBasicIcon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbMedicalIcon)).BeginInit();
             this.pnlFormFooter.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -145,7 +139,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlSearchCard.BorderRadius = 12;
             this.pnlSearchCard.BorderThickness = 1;
             this.pnlSearchCard.Controls.Add(this.lblSearchTitle);
-            this.pnlSearchCard.Controls.Add(this.ptbSearchIcon);
             this.pnlSearchCard.Controls.Add(this.txtSearch);
             this.pnlSearchCard.Controls.Add(this.btnSearch);
             this.pnlSearchCard.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
@@ -162,25 +155,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblSearchTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblSearchTitle.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblSearchTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblSearchTitle.Location = new System.Drawing.Point(56, 13);
+            this.lblSearchTitle.Location = new System.Drawing.Point(30, 13);
             this.lblSearchTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSearchTitle.Name = "lblSearchTitle";
             this.lblSearchTitle.Size = new System.Drawing.Size(156, 15);
             this.lblSearchTitle.TabIndex = 0;
             this.lblSearchTitle.Text = "TÌM BỆNH NHÂN CẦN SỬA";
-            // 
-            // ptbSearchIcon
-            // 
-            this.ptbSearchIcon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbSearchIcon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbSearchIcon.ImageRotate = 0F;
-            this.ptbSearchIcon.Location = new System.Drawing.Point(30, 37);
-            this.ptbSearchIcon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ptbSearchIcon.Name = "ptbSearchIcon";
-            this.ptbSearchIcon.Size = new System.Drawing.Size(18, 20);
-            this.ptbSearchIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbSearchIcon.TabIndex = 1;
-            this.ptbSearchIcon.TabStop = false;
             // 
             // txtSearch
             // 
@@ -193,13 +173,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
-            this.txtSearch.Location = new System.Drawing.Point(56, 32);
+            this.txtSearch.Location = new System.Drawing.Point(30, 32);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderText = "";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(225, 29);
+            this.txtSearch.Size = new System.Drawing.Size(251, 29);
             this.txtSearch.TabIndex = 2;
             this.txtSearch.TextOffset = new System.Drawing.Point(8, 0);
             // 
@@ -225,7 +204,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlFormCard.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlFormCard.BorderRadius = 16;
             this.pnlFormCard.BorderThickness = 1;
-            this.pnlFormCard.Controls.Add(this.ptbBasicIcon);
             this.pnlFormCard.Controls.Add(this.lblBasicTitle);
             this.pnlFormCard.Controls.Add(this.lblHoDem);
             this.pnlFormCard.Controls.Add(this.txtHoDem);
@@ -247,7 +225,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlFormCard.Controls.Add(this.txtQuanHuyen);
             this.pnlFormCard.Controls.Add(this.lblTinhTP);
             this.pnlFormCard.Controls.Add(this.txtTinhTP);
-            this.pnlFormCard.Controls.Add(this.ptbMedicalIcon);
             this.pnlFormCard.Controls.Add(this.lblMedicalTitle);
             this.pnlFormCard.Controls.Add(this.lblTienSuBN);
             this.pnlFormCard.Controls.Add(this.txtTienSuBN);
@@ -263,26 +240,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlFormCard.Size = new System.Drawing.Size(987, 715);
             this.pnlFormCard.TabIndex = 1;
             // 
-            // ptbBasicIcon
-            // 
-            this.ptbBasicIcon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbBasicIcon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbBasicIcon.ImageRotate = 0F;
-            this.ptbBasicIcon.Location = new System.Drawing.Point(30, 23);
-            this.ptbBasicIcon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ptbBasicIcon.Name = "ptbBasicIcon";
-            this.ptbBasicIcon.Size = new System.Drawing.Size(18, 20);
-            this.ptbBasicIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbBasicIcon.TabIndex = 100;
-            this.ptbBasicIcon.TabStop = false;
-            // 
             // lblBasicTitle
             // 
             this.lblBasicTitle.AutoSize = true;
             this.lblBasicTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblBasicTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblBasicTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblBasicTitle.Location = new System.Drawing.Point(56, 24);
+            this.lblBasicTitle.Location = new System.Drawing.Point(30, 24);
             this.lblBasicTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblBasicTitle.Name = "lblBasicTitle";
             this.lblBasicTitle.Size = new System.Drawing.Size(145, 19);
@@ -515,26 +479,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtTinhTP.Size = new System.Drawing.Size(447, 31);
             this.txtTinhTP.TabIndex = 121;
             // 
-            // ptbMedicalIcon
-            // 
-            this.ptbMedicalIcon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbMedicalIcon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbMedicalIcon.ImageRotate = 0F;
-            this.ptbMedicalIcon.Location = new System.Drawing.Point(30, 337);
-            this.ptbMedicalIcon.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.ptbMedicalIcon.Name = "ptbMedicalIcon";
-            this.ptbMedicalIcon.Size = new System.Drawing.Size(18, 20);
-            this.ptbMedicalIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbMedicalIcon.TabIndex = 101;
-            this.ptbMedicalIcon.TabStop = false;
-            // 
             // lblMedicalTitle
             // 
             this.lblMedicalTitle.AutoSize = true;
             this.lblMedicalTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblMedicalTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblMedicalTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblMedicalTitle.Location = new System.Drawing.Point(56, 339);
+            this.lblMedicalTitle.Location = new System.Drawing.Point(30, 339);
             this.lblMedicalTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMedicalTitle.Name = "lblMedicalTitle";
             this.lblMedicalTitle.Size = new System.Drawing.Size(120, 19);
@@ -692,11 +643,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlSegment.ResumeLayout(false);
             this.pnlSearchCard.ResumeLayout(false);
             this.pnlSearchCard.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbSearchIcon)).EndInit();
             this.pnlFormCard.ResumeLayout(false);
             this.pnlFormCard.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbBasicIcon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbMedicalIcon)).EndInit();
             this.pnlFormFooter.ResumeLayout(false);
             this.pnlFormFooter.PerformLayout();
             this.ResumeLayout(false);
@@ -741,7 +689,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private Guna.UI2.WinForms.Guna2Panel pnlSearchCard;
         private System.Windows.Forms.Label lblSearchTitle;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbSearchIcon;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private Guna.UI2.WinForms.Guna2Button btnSearch;
 
@@ -749,8 +696,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Label lblRequired;
         private Guna.UI2.WinForms.Guna2Button btnCancel;
         private Guna.UI2.WinForms.Guna2Button btnSave;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbBasicIcon;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbMedicalIcon;
         private Guna.UI2.WinForms.Guna2MessageDialog guna2MessageDialog1;
     }
 }

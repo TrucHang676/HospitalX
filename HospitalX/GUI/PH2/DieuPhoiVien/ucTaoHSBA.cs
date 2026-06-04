@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -43,14 +43,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void ucTaoHSBA_Load(object sender, EventArgs e)
         {
-            // Load PictureBox icons from images folder
-            ptbStep1Icon.Image = DpvAssets.Load("magnifying-glass.png");
-
-            // Style search button with icon
-            btnSearchBN.Image = DpvAssets.Load("magnifying-glass.png");
-            btnSearchBN.ImageSize = new Size(16, 16);
-            btnSearchBN.ImageOffset = new Point(-4, 0);
-            btnSearchBN.TextOffset = new Point(2, 0);
+            // Style search button without icon
+            btnSearchBN.Image = null;
+            btnSearchBN.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnSearchBN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            btnSearchBN.ImageOffset = new Point(0, 0);
+            btnSearchBN.TextOffset = new Point(0, 0);
 
             btnCreateHSBA.Image = null;
             btnCreateHSBA.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -163,7 +161,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 step3Done && !step4Done
             };
 
-            string[] labels = { "Chọn bệnh nhân", "Thông tin bệnh án", "Chỉ định bác sĩ & khoa", "Xác nhận & lưu" };
+            string[] labels = { "Chọn bệnh nhân", "Thông tin bệnh án", "Chỉ định bác sĩ khoa", "Xác nhận lưu" };
             string[] circleTexts = { "✓", "2", "3", "4" };
 
             int x = 24;

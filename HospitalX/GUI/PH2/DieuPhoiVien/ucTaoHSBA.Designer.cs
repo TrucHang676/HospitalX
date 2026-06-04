@@ -1,4 +1,4 @@
-﻿namespace HospitalX.GUI.PH2.DieuPhoiVien
+namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
     partial class ucTaoHSBA
     {
@@ -71,7 +71,6 @@
             this.pnlPermBody = new Guna.UI2.WinForms.Guna2Panel();
 
             this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
-            this.ptbStep1Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbStep2Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbStep3Icon = new Guna.UI2.WinForms.Guna2PictureBox();
             this.ptbSummaryHeaderIcon = new Guna.UI2.WinForms.Guna2PictureBox();
@@ -82,7 +81,6 @@
             this.pnlStep1Card.SuspendLayout();
             this.pnlPatientFound.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBNAvatar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbStep1Icon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbSummaryHeaderIcon)).BeginInit();
@@ -148,27 +146,16 @@
             this.pnlStep1Card.Size = new System.Drawing.Size(940, 180);
             this.pnlStep1Card.TabIndex = 1;
             this.pnlStep1Card.BackColor = System.Drawing.Color.Transparent;
-            this.pnlStep1Card.Controls.Add(this.ptbStep1Icon);
             this.pnlStep1Card.Controls.Add(this.lblStep1Title);
             this.pnlStep1Card.Controls.Add(this.txtSearchBN);
             this.pnlStep1Card.Controls.Add(this.btnSearchBN);
             this.pnlStep1Card.Controls.Add(this.pnlPatientFound);
  
-            // ptbStep1Icon
-            this.ptbStep1Icon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbStep1Icon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbStep1Icon.Location = new System.Drawing.Point(20, 14);
-            this.ptbStep1Icon.Name = "ptbStep1Icon";
-            this.ptbStep1Icon.Size = new System.Drawing.Size(24, 24);
-            this.ptbStep1Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbStep1Icon.TabIndex = 100;
-            this.ptbStep1Icon.TabStop = false;
-
             // lblStep1Title
             this.lblStep1Title.AutoSize = true;
             this.lblStep1Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStep1Title.ForeColor = teal;
-            this.lblStep1Title.Location = new System.Drawing.Point(54, 16);
+            this.lblStep1Title.Location = new System.Drawing.Point(20, 16);
             this.lblStep1Title.Text = "BƯỚC 1 — CHỌN BỆNH NHÂN";
             this.lblStep1Title.BackColor = System.Drawing.Color.Transparent;
  
@@ -665,7 +652,6 @@
             this.pnlStep1Card.PerformLayout();
             this.pnlPatientFound.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picBNAvatar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbStep1Icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep2Icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbStep3Icon)).EndInit();
             this.pnlStep2Card.ResumeLayout(false);
@@ -742,7 +728,6 @@
         private Guna.UI2.WinForms.Guna2MessageDialog guna2MessageDialog1;
 
         // PictureBox icons for section titles
-        private Guna.UI2.WinForms.Guna2PictureBox ptbStep1Icon;
         private Guna.UI2.WinForms.Guna2PictureBox ptbStep2Icon;
         private Guna.UI2.WinForms.Guna2PictureBox ptbStep3Icon;
 
