@@ -86,6 +86,7 @@ namespace HospitalX.GUI
             this.pnlLeft.Name = "pnlLeft";
             this.pnlLeft.Size = new System.Drawing.Size(390, 540);
             this.pnlLeft.TabIndex = 0;
+            this.pnlLeft.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlLeft_Paint);
             // 
             // lblHospital
             // 

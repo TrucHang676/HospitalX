@@ -214,34 +214,38 @@ namespace HospitalX.GUI
                 }
             }
 
-            // Draw white circular background and subtle border for logo dynamically (prevents WinForms transparency glitches)
+            // Subtle right-edge separator
+            using (var pen = new Pen(Color.FromArgb(25, 255, 255, 255), 1f))
+            {
+                g.DrawLine(pen, separatorX - 1, 0, separatorX - 1, ClientRectangle.Height);
+            }
+        }
+
+        private void pnlLeft_Paint(object sender, PaintEventArgs e)
+        {
             if (ptbChuThap != null && ptbChuThap.Visible)
             {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
                 // Calculate size and offsets dynamically based on scaled ptbChuThap.Width to preserve perfect proportions under High DPI scaling
                 int circleSize = (int)Math.Round(ptbChuThap.Width * (76f / 56f));
                 int padding = (circleSize - ptbChuThap.Width) / 2;
                 int yOffset = (int)Math.Round(ptbChuThap.Width * (5f / 56f)); // Shift circle up slightly to compensate for logo's transparent bottom margin
 
-                int circleX = ptbChuThap.Location.X - padding;
+                int circleX = ptbChuThap.Location.X - padding - 2;
                 int circleY = ptbChuThap.Location.Y - padding - yOffset;
 
                 // Perfect anti-aliased white circle
                 using (var whiteBrush = new SolidBrush(Color.White))
                 {
-                    g.FillEllipse(whiteBrush, circleX, circleY, circleSize, circleSize);
+                    e.Graphics.FillEllipse(whiteBrush, circleX, circleY, circleSize, circleSize);
                 }
 
                 // Subtle light gray border around the circle
                 using (var borderPen = new Pen(Color.FromArgb(220, 230, 240), 1f))
                 {
-                    g.DrawEllipse(borderPen, circleX, circleY, circleSize - 1, circleSize - 1);
+                    e.Graphics.DrawEllipse(borderPen, circleX, circleY, circleSize - 1, circleSize - 1);
                 }
-            }
-
-            // Subtle right-edge separator
-            using (var pen = new Pen(Color.FromArgb(25, 255, 255, 255), 1f))
-            {
-                g.DrawLine(pen, separatorX - 1, 0, separatorX - 1, ClientRectangle.Height);
             }
         }
 

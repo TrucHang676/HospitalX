@@ -18,7 +18,7 @@ namespace HospitalX.GUI
         private void SetupBrandingAndIcons()
         {
             // Load and display main logo
-            var logoImg = LoadImageSafely("logoHX.png");
+            var logoImg = LoadImageSafely("logoHX4-Photoroom.png");
             if (logoImg != null)
             {
                 picLeftLogo.Image = logoImg;
@@ -46,26 +46,35 @@ namespace HospitalX.GUI
                 };
             }
 
-            // Draw modern geometric outline circles on the left panel background
-            pnlLeft.Paint += (s, e) => {
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                
-                using (var pen = new Pen(Color.FromArgb(20, 255, 255, 255), 1.5f)) // very faint white lines
-                {
-                    // Abstract overlapping orbits/rings for high-tech premium feel
-                    e.Graphics.DrawEllipse(pen, -150, 100, 480, 480);
-                    e.Graphics.DrawEllipse(pen, -100, 150, 380, 380);
-                    e.Graphics.DrawEllipse(pen, 200, 350, 250, 250);
-                    e.Graphics.DrawEllipse(pen, -50, 50, 580, 580);
-                }
-            };
-
             // Setup title color (premium slate-900 near-black)
             lblRightTitle.ForeColor = Color.FromArgb(15, 23, 42);
-
-            // Setup icons: We will draw flat vector icons dynamically inside paint handlers
         }
 
+        private void pnlLeft_Paint(object sender, PaintEventArgs e)
+        {
+            if (picLeftLogo != null && picLeftLogo.Visible)
+            {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                int padding = 6;
+                int circleX = picLeftLogo.Location.X - padding;
+                int circleY = picLeftLogo.Location.Y - padding;
+                int circleSize = picLeftLogo.Width + 2 * padding;
+
+                // Perfect anti-aliased white circle
+                using (var whiteBrush = new SolidBrush(Color.White))
+                {
+                    e.Graphics.FillEllipse(whiteBrush, circleX, circleY, circleSize, circleSize);
+                }
+
+                // Subtle light border around the circle
+                using (var borderPen = new Pen(Color.FromArgb(220, 230, 240), 1f))
+                {
+                    e.Graphics.DrawEllipse(borderPen, circleX, circleY, circleSize - 1, circleSize - 1);
+                }
+            }
+        }
+
+        // Setup icons: We will draw flat vector icons dynamically inside paint handlers
         private void DrawVectorIcon(Graphics g, int w, int h, string roleKey, Color color)
         {
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -363,7 +372,7 @@ namespace HospitalX.GUI
 
         private static Color Ph1Color
         {
-            get { return Color.FromArgb(37, 74, 132); }
+            get { return Color.FromArgb(59, 130, 246); }
         }
 
         private static Color Ph2Color
