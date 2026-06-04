@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.DieuPhoiVien
+﻿namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
     partial class ucTaoHSBA
     {
@@ -273,7 +273,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlStep2Card.Size = new System.Drawing.Size(940, 460);
             this.pnlStep2Card.TabIndex = 2;
             this.pnlStep2Card.BackColor = System.Drawing.Color.Transparent;
-            this.pnlStep2Card.Controls.Add(this.ptbStep2Icon);
             this.pnlStep2Card.Controls.Add(this.lblStep2Title);
             this.pnlStep2Card.Controls.Add(this.lblMaHSBA);
             this.pnlStep2Card.Controls.Add(this.txtMaHSBA);
@@ -300,7 +299,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblStep2Title.AutoSize = true;
             this.lblStep2Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStep2Title.ForeColor = teal;
-            this.lblStep2Title.Location = new System.Drawing.Point(54, 16);
+            this.lblStep2Title.Location = new System.Drawing.Point(20, 16);
             this.lblStep2Title.Text = "BƯỚC 2 — THÔNG TIN HỒ SƠ BỆNH ÁN";
             this.lblStep2Title.BackColor = System.Drawing.Color.Transparent;
  
@@ -449,7 +448,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlStep3Card.Size = new System.Drawing.Size(940, 542);
             this.pnlStep3Card.TabIndex = 3;
             this.pnlStep3Card.BackColor = System.Drawing.Color.Transparent;
-            this.pnlStep3Card.Controls.Add(this.ptbStep3Icon);
             this.pnlStep3Card.Controls.Add(this.lblStep3Title);
             this.pnlStep3Card.Controls.Add(this.lblKhoaDT);
             this.pnlStep3Card.Controls.Add(this.cboKhoaDT);
@@ -470,7 +468,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblStep3Title.AutoSize = true;
             this.lblStep3Title.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblStep3Title.ForeColor = teal;
-            this.lblStep3Title.Location = new System.Drawing.Point(54, 16);
+            this.lblStep3Title.Location = new System.Drawing.Point(20, 16);
             this.lblStep3Title.Text = "BƯỚC 3 — CHỈ ĐỊNH BÁC SĨ PHỤ TRÁCH";
             this.lblStep3Title.BackColor = System.Drawing.Color.Transparent;
  
@@ -578,24 +576,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlSummaryHeader.Name = "pnlSummaryHeader";
             this.pnlSummaryHeader.Size = new System.Drawing.Size(380, 40);
             this.pnlSummaryHeader.BackColor = System.Drawing.Color.Transparent;
-            this.pnlSummaryHeader.Controls.Add(this.ptbSummaryHeaderIcon);
             this.pnlSummaryHeader.Controls.Add(this.lblSummaryHeaderText);
  
-            // ptbSummaryHeaderIcon
-            this.ptbSummaryHeaderIcon.BackColor = System.Drawing.Color.Transparent;
-            this.ptbSummaryHeaderIcon.FillColor = System.Drawing.Color.Transparent;
-            this.ptbSummaryHeaderIcon.Location = new System.Drawing.Point(14, 11);
-            this.ptbSummaryHeaderIcon.Name = "ptbSummaryHeaderIcon";
-            this.ptbSummaryHeaderIcon.Size = new System.Drawing.Size(18, 18);
-            this.ptbSummaryHeaderIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbSummaryHeaderIcon.TabIndex = 104;
-            this.ptbSummaryHeaderIcon.TabStop = false;
-
             // lblSummaryHeaderText
             this.lblSummaryHeaderText.AutoSize = true;
             this.lblSummaryHeaderText.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblSummaryHeaderText.ForeColor = System.Drawing.Color.White;
-            this.lblSummaryHeaderText.Location = new System.Drawing.Point(38, 10);
+            this.lblSummaryHeaderText.Location = new System.Drawing.Point(14, 10);
             this.lblSummaryHeaderText.Text = "Tóm tắt hồ sơ";
             this.lblSummaryHeaderText.BackColor = System.Drawing.Color.Transparent;
  

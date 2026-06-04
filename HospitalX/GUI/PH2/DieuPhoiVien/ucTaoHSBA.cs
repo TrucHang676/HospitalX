@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -45,11 +45,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             // Load PictureBox icons from images folder
             ptbStep1Icon.Image = DpvAssets.Load("magnifying-glass.png");
-            ptbStep2Icon.Image = DpvAssets.Load("dpv_4.png");
-            ptbStep3Icon.Image = DpvAssets.Load("dpv_8.png");
-
-            // Load right-side headers icons
-            ptbSummaryHeaderIcon.Image = DpvAssets.Load("dpv_4.png");
 
             // Style search button with icon
             btnSearchBN.Image = DpvAssets.Load("magnifying-glass.png");
@@ -95,7 +90,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             };
             cboKhoaDT.SelectedIndexChanged += (s, ev) =>
             {
-                SetSummaryText(lblSumKhoa, cboKhoaDT.Text);
+                SetSummaryText(lblSumKhoa, string.IsNullOrEmpty(_selectedDoctorCode) ? "Chưa có" : cboKhoaDT.Text);
                 BuildStepsIndicator();
             };
             txtChanDoan.TextChanged += (s, ev) =>
@@ -168,7 +163,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 step3Done && !step4Done
             };
 
-            string[] labels = { "1. Chọn bệnh nhân", "2. Thông tin bệnh án", "3. Chỉ định bác sĩ & khoa", "4. Xác nhận & lưu" };
+            string[] labels = { "Chọn bệnh nhân", "Thông tin bệnh án", "Chỉ định bác sĩ & khoa", "Xác nhận & lưu" };
             string[] circleTexts = { "✓", "2", "3", "4" };
 
             int x = 24;
@@ -400,6 +395,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 _selectedDoctorCard = targetCard;
 
                 SetSummaryText(lblSumBS, $"{code} — {targetName}");
+                SetSummaryText(lblSumKhoa, cboKhoaDT.Text);
             }
             else
             {
@@ -408,6 +404,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 _selectedDoctorCard = null;
 
                 SetSummaryText(lblSumBS, "Chưa có");
+                SetSummaryText(lblSumKhoa, "Chưa có");
             }
 
             BuildStepsIndicator();
@@ -765,10 +762,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             SetSummaryText(lblSumBN, name);
             SetSummaryText(lblSumMaBN, code);
             SetSummaryText(lblSumNgayMo, dtpNgayMo.Value.ToString("dd/MM/yyyy"));
-            SetSummaryText(lblSumKhoa, cboKhoaDT.Text);
+            SetSummaryText(lblSumKhoa, "Chưa có");
             SetSummaryText(lblSumChanDoan, "Chưa có");
             SetSummaryText(lblSumDieuTri, "Chưa có");
             SetSummaryText(lblSumKetLuan, "Chưa có");
+
+            btnCreateHSBA.Enabled = true;
 
             AdjustLayout();
         }
@@ -803,6 +802,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             SetSummaryText(lblSumChanDoan, "Chưa có");
             SetSummaryText(lblSumDieuTri, "Chưa có");
             SetSummaryText(lblSumKetLuan, "Chưa có");
+
+            btnCreateHSBA.Enabled = false;
 
             AdjustLayout();
         }
