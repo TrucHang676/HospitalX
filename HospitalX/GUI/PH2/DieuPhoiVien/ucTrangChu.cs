@@ -305,11 +305,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void SetupSectionHeaders()
         {
-            // Hide section title icons
-            ptbPatientsTitleIcon.Visible = false;
-            ptbQuickTitleIcon.Visible = false;
-            ptbWorkloadTitleIcon.Visible = false;
-
             // Reposition titles to start at X=21 for left alignment (matching content padding)
             lblPatientsTitle.Location = new Point(21, 22);
             lblQuickTitle.Location = new Point(21, 20);
@@ -476,7 +471,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             string title = tag[0].ToString();
             string subtitle = tag[1].ToString();
-            
+
             // Draw left accent color bar inside the button's rounded corners (BorderRadius = 10)
             if (tag.Length >= 4 && tag[3] is Color accentColor)
             {
@@ -586,7 +581,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 dgvPatients.Rows.Add(record.MaHsba, record.TenBenhNhan, record.Khoa, record.DichVuCan, record.TrangThai);
             }
-            
+
             dgvPatients.ClearSelection();
             dgvPatients.CurrentCell = null;
             UpdateStatusColumnMinWidth();
@@ -837,10 +832,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
                 string rawText = lbl.Tag != null ? lbl.Tag.ToString() : string.Empty;
                 string[] parts = rawText.Split(new string[] { "**" }, StringSplitOptions.None);
-                
+
                 int currentX = 0;
                 int currentY = (lbl.Height - 22) / 2;
-                
+
                 using (var regFont = new Font("Segoe UI", 10.5F, FontStyle.Regular))
                 using (var boldFont = new Font("Segoe UI", 10.5F, FontStyle.Bold))
                 {
@@ -851,7 +846,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                         Font font = isBold ? boldFont : regFont;
                         Color textCol = isBold ? Color.FromArgb(15, 110, 86) : lbl.ForeColor;
 
-                        Size size = TextRenderer.MeasureText(e.Graphics, parts[i], font, 
+                        Size size = TextRenderer.MeasureText(e.Graphics, parts[i], font,
                             new Size(lbl.Width - currentX, lbl.Height),
                             TextFormatFlags.NoPadding | TextFormatFlags.SingleLine);
 
