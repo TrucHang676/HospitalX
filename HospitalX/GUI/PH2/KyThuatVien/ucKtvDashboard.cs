@@ -15,7 +15,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Guna2Panel pnlBannerAvatar;
         private Label lblBannerAvatarText;
         private Label lblBannerTitle;
-        private Label lblBannerSub;
 
         private readonly Guna2Panel[] statCards = new Guna2Panel[4];
         private readonly Guna2Panel[] statDots = new Guna2Panel[4];
@@ -47,13 +46,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             InitializeComponent();
             BackColor = Color.FromArgb(236, 245, 243); // Đồng bộ nền xanh ngọc nhạt của phân hệ bác sĩ
-            
+
             // Link the array statCards to the designer-generated cardStat controls
             statCards[0] = this.cardStat1;
             statCards[1] = this.cardStat2;
             statCards[2] = this.cardStat3;
             statCards[3] = this.cardStat4;
-            
+
             // Link custom designer labels
             lblStatLabels[0] = this.lblStat1Title;
             lblStatLabels[1] = this.lblStat2Title;
@@ -109,7 +108,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private void BuildControls()
         {
             // Do NOT call Controls.Clear() and do NOT re-instantiate container panels because they are created in InitializeComponent()!
-            
+
             // Clear children of main container panels to rebuild dynamically at runtime
             banner.Controls.Clear();
             taskCard.Controls.Clear();
@@ -140,11 +139,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             lblBannerTitle = TextLabel("Chào buổi sáng!", 110, 26, 500, 34, 18F, FontStyle.Bold, Color.White);
             lblBannerTitle.AutoSize = true;
-            lblBannerSub = TextLabel("Đang tải dữ liệu ca làm việc...", 110, 70, 700, 24, 10F, FontStyle.Regular, Color.FromArgb(218, 242, 235));
-            lblBannerSub.AutoSize = true;
-            
+
             banner.Controls.Add(lblBannerTitle);
-            banner.Controls.Add(lblBannerSub);
             Controls.Add(banner);
 
             // 2. Khởi tạo 4 Stat Cards
@@ -180,8 +176,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 card.Padding = new Padding(0, 4, 0, 0);
                 card.Tag = accents[i];
 
-                card.Paint -= KpiCard_Paint;
-                card.Paint += KpiCard_Paint;
+                // card.Paint -= KpiCard_Paint;
+                // card.Paint += KpiCard_Paint;
 
                 // Check if dot already exists to avoid duplication
                 string dotName = $"statDot_{i}";
@@ -276,7 +272,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 progressRings[i] = new Guna2CircleProgressBar
                 {
                     Size = new Size(82, 82),
-                    FillColor = Color.FromArgb(238, 242, 240), 
+                    FillColor = Color.FromArgb(238, 242, 240),
                     ProgressColor = ringColors[i],
                     ProgressColor2 = ringColors[i],
                     ProgressThickness = 7,
@@ -284,12 +280,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     InnerColor = Color.White,
                     BackColor = Color.Transparent
                 };
-                
+
                 lblProgressRingVals[i] = TextLabel("0%", 0, 0, 82, 82, 11F, FontStyle.Bold, Color.FromArgb(24, 48, 42), ContentAlignment.MiddleCenter);
                 progressRings[i].Controls.Add(lblProgressRingVals[i]);
 
                 lblProgressRingLabels[i] = TextLabel(ringLabels[i], 0, 0, 110, 20, 8.8F, FontStyle.Regular, Color.FromArgb(122, 149, 137), ContentAlignment.MiddleCenter);
-                
+
                 progressCard.Controls.Add(progressRings[i]);
                 progressCard.Controls.Add(lblProgressRingLabels[i]);
             }
@@ -328,18 +324,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
                 lblProgDetails[i] = TextLabel(detailLabels[i], 28, 8, 220, 20, 9.5F, FontStyle.Regular, Color.FromArgb(122, 149, 137));
                 lblProgVals[i] = TextLabel("0", 0, 8, 60, 20, 9.5F, FontStyle.Bold, detailColors[i], ContentAlignment.MiddleRight);
-                
+
                 progressDetailRows[i].Controls.Add(lblProgDetails[i]);
                 progressDetailRows[i].Controls.Add(lblProgVals[i]);
 
                 // Hover effect for progress row items
                 int index = i; // capture index
-                progressDetailRows[i].MouseEnter += (s, e) => {
+                progressDetailRows[i].MouseEnter += (s, e) =>
+                {
                     var p = (Guna2Panel)s;
                     p.FillColor = Color.FromArgb(240, 247, 245);
                     p.BorderColor = detailColors[index];
                 };
-                progressDetailRows[i].MouseLeave += (s, e) => {
+                progressDetailRows[i].MouseLeave += (s, e) =>
+                {
                     var p = (Guna2Panel)s;
                     p.FillColor = Color.White;
                     p.BorderColor = Color.FromArgb(245, 247, 246);
@@ -348,11 +346,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 // Propagate events to children
                 foreach (Control c in progressDetailRows[i].Controls)
                 {
-                    c.MouseEnter += (s, e) => {
+                    c.MouseEnter += (s, e) =>
+                    {
                         progressDetailRows[index].FillColor = Color.FromArgb(240, 247, 245);
                         progressDetailRows[index].BorderColor = detailColors[index];
                     };
-                    c.MouseLeave += (s, e) => {
+                    c.MouseLeave += (s, e) =>
+                    {
                         progressDetailRows[index].FillColor = Color.White;
                         progressDetailRows[index].BorderColor = Color.FromArgb(245, 247, 246);
                     };
@@ -368,7 +368,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private void AddHoverEffect(Guna2Panel card)
         {
             // Thiết lập hiệu ứng chuyển màu viền mượt mà khi hover vào Card
-            card.MouseEnter += (s, e) => {
+            card.MouseEnter += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.BorderColor = Color.FromArgb(15, 110, 86); // Đổi sang viền Teal đậm khi hover
                 p.ShadowDecoration.Enabled = true;
@@ -376,7 +377,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 p.ShadowDecoration.Color = Color.FromArgb(15, 110, 86);
                 p.ShadowDecoration.Depth = 10;
             };
-            card.MouseLeave += (s, e) => {
+            card.MouseLeave += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.BorderColor = Color.FromArgb(218, 232, 226); // Trở về viền nhạt ban đầu
                 p.ShadowDecoration.Enabled = false;
@@ -424,21 +426,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             int margin = 28;
             int gap = 20;
-            
+
             int scrollbarWidth = this.VerticalScroll.Visible ? 18 : 0;
             int availWidth = this.Width - 2 * margin - scrollbarWidth;
 
-            if (availWidth < 400) return; 
+            if (availWidth < 400) return;
 
             // 1. Layout Banner
             banner.Location = new Point(margin, margin);
             banner.Size = new Size(availWidth, 118);
-            
+
             pnlBannerAvatar.Location = new Point(30, 29);
             lblBannerTitle.Location = new Point(110, 26);
             lblBannerTitle.Width = banner.Width - 150;
-            lblBannerSub.Location = new Point(110, 70);
-            lblBannerSub.Width = banner.Width - 150;
 
             // 2. Layout 4 Stat Cards
             int cardWidth = (availWidth - 3 * gap) / 4;
@@ -486,7 +486,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 {
                     ctrl.Location = new Point(20, itemY);
                     ctrl.Width = leftCardWidth - 40;
-                    
+
                     // Căn chỉnh các nhãn nội dung và Badge trạng thái sát lề phải của mỗi dòng dịch vụ
                     foreach (Control child in ctrl.Controls)
                     {
@@ -525,7 +525,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             // 4. Layout Hàng 2 (Lịch thực hiện hôm nay)
             int row2Y = taskCard.Bottom + gap;
-            int row2Height = 380; 
+            int row2Height = 380;
 
             scheduleCard.Location = new Point(margin, row2Y);
             scheduleCard.Size = new Size(availWidth, row2Height);
@@ -535,7 +535,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // Cập nhật các dòng lịch trình biểu diễn trực quan (Timeline blocks)
             int schedY = 62;
             int blockWidth = availWidth - 120;
-            
+
             for (int i = 0; i < scheduleControls.Count; i++)
             {
                 var ctrl = scheduleControls[i];
@@ -550,12 +550,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     {
                         ctrl.Location = new Point(94, schedY);
                         ctrl.Size = new Size(blockWidth, 48);
-                        
+
                         foreach (Control child in ctrl.Controls)
                         {
                             child.Width = blockWidth - 32;
                         }
-                        schedY += 60; 
+                        schedY += 60;
                     }
                 }
             }
@@ -591,7 +591,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void LoadData()
         {
-            var ktv     = KtvData.CurrentTechnician();
+            var ktv = KtvData.CurrentTechnician();
             string ktvName = ktv.HoTen;
             var mockSvc = KtvData.Services();
 
@@ -599,15 +599,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             // 2. Tải số liệu thống kê — chỉ 2 trạng thái từ KETQUA: Chờ thực hiện / Hoàn thành
             int totalToday = mockSvc.Count;
-            int pendingKq  = mockSvc.Count(x => x.Status == "Chờ thực hiện");  // KETQUA IS NULL
-            int completed  = mockSvc.Count(x => x.Status == "Hoàn thành");     // KETQUA IS NOT NULL
-            int progress   = totalToday > 0 ? (completed * 100 / totalToday) : 0;
+            int pendingKq = mockSvc.Count(x => x.Status == "Chờ thực hiện");  // KETQUA IS NULL
+            int completed = mockSvc.Count(x => x.Status == "Hoàn thành");     // KETQUA IS NOT NULL
+            int progress = totalToday > 0 ? (completed * 100 / totalToday) : 0;
             string progressNote = progress >= 100 ? "Hoàn thành" : $"{completed}/{totalToday} DV";
-            string pendingNote  = pendingKq > 0 ? "Cần nhập KQ" : "Đã xong";
+            string pendingNote = pendingKq > 0 ? "Cần nhập KQ" : "Đã xong";
 
             // Cập nhật Banner — không có thông tin ca làm trong DB, chỉ hiển thị số liệu thực
             lblBannerTitle.Text = $"Xin chào, Kỹ thuật viên {ktvName}!";
-            lblBannerSub.Text = $"{DateTime.Now:dd/MM/yyyy} · {totalToday} dịch vụ được phân công · {pendingKq} kết quả chờ cập nhật";
 
             lblStatValues[0].Text = totalToday.ToString();
             lblStatTrendsVal[0].Text = "";
@@ -623,8 +622,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblStatTrendsVal[3].Text = $"{completed}/{totalToday}";
 
             // Vòng tiến độ: Ring 0=Hoàn thành, Ring 1=Chờ thực hiện, Ring 2=% Tổng tiến độ
-            int ring0Val = totalToday > 0 ? (completed  * 100 / totalToday) : 0;
-            int ring1Val = totalToday > 0 ? (pendingKq  * 100 / totalToday) : 0;
+            int ring0Val = totalToday > 0 ? (completed * 100 / totalToday) : 0;
+            int ring1Val = totalToday > 0 ? (pendingKq * 100 / totalToday) : 0;
             int ring2Val = progress;
 
             progressRings[0].Value = ring0Val;
@@ -719,12 +718,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             rowPanel.Controls.Add(badge);
 
             // Thêm hiệu ứng hover riêng cho dòng con (Chỉ đổi nền dòng con khi hover)
-            rowPanel.MouseEnter += (s, e) => {
+            rowPanel.MouseEnter += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.FillColor = Color.FromArgb(240, 247, 245);
                 p.BorderColor = Color.FromArgb(15, 110, 86);
             };
-            rowPanel.MouseLeave += (s, e) => {
+            rowPanel.MouseLeave += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.FillColor = Color.White;
                 p.BorderColor = Color.FromArgb(238, 242, 240);
@@ -790,12 +791,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             actRow.Controls.Add(lblTm);
 
             // Hiệu ứng hover cho dòng hoạt động
-            actRow.MouseEnter += (s, e) => {
+            actRow.MouseEnter += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.FillColor = Color.FromArgb(245, 247, 249);
                 p.BorderColor = Color.FromArgb(218, 232, 226);
             };
-            actRow.MouseLeave += (s, e) => {
+            actRow.MouseLeave += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.FillColor = Color.White;
                 p.BorderColor = Color.FromArgb(240, 243, 242);
@@ -842,12 +845,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             block.Controls.Add(lblPat);
 
             // Thêm hiệu ứng hover thú vị cho block lịch thực hiện (hover dòng nào sáng dòng đó)
-            block.MouseEnter += (s, e) => {
+            block.MouseEnter += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.FillColor = fillColor; // Đổi sang màu nền nhạt của trạng thái khi hover
                 p.BorderColor = borderColor;
             };
-            block.MouseLeave += (s, e) => {
+            block.MouseLeave += (s, e) =>
+            {
                 var p = (Guna2Panel)s;
                 p.FillColor = Color.White; // Trở lại trắng tinh khôi
                 p.BorderColor = Color.FromArgb(238, 242, 240);
@@ -916,13 +921,13 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 e.Graphics.SetClip(path);
 
-                if (card.Tag is Color accentColor)
-                {
-                    using (var brush = new SolidBrush(accentColor))
-                    {
-                        e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
-                    }
-                }
+                // if (card.Tag is Color accentColor)
+                // {
+                //     using (var brush = new SolidBrush(accentColor))
+                //     {
+                //         e.Graphics.FillRectangle(brush, 0, 0, card.Width, 4);
+                //     }
+                // }
 
                 e.Graphics.ResetClip();
             }

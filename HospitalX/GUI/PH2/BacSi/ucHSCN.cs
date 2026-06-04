@@ -129,8 +129,7 @@ namespace HospitalX.GUI.PH2.BacSi
             btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdateContact.ForeColor = Color.White;
             btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
-            btnUpdateContact.Cursor = Cursors.Hand;
-            btnUpdateContact.Visible = false;
+            UpdateContactSaveButton();
 
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
@@ -407,7 +406,9 @@ namespace HospitalX.GUI.PH2.BacSi
             bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
                 || NormalizeContactText(txtAddress.Text) != _originalContactAddress;
 
-            btnUpdateContact.Visible = changed;
+            btnUpdateContact.Visible = true;
+            btnUpdateContact.Enabled = changed;
+            btnUpdateContact.Cursor = changed ? Cursors.Hand : Cursors.Default;
         }
 
         private static string NormalizeContactText(string value)

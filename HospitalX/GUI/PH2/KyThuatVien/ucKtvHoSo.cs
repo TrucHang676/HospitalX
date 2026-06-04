@@ -1,10 +1,10 @@
 using Guna.UI2.WinForms;
+using HospitalX.GUI.PH2.DieuPhoiVien;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using HospitalX.GUI.PH2.DieuPhoiVien;
 
 namespace HospitalX.GUI.PH2.KyThuatVien
 {
@@ -17,6 +17,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private static readonly Color RowHoverBack = Color.FromArgb(232, 245, 242);
 
         private readonly List<AuditLogItem> _auditLogs = new List<AuditLogItem>();
+        private Guna2MessageDialog _messageDialog;
 
         private static string SavedPhone = "0914 567 890";
         private static string SavedAddress = "45 Đường Lê Lợi, P.3, Biên Hòa, Đồng Nai";
@@ -105,6 +106,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             SetupReadOnlyField(txtProfMaNV);
             SetupReadOnlyField(txtProfHoTen);
             SetupReadOnlyField(txtProfVaiTro);
+            SetupReadOnlyField(txtKhoa);
             SetupReadOnlyField(txtProfGioiTinh);
             SetupReadOnlyField(txtProfNgaySinh);
             SetupReadOnlyField(txtProfCccd);
@@ -118,8 +120,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnUpdateContact.ForeColor = Color.White;
             btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
-            btnUpdateContact.Cursor = Cursors.Hand;
-            btnUpdateContact.Visible = false;
+            UpdateContactSaveButton();
 
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
@@ -163,10 +164,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // NhanVien nv = NhanVienBLL.GetById(Session.CurrentNhanVienId);
             // txtProfMaNV.Text = nv.MaNV;
             // ...
-            
+
             // Populating controls with profile data:
             lblUserName.Text = "Nguyễn Thị Thu";
-            
+
             txtProfMaNV.Text = "KTV042";
             txtProfHoTen.Text = "Nguyễn Thị Thu";
             txtProfVaiTro.Text = "Kỹ thuật viên";
@@ -427,7 +428,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
                 || NormalizeContactText(txtContactAddress.Text) != _originalContactAddress;
-            btnUpdateContact.Visible = changed;
+            btnUpdateContact.Visible = true;
+            btnUpdateContact.Enabled = changed;
+            btnUpdateContact.Cursor = changed ? Cursors.Hand : Cursors.Default;
         }
 
         private static string NormalizeContactText(string value)
@@ -455,7 +458,17 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void ShowInfoMessage(string message, string title, MessageDialogIcon icon)
         {
-            MessageBox.Show(message, title, MessageBoxButtons.OK, icon == MessageDialogIcon.Information ? MessageBoxIcon.Information : MessageBoxIcon.Warning);
+            if (_messageDialog == null)
+            {
+                _messageDialog = new Guna2MessageDialog();
+            }
+
+            _messageDialog.Parent = FindForm();
+            _messageDialog.Icon = icon;
+            _messageDialog.Buttons = MessageDialogButtons.OK;
+            _messageDialog.Caption = title;
+            _messageDialog.Style = MessageDialogStyle.Light;
+            _messageDialog.Show(message);
         }
     }
 }

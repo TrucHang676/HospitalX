@@ -69,7 +69,7 @@ namespace HospitalX.GUI.PH2
 
                 if (confirmDialog.Show() == DialogResult.Yes)
                 {
-                    Application.Exit();
+                    Close();
                 }
             }
         }

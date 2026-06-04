@@ -26,6 +26,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             RenderHistory();
             RenderRestoreCards();
             ShowBackupTab();
+            UpdateStartRestoreButtonState();
         }
 
         private void WireEvents()
@@ -83,6 +84,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             btnStartRestore.Location = new Point(24, 548);
             btnStartRestore.FillColor = Color.FromArgb(220, 38, 38);
             btnStartRestore.HoverState.FillColor = Color.FromArgb(185, 28, 28);
+            UpdateStartRestoreButtonState();
 
             btnStartBackup.Size = new Size(210, 40);
             btnDryRun.Size = new Size(112, 40);
@@ -343,6 +345,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 {
                     _selectedRestoreIndex = index;
                     RenderRestoreCards();
+                    UpdateStartRestoreButtonState();
                 };
                 foreach (Control child in card.Controls)
                 {
@@ -350,12 +353,25 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                     {
                         _selectedRestoreIndex = index;
                         RenderRestoreCards();
+                        UpdateStartRestoreButtonState();
                     };
                 }
                 flowRestoreCards.Controls.Add(card);
             }
 
             flowRestoreCards.ResumeLayout();
+            UpdateStartRestoreButtonState();
+        }
+
+        private void UpdateStartRestoreButtonState()
+        {
+            bool canRestore = GetSelectedRestore() != null
+                && _restoreTimer != null
+                && !_restoreTimer.Enabled;
+
+            btnStartRestore.Visible = true;
+            btnStartRestore.Enabled = canRestore;
+            btnStartRestore.Cursor = canRestore ? Cursors.Hand : Cursors.Default;
         }
 
         private Guna2Panel CreateRestoreCard(BackupRecord backup, bool selected)
@@ -521,9 +537,16 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void BtnStartRestore_Click(object sender, EventArgs e)
         {
+            if (_restoreTimer.Enabled)
+            {
+                UpdateStartRestoreButtonState();
+                return;
+            }
+
             BackupRecord selected = GetSelectedRestore();
             if (selected == null)
             {
+                UpdateStartRestoreButtonState();
                 return;
             }
 
@@ -544,6 +567,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             txtConsole.Text = "";
             ResetStepLabels();
             _restoreTimer.Start();
+            UpdateStartRestoreButtonState();
             AppendConsole("RMAN restore initiated - target " + selected.Id);
         }
 
@@ -568,6 +592,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             {
                 _restoreTimer.Stop();
                 lblRestoreStatus.Text = "Done";
+                UpdateStartRestoreButtonState();
                 AppendConsole("Hoàn tất phục hồi CSDL.");
                 return;
             }

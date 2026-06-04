@@ -1,6 +1,4 @@
-using Guna.UI2.WinForms;
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2.KyThuatVien
@@ -26,11 +24,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         }
 
         private void btnCloseX_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void btnCloseFoot_Click(object sender, EventArgs e)
         {
             Close();
         }

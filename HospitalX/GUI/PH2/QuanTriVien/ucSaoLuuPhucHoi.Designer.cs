@@ -22,24 +22,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.msgDialog = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlRoot = new System.Windows.Forms.Panel();
-            this.pnlRestore = new System.Windows.Forms.Panel();
-            this.pnlRestoreRight = new Guna.UI2.WinForms.Guna2Panel();
-            this.txtConsole = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblStep5 = new System.Windows.Forms.Label();
-            this.lblStep4 = new System.Windows.Forms.Label();
-            this.lblStep3 = new System.Windows.Forms.Label();
-            this.lblStep2 = new System.Windows.Forms.Label();
-            this.lblStep1 = new System.Windows.Forms.Label();
-            this.lblRestoreStatus = new System.Windows.Forms.Label();
-            this.lblRestorePercent = new System.Windows.Forms.Label();
-            this.progressRestore = new Guna.UI2.WinForms.Guna2ProgressBar();
-            this.lblRestoreProgressTitle = new System.Windows.Forms.Label();
-            this.pnlRestoreLeft = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnStartRestore = new Guna.UI2.WinForms.Guna2Button();
-            this.dtpPointInTime = new Guna.UI2.WinForms.Guna2DateTimePicker();
-            this.lblPointInTime = new System.Windows.Forms.Label();
-            this.flowRestoreCards = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblRestoreListTitle = new System.Windows.Forms.Label();
             this.pnlBackup = new System.Windows.Forms.Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
             this.dgvHistory = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -70,20 +52,38 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.chkIncremental = new Guna.UI2.WinForms.Guna2CheckBox();
             this.chkFull = new Guna.UI2.WinForms.Guna2CheckBox();
             this.lblManualTitle = new System.Windows.Forms.Label();
+            this.pnlRestore = new System.Windows.Forms.Panel();
+            this.pnlRestoreRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.txtConsole = new Guna.UI2.WinForms.Guna2TextBox();
+            this.lblStep5 = new System.Windows.Forms.Label();
+            this.lblStep4 = new System.Windows.Forms.Label();
+            this.lblStep3 = new System.Windows.Forms.Label();
+            this.lblStep2 = new System.Windows.Forms.Label();
+            this.lblStep1 = new System.Windows.Forms.Label();
+            this.lblRestoreStatus = new System.Windows.Forms.Label();
+            this.lblRestorePercent = new System.Windows.Forms.Label();
+            this.progressRestore = new Guna.UI2.WinForms.Guna2ProgressBar();
+            this.lblRestoreProgressTitle = new System.Windows.Forms.Label();
+            this.pnlRestoreLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnStartRestore = new Guna.UI2.WinForms.Guna2Button();
+            this.dtpPointInTime = new Guna.UI2.WinForms.Guna2DateTimePicker();
+            this.lblPointInTime = new System.Windows.Forms.Label();
+            this.flowRestoreCards = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblRestoreListTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlTabs = new System.Windows.Forms.Panel();
             this.btnTabRestore = new Guna.UI2.WinForms.Guna2Button();
             this.btnTabBackup = new Guna.UI2.WinForms.Guna2Button();
             this.pnlRoot.SuspendLayout();
-            this.pnlRestore.SuspendLayout();
-            this.pnlRestoreRight.SuspendLayout();
-            this.pnlRestoreLeft.SuspendLayout();
             this.pnlBackup.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).BeginInit();
             this.pnlHistoryHeader.SuspendLayout();
             this.pnlBackupLeft.SuspendLayout();
             this.pnlBackupProgress.SuspendLayout();
+            this.pnlRestore.SuspendLayout();
+            this.pnlRestoreRight.SuspendLayout();
+            this.pnlRestoreLeft.SuspendLayout();
             this.pnlTabs.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,250 +108,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlRoot.Padding = new System.Windows.Forms.Padding(22, 18, 22, 18);
             this.pnlRoot.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.TabIndex = 0;
-            // 
-            // pnlRestore
-            // 
-            this.pnlRestore.Controls.Add(this.pnlRestoreRight);
-            this.pnlRestore.Controls.Add(this.pnlRestoreLeft);
-            this.pnlRestore.Location = new System.Drawing.Point(22, 64);
-            this.pnlRestore.Name = "pnlRestore";
-            this.pnlRestore.Size = new System.Drawing.Size(1084, 680);
-            this.pnlRestore.TabIndex = 1;
-            // 
-            // pnlRestoreRight
-            // 
-            this.pnlRestoreRight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlRestoreRight.BorderRadius = 10;
-            this.pnlRestoreRight.BorderThickness = 1;
-            this.pnlRestoreRight.Controls.Add(this.txtConsole);
-            this.pnlRestoreRight.Controls.Add(this.lblStep5);
-            this.pnlRestoreRight.Controls.Add(this.lblStep4);
-            this.pnlRestoreRight.Controls.Add(this.lblStep3);
-            this.pnlRestoreRight.Controls.Add(this.lblStep2);
-            this.pnlRestoreRight.Controls.Add(this.lblStep1);
-            this.pnlRestoreRight.Controls.Add(this.lblRestoreStatus);
-            this.pnlRestoreRight.Controls.Add(this.lblRestorePercent);
-            this.pnlRestoreRight.Controls.Add(this.progressRestore);
-            this.pnlRestoreRight.Controls.Add(this.lblRestoreProgressTitle);
-            this.pnlRestoreRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlRestoreRight.FillColor = System.Drawing.Color.White;
-            this.pnlRestoreRight.Location = new System.Drawing.Point(522, 0);
-            this.pnlRestoreRight.Name = "pnlRestoreRight";
-            this.pnlRestoreRight.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlRestoreRight.Size = new System.Drawing.Size(562, 680);
-            this.pnlRestoreRight.TabIndex = 1;
-            // 
-            // txtConsole
-            // 
-            this.txtConsole.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
-            this.txtConsole.BorderRadius = 8;
-            this.txtConsole.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtConsole.DefaultText = "Chưa có tiến trình phục hồi.\r\nKhi khởi động phục hồi, nhật ký RMAN sẽ hiển thị tạ" +
-    "i đây.";
-            this.txtConsole.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(232)))), ((int)(((byte)(222)))));
-            this.txtConsole.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtConsole.ForeColor = System.Drawing.Color.Black;
-            this.txtConsole.Location = new System.Drawing.Point(24, 330);
-            this.txtConsole.Multiline = true;
-            this.txtConsole.Name = "txtConsole";
-            this.txtConsole.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
-            this.txtConsole.PlaceholderText = "Nhật ký RMAN sẽ xuất hiện tại đây";
-            this.txtConsole.ReadOnly = true;
-            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtConsole.SelectedText = "";
-            this.txtConsole.Size = new System.Drawing.Size(504, 327);
-            this.txtConsole.TabIndex = 0;
-            // 
-            // lblStep5
-            // 
-            this.lblStep5.BackColor = System.Drawing.Color.Transparent;
-            this.lblStep5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblStep5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblStep5.Location = new System.Drawing.Point(26, 274);
-            this.lblStep5.Name = "lblStep5";
-            this.lblStep5.Size = new System.Drawing.Size(460, 28);
-            this.lblStep5.TabIndex = 1;
-            this.lblStep5.Text = "5. OPEN RESETLOGS";
-            // 
-            // lblStep4
-            // 
-            this.lblStep4.BackColor = System.Drawing.Color.Transparent;
-            this.lblStep4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblStep4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblStep4.Location = new System.Drawing.Point(26, 237);
-            this.lblStep4.Name = "lblStep4";
-            this.lblStep4.Size = new System.Drawing.Size(460, 28);
-            this.lblStep4.TabIndex = 2;
-            this.lblStep4.Text = "4. Recover archive log";
-            // 
-            // lblStep3
-            // 
-            this.lblStep3.BackColor = System.Drawing.Color.Transparent;
-            this.lblStep3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblStep3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblStep3.Location = new System.Drawing.Point(26, 200);
-            this.lblStep3.Name = "lblStep3";
-            this.lblStep3.Size = new System.Drawing.Size(460, 28);
-            this.lblStep3.TabIndex = 3;
-            this.lblStep3.Text = "3. Restore datafiles";
-            // 
-            // lblStep2
-            // 
-            this.lblStep2.BackColor = System.Drawing.Color.Transparent;
-            this.lblStep2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblStep2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblStep2.Location = new System.Drawing.Point(26, 163);
-            this.lblStep2.Name = "lblStep2";
-            this.lblStep2.Size = new System.Drawing.Size(460, 28);
-            this.lblStep2.TabIndex = 4;
-            this.lblStep2.Text = "2. Tắt DB / MOUNT mode";
-            // 
-            // lblStep1
-            // 
-            this.lblStep1.BackColor = System.Drawing.Color.Transparent;
-            this.lblStep1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblStep1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblStep1.Location = new System.Drawing.Point(26, 126);
-            this.lblStep1.Name = "lblStep1";
-            this.lblStep1.Size = new System.Drawing.Size(460, 28);
-            this.lblStep1.TabIndex = 5;
-            this.lblStep1.Text = "1. Xác thực bản backup";
-            // 
-            // lblRestoreStatus
-            // 
-            this.lblRestoreStatus.AutoSize = true;
-            this.lblRestoreStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblRestoreStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblRestoreStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblRestoreStatus.Location = new System.Drawing.Point(24, 86);
-            this.lblRestoreStatus.Name = "lblRestoreStatus";
-            this.lblRestoreStatus.Size = new System.Drawing.Size(52, 15);
-            this.lblRestoreStatus.TabIndex = 6;
-            this.lblRestoreStatus.Text = "Standby";
-            // 
-            // lblRestorePercent
-            // 
-            this.lblRestorePercent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRestorePercent.BackColor = System.Drawing.Color.Transparent;
-            this.lblRestorePercent.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.lblRestorePercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblRestorePercent.Location = new System.Drawing.Point(448, 24);
-            this.lblRestorePercent.Name = "lblRestorePercent";
-            this.lblRestorePercent.Size = new System.Drawing.Size(80, 22);
-            this.lblRestorePercent.TabIndex = 7;
-            this.lblRestorePercent.Text = "0%";
-            this.lblRestorePercent.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // progressRestore
-            // 
-            this.progressRestore.BorderRadius = 5;
-            this.progressRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(240)))), ((int)(((byte)(230)))));
-            this.progressRestore.Location = new System.Drawing.Point(24, 60);
-            this.progressRestore.Name = "progressRestore";
-            this.progressRestore.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.progressRestore.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.progressRestore.Size = new System.Drawing.Size(492, 12);
-            this.progressRestore.TabIndex = 8;
-            this.progressRestore.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            // 
-            // lblRestoreProgressTitle
-            // 
-            this.lblRestoreProgressTitle.AutoSize = true;
-            this.lblRestoreProgressTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblRestoreProgressTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblRestoreProgressTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblRestoreProgressTitle.Location = new System.Drawing.Point(22, 22);
-            this.lblRestoreProgressTitle.Name = "lblRestoreProgressTitle";
-            this.lblRestoreProgressTitle.Size = new System.Drawing.Size(155, 21);
-            this.lblRestoreProgressTitle.TabIndex = 9;
-            this.lblRestoreProgressTitle.Text = "Tiến trình phục hồi";
-            // 
-            // pnlRestoreLeft
-            // 
-            this.pnlRestoreLeft.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.pnlRestoreLeft.BorderRadius = 10;
-            this.pnlRestoreLeft.BorderThickness = 1;
-            this.pnlRestoreLeft.Controls.Add(this.btnStartRestore);
-            this.pnlRestoreLeft.Controls.Add(this.dtpPointInTime);
-            this.pnlRestoreLeft.Controls.Add(this.lblPointInTime);
-            this.pnlRestoreLeft.Controls.Add(this.flowRestoreCards);
-            this.pnlRestoreLeft.Controls.Add(this.lblRestoreListTitle);
-            this.pnlRestoreLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlRestoreLeft.FillColor = System.Drawing.Color.White;
-            this.pnlRestoreLeft.Location = new System.Drawing.Point(0, 0);
-            this.pnlRestoreLeft.Name = "pnlRestoreLeft";
-            this.pnlRestoreLeft.Padding = new System.Windows.Forms.Padding(20);
-            this.pnlRestoreLeft.Size = new System.Drawing.Size(522, 680);
-            this.pnlRestoreLeft.TabIndex = 0;
-            // 
-            // btnStartRestore
-            // 
-            this.btnStartRestore.BorderRadius = 8;
-            this.btnStartRestore.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnStartRestore.FillColor = System.Drawing.Color.Brown;
-            this.btnStartRestore.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartRestore.ForeColor = System.Drawing.Color.White;
-            this.btnStartRestore.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.btnStartRestore.HoverState.ForeColor = System.Drawing.Color.White;
-            this.btnStartRestore.Location = new System.Drawing.Point(23, 615);
-            this.btnStartRestore.Name = "btnStartRestore";
-            this.btnStartRestore.PressedColor = System.Drawing.Color.Maroon;
-            this.btnStartRestore.Size = new System.Drawing.Size(474, 42);
-            this.btnStartRestore.TabIndex = 0;
-            this.btnStartRestore.Text = "Khởi động phục hồi CSDL";
-            // 
-            // dtpPointInTime
-            // 
-            this.dtpPointInTime.BackColor = System.Drawing.Color.Transparent;
-            this.dtpPointInTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.dtpPointInTime.BorderRadius = 8;
-            this.dtpPointInTime.BorderThickness = 1;
-            this.dtpPointInTime.Checked = true;
-            this.dtpPointInTime.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
-            this.dtpPointInTime.CustomFormat = "dd/MM/yyyy HH:mm";
-            this.dtpPointInTime.FillColor = System.Drawing.Color.White;
-            this.dtpPointInTime.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.dtpPointInTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpPointInTime.Location = new System.Drawing.Point(23, 554);
-            this.dtpPointInTime.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
-            this.dtpPointInTime.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
-            this.dtpPointInTime.Name = "dtpPointInTime";
-            this.dtpPointInTime.Size = new System.Drawing.Size(170, 36);
-            this.dtpPointInTime.TabIndex = 1;
-            this.dtpPointInTime.Value = new System.DateTime(2026, 6, 1, 15, 52, 2, 335);
-            // 
-            // lblPointInTime
-            // 
-            this.lblPointInTime.AutoSize = true;
-            this.lblPointInTime.BackColor = System.Drawing.Color.Transparent;
-            this.lblPointInTime.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblPointInTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblPointInTime.Location = new System.Drawing.Point(23, 531);
-            this.lblPointInTime.Name = "lblPointInTime";
-            this.lblPointInTime.Size = new System.Drawing.Size(156, 15);
-            this.lblPointInTime.TabIndex = 2;
-            this.lblPointInTime.Text = "POINT-IN-TIME RECOVERY";
-            // 
-            // flowRestoreCards
-            // 
-            this.flowRestoreCards.AutoScroll = true;
-            this.flowRestoreCards.BackColor = System.Drawing.Color.Transparent;
-            this.flowRestoreCards.Location = new System.Drawing.Point(24, 58);
-            this.flowRestoreCards.Name = "flowRestoreCards";
-            this.flowRestoreCards.Size = new System.Drawing.Size(474, 452);
-            this.flowRestoreCards.TabIndex = 3;
-            // 
-            // lblRestoreListTitle
-            // 
-            this.lblRestoreListTitle.AutoSize = true;
-            this.lblRestoreListTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblRestoreListTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblRestoreListTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblRestoreListTitle.Location = new System.Drawing.Point(22, 22);
-            this.lblRestoreListTitle.Name = "lblRestoreListTitle";
-            this.lblRestoreListTitle.Size = new System.Drawing.Size(143, 21);
-            this.lblRestoreListTitle.TabIndex = 4;
-            this.lblRestoreListTitle.Text = "Chọn bản backup";
             // 
             // pnlBackup
             // 
@@ -796,6 +552,255 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.lblManualTitle.TabIndex = 12;
             this.lblManualTitle.Text = "Sao lưu chủ động";
             // 
+            // pnlRestore
+            // 
+            this.pnlRestore.Controls.Add(this.pnlRestoreRight);
+            this.pnlRestore.Controls.Add(this.pnlRestoreLeft);
+            this.pnlRestore.Location = new System.Drawing.Point(22, 64);
+            this.pnlRestore.Name = "pnlRestore";
+            this.pnlRestore.Size = new System.Drawing.Size(1084, 680);
+            this.pnlRestore.TabIndex = 1;
+            // 
+            // pnlRestoreRight
+            // 
+            this.pnlRestoreRight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlRestoreRight.BorderRadius = 10;
+            this.pnlRestoreRight.BorderThickness = 1;
+            this.pnlRestoreRight.Controls.Add(this.txtConsole);
+            this.pnlRestoreRight.Controls.Add(this.lblStep5);
+            this.pnlRestoreRight.Controls.Add(this.lblStep4);
+            this.pnlRestoreRight.Controls.Add(this.lblStep3);
+            this.pnlRestoreRight.Controls.Add(this.lblStep2);
+            this.pnlRestoreRight.Controls.Add(this.lblStep1);
+            this.pnlRestoreRight.Controls.Add(this.lblRestoreStatus);
+            this.pnlRestoreRight.Controls.Add(this.lblRestorePercent);
+            this.pnlRestoreRight.Controls.Add(this.progressRestore);
+            this.pnlRestoreRight.Controls.Add(this.lblRestoreProgressTitle);
+            this.pnlRestoreRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRestoreRight.FillColor = System.Drawing.Color.White;
+            this.pnlRestoreRight.Location = new System.Drawing.Point(522, 0);
+            this.pnlRestoreRight.Name = "pnlRestoreRight";
+            this.pnlRestoreRight.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlRestoreRight.Size = new System.Drawing.Size(562, 680);
+            this.pnlRestoreRight.TabIndex = 1;
+            // 
+            // txtConsole
+            // 
+            this.txtConsole.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
+            this.txtConsole.BorderRadius = 8;
+            this.txtConsole.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtConsole.DefaultText = "Chưa có tiến trình phục hồi.\r\nKhi khởi động phục hồi, nhật ký RMAN sẽ hiển thị tạ" +
+    "i đây.";
+            this.txtConsole.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(232)))), ((int)(((byte)(222)))));
+            this.txtConsole.Font = new System.Drawing.Font("Consolas", 9F);
+            this.txtConsole.ForeColor = System.Drawing.Color.Black;
+            this.txtConsole.Location = new System.Drawing.Point(24, 330);
+            this.txtConsole.Multiline = true;
+            this.txtConsole.Name = "txtConsole";
+            this.txtConsole.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.txtConsole.PlaceholderText = "Nhật ký RMAN sẽ xuất hiện tại đây";
+            this.txtConsole.ReadOnly = true;
+            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtConsole.SelectedText = "";
+            this.txtConsole.Size = new System.Drawing.Size(504, 327);
+            this.txtConsole.TabIndex = 0;
+            // 
+            // lblStep5
+            // 
+            this.lblStep5.BackColor = System.Drawing.Color.Transparent;
+            this.lblStep5.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep5.Location = new System.Drawing.Point(26, 274);
+            this.lblStep5.Name = "lblStep5";
+            this.lblStep5.Size = new System.Drawing.Size(460, 28);
+            this.lblStep5.TabIndex = 1;
+            this.lblStep5.Text = "5. OPEN RESETLOGS";
+            // 
+            // lblStep4
+            // 
+            this.lblStep4.BackColor = System.Drawing.Color.Transparent;
+            this.lblStep4.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep4.Location = new System.Drawing.Point(26, 237);
+            this.lblStep4.Name = "lblStep4";
+            this.lblStep4.Size = new System.Drawing.Size(460, 28);
+            this.lblStep4.TabIndex = 2;
+            this.lblStep4.Text = "4. Recover archive log";
+            // 
+            // lblStep3
+            // 
+            this.lblStep3.BackColor = System.Drawing.Color.Transparent;
+            this.lblStep3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep3.Location = new System.Drawing.Point(26, 200);
+            this.lblStep3.Name = "lblStep3";
+            this.lblStep3.Size = new System.Drawing.Size(460, 28);
+            this.lblStep3.TabIndex = 3;
+            this.lblStep3.Text = "3. Restore datafiles";
+            // 
+            // lblStep2
+            // 
+            this.lblStep2.BackColor = System.Drawing.Color.Transparent;
+            this.lblStep2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep2.Location = new System.Drawing.Point(26, 163);
+            this.lblStep2.Name = "lblStep2";
+            this.lblStep2.Size = new System.Drawing.Size(460, 28);
+            this.lblStep2.TabIndex = 4;
+            this.lblStep2.Text = "2. Tắt DB / MOUNT mode";
+            // 
+            // lblStep1
+            // 
+            this.lblStep1.BackColor = System.Drawing.Color.Transparent;
+            this.lblStep1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblStep1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblStep1.Location = new System.Drawing.Point(26, 126);
+            this.lblStep1.Name = "lblStep1";
+            this.lblStep1.Size = new System.Drawing.Size(460, 28);
+            this.lblStep1.TabIndex = 5;
+            this.lblStep1.Text = "1. Xác thực bản backup";
+            // 
+            // lblRestoreStatus
+            // 
+            this.lblRestoreStatus.AutoSize = true;
+            this.lblRestoreStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblRestoreStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblRestoreStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblRestoreStatus.Location = new System.Drawing.Point(24, 86);
+            this.lblRestoreStatus.Name = "lblRestoreStatus";
+            this.lblRestoreStatus.Size = new System.Drawing.Size(52, 15);
+            this.lblRestoreStatus.TabIndex = 6;
+            this.lblRestoreStatus.Text = "Standby";
+            // 
+            // lblRestorePercent
+            // 
+            this.lblRestorePercent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblRestorePercent.BackColor = System.Drawing.Color.Transparent;
+            this.lblRestorePercent.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblRestorePercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblRestorePercent.Location = new System.Drawing.Point(448, 24);
+            this.lblRestorePercent.Name = "lblRestorePercent";
+            this.lblRestorePercent.Size = new System.Drawing.Size(80, 22);
+            this.lblRestorePercent.TabIndex = 7;
+            this.lblRestorePercent.Text = "0%";
+            this.lblRestorePercent.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // progressRestore
+            // 
+            this.progressRestore.BorderRadius = 5;
+            this.progressRestore.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(240)))), ((int)(((byte)(230)))));
+            this.progressRestore.Location = new System.Drawing.Point(24, 60);
+            this.progressRestore.Name = "progressRestore";
+            this.progressRestore.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.progressRestore.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.progressRestore.Size = new System.Drawing.Size(492, 12);
+            this.progressRestore.TabIndex = 8;
+            this.progressRestore.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            // 
+            // lblRestoreProgressTitle
+            // 
+            this.lblRestoreProgressTitle.AutoSize = true;
+            this.lblRestoreProgressTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblRestoreProgressTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblRestoreProgressTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblRestoreProgressTitle.Location = new System.Drawing.Point(22, 22);
+            this.lblRestoreProgressTitle.Name = "lblRestoreProgressTitle";
+            this.lblRestoreProgressTitle.Size = new System.Drawing.Size(155, 21);
+            this.lblRestoreProgressTitle.TabIndex = 9;
+            this.lblRestoreProgressTitle.Text = "Tiến trình phục hồi";
+            // 
+            // pnlRestoreLeft
+            // 
+            this.pnlRestoreLeft.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.pnlRestoreLeft.BorderRadius = 10;
+            this.pnlRestoreLeft.BorderThickness = 1;
+            this.pnlRestoreLeft.Controls.Add(this.btnStartRestore);
+            this.pnlRestoreLeft.Controls.Add(this.dtpPointInTime);
+            this.pnlRestoreLeft.Controls.Add(this.lblPointInTime);
+            this.pnlRestoreLeft.Controls.Add(this.flowRestoreCards);
+            this.pnlRestoreLeft.Controls.Add(this.lblRestoreListTitle);
+            this.pnlRestoreLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlRestoreLeft.FillColor = System.Drawing.Color.White;
+            this.pnlRestoreLeft.Location = new System.Drawing.Point(0, 0);
+            this.pnlRestoreLeft.Name = "pnlRestoreLeft";
+            this.pnlRestoreLeft.Padding = new System.Windows.Forms.Padding(20);
+            this.pnlRestoreLeft.Size = new System.Drawing.Size(522, 680);
+            this.pnlRestoreLeft.TabIndex = 0;
+            // 
+            // btnStartRestore
+            // 
+            this.btnStartRestore.BorderColor = System.Drawing.Color.Maroon;
+            this.btnStartRestore.BorderRadius = 8;
+            this.btnStartRestore.BorderThickness = 2;
+            this.btnStartRestore.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnStartRestore.DisabledState.BorderColor = System.Drawing.Color.Silver;
+            this.btnStartRestore.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(230)))), ((int)(((byte)(228)))));
+            this.btnStartRestore.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.btnStartRestore.FillColor = System.Drawing.Color.Brown;
+            this.btnStartRestore.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStartRestore.ForeColor = System.Drawing.Color.White;
+            this.btnStartRestore.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.btnStartRestore.HoverState.ForeColor = System.Drawing.Color.White;
+            this.btnStartRestore.Location = new System.Drawing.Point(23, 615);
+            this.btnStartRestore.Name = "btnStartRestore";
+            this.btnStartRestore.PressedColor = System.Drawing.Color.Maroon;
+            this.btnStartRestore.Size = new System.Drawing.Size(474, 42);
+            this.btnStartRestore.TabIndex = 0;
+            this.btnStartRestore.Text = "Khởi động phục hồi CSDL";
+            // 
+            // dtpPointInTime
+            // 
+            this.dtpPointInTime.BackColor = System.Drawing.Color.Transparent;
+            this.dtpPointInTime.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.dtpPointInTime.BorderRadius = 8;
+            this.dtpPointInTime.BorderThickness = 1;
+            this.dtpPointInTime.Checked = true;
+            this.dtpPointInTime.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
+            this.dtpPointInTime.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dtpPointInTime.FillColor = System.Drawing.Color.White;
+            this.dtpPointInTime.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.dtpPointInTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpPointInTime.Location = new System.Drawing.Point(23, 554);
+            this.dtpPointInTime.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
+            this.dtpPointInTime.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
+            this.dtpPointInTime.Name = "dtpPointInTime";
+            this.dtpPointInTime.Size = new System.Drawing.Size(170, 36);
+            this.dtpPointInTime.TabIndex = 1;
+            this.dtpPointInTime.Value = new System.DateTime(2026, 6, 1, 15, 52, 2, 335);
+            // 
+            // lblPointInTime
+            // 
+            this.lblPointInTime.AutoSize = true;
+            this.lblPointInTime.BackColor = System.Drawing.Color.Transparent;
+            this.lblPointInTime.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblPointInTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblPointInTime.Location = new System.Drawing.Point(23, 531);
+            this.lblPointInTime.Name = "lblPointInTime";
+            this.lblPointInTime.Size = new System.Drawing.Size(156, 15);
+            this.lblPointInTime.TabIndex = 2;
+            this.lblPointInTime.Text = "POINT-IN-TIME RECOVERY";
+            // 
+            // flowRestoreCards
+            // 
+            this.flowRestoreCards.AutoScroll = true;
+            this.flowRestoreCards.BackColor = System.Drawing.Color.Transparent;
+            this.flowRestoreCards.Location = new System.Drawing.Point(24, 58);
+            this.flowRestoreCards.Name = "flowRestoreCards";
+            this.flowRestoreCards.Size = new System.Drawing.Size(474, 452);
+            this.flowRestoreCards.TabIndex = 3;
+            // 
+            // lblRestoreListTitle
+            // 
+            this.lblRestoreListTitle.AutoSize = true;
+            this.lblRestoreListTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lblRestoreListTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblRestoreListTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.lblRestoreListTitle.Location = new System.Drawing.Point(22, 22);
+            this.lblRestoreListTitle.Name = "lblRestoreListTitle";
+            this.lblRestoreListTitle.Size = new System.Drawing.Size(143, 21);
+            this.lblRestoreListTitle.TabIndex = 4;
+            this.lblRestoreListTitle.Text = "Chọn bản backup";
+            // 
             // pnlContent
             // 
             this.pnlContent.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -863,11 +868,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.Name = "ucSaoLuuPhucHoi";
             this.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.ResumeLayout(false);
-            this.pnlRestore.ResumeLayout(false);
-            this.pnlRestoreRight.ResumeLayout(false);
-            this.pnlRestoreRight.PerformLayout();
-            this.pnlRestoreLeft.ResumeLayout(false);
-            this.pnlRestoreLeft.PerformLayout();
             this.pnlBackup.ResumeLayout(false);
             this.pnlHistory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistory)).EndInit();
@@ -876,6 +876,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.pnlBackupLeft.ResumeLayout(false);
             this.pnlBackupLeft.PerformLayout();
             this.pnlBackupProgress.ResumeLayout(false);
+            this.pnlRestore.ResumeLayout(false);
+            this.pnlRestoreRight.ResumeLayout(false);
+            this.pnlRestoreRight.PerformLayout();
+            this.pnlRestoreLeft.ResumeLayout(false);
+            this.pnlRestoreLeft.PerformLayout();
             this.pnlTabs.ResumeLayout(false);
             this.ResumeLayout(false);
 

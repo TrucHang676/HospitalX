@@ -34,6 +34,7 @@ namespace HospitalX.GUI.PH2
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlLine1 = new Guna.UI2.WinForms.Guna2Separator();
             this.pnl2 = new Guna.UI2.WinForms.Guna2Panel();
+            this.lbl = new System.Windows.Forms.Label();
             this.lblTenBS = new System.Windows.Forms.Label();
             this.ptbAdmin = new Guna.UI2.WinForms.Guna2PictureBox();
             this.btnBvsR = new Guna.UI2.WinForms.Guna2Button();
@@ -51,7 +52,6 @@ namespace HospitalX.GUI.PH2
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblPageTitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.lbl = new System.Windows.Forms.Label();
             this.pnlSidebar.SuspendLayout();
             this.pnl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbAdmin)).BeginInit();
@@ -107,6 +107,17 @@ namespace HospitalX.GUI.PH2
             this.pnl2.Name = "pnl2";
             this.pnl2.Size = new System.Drawing.Size(220, 53);
             this.pnl2.TabIndex = 6;
+            // 
+            // lbl
+            // 
+            this.lbl.AutoSize = true;
+            this.lbl.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbl.Location = new System.Drawing.Point(61, 13);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(128, 12);
+            this.lbl.TabIndex = 10;
+            this.lbl.Text = "Quản lý hệ thống bệnh viện X";
             // 
             // lblTenBS
             // 
@@ -422,17 +433,6 @@ namespace HospitalX.GUI.PH2
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(1128, 782);
             this.pnlContent.TabIndex = 3;
-            // 
-            // lbl
-            // 
-            this.lbl.AutoSize = true;
-            this.lbl.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbl.Location = new System.Drawing.Point(61, 13);
-            this.lbl.Name = "lbl";
-            this.lbl.Size = new System.Drawing.Size(128, 12);
-            this.lbl.TabIndex = 10;
-            this.lbl.Text = "Quản lý hệ thống bệnh viện X";
             // 
             // Main_QTV
             // 

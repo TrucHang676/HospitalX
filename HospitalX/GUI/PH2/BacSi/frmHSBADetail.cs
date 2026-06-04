@@ -1,6 +1,6 @@
+using Guna.UI2.WinForms;
 using System;
 using System.Windows.Forms;
-using Guna.UI2.WinForms;
 
 namespace HospitalX.GUI.PH2.BacSi
 {
@@ -43,7 +43,7 @@ namespace HospitalX.GUI.PH2.BacSi
             lstServices.Items.AddRange(_record.Services.ToArray());
             lstPrescriptions.Items.Clear();
             lstPrescriptions.Items.AddRange(_record.Prescriptions.ToArray());
-            btnSave.Visible = false;
+            UpdateSaveButtonState();
             _isLoadingRecord = false;
         }
 
@@ -61,7 +61,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            btnSave.Visible = HasPendingChanges();
+            UpdateSaveButtonState();
         }
 
         private bool HasPendingChanges()
@@ -79,7 +79,7 @@ namespace HospitalX.GUI.PH2.BacSi
             _originalDiagnosis = _record.Diagnosis;
             _originalTreatment = _record.Treatment;
             _originalConclusion = _record.Conclusion;
-            btnSave.Visible = false;
+            UpdateSaveButtonState();
             msgDialog.Icon = MessageDialogIcon.Information;
             msgDialog.Buttons = MessageDialogButtons.OK;
             msgDialog.Show("Đã lưu thay đổi HSBA.", "Thành công");
@@ -90,6 +90,14 @@ namespace HospitalX.GUI.PH2.BacSi
         private void btnClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void UpdateSaveButtonState()
+        {
+            bool hasChanges = HasPendingChanges();
+            btnSave.Visible = true;
+            btnSave.Enabled = hasChanges;
+            btnSave.Cursor = hasChanges ? Cursors.Hand : Cursors.Default;
         }
     }
 }

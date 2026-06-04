@@ -13,7 +13,6 @@ namespace HospitalX.GUI.PH2
         private Guna2Panel pnlTopbar;
         private Panel pnlContent;
         private Label lblPageTitle;
-        private Label lblSubtitle;
         private Label lblBrand;
         private Label lblBrandSub;
         private Label lblTenKtv;
@@ -63,7 +62,6 @@ namespace HospitalX.GUI.PH2
             this.pnlTopbar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblPageTitle = new System.Windows.Forms.Label();
-            this.lblSubtitle = new System.Windows.Forms.Label();
             this.pnlContent = new System.Windows.Forms.Panel();
             this.pnlSidebar.SuspendLayout();
             this.pnlLogo.SuspendLayout();
@@ -391,7 +389,6 @@ namespace HospitalX.GUI.PH2
             // 
             this.pnlTopbar.Controls.Add(this.btnExit);
             this.pnlTopbar.Controls.Add(this.lblPageTitle);
-            this.pnlTopbar.Controls.Add(this.lblSubtitle);
             this.pnlTopbar.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTopbar.FillColor = System.Drawing.Color.White;
             this.pnlTopbar.Location = new System.Drawing.Point(220, 0);
@@ -420,23 +417,11 @@ namespace HospitalX.GUI.PH2
             this.lblPageTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 17F, System.Drawing.FontStyle.Bold);
             this.lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(39)))), ((int)(((byte)(51)))));
-            this.lblPageTitle.Location = new System.Drawing.Point(24, 6);
+            this.lblPageTitle.Location = new System.Drawing.Point(24, 14);
             this.lblPageTitle.Name = "lblPageTitle";
             this.lblPageTitle.Size = new System.Drawing.Size(119, 31);
             this.lblPageTitle.TabIndex = 0;
             this.lblPageTitle.Text = "Trang chủ";
-            // 
-            // lblSubtitle
-            // 
-            this.lblSubtitle.AutoSize = true;
-            this.lblSubtitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblSubtitle.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(152)))), ((int)(((byte)(170)))));
-            this.lblSubtitle.Location = new System.Drawing.Point(26, 46);
-            this.lblSubtitle.Name = "lblSubtitle";
-            this.lblSubtitle.Size = new System.Drawing.Size(286, 15);
-            this.lblSubtitle.TabIndex = 1;
-            this.lblSubtitle.Text = "Xin chào, bạn có 7 dịch vụ được phân công hôm nay";
             // 
             // pnlContent
             // 

@@ -19,6 +19,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private static string SavedPhone = "0901234567";
         private static string SavedAddress = "78/15 Đường Nguyễn Chí Thanh, Quận 5, TP. Hồ Chí Minh";
+        private string _originalContactPhone;
+        private string _originalContactAddress;
+        private bool _isLoadingContact;
 
         public class AuditLogItem
         {
@@ -35,6 +38,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             DoubleBuffered = true;
             txtContactPhone.TextChanged += txtContactPhone_TextChanged;
             txtContactAddress.TextChanged += txtContactAddress_TextChanged;
+            btnUpdateContact.Click += btnUpdateContact_Click;
         }
 
         private void ucHoSoCaNhan_Load(object sender, EventArgs e)
@@ -108,6 +112,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             txtContactAddress.Font = new Font("Segoe UI", 9.5F);
 
             // Style buttons
+            btnUpdateContact.FillColor = ThemeGreen;
+            btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnUpdateContact.ForeColor = Color.White;
+            btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
+            UpdateContactSaveButton();
+
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
             btnChangePassword.FillColor = Color.Transparent;
@@ -145,6 +155,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void LoadProfileData()
         {
+            _isLoadingContact = true;
+
             // In a real application, this would load from a database based on the logged-in employee ID.
             // e.g.:
             // NhanVien nv = NhanVienBLL.GetById(Session.CurrentNhanVienId);
@@ -165,6 +177,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             txtContactPhone.Text = SavedPhone;
             txtContactAddress.Text = SavedAddress;
+            AcceptCurrentContactValues();
+            _isLoadingContact = false;
+            UpdateContactSaveButton();
 
             // Load dynamically calculated stats
             lblStat1Val.Text = "124";
@@ -362,6 +377,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlCardSecurity.Width = rightW;
             pnlCardActivities.Width = rightW;
 
+            btnUpdateContact.Location = new Point(rightW - btnUpdateContact.Width - 24, btnUpdateContact.Top);
             btnChangePassword.Location = new Point(rightW - btnChangePassword.Width - 24, btnChangePassword.Top);
 
             flpActivities.Width = rightW - 40;
@@ -381,24 +397,76 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void txtContactPhone_TextChanged(object sender, EventArgs e)
         {
-            string phone = txtContactPhone.Text.Trim();
-            if (phone.Length >= 10 && IsNumeric(phone))
-            {
-                SavedPhone = phone;
-                // BLL integration point for saving to database:
-                // NhanVienBLL.UpdatePhone(Session.CurrentNhanVienId, phone);
-            }
+            ContactFieldChanged();
         }
 
         private void txtContactAddress_TextChanged(object sender, EventArgs e)
         {
-            string address = txtContactAddress.Text.Trim();
-            if (!string.IsNullOrEmpty(address))
+            ContactFieldChanged();
+        }
+
+        private void ContactFieldChanged()
+        {
+            if (_isLoadingContact)
             {
-                SavedAddress = address;
-                // BLL integration point for saving to database:
-                // NhanVienBLL.UpdateAddress(Session.CurrentNhanVienId, address);
+                return;
             }
+
+            UpdateContactSaveButton();
+        }
+
+        private void btnUpdateContact_Click(object sender, EventArgs e)
+        {
+            string phone = txtContactPhone.Text.Trim();
+            string address = txtContactAddress.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(phone) || phone.Replace(" ", "").Length < 10 || !IsPhoneNumber(phone))
+            {
+                ShowInfoMessage("Số điện thoại phải là chữ số và có độ dài từ 10 ký tự trở lên.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                ShowInfoMessage("Địa chỉ cư trú không được bỏ trống.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
+                return;
+            }
+
+            SavedPhone = phone;
+            SavedAddress = address;
+            ReloadContactData();
+            ShowInfoMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+        }
+
+        private void ReloadContactData()
+        {
+            _isLoadingContact = true;
+            txtContactPhone.Text = SavedPhone;
+            txtContactAddress.Text = SavedAddress;
+            AcceptCurrentContactValues();
+            _isLoadingContact = false;
+            UpdateContactSaveButton();
+        }
+
+        private void AcceptCurrentContactValues()
+        {
+            _originalContactPhone = NormalizeContactText(txtContactPhone.Text);
+            _originalContactAddress = NormalizeContactText(txtContactAddress.Text);
+        }
+
+        private void UpdateContactSaveButton()
+        {
+            bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
+                || NormalizeContactText(txtContactAddress.Text) != _originalContactAddress;
+
+            btnUpdateContact.Visible = true;
+            btnUpdateContact.Enabled = changed;
+            btnUpdateContact.Cursor = changed ? Cursors.Hand : Cursors.Default;
+        }
+
+        private static string NormalizeContactText(string value)
+        {
+            return (value ?? string.Empty).Trim();
         }
 
         private void btnChangePassword_Click(object sender, EventArgs e)
@@ -410,11 +478,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
         }
 
-        private static bool IsNumeric(string val)
+        private static bool IsPhoneNumber(string val)
         {
             foreach (char c in val)
             {
-                if (c < '0' || c > '9') return false;
+                if (c != ' ' && (c < '0' || c > '9')) return false;
             }
             return true;
         }
