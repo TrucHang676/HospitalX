@@ -86,7 +86,7 @@ namespace HospitalX.GUI
             this.pnlLeft.FillColor = System.Drawing.Color.Transparent;
             this.pnlLeft.Location = new System.Drawing.Point(0, 0);
             this.pnlLeft.Name = "pnlLeft";
-            this.pnlLeft.Size = new System.Drawing.Size(370, 540);
+            this.pnlLeft.Size = new System.Drawing.Size(390, 540);
             this.pnlLeft.TabIndex = 0;
             // 
             // lblHospital
@@ -95,7 +95,7 @@ namespace HospitalX.GUI
             this.lblHospital.BackColor = System.Drawing.Color.Transparent;
             this.lblHospital.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblHospital.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.lblHospital.Location = new System.Drawing.Point(41, 199);
+            this.lblHospital.Location = new System.Drawing.Point(75, 262);
             this.lblHospital.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblHospital.Name = "lblHospital";
             this.lblHospital.Size = new System.Drawing.Size(220, 17);
@@ -107,7 +107,7 @@ namespace HospitalX.GUI
             this.lblQTCSDLBV.BackColor = System.Drawing.Color.Transparent;
             this.lblQTCSDLBV.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblQTCSDLBV.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblQTCSDLBV.Location = new System.Drawing.Point(44, 221);
+            this.lblQTCSDLBV.Location = new System.Drawing.Point(43, 283);
             this.lblQTCSDLBV.Name = "lblQTCSDLBV";
             this.lblQTCSDLBV.Size = new System.Drawing.Size(285, 34);
             this.lblQTCSDLBV.TabIndex = 6;
@@ -118,7 +118,7 @@ namespace HospitalX.GUI
             this.Line.BorderRadius = 3;
             this.Line.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
             this.Line.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(78)))), ((int)(((byte)(180)))));
-            this.Line.Location = new System.Drawing.Point(44, 261);
+            this.Line.Location = new System.Drawing.Point(135, 325);
             this.Line.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Line.Name = "Line";
             this.Line.Size = new System.Drawing.Size(100, 5);
@@ -126,12 +126,12 @@ namespace HospitalX.GUI
             // 
             // pnlLogo
             // 
-            this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
+            this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
             this.pnlLogo.BorderRadius = 47;
             this.pnlLogo.BorderThickness = 1;
             this.pnlLogo.Controls.Add(this.ptbChuThap);
             this.pnlLogo.FillColor = System.Drawing.Color.White;
-            this.pnlLogo.Location = new System.Drawing.Point(44, 100);
+            this.pnlLogo.Location = new System.Drawing.Point(147, 170);
             this.pnlLogo.Name = "pnlLogo";
             this.pnlLogo.Size = new System.Drawing.Size(76, 76);
             this.pnlLogo.TabIndex = 0;
@@ -192,8 +192,8 @@ namespace HospitalX.GUI
             this.pnlRightCard.Location = new System.Drawing.Point(20, 40);
             this.pnlRightCard.Name = "pnlRightCard";
             this.pnlRightCard.ShadowDecoration.BorderRadius = 16;
-            this.pnlRightCard.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.pnlRightCard.ShadowDecoration.Depth = 6;
+            this.pnlRightCard.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(180)))), ((int)(((byte)(200)))));
+            this.pnlRightCard.ShadowDecoration.Depth = 4;
             this.pnlRightCard.ShadowDecoration.Enabled = true;
             this.pnlRightCard.Size = new System.Drawing.Size(350, 460);
             this.pnlRightCard.TabIndex = 0;
@@ -253,7 +253,7 @@ namespace HospitalX.GUI
             this.pnlRoleInfo.Name = "pnlRoleInfo";
             this.pnlRoleInfo.ShadowDecoration.BorderRadius = 10;
             this.pnlRoleInfo.ShadowDecoration.Color = System.Drawing.Color.LightSteelBlue;
-            this.pnlRoleInfo.ShadowDecoration.Depth = 4;
+            this.pnlRoleInfo.ShadowDecoration.Depth = 2;
             this.pnlRoleInfo.ShadowDecoration.Enabled = true;
             this.pnlRoleInfo.Size = new System.Drawing.Size(295, 55);
             this.pnlRoleInfo.TabIndex = 6;
@@ -308,7 +308,7 @@ namespace HospitalX.GUI
             this.pnlPass.Name = "pnlPass";
             this.pnlPass.ShadowDecoration.BorderRadius = 10;
             this.pnlPass.ShadowDecoration.Color = System.Drawing.Color.LightSteelBlue;
-            this.pnlPass.ShadowDecoration.Depth = 4;
+            this.pnlPass.ShadowDecoration.Depth = 2;
             this.pnlPass.ShadowDecoration.Enabled = true;
             this.pnlPass.Size = new System.Drawing.Size(295, 55);
             this.pnlPass.TabIndex = 6;
@@ -362,7 +362,7 @@ namespace HospitalX.GUI
             this.pnlTDN.Name = "pnlTDN";
             this.pnlTDN.ShadowDecoration.BorderRadius = 10;
             this.pnlTDN.ShadowDecoration.Color = System.Drawing.Color.LightSteelBlue;
-            this.pnlTDN.ShadowDecoration.Depth = 4;
+            this.pnlTDN.ShadowDecoration.Depth = 2;
             this.pnlTDN.ShadowDecoration.Enabled = true;
             this.pnlTDN.Size = new System.Drawing.Size(295, 55);
             this.pnlTDN.TabIndex = 4;
@@ -404,34 +404,34 @@ namespace HospitalX.GUI
             // 
             this.lblRoleTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblRoleTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRoleTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(106)))), ((int)(((byte)(143)))), ((int)(((byte)(168)))));
+            this.lblRoleTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(95)))), ((int)(((byte)(115)))));
             this.lblRoleTitle.Location = new System.Drawing.Point(27, 288);
             this.lblRoleTitle.Name = "lblRoleTitle";
             this.lblRoleTitle.Size = new System.Drawing.Size(124, 17);
             this.lblRoleTitle.TabIndex = 2;
-            this.lblRoleTitle.Text = "VAI TRÒ ĐĂNG NHẬP";
+            this.lblRoleTitle.Text = "Vai trò đăng nhập";
             // 
             // lblPass
             // 
             this.lblPass.BackColor = System.Drawing.Color.Transparent;
             this.lblPass.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(106)))), ((int)(((byte)(143)))), ((int)(((byte)(168)))));
+            this.lblPass.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(95)))), ((int)(((byte)(115)))));
             this.lblPass.Location = new System.Drawing.Point(27, 190);
             this.lblPass.Name = "lblPass";
             this.lblPass.Size = new System.Drawing.Size(66, 17);
             this.lblPass.TabIndex = 1;
-            this.lblPass.Text = "MẬT KHẨU";
+            this.lblPass.Text = "Mật khẩu";
             // 
             // lbTDN
             // 
             this.lbTDN.BackColor = System.Drawing.Color.Transparent;
             this.lbTDN.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTDN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(106)))), ((int)(((byte)(143)))), ((int)(((byte)(168)))));
+            this.lbTDN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(95)))), ((int)(((byte)(115)))));
             this.lbTDN.Location = new System.Drawing.Point(27, 89);
             this.lbTDN.Name = "lbTDN";
             this.lbTDN.Size = new System.Drawing.Size(99, 17);
             this.lbTDN.TabIndex = 0;
-            this.lbTDN.Text = "TÊN ĐĂNG NHẬP";
+            this.lbTDN.Text = "Tên đăng nhập";
             // 
             // lblFormTitle
             // 
@@ -442,7 +442,7 @@ namespace HospitalX.GUI
             this.lblFormTitle.Name = "lblFormTitle";
             this.lblFormTitle.Size = new System.Drawing.Size(150, 34);
             this.lblFormTitle.TabIndex = 0;
-            this.lblFormTitle.Text = "ĐĂNG NHẬP";
+            this.lblFormTitle.Text = "Đăng nhập";
             // 
             // RoleLogin
             // 

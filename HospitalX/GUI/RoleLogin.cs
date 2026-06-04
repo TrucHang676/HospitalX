@@ -87,34 +87,26 @@ namespace HospitalX.GUI
             Text = "HospitalX - Đăng nhập " + _role.Title;
 
             // Setup dynamic text labels
-            lblFormTitle.Text = "ĐĂNG NHẬP";
+            lblFormTitle.Text = "Đăng nhập";
             lblRoleName.Text = _role.Title;
             lblRoleDesc.Text = _role.Description;
             lblQTCSDLBV.Text = isPh1 ? "Quản trị CSDL Bệnh viện X" : "Hệ thống Nghiệp vụ Y tế";
 
-            // Update separator gradient (glowing modern capsule bar)
-            if (isPh1)
-            {
-                Line.FillColor = Color.FromArgb(56, 189, 248);   // #38BDF8 (Vibrant light blue)
-                Line.FillColor2 = theme;                         // #254A84 (Theme blue)
-            }
-            else
-            {
-                Line.FillColor = Color.FromArgb(52, 211, 153);   // #34D399 (Vibrant mint green)
-                Line.FillColor2 = theme;                         // #14745B (Theme green)
-            }
-            Line.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
+            // Solid color separator bar – clean, no flashy gradient
+            Color barColor = isPh1
+                ? Color.FromArgb(100, 160, 220)   // Soft steel blue
+                : Color.FromArgb(80, 180, 150);   // Soft sage green
+            Line.FillColor = barColor;
+            Line.FillColor2 = barColor;
 
-            // Hospital brand label colors matching module theme
-            lblHospital.ForeColor = isPh1
-                ? Color.FromArgb(147, 197, 253) // light blue (#93C5FD)
-                : Color.FromArgb(167, 243, 208); // light green (#A7F3D0)
+            // Hospital brand label colors – clean white tones on dark background
+            lblHospital.ForeColor = Color.FromArgb(200, 215, 230); // Soft light gray-blue
             lblQTCSDLBV.ForeColor = Color.White;
             lblRoleName.ForeColor = theme;
 
-            // frosted-glass panel transparency
-            pnlRightCard.FillColor = Color.FromArgb(242, 255, 255, 255); // 95% white opacity
-            pnlRightCard.ShadowDecoration.Color = theme;
+            // Solid white card – no frosted-glass transparency
+            pnlRightCard.FillColor = Color.White;
+            pnlRightCard.ShadowDecoration.Color = Color.FromArgb(160, 180, 200); // Neutral gray shadow
 
             // Load context-specific input icons
             if (isPh1)
@@ -144,7 +136,7 @@ namespace HospitalX.GUI
             btnLogin.FillColor = theme;
             btnLogin.HoverState.FillColor = ControlPaint.Light(theme, 0.15F);
             btnLogin.PressedColor = ControlPaint.Dark(theme, 0.10F);
-            btnLogin.ShadowDecoration.Color = theme;
+            btnLogin.ShadowDecoration.Color = Color.FromArgb(140, 160, 180); // Neutral subtle shadow
 
             // Back Button styling
             btnBack.ForeColor = theme;
@@ -153,7 +145,13 @@ namespace HospitalX.GUI
                 ? Color.FromArgb(30, 37, 74, 132)   // semi-transparent blue
                 : Color.FromArgb(30, 20, 116, 91);  // semi-transparent green
 
-            // Force repaint to draw the dynamic color-blended slanted background
+            // Center branding elements horizontally on the left panel
+            pnlLogo.Location = new Point((pnlLeft.Width - pnlLogo.Width) / 2, pnlLogo.Location.Y);
+            lblHospital.Location = new Point((pnlLeft.Width - lblHospital.Width) / 2, lblHospital.Location.Y);
+            lblQTCSDLBV.Location = new Point((pnlLeft.Width - lblQTCSDLBV.Width) / 2, lblQTCSDLBV.Location.Y);
+            Line.Location = new Point((pnlLeft.Width - Line.Width) / 2, Line.Location.Y);
+
+            // Force repaint
             Invalidate();
         }
 
@@ -171,57 +169,55 @@ namespace HospitalX.GUI
             Graphics g = e.Graphics;
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            // Calculate gradient colors for left panel background
             Color theme = _role?.ThemeColor ?? Color.FromArgb(20, 116, 91);
             bool isPh1 = _role?.Module == LoginModule.Ph1;
 
-            Color color1, color2, accentColor;
+            // Richer gradient with more visual depth
+            Color color1, color2;
             if (isPh1)
             {
-                color1 = Color.FromArgb(43, 85, 150);      // #2B5596 (Vibrant medium blue)
-                color2 = Color.FromArgb(20, 42, 77);       // #142A4D (Dark blue)
-                accentColor = Color.FromArgb(200, 56, 189, 248); // #38BDF8 (Vibrant sky blue) with 200 alpha
+                color1 = Color.FromArgb(36, 74, 130);     // Navy blue (top)
+                color2 = Color.FromArgb(20, 45, 82);      // Deep navy (bottom)
             }
             else
             {
-                color1 = Color.FromArgb(21, 126, 99);      // #157E63 (Vibrant forest green)
-                color2 = Color.FromArgb(10, 54, 42);       // #0A362A (Dark forest green)
-                accentColor = Color.FromArgb(200, 52, 211, 153); // #34D399 (Vibrant mint green) with 200 alpha
+                color1 = Color.FromArgb(20, 108, 84);      // Forest green (top)
+                color2 = Color.FromArgb(10, 58, 44);       // Deep forest (bottom)
             }
 
-            Point[] leftShape = {
-                new Point(0, 0),
-                new Point(600, 0),
-                new Point(450, ClientRectangle.Height),
-                new Point(0, ClientRectangle.Height)
-            };
-
+            // Clean rectangular background
+            int separatorX = pnlRight != null ? pnlRight.Location.X : 390;
+            Rectangle leftRect = new Rectangle(0, 0, separatorX, ClientRectangle.Height);
             using (var brush = new System.Drawing.Drawing2D.LinearGradientBrush(
                 new Point(0, 0),
-                new Point(500, ClientRectangle.Height),
+                new Point(leftRect.Width / 3, leftRect.Height),
                 color1,
                 color2))
             {
-                g.FillPolygon(brush, leftShape);
+                g.FillRectangle(brush, leftRect);
             }
 
-            // Accent dividing line
-            Point[] accentLine = {
-                new Point(585, 0),
-                new Point(605, 0),
-                new Point(445, ClientRectangle.Height),
-                new Point(435, ClientRectangle.Height)
-            };
-            using (var brush = new SolidBrush(accentColor))
-                g.FillPolygon(brush, accentLine);
-
-            // Draw modern geometric outline circles for dynamic depth (matching RoleSelection style)
-            using (var pen = new Pen(Color.FromArgb(15, 255, 255, 255), 1.5f))
+            // Subtle radial glow behind branding area for warmth & depth
+            int glowW = (int)(leftRect.Width * 0.8f);
+            int glowH = (int)(leftRect.Height * 0.45f);
+            int glowX = (leftRect.Width - glowW) / 2;
+            int glowY = (leftRect.Height - glowH) / 2;
+            var glowRect = new Rectangle(glowX, glowY, glowW, glowH);
+            using (var path = new System.Drawing.Drawing2D.GraphicsPath())
             {
-                g.DrawEllipse(pen, -150, 100, 480, 480);
-                g.DrawEllipse(pen, -100, 150, 380, 380);
-                g.DrawEllipse(pen, 200, 350, 250, 250);
-                g.DrawEllipse(pen, -50, 50, 580, 580);
+                path.AddEllipse(glowRect);
+                using (var glowBrush = new System.Drawing.Drawing2D.PathGradientBrush(path))
+                {
+                    glowBrush.CenterColor = Color.FromArgb(15, 255, 255, 255);
+                    glowBrush.SurroundColors = new[] { Color.FromArgb(0, 255, 255, 255) };
+                    g.FillPath(glowBrush, path);
+                }
+            }
+
+            // Subtle right-edge separator
+            using (var pen = new Pen(Color.FromArgb(25, 255, 255, 255), 1f))
+            {
+                g.DrawLine(pen, separatorX - 1, 0, separatorX - 1, ClientRectangle.Height);
             }
         }
 
