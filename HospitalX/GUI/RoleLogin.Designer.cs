@@ -25,7 +25,6 @@ namespace HospitalX.GUI
             this.lblHospital = new System.Windows.Forms.Label();
             this.lblQTCSDLBV = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.Line = new Guna.UI2.WinForms.Guna2GradientPanel();
-            this.pnlLogo = new Guna.UI2.WinForms.Guna2Panel();
             this.ptbChuThap = new Guna.UI2.WinForms.Guna2PictureBox();
             this.pnlRight = new Guna.UI2.WinForms.Guna2Panel();
             this.btnExit = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -47,7 +46,6 @@ namespace HospitalX.GUI
             this.lbTDN = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblFormTitle = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.pnlLeft.SuspendLayout();
-            this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).BeginInit();
             this.pnlRight.SuspendLayout();
             this.pnlRightCard.SuspendLayout();
@@ -82,7 +80,7 @@ namespace HospitalX.GUI
             this.pnlLeft.Controls.Add(this.lblHospital);
             this.pnlLeft.Controls.Add(this.lblQTCSDLBV);
             this.pnlLeft.Controls.Add(this.Line);
-            this.pnlLeft.Controls.Add(this.pnlLogo);
+            this.pnlLeft.Controls.Add(this.ptbChuThap);
             this.pnlLeft.FillColor = System.Drawing.Color.Transparent;
             this.pnlLeft.Location = new System.Drawing.Point(0, 0);
             this.pnlLeft.Name = "pnlLeft";
@@ -124,30 +122,17 @@ namespace HospitalX.GUI
             this.Line.Size = new System.Drawing.Size(100, 5);
             this.Line.TabIndex = 4;
             // 
-            // pnlLogo
-            // 
-            this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
-            this.pnlLogo.BorderRadius = 47;
-            this.pnlLogo.BorderThickness = 1;
-            this.pnlLogo.Controls.Add(this.ptbChuThap);
-            this.pnlLogo.FillColor = System.Drawing.Color.White;
-            this.pnlLogo.Location = new System.Drawing.Point(147, 170);
-            this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.Size = new System.Drawing.Size(76, 76);
-            this.pnlLogo.TabIndex = 0;
-            this.pnlLogo.UseTransparentBackground = true;
-            // 
             // ptbChuThap
             // 
+            this.ptbChuThap.BackColor = System.Drawing.Color.Transparent;
             this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
             this.ptbChuThap.ImageRotate = 0F;
-            this.ptbChuThap.Location = new System.Drawing.Point(19, 20);
+            this.ptbChuThap.Location = new System.Drawing.Point(167, 180);
             this.ptbChuThap.Name = "ptbChuThap";
-            this.ptbChuThap.Size = new System.Drawing.Size(39, 39);
+            this.ptbChuThap.Size = new System.Drawing.Size(56, 56);
             this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbChuThap.TabIndex = 0;
             this.ptbChuThap.TabStop = false;
-            this.ptbChuThap.UseTransparentBackground = true;
             // 
             // pnlRight
             // 
@@ -461,7 +446,6 @@ namespace HospitalX.GUI
             this.Text = "HospitalX - Đăng nhập";
             this.pnlLeft.ResumeLayout(false);
             this.pnlLeft.PerformLayout();
-            this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).EndInit();
             this.pnlRight.ResumeLayout(false);
             this.pnlRightCard.ResumeLayout(false);
@@ -485,7 +469,6 @@ namespace HospitalX.GUI
         private System.Windows.Forms.Label lblHospital;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblQTCSDLBV;
         private Guna.UI2.WinForms.Guna2GradientPanel Line;
-        private Guna.UI2.WinForms.Guna2Panel pnlLogo;
         private Guna.UI2.WinForms.Guna2PictureBox ptbChuThap;
         private Guna.UI2.WinForms.Guna2Panel pnlRight;
         private Guna.UI2.WinForms.Guna2ControlBox btnExit;

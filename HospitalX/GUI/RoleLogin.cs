@@ -38,7 +38,7 @@ namespace HospitalX.GUI
             this.DoubleBuffered = true;
 
             // Load main hospital logo
-            var logoImg = LoadImageSafely("logoHX.png");
+            var logoImg = LoadImageSafely("logoHX4-Photoroom.png");
             if (logoImg != null)
             {
                 ptbChuThap.Image = logoImg;
@@ -146,7 +146,7 @@ namespace HospitalX.GUI
                 : Color.FromArgb(30, 20, 116, 91);  // semi-transparent green
 
             // Center branding elements horizontally on the left panel
-            pnlLogo.Location = new Point((pnlLeft.Width - pnlLogo.Width) / 2, pnlLogo.Location.Y);
+            ptbChuThap.Location = new Point((pnlLeft.Width - ptbChuThap.Width) / 2, ptbChuThap.Location.Y);
             lblHospital.Location = new Point((pnlLeft.Width - lblHospital.Width) / 2, lblHospital.Location.Y);
             lblQTCSDLBV.Location = new Point((pnlLeft.Width - lblQTCSDLBV.Width) / 2, lblQTCSDLBV.Location.Y);
             Line.Location = new Point((pnlLeft.Width - Line.Width) / 2, Line.Location.Y);
@@ -176,8 +176,8 @@ namespace HospitalX.GUI
             Color color1, color2;
             if (isPh1)
             {
-                color1 = Color.FromArgb(36, 74, 130);     // Navy blue (top)
-                color2 = Color.FromArgb(20, 45, 82);      // Deep navy (bottom)
+                color1 = Color.FromArgb(55, 115, 195);     // Lighter navy blue (top)
+                color2 = Color.FromArgb(30, 70, 125);     // Soft deep blue (bottom)
             }
             else
             {
@@ -211,6 +211,30 @@ namespace HospitalX.GUI
                     glowBrush.CenterColor = Color.FromArgb(15, 255, 255, 255);
                     glowBrush.SurroundColors = new[] { Color.FromArgb(0, 255, 255, 255) };
                     g.FillPath(glowBrush, path);
+                }
+            }
+
+            // Draw white circular background and subtle border for logo dynamically (prevents WinForms transparency glitches)
+            if (ptbChuThap != null && ptbChuThap.Visible)
+            {
+                // Calculate size and offsets dynamically based on scaled ptbChuThap.Width to preserve perfect proportions under High DPI scaling
+                int circleSize = (int)Math.Round(ptbChuThap.Width * (76f / 56f));
+                int padding = (circleSize - ptbChuThap.Width) / 2;
+                int yOffset = (int)Math.Round(ptbChuThap.Width * (5f / 56f)); // Shift circle up slightly to compensate for logo's transparent bottom margin
+
+                int circleX = ptbChuThap.Location.X - padding;
+                int circleY = ptbChuThap.Location.Y - padding - yOffset;
+
+                // Perfect anti-aliased white circle
+                using (var whiteBrush = new SolidBrush(Color.White))
+                {
+                    g.FillEllipse(whiteBrush, circleX, circleY, circleSize, circleSize);
+                }
+
+                // Subtle light gray border around the circle
+                using (var borderPen = new Pen(Color.FromArgb(220, 230, 240), 1f))
+                {
+                    g.DrawEllipse(borderPen, circleX, circleY, circleSize - 1, circleSize - 1);
                 }
             }
 
