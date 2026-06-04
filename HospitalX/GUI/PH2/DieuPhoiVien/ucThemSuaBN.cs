@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -107,7 +107,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             if (!_isEditMode)
             {
-                btnSave.Enabled = true;
+                bool hasFilledAny =
+                    !string.IsNullOrWhiteSpace(txtHoDem.Text) ||
+                    !string.IsNullOrWhiteSpace(txtTen.Text) ||
+                    cboGioiTinh.SelectedIndex != 0 ||
+                    !string.IsNullOrWhiteSpace(txtCccd.Text) ||
+                    !string.IsNullOrWhiteSpace(txtSoNha.Text) ||
+                    !string.IsNullOrWhiteSpace(txtTenDuong.Text) ||
+                    !string.IsNullOrWhiteSpace(txtQuanHuyen.Text) ||
+                    !string.IsNullOrWhiteSpace(txtTinhTP.Text) ||
+                    !string.IsNullOrWhiteSpace(txtTienSuBN.Text) ||
+                    !string.IsNullOrWhiteSpace(txtTienSuGD.Text) ||
+                    !string.IsNullOrWhiteSpace(txtDiUng.Text);
+
+                btnSave.Enabled = hasFilledAny;
                 return;
             }
 
@@ -197,7 +210,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 btnSave.Text = "Lưu thay đổi";
                 btnSave.ImageOffset = new Point(0, 0);
                 btnSave.TextOffset = new Point(0, 0);
-                btnSave.Enabled = false;
                 UpdateMainFormHeader("Sửa thông tin bệnh nhân");
             }
             else
@@ -222,12 +234,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 btnSave.Text = "Thêm bệnh nhân";
                 btnSave.ImageOffset = new Point(0, 0);
                 btnSave.TextOffset = new Point(0, 0);
-                btnSave.Enabled = true;
                 UpdateMainFormHeader("Thêm bệnh nhân mới");
             }
 
             // Trigger dynamic co-sizing and positioning updates
             AdjustLayoutSizes();
+            CheckForChanges();
         }
 
         private void UpdateMainFormHeader(string title)
@@ -276,14 +288,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             _origTienSuGD = "";
             _origDiUng = "";
 
-            if (_isEditMode)
-            {
-                btnSave.Enabled = false;
-            }
-            else
-            {
-                btnSave.Enabled = true;
-            }
+            SetFieldsAccessibility(_isEditMode);
+            CheckForChanges();
         }
 
         private void btnTabAdd_Click(object sender, EventArgs e)
@@ -352,6 +358,42 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             else
             {
                 ResetFieldStyle(txtCccd);
+            }
+
+            // Validate txtTienSuBN
+            if (string.IsNullOrWhiteSpace(txtTienSuBN.Text))
+            {
+                isValid = false;
+                MarkFieldInvalid(txtTienSuBN);
+                errorMsg += "\n- Tiền sử bệnh";
+            }
+            else
+            {
+                ResetFieldStyle(txtTienSuBN);
+            }
+
+            // Validate txtTienSuGD
+            if (string.IsNullOrWhiteSpace(txtTienSuGD.Text))
+            {
+                isValid = false;
+                MarkFieldInvalid(txtTienSuGD);
+                errorMsg += "\n- Tiền sử gia đình";
+            }
+            else
+            {
+                ResetFieldStyle(txtTienSuGD);
+            }
+
+            // Validate txtDiUng
+            if (string.IsNullOrWhiteSpace(txtDiUng.Text))
+            {
+                isValid = false;
+                MarkFieldInvalid(txtDiUng);
+                errorMsg += "\n- Dị ứng thuốc";
+            }
+            else
+            {
+                ResetFieldStyle(txtDiUng);
             }
 
             if (!isValid)
@@ -650,6 +692,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 btnSave.Text = "Lưu thay đổi";
                 btnSave.Enabled = false;
+                SetFieldsAccessibility(false); // Enable fields when patient found
 
                 if (!silent)
                 {
@@ -667,6 +710,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
             else
             {
+                SetFieldsAccessibility(true); // Keep fields disabled when search fails
                 if (this.guna2MessageDialog1 == null)
                 {
                     this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
@@ -756,9 +800,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             ConfigureLabelStyle(lblTinhTP, "TỈNH / THÀNH PHỐ");
 
             // Configure labels - Section 2: Medical History
-            ConfigureLabelStyle(lblTienSuBN, "TIỀN SỬ BỆNH");
-            ConfigureLabelStyle(lblTienSuGD, "TIỀN SỬ BỆNH GIA ĐÌNH");
-            ConfigureLabelStyle(lblDiUng, "DỊ ỨNG THUỐC");
+            ConfigureLabelStyle(lblTienSuBN, "TIỀN SỬ BỆNH *");
+            ConfigureLabelStyle(lblTienSuGD, "TIỀN SỬ BỆNH GIA ĐÌNH *");
+            ConfigureLabelStyle(lblDiUng, "DỊ ỨNG THUỐC *");
 
             // Configure TextBoxes
             ConfigureTextBoxStyle(txtHoDem, false);
@@ -825,9 +869,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             textBox.TextOffset = new System.Drawing.Point(8, 0);
             textBox.PlaceholderForeColor = System.Drawing.Color.FromArgb(180, 195, 188); // faint gray-green
 
+            textBox.Enabled = !readOnly;
             if (readOnly)
             {
-                textBox.Enabled = false;
                 textBox.DisabledState.FillColor = System.Drawing.Color.FromArgb(236, 242, 240);
                 textBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(122, 149, 137); // beautiful muted gray-green text
                 textBox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(218, 232, 226);
@@ -847,6 +891,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cbo.FocusedState.BorderColor = System.Drawing.Color.FromArgb(15, 110, 86);
             cbo.ItemHeight = 32;
             cbo.TextOffset = new System.Drawing.Point(8, 0);
+        }
+
+        private void SetFieldsAccessibility(bool isReadOnly)
+        {
+            ConfigureTextBoxStyle(txtHoDem, isReadOnly);
+            ConfigureTextBoxStyle(txtTen, isReadOnly);
+            ConfigureTextBoxStyle(txtCccd, isReadOnly);
+            ConfigureTextBoxStyle(txtSoNha, isReadOnly);
+            ConfigureTextBoxStyle(txtTenDuong, isReadOnly);
+            ConfigureTextBoxStyle(txtQuanHuyen, isReadOnly);
+            ConfigureTextBoxStyle(txtTinhTP, isReadOnly);
+            ConfigureTextBoxStyle(txtTienSuBN, isReadOnly);
+            ConfigureTextBoxStyle(txtTienSuGD, isReadOnly);
+            ConfigureTextBoxStyle(txtDiUng, isReadOnly);
+
+            dtpNgaySinh.Enabled = !isReadOnly;
+            cboGioiTinh.Enabled = !isReadOnly;
         }
     }
 }
