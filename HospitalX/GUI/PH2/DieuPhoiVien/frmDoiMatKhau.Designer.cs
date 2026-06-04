@@ -29,7 +29,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblConfirmPass = new System.Windows.Forms.Label();
             this.txtConfirmPass = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnConfirm = new Guna.UI2.WinForms.Guna2Button();
-            this.btnCancel = new Guna.UI2.WinForms.Guna2Button();
             this.pnlHeader.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,6 +109,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtOldPass.SelectedText = "";
             this.txtOldPass.Size = new System.Drawing.Size(386, 38);
             this.txtOldPass.TabIndex = 2;
+            this.txtOldPass.IconRight = global::HospitalX.Properties.Resources.eye_close;
+            this.txtOldPass.IconRightCursor = System.Windows.Forms.Cursors.Hand;
+            this.txtOldPass.IconRightOffset = new System.Drawing.Point(8, 0);
+            this.txtOldPass.IconRightSize = new System.Drawing.Size(18, 18);
             // 
             // lblNewPass
             // 
@@ -144,6 +147,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtNewPass.SelectedText = "";
             this.txtNewPass.Size = new System.Drawing.Size(386, 38);
             this.txtNewPass.TabIndex = 4;
+            this.txtNewPass.IconRight = global::HospitalX.Properties.Resources.eye_close;
+            this.txtNewPass.IconRightCursor = System.Windows.Forms.Cursors.Hand;
+            this.txtNewPass.IconRightOffset = new System.Drawing.Point(8, 0);
+            this.txtNewPass.IconRightSize = new System.Drawing.Size(18, 18);
             // 
             // lblConfirmPass
             // 
@@ -178,38 +185,26 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtConfirmPass.SelectedText = "";
             this.txtConfirmPass.Size = new System.Drawing.Size(386, 38);
             this.txtConfirmPass.TabIndex = 6;
+            this.txtConfirmPass.IconRight = global::HospitalX.Properties.Resources.eye_close;
+            this.txtConfirmPass.IconRightCursor = System.Windows.Forms.Cursors.Hand;
+            this.txtConfirmPass.IconRightOffset = new System.Drawing.Point(8, 0);
+            this.txtConfirmPass.IconRightSize = new System.Drawing.Size(18, 18);
             // 
             // btnConfirm
             // 
             this.btnConfirm.BorderRadius = 8;
             this.btnConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConfirm.Enabled = false;
             this.btnConfirm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnConfirm.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnConfirm.ForeColor = System.Drawing.Color.White;
             this.btnConfirm.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
-            this.btnConfirm.Location = new System.Drawing.Point(292, 296);
+            this.btnConfirm.Location = new System.Drawing.Point(158, 296);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(118, 38);
             this.btnConfirm.TabIndex = 7;
             this.btnConfirm.Text = "Xác nhận";
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnCancel.BorderThickness = 1;
-            this.btnCancel.BorderRadius = 8;
-            this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancel.FillColor = System.Drawing.Color.Transparent;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnCancel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.btnCancel.Location = new System.Drawing.Point(158, 296);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(118, 38);
-            this.btnCancel.TabIndex = 8;
-            this.btnCancel.Text = "Hủy bỏ";
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // frmDoiMatKhau
             // 
@@ -217,7 +212,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.ClientSize = new System.Drawing.Size(434, 356);
-            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnConfirm);
             this.Controls.Add(this.txtConfirmPass);
             this.Controls.Add(this.lblConfirmPass);
@@ -251,6 +245,5 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private System.Windows.Forms.Label lblConfirmPass;
         private Guna.UI2.WinForms.Guna2TextBox txtConfirmPass;
         private Guna.UI2.WinForms.Guna2Button btnConfirm;
-        private Guna.UI2.WinForms.Guna2Button btnCancel;
     }
 }

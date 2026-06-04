@@ -64,21 +64,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblTitle.ForeColor = Color.White;
             lblTitle.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
 
-            // Cancel button
-            btnCancel.BorderColor = ThemeGreen;
-            btnCancel.BorderThickness = 1;
-            btnCancel.FillColor = Color.Transparent;
-            btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnCancel.ForeColor = ThemeGreen;
-            btnCancel.HoverState.FillColor = Color.FromArgb(230, 244, 240);
-            btnCancel.Cursor = Cursors.Hand;
-
             // Confirm button
             btnConfirm.FillColor = ThemeGreen;
             btnConfirm.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnConfirm.ForeColor = Color.White;
             btnConfirm.HoverState.FillColor = Color.FromArgb(10, 82, 64);
             btnConfirm.Cursor = Cursors.Hand;
+            btnConfirm.Enabled = false;
 
             // Textboxes
             foreach (var txt in new[] { txtOldPass, txtNewPass, txtConfirmPass })
@@ -89,6 +81,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 txt.FocusedState.BorderColor = ThemeGreen;
                 txt.Font = new Font("Segoe UI", 9.5F);
                 txt.ForeColor = TextDark;
+                txt.TextChanged += UpdateConfirmButtonState;
+                txt.IconRightOffset = new Point(8, 0);
 
                 // Configure password eye visibility icon with initial dim state
                 if (imgEyeCloseDim != null)
@@ -172,10 +166,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.Close();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void UpdateConfirmButtonState(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            btnConfirm.Enabled = !string.IsNullOrWhiteSpace(txtOldPass.Text) &&
+                                  !string.IsNullOrWhiteSpace(txtNewPass.Text) &&
+                                  !string.IsNullOrWhiteSpace(txtConfirmPass.Text);
         }
 
         private void ShowMessage(string message, string title, MessageDialogIcon icon)
