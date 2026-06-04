@@ -100,10 +100,17 @@ namespace HospitalX.GUI.PH2.BacSi
             bool hasSelectedDrug = _selectedDrug != null;
             bool canUpdate = hasSelectedDrug && hasCompleteInput && SelectedDrugChanged();
 
-            btnAdd.Visible = !hasSelectedDrug && hasCompleteInput;
-            btnUpdate.Visible = canUpdate;
-            btnDelete.Visible = hasSelectedDrug && !canUpdate;
+            SetActionButtonState(btnAdd, !hasSelectedDrug && hasCompleteInput);
+            SetActionButtonState(btnUpdate, canUpdate);
+            SetActionButtonState(btnDelete, hasSelectedDrug && !canUpdate);
             btnNewMedicine.Visible = true;
+        }
+
+        private void SetActionButtonState(Control button, bool enabled)
+        {
+            button.Visible = true;
+            button.Enabled = enabled;
+            button.Cursor = enabled ? Cursors.Hand : Cursors.Default;
         }
 
         private bool HasCompleteInput()
@@ -201,5 +208,6 @@ namespace HospitalX.GUI.PH2.BacSi
             UpdateActionButtons();
             txtMedicineName.Focus();
         }
+
     }
 }

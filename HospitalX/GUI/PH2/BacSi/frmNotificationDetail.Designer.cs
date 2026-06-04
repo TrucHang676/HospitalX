@@ -130,7 +130,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.btnMarkRead.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMarkRead.ForeColor = System.Drawing.Color.White;
             this.btnMarkRead.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnMarkRead.Location = new System.Drawing.Point(635, 415);
+            this.btnMarkRead.Location = new System.Drawing.Point(318, 421);
             this.btnMarkRead.Name = "btnMarkRead";
             this.btnMarkRead.Size = new System.Drawing.Size(154, 31);
             this.btnMarkRead.TabIndex = 6;
