@@ -75,7 +75,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlScroll.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.pnlScroll.Location = new System.Drawing.Point(0, 0);
-            this.pnlScroll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlScroll.Margin = new System.Windows.Forms.Padding(2);
             this.pnlScroll.Name = "pnlScroll";
             this.pnlScroll.Size = new System.Drawing.Size(1028, 691);
             this.pnlScroll.TabIndex = 0;
@@ -86,7 +86,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlSegment.Controls.Add(this.btnTabAdd);
             this.pnlSegment.Controls.Add(this.btnTabEdit);
             this.pnlSegment.Location = new System.Drawing.Point(20, 16);
-            this.pnlSegment.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlSegment.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSegment.Name = "pnlSegment";
             this.pnlSegment.Size = new System.Drawing.Size(987, 49);
             this.pnlSegment.TabIndex = 0;
@@ -105,7 +105,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnTabAdd.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.btnTabAdd.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnTabAdd.Location = new System.Drawing.Point(0, 8);
-            this.btnTabAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTabAdd.Margin = new System.Windows.Forms.Padding(2);
             this.btnTabAdd.Name = "btnTabAdd";
             this.btnTabAdd.Size = new System.Drawing.Size(150, 32);
             this.btnTabAdd.TabIndex = 0;
@@ -125,7 +125,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnTabEdit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
             this.btnTabEdit.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnTabEdit.Location = new System.Drawing.Point(162, 8);
-            this.btnTabEdit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTabEdit.Margin = new System.Windows.Forms.Padding(2);
             this.btnTabEdit.Name = "btnTabEdit";
             this.btnTabEdit.Size = new System.Drawing.Size(180, 32);
             this.btnTabEdit.TabIndex = 1;
@@ -143,7 +143,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlSearchCard.Controls.Add(this.btnSearch);
             this.pnlSearchCard.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.pnlSearchCard.Location = new System.Drawing.Point(20, 65);
-            this.pnlSearchCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlSearchCard.Margin = new System.Windows.Forms.Padding(2);
             this.pnlSearchCard.Name = "pnlSearchCard";
             this.pnlSearchCard.Size = new System.Drawing.Size(987, 73);
             this.pnlSearchCard.TabIndex = 2;
@@ -173,8 +173,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
             this.txtSearch.Location = new System.Drawing.Point(30, 32);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(2);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderText = "";
             this.txtSearch.SelectedText = "";
@@ -192,7 +193,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnSearch.ForeColor = System.Drawing.Color.White;
             this.btnSearch.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnSearch.Location = new System.Drawing.Point(882, 32);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(2);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 29);
             this.btnSearch.TabIndex = 3;
@@ -235,7 +236,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlFormCard.Controls.Add(this.pnlFormFooter);
             this.pnlFormCard.FillColor = System.Drawing.Color.White;
             this.pnlFormCard.Location = new System.Drawing.Point(20, 65);
-            this.pnlFormCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlFormCard.Margin = new System.Windows.Forms.Padding(2);
             this.pnlFormCard.Name = "pnlFormCard";
             this.pnlFormCard.Size = new System.Drawing.Size(987, 715);
             this.pnlFormCard.TabIndex = 1;
@@ -267,7 +268,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtHoDem.DefaultText = "";
             this.txtHoDem.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtHoDem.Location = new System.Drawing.Point(30, 73);
-            this.txtHoDem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtHoDem.Margin = new System.Windows.Forms.Padding(2);
             this.txtHoDem.Name = "txtHoDem";
             this.txtHoDem.PlaceholderText = "";
             this.txtHoDem.SelectedText = "";
@@ -288,7 +289,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtTen.DefaultText = "";
             this.txtTen.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTen.Location = new System.Drawing.Point(345, 73);
-            this.txtTen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTen.Margin = new System.Windows.Forms.Padding(2);
             this.txtTen.Name = "txtTen";
             this.txtTen.PlaceholderText = "";
             this.txtTen.SelectedText = "";
@@ -309,7 +310,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtMaBN.DefaultText = "";
             this.txtMaBN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtMaBN.Location = new System.Drawing.Point(660, 73);
-            this.txtMaBN.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtMaBN.Margin = new System.Windows.Forms.Padding(2);
             this.txtMaBN.Name = "txtMaBN";
             this.txtMaBN.PlaceholderText = "";
             this.txtMaBN.SelectedText = "";
@@ -332,7 +333,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.dtpNgaySinh.BorderThickness = 1;
             this.dtpNgaySinh.Checked = true;
             this.dtpNgaySinh.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.dtpNgaySinh.CheckedState.FillColor = System.Drawing.Color.White;
+            this.dtpNgaySinh.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(247)))), ((int)(((byte)(237)))));
             this.dtpNgaySinh.CustomFormat = "dd/MM/yyyy";
             this.dtpNgaySinh.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             this.dtpNgaySinh.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
@@ -342,7 +343,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.dtpNgaySinh.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.dtpNgaySinh.HoverState.FillColor = System.Drawing.Color.White;
             this.dtpNgaySinh.Location = new System.Drawing.Point(30, 142);
-            this.dtpNgaySinh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpNgaySinh.Margin = new System.Windows.Forms.Padding(2);
             this.dtpNgaySinh.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpNgaySinh.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpNgaySinh.Name = "dtpNgaySinh";
@@ -369,7 +370,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.cboGioiTinh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
             this.cboGioiTinh.ItemHeight = 30;
             this.cboGioiTinh.Location = new System.Drawing.Point(345, 142);
-            this.cboGioiTinh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cboGioiTinh.Margin = new System.Windows.Forms.Padding(2);
             this.cboGioiTinh.Name = "cboGioiTinh";
             this.cboGioiTinh.Size = new System.Drawing.Size(298, 36);
             this.cboGioiTinh.TabIndex = 111;
@@ -388,7 +389,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtCccd.DefaultText = "";
             this.txtCccd.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtCccd.Location = new System.Drawing.Point(660, 142);
-            this.txtCccd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtCccd.Margin = new System.Windows.Forms.Padding(2);
             this.txtCccd.Name = "txtCccd";
             this.txtCccd.PlaceholderText = "079xxxxxxxxxx";
             this.txtCccd.SelectedText = "";
@@ -409,7 +410,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtSoNha.DefaultText = "";
             this.txtSoNha.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtSoNha.Location = new System.Drawing.Point(30, 211);
-            this.txtSoNha.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtSoNha.Margin = new System.Windows.Forms.Padding(2);
             this.txtSoNha.Name = "txtSoNha";
             this.txtSoNha.PlaceholderText = "Ví dụ: 123";
             this.txtSoNha.SelectedText = "";
@@ -430,7 +431,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtTenDuong.DefaultText = "";
             this.txtTenDuong.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTenDuong.Location = new System.Drawing.Point(345, 211);
-            this.txtTenDuong.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTenDuong.Margin = new System.Windows.Forms.Padding(2);
             this.txtTenDuong.Name = "txtTenDuong";
             this.txtTenDuong.PlaceholderText = "Ví dụ: Đường Ba Tháng Hai";
             this.txtTenDuong.SelectedText = "";
@@ -451,7 +452,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtQuanHuyen.DefaultText = "";
             this.txtQuanHuyen.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtQuanHuyen.Location = new System.Drawing.Point(30, 280);
-            this.txtQuanHuyen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtQuanHuyen.Margin = new System.Windows.Forms.Padding(2);
             this.txtQuanHuyen.Name = "txtQuanHuyen";
             this.txtQuanHuyen.PlaceholderText = "Ví dụ: Quận 10";
             this.txtQuanHuyen.SelectedText = "";
@@ -472,7 +473,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtTinhTP.DefaultText = "";
             this.txtTinhTP.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTinhTP.Location = new System.Drawing.Point(510, 280);
-            this.txtTinhTP.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTinhTP.Margin = new System.Windows.Forms.Padding(2);
             this.txtTinhTP.Name = "txtTinhTP";
             this.txtTinhTP.PlaceholderText = "Ví dụ: TP. Hồ Chí Minh";
             this.txtTinhTP.SelectedText = "";
@@ -506,7 +507,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtTienSuBN.DefaultText = "";
             this.txtTienSuBN.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTienSuBN.Location = new System.Drawing.Point(30, 388);
-            this.txtTienSuBN.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTienSuBN.Margin = new System.Windows.Forms.Padding(2);
             this.txtTienSuBN.Multiline = true;
             this.txtTienSuBN.Name = "txtTienSuBN";
             this.txtTienSuBN.PlaceholderText = "Bệnh nền, phẫu thuật trước đây, các bệnh mãn tính...";
@@ -528,7 +529,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtTienSuGD.DefaultText = "";
             this.txtTienSuGD.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTienSuGD.Location = new System.Drawing.Point(30, 481);
-            this.txtTienSuGD.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTienSuGD.Margin = new System.Windows.Forms.Padding(2);
             this.txtTienSuGD.Multiline = true;
             this.txtTienSuGD.Name = "txtTienSuGD";
             this.txtTienSuGD.PlaceholderText = "Tiểu đường, tim mạch, ung thư trong gia đình...";
@@ -550,7 +551,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtDiUng.DefaultText = "";
             this.txtDiUng.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtDiUng.Location = new System.Drawing.Point(30, 574);
-            this.txtDiUng.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDiUng.Margin = new System.Windows.Forms.Padding(2);
             this.txtDiUng.Multiline = true;
             this.txtDiUng.Name = "txtDiUng";
             this.txtDiUng.PlaceholderText = "Tên thuốc gây dị ứng, phản ứng phụ đã gặp...";
@@ -569,7 +570,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlFormFooter.CustomBorderThickness = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.pnlFormFooter.FillColor = System.Drawing.Color.White;
             this.pnlFormFooter.Location = new System.Drawing.Point(0, 650);
-            this.pnlFormFooter.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlFormFooter.Margin = new System.Windows.Forms.Padding(2);
             this.pnlFormFooter.Name = "pnlFormFooter";
             this.pnlFormFooter.Size = new System.Drawing.Size(987, 65);
             this.pnlFormFooter.TabIndex = 10;
@@ -598,7 +599,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
             this.btnCancel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
             this.btnCancel.Location = new System.Drawing.Point(690, 16);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(105, 32);
             this.btnCancel.TabIndex = 0;
@@ -614,7 +615,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(79)))), ((int)(((byte)(61)))));
             this.btnSave.Location = new System.Drawing.Point(807, 16);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(150, 32);
             this.btnSave.TabIndex = 2;
@@ -635,7 +636,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlScroll);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ucThemSuaBN";
             this.Size = new System.Drawing.Size(1028, 691);
             this.Load += new System.EventHandler(this.ucThemSuaBN_Load);

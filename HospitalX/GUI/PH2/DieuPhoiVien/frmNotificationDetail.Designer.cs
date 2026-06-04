@@ -86,18 +86,19 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // lblLevel
             // 
+            this.lblLevel.BackColor = System.Drawing.Color.Transparent;
             this.lblLevel.BorderRadius = 6;
+            this.lblLevel.Cursor = System.Windows.Forms.Cursors.Default;
             this.lblLevel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblLevel.Font = new System.Drawing.Font("Segoe UI", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblLevel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.lblLevel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.lblLevel.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblLevel.Location = new System.Drawing.Point(30, 17);
             this.lblLevel.Name = "lblLevel";
             this.lblLevel.Size = new System.Drawing.Size(140, 26);
-            this.lblLevel.Cursor = System.Windows.Forms.Cursors.Default;
+            this.lblLevel.TabIndex = 4;
             this.lblLevel.Text = "KHOA";
-            this.lblLevel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.lblLevel.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblLevel.HoverState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblLevel.UseTransparentBackground = true;
             // 
             // lblTitle
@@ -137,67 +138,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnMarkRead.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMarkRead.ForeColor = System.Drawing.Color.White;
             this.btnMarkRead.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnMarkRead.Location = new System.Drawing.Point(549, 415);
+            this.btnMarkRead.Location = new System.Drawing.Point(291, 419);
             this.btnMarkRead.Name = "btnMarkRead";
             this.btnMarkRead.Size = new System.Drawing.Size(240, 37);
             this.btnMarkRead.TabIndex = 6;
             this.btnMarkRead.Text = "Đánh dấu đã đọc";
             this.btnMarkRead.Click += new System.EventHandler(this.btnMarkRead_Click);
             // 
-            // pnlTimeContainer
-            // 
-            this.pnlTimeContainer.BorderRadius = 8;
-            this.pnlTimeContainer.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.pnlTimeContainer.Location = new System.Drawing.Point(33, 73);
-            this.pnlTimeContainer.Name = "pnlTimeContainer";
-            this.pnlTimeContainer.Size = new System.Drawing.Size(220, 38);
-            this.pnlTimeContainer.UseTransparentBackground = true;
-            this.pnlTimeContainer.Controls.Add(this.lblTimeValue);
-            // 
-            // lblTimeValue
-            // 
-            this.lblTimeValue.BackColor = System.Drawing.Color.Transparent;
-            this.lblTimeValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTimeValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblTimeValue.Location = new System.Drawing.Point(10, 0);
-            this.lblTimeValue.Name = "lblTimeValue";
-            this.lblTimeValue.Size = new System.Drawing.Size(200, 38);
-            this.lblTimeValue.TabIndex = 1;
-            this.lblTimeValue.Text = "08:00 · 21/05/2026";
-            this.lblTimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // pnlLocationContainer
-            // 
-            this.pnlLocationContainer.BorderRadius = 8;
-            this.pnlLocationContainer.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
-            this.pnlLocationContainer.Location = new System.Drawing.Point(291, 73);
-            this.pnlLocationContainer.Name = "pnlLocationContainer";
-            this.pnlLocationContainer.Size = new System.Drawing.Size(500, 38);
-            this.pnlLocationContainer.UseTransparentBackground = true;
-            this.pnlLocationContainer.Controls.Add(this.lblLocationValue);
-            // 
-            // lblLocationValue
-            // 
-            this.lblLocationValue.BackColor = System.Drawing.Color.Transparent;
-            this.lblLocationValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblLocationValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
-            this.lblLocationValue.Location = new System.Drawing.Point(10, 0);
-            this.lblLocationValue.Name = "lblLocationValue";
-            this.lblLocationValue.Size = new System.Drawing.Size(480, 38);
-            this.lblLocationValue.TabIndex = 3;
-            this.lblLocationValue.Text = "Địa điểm";
-            this.lblLocationValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // pnlContentContainer
             // 
             this.pnlContentContainer.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlContentContainer.BorderRadius = 8;
             this.pnlContentContainer.BorderThickness = 1;
+            this.pnlContentContainer.Controls.Add(this.txtContent);
             this.pnlContentContainer.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             this.pnlContentContainer.Location = new System.Drawing.Point(34, 205);
             this.pnlContentContainer.Name = "pnlContentContainer";
             this.pnlContentContainer.Size = new System.Drawing.Size(755, 190);
-            this.pnlContentContainer.Controls.Add(this.txtContent);
+            this.pnlContentContainer.TabIndex = 7;
             // 
             // txtContent
             // 
@@ -228,6 +186,30 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblContentTitle.TabIndex = 4;
             this.lblContentTitle.Text = "NỘI DUNG THÔNG BÁO";
             // 
+            // pnlLocationContainer
+            // 
+            this.pnlLocationContainer.BackColor = System.Drawing.Color.Transparent;
+            this.pnlLocationContainer.BorderRadius = 8;
+            this.pnlLocationContainer.Controls.Add(this.lblLocationValue);
+            this.pnlLocationContainer.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.pnlLocationContainer.Location = new System.Drawing.Point(291, 73);
+            this.pnlLocationContainer.Name = "pnlLocationContainer";
+            this.pnlLocationContainer.Size = new System.Drawing.Size(500, 38);
+            this.pnlLocationContainer.TabIndex = 8;
+            this.pnlLocationContainer.UseTransparentBackground = true;
+            // 
+            // lblLocationValue
+            // 
+            this.lblLocationValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblLocationValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblLocationValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.lblLocationValue.Location = new System.Drawing.Point(10, 0);
+            this.lblLocationValue.Name = "lblLocationValue";
+            this.lblLocationValue.Size = new System.Drawing.Size(480, 38);
+            this.lblLocationValue.TabIndex = 3;
+            this.lblLocationValue.Text = "Địa điểm";
+            this.lblLocationValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // lblLocationTitle
             // 
             this.lblLocationTitle.BackColor = System.Drawing.Color.Transparent;
@@ -238,6 +220,30 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblLocationTitle.Size = new System.Drawing.Size(180, 20);
             this.lblLocationTitle.TabIndex = 2;
             this.lblLocationTitle.Text = "ĐỊA ĐIỂM";
+            // 
+            // pnlTimeContainer
+            // 
+            this.pnlTimeContainer.BackColor = System.Drawing.Color.Transparent;
+            this.pnlTimeContainer.BorderRadius = 8;
+            this.pnlTimeContainer.Controls.Add(this.lblTimeValue);
+            this.pnlTimeContainer.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
+            this.pnlTimeContainer.Location = new System.Drawing.Point(33, 73);
+            this.pnlTimeContainer.Name = "pnlTimeContainer";
+            this.pnlTimeContainer.Size = new System.Drawing.Size(220, 38);
+            this.pnlTimeContainer.TabIndex = 9;
+            this.pnlTimeContainer.UseTransparentBackground = true;
+            // 
+            // lblTimeValue
+            // 
+            this.lblTimeValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblTimeValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTimeValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
+            this.lblTimeValue.Location = new System.Drawing.Point(10, 0);
+            this.lblTimeValue.Name = "lblTimeValue";
+            this.lblTimeValue.Size = new System.Drawing.Size(200, 38);
+            this.lblTimeValue.TabIndex = 1;
+            this.lblTimeValue.Text = "08:00 · 21/05/2026";
+            this.lblTimeValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblTimeTitle
             // 
