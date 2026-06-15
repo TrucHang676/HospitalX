@@ -305,7 +305,7 @@ namespace HospitalX.GUI.PH2
             btnThemBN.ForeColor = Color.White;
             btnThemBN.Text = "+ Thêm bệnh nhân";
             btnThemBN.Cursor = Cursors.Hand;
-            btnThemBN.Click += (s, e) => ShowComingSoon(btnThemSuaBN, "Thêm / Sửa bệnh nhân");
+            btnThemBN.Click += (s, e) => NavigateToThemSuaBN();
 
             pnlTopbar.Controls.Add(btnProfile);
             pnlTopbar.Controls.Add(btnNotif);

@@ -54,27 +54,27 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // pnlHeader
             // 
-            this.pnlHeader.Size = new System.Drawing.Size(580, 56);
+            this.pnlHeader.Size = new System.Drawing.Size(580, 48);
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
             this.pnlHeader.Controls.Add(this.lblTitle);
             this.pnlHeader.Controls.Add(this.btnClose);
-
+ 
             // 
             // lblTitle
             // 
             this.lblTitle.Text = "Phân công kỹ thuật viên";
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold);
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(20, 16);
+            this.lblTitle.Location = new System.Drawing.Point(20, 13);
             this.lblTitle.AutoSize = true;
             this.lblTitle.BackColor = System.Drawing.Color.Transparent;
-
+ 
             // 
             // btnClose
             // 
             this.btnClose.Size = new System.Drawing.Size(36, 32);
-            this.btnClose.Location = new System.Drawing.Point(534, 12);
+            this.btnClose.Location = new System.Drawing.Point(534, 8);
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.Color.Transparent;
             this.btnClose.BorderRadius = 8;
@@ -87,8 +87,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // 
             // pnlInfo
             // 
-            this.pnlInfo.Size = new System.Drawing.Size(540, 140);
-            this.pnlInfo.Location = new System.Drawing.Point(20, 76);
+            this.pnlInfo.Size = new System.Drawing.Size(540, 116);
+            this.pnlInfo.Location = new System.Drawing.Point(20, 64);
             this.pnlInfo.BorderRadius = 8;
             this.pnlInfo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.pnlInfo.BorderThickness = 1;
@@ -106,20 +106,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // lblMaHSBATitle
             // 
             this.lblMaHSBATitle.Text = "Mã hồ sơ bệnh án";
-            this.lblMaHSBATitle.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular);
+            this.lblMaHSBATitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
             this.lblMaHSBATitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
-            this.lblMaHSBATitle.Location = new System.Drawing.Point(20, 16);
-            this.lblMaHSBATitle.Size = new System.Drawing.Size(220, 24);
+            this.lblMaHSBATitle.Location = new System.Drawing.Point(20, 12);
+            this.lblMaHSBATitle.Size = new System.Drawing.Size(220, 20);
             this.lblMaHSBATitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblMaHSBATitle.BackColor = System.Drawing.Color.Transparent;
 
             // 
             // lblMaHSBAVal
             // 
-            this.lblMaHSBAVal.Font = new System.Drawing.Font("Consolas", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblMaHSBAVal.Font = new System.Drawing.Font("Consolas", 9.25F, System.Drawing.FontStyle.Bold);
             this.lblMaHSBAVal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblMaHSBAVal.Location = new System.Drawing.Point(260, 16);
-            this.lblMaHSBAVal.Size = new System.Drawing.Size(260, 24);
+            this.lblMaHSBAVal.Location = new System.Drawing.Point(260, 12);
+            this.lblMaHSBAVal.Size = new System.Drawing.Size(260, 20);
             this.lblMaHSBAVal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblMaHSBAVal.BackColor = System.Drawing.Color.Transparent;
 
@@ -127,27 +127,27 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // line1
             // 
             this.line1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.line1.Location = new System.Drawing.Point(20, 49);
+            this.line1.Location = new System.Drawing.Point(20, 40);
             this.line1.Size = new System.Drawing.Size(500, 1);
 
             // 
             // lblLoaiDVTitle
             // 
             this.lblLoaiDVTitle.Text = "Dịch vụ hỗ trợ";
-            this.lblLoaiDVTitle.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular);
+            this.lblLoaiDVTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
             this.lblLoaiDVTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
-            this.lblLoaiDVTitle.Location = new System.Drawing.Point(20, 58);
-            this.lblLoaiDVTitle.Size = new System.Drawing.Size(220, 24);
+            this.lblLoaiDVTitle.Location = new System.Drawing.Point(20, 48);
+            this.lblLoaiDVTitle.Size = new System.Drawing.Size(220, 20);
             this.lblLoaiDVTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblLoaiDVTitle.BackColor = System.Drawing.Color.Transparent;
 
             // 
             // lblLoaiDVVal
             // 
-            this.lblLoaiDVVal.Font = new System.Drawing.Font("Segoe UI Semibold", 9.25F, System.Drawing.FontStyle.Bold);
+            this.lblLoaiDVVal.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.lblLoaiDVVal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
-            this.lblLoaiDVVal.Location = new System.Drawing.Point(260, 58);
-            this.lblLoaiDVVal.Size = new System.Drawing.Size(260, 24);
+            this.lblLoaiDVVal.Location = new System.Drawing.Point(260, 48);
+            this.lblLoaiDVVal.Size = new System.Drawing.Size(260, 20);
             this.lblLoaiDVVal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblLoaiDVVal.BackColor = System.Drawing.Color.Transparent;
 
@@ -155,27 +155,27 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // line2
             // 
             this.line2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.line2.Location = new System.Drawing.Point(20, 91);
+            this.line2.Location = new System.Drawing.Point(20, 76);
             this.line2.Size = new System.Drawing.Size(500, 1);
 
             // 
             // lblNgayDVTitle
             // 
             this.lblNgayDVTitle.Text = "Ngày thực hiện";
-            this.lblNgayDVTitle.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular);
+            this.lblNgayDVTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
             this.lblNgayDVTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(98)))), ((int)(((byte)(89)))));
-            this.lblNgayDVTitle.Location = new System.Drawing.Point(20, 100);
-            this.lblNgayDVTitle.Size = new System.Drawing.Size(220, 24);
+            this.lblNgayDVTitle.Location = new System.Drawing.Point(20, 84);
+            this.lblNgayDVTitle.Size = new System.Drawing.Size(220, 20);
             this.lblNgayDVTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblNgayDVTitle.BackColor = System.Drawing.Color.Transparent;
 
             // 
             // lblNgayDVVal
             // 
-            this.lblNgayDVVal.Font = new System.Drawing.Font("Segoe UI Semibold", 9.25F, System.Drawing.FontStyle.Bold);
+            this.lblNgayDVVal.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.lblNgayDVVal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
-            this.lblNgayDVVal.Location = new System.Drawing.Point(260, 100);
-            this.lblNgayDVVal.Size = new System.Drawing.Size(260, 24);
+            this.lblNgayDVVal.Location = new System.Drawing.Point(260, 84);
+            this.lblNgayDVVal.Size = new System.Drawing.Size(260, 20);
             this.lblNgayDVVal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblNgayDVVal.BackColor = System.Drawing.Color.Transparent;
 
@@ -185,15 +185,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKtvTitle.Text = "CHỌN KỸ THUẬT VIÊN PHỤ TRÁCH";
             this.lblKtvTitle.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
             this.lblKtvTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblKtvTitle.Location = new System.Drawing.Point(20, 236);
+            this.lblKtvTitle.Location = new System.Drawing.Point(20, 196);
             this.lblKtvTitle.Size = new System.Drawing.Size(540, 20);
             this.lblKtvTitle.BackColor = System.Drawing.Color.Transparent;
-
+ 
             // 
             // cboKtv
             // 
             this.cboKtv.Size = new System.Drawing.Size(540, 36);
-            this.cboKtv.Location = new System.Drawing.Point(20, 256);
+            this.cboKtv.Location = new System.Drawing.Point(20, 216);
             this.cboKtv.BorderRadius = 8;
             this.cboKtv.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
             this.cboKtv.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
@@ -201,13 +201,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.cboKtv.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.cboKtv.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
             this.cboKtv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-
-            // 
+            this.cboKtv.MaxDropDownItems = 20;
+ 
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Size = new System.Drawing.Size(260, 42);
-            this.btnConfirm.Location = new System.Drawing.Point(160, 330);
+            this.btnConfirm.Size = new System.Drawing.Size(260, 38);
+            this.btnConfirm.Location = new System.Drawing.Point(160, 272);
             this.btnConfirm.BorderRadius = 8;
             this.btnConfirm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.btnConfirm.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
@@ -216,16 +216,14 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnConfirm.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnConfirm.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(82)))), ((int)(((byte)(64)))));
             this.btnConfirm.Click += new System.EventHandler(this.btnConfirm_Click);
-
-
-
+ 
             // 
             // frmPhanCongKTV
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(247)))), ((int)(((byte)(246)))));
-            this.ClientSize = new System.Drawing.Size(580, 400);
+            this.ClientSize = new System.Drawing.Size(580, 330);
             this.Controls.Add(this.btnConfirm);
             this.Controls.Add(this.cboKtv);
             this.Controls.Add(this.lblKtvTitle);

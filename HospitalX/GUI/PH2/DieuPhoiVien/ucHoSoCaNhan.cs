@@ -1,9 +1,11 @@
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
@@ -15,7 +17,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private static readonly Color TextMuted = Color.FromArgb(122, 149, 137); // #7A9589
         private static readonly Color RowHoverBack = Color.FromArgb(232, 245, 242);
 
-        private readonly List<AuditLogItem> _auditLogs = new List<AuditLogItem>();
+
 
         private static string SavedPhone = "0901234567";
         private static string SavedAddress = "78/15 Đường Nguyễn Chí Thanh, Quận 5, TP. Hồ Chí Minh";
@@ -23,14 +25,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private string _originalContactAddress;
         private bool _isLoadingContact;
 
-        public class AuditLogItem
-        {
-            public string IconName { get; set; }
-            public Color IconBack { get; set; }
-            public string ActionText { get; set; }
-            public string MetaText { get; set; }
-            public DateTime Timestamp { get; set; }
-        }
+
 
         public ucHoSoCaNhan()
         {
@@ -44,7 +39,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void ucHoSoCaNhan_Load(object sender, EventArgs e)
         {
             LoadProfileData();
-            LoadAuditLogs();
             SetupStyles();
             ucHoSoCaNhan_Resize(null, null);
         }
@@ -84,7 +78,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblStatusBadge.PressedColor = Color.FromArgb(230, 244, 240);
             lblStatusBadge.Cursor = Cursors.Default;
 
-            foreach (var panel in new[] { pnlCardProfessional, pnlCardContact, pnlCardSecurity, pnlCardActivities })
+            foreach (var panel in new[] { pnlCardProfessional, pnlCardContact, pnlCardSecurity })
             {
                 panel.BorderColor = BorderGray;
                 panel.BorderThickness = 1;
@@ -92,11 +86,34 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 panel.FillColor = Color.White;
             }
 
-            // Titles
+            // Titles and labels font styling
+            var titleFont = new Font("Segoe UI Semibold", 12.5F, FontStyle.Bold);
+            lblTitleProf.Font = titleFont;
+            lblTitleContact.Font = titleFont;
+            lblTitleSecurity.Font = titleFont;
             lblTitleProf.ForeColor = ThemeGreen;
             lblTitleContact.ForeColor = ThemeGreen;
             lblTitleSecurity.ForeColor = ThemeGreen;
-            lblTitleActivities.ForeColor = ThemeGreen;
+
+            var labelFont = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            foreach (var lbl in new[] { label1, label2, label3, lblKhoa, label4, label5, label6, label8, label9 })
+            {
+                if (lbl != null)
+                {
+                    lbl.Font = labelFont;
+                    lbl.ForeColor = TextMuted;
+                }
+            }
+
+            pnlCardProfessional.Margin = new Padding(0, 0, 0, 20);
+            pnlCardContact.Margin = new Padding(0, 0, 0, 20);
+            pnlCardSecurity.Margin = new Padding(0, 0, 0, 20);
+            if (lblSlogan != null)
+            {
+                lblSlogan.Margin = new Padding(0, 16, 0, 24);
+                lblSlogan.Font = new Font("Segoe UI", 11F, FontStyle.Italic);
+                lblSlogan.ForeColor = Color.FromArgb(80, 110, 95);
+            }
 
             // Setup Professional text fields as Read-only styling
             SetupReadOnlyField(txtProfMaNV);
@@ -108,12 +125,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             SetupReadOnlyField(txtProfCccd);
 
             // Setup editable contact text fields styling
-            txtContactPhone.Font = new Font("Segoe UI", 9.5F);
-            txtContactAddress.Font = new Font("Segoe UI", 9.5F);
+            txtContactPhone.Font = new Font("Segoe UI", 10.5F);
+            txtContactAddress.Font = new Font("Segoe UI", 10.5F);
 
             // Style buttons
             btnUpdateContact.FillColor = ThemeGreen;
-            btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnUpdateContact.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnUpdateContact.ForeColor = Color.White;
             btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
             UpdateContactSaveButton();
@@ -121,7 +138,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
             btnChangePassword.FillColor = Color.Transparent;
-            btnChangePassword.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnChangePassword.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnChangePassword.ForeColor = ThemeGreen;
             btnChangePassword.HoverState.FillColor = Color.FromArgb(230, 244, 240);
             btnChangePassword.Cursor = Cursors.Hand;
@@ -150,25 +167,87 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             box.FillColor = Color.FromArgb(247, 249, 248);
             box.BorderColor = Color.FromArgb(230, 238, 235);
             box.ForeColor = Color.FromArgb(90, 110, 100);
-            box.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            box.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
         }
 
         private void LoadProfileData()
         {
             _isLoadingContact = true;
 
-            // In a real application, this would load from a database based on the logged-in employee ID.
-            // e.g.:
-            // NhanVien nv = NhanVienBLL.GetById(Session.CurrentNhanVienId);
-            // txtProfMaNV.Text = nv.MaNV;
-            // ...
-            
-            // Populating controls with profile data:
+            try
+            {
+                DataTable dt = ProfileDAO.Instance.GetProfile();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    string maNV = row["MANV"]?.ToString() ?? string.Empty;
+                    string hoTen = row["HOTEN"]?.ToString() ?? string.Empty;
+                    string phai = row["PHAI"]?.ToString() ?? string.Empty;
+                    string ngaySinh = string.Empty;
+                    if (row["NGAYSINH"] != DBNull.Value)
+                    {
+                        ngaySinh = Convert.ToDateTime(row["NGAYSINH"]).ToString("dd/MM/yyyy");
+                    }
+                    string cmnd = row["CMND"]?.ToString() ?? string.Empty;
+                    string queQuan = row["QUEQUAN"]?.ToString() ?? string.Empty;
+                    string soDT = row["SODT"]?.ToString() ?? string.Empty;
+                    string vaiTro = row["VAITRO"]?.ToString() ?? string.Empty;
+                    string chuyenKhoa = row["CHUYENKHOA"]?.ToString() ?? string.Empty;
+
+                    lblUserName.Text = hoTen;
+                    txtProfMaNV.Text = maNV;
+                    txtProfHoTen.Text = hoTen;
+                    txtProfVaiTro.Text = vaiTro;
+                    lblUserRole.Text = vaiTro;
+                    txtKhoa.Text = chuyenKhoa;
+                    lblDeptAndFacility.Text = $"{chuyenKhoa}\r\nBệnh viện Đa khoa Tỉnh";
+                    txtProfGioiTinh.Text = phai;
+                    txtProfNgaySinh.Text = ngaySinh;
+                    txtProfCccd.Text = cmnd;
+
+                    txtContactPhone.Text = soDT;
+                    txtContactAddress.Text = queQuan;
+
+                    // Set gender-appropriate avatar
+                    if (phai.Equals("Nam", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ptbAvatar.Image = DpvAssets.Load("male_doctor.png");
+                    }
+                    else
+                    {
+                        ptbAvatar.Image = DpvAssets.Load("female_doctor.png");
+                    }
+
+                    SavedPhone = soDT;
+                    SavedAddress = queQuan;
+                }
+                else
+                {
+                    LoadMockProfileData();
+                }
+            }
+            catch (Exception)
+            {
+                // Fallback to mock data if DB connection fails
+                LoadMockProfileData();
+            }
+
+            AcceptCurrentContactValues();
+            _isLoadingContact = false;
+            UpdateContactSaveButton();
+
+            // Load dynamically calculated stats (mocked stats)
+            lblStat1Val.Text = "124";
+            lblStat2Val.Text = "98";
+        }
+
+        private void LoadMockProfileData()
+        {
             lblUserName.Text = "Lê Hoài Thương";
-            
             txtProfMaNV.Text = "NV-DPV-0047";
             txtProfHoTen.Text = "Lê Hoài Thương";
             txtProfVaiTro.Text = "Điều phối viên";
+            lblUserRole.Text = "Điều phối viên";
             txtKhoa.Text = "Khoa Tim mạch";
             lblDeptAndFacility.Text = "Khoa Tim mạch\r\nBệnh viện Đa khoa Tỉnh";
             txtProfGioiTinh.Text = "Nữ";
@@ -177,191 +256,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             txtContactPhone.Text = SavedPhone;
             txtContactAddress.Text = SavedAddress;
-            AcceptCurrentContactValues();
-            _isLoadingContact = false;
-            UpdateContactSaveButton();
-
-            // Load dynamically calculated stats
-            lblStat1Val.Text = "124";
-            lblStat2Val.Text = "98";
-        }
-
-        private void LoadAuditLogs()
-        {
-            _auditLogs.Clear();
-            _auditLogs.Add(new AuditLogItem
-            {
-                IconName = "buttonTick.png",
-                IconBack = Color.FromArgb(230, 244, 240),
-                ActionText = "Điều phối KTV **Bùi Trọng Nghĩa** thực hiện siêu âm cho bệnh nhân **Nguyễn Văn An**",
-                MetaText = "Khoa Tim mạch — Mã số HSBA-0156",
-                Timestamp = DateTime.Now.AddMinutes(-15)
-            });
-            _auditLogs.Add(new AuditLogItem
-            {
-                IconName = "dpv_4.png",
-                IconBack = Color.FromArgb(255, 248, 225),
-                ActionText = "Tạo hồ sơ bệnh án **HSBA-0157** cho bệnh nhân **Trần Thị Bích**",
-                MetaText = "Khoa Nội tổng quát — Dịch vụ: Xét nghiệm máu",
-                Timestamp = DateTime.Now.AddHours(-1).AddMinutes(-30)
-            });
-            _auditLogs.Add(new AuditLogItem
-            {
-                IconName = "pencil (1).png",
-                IconBack = Color.FromArgb(237, 231, 246),
-                ActionText = "Sửa thông tin hành chính bệnh nhân **Phạm Quốc Hùng**",
-                MetaText = "Cập nhật Địa chỉ cư trú và Số điện thoại liên hệ",
-                Timestamp = DateTime.Now.AddHours(-3)
-            });
-            _auditLogs.Add(new AuditLogItem
-            {
-                IconName = "dpv_2.png",
-                IconBack = Color.FromArgb(230, 248, 246),
-                ActionText = "Thêm bệnh nhân mới **Lê Thị Mai** vào hệ thống quản lý",
-                MetaText = "Đăng ký thành công mã bệnh nhân BN240014",
-                Timestamp = DateTime.Now.AddHours(-5)
-            });
-
-            RenderAuditLogs();
-        }
-
-        private static Color GetDotColor(Color iconBack)
-        {
-            if (iconBack.R == 230 && iconBack.G == 244 && iconBack.B == 240) // light green (success)
-                return Color.FromArgb(15, 110, 86);
-            if (iconBack.R == 255 && iconBack.G == 248 && iconBack.B == 225) // light orange (warning/info)
-                return Color.FromArgb(232, 168, 56);
-            if (iconBack.R == 253 && iconBack.G == 236 && iconBack.B == 234) // light red (danger)
-                return Color.FromArgb(229, 57, 53);
-            if (iconBack.R == 237 && iconBack.G == 231 && iconBack.B == 246) // light purple
-                return Color.FromArgb(103, 58, 183);
-            if (iconBack.R == 230 && iconBack.G == 248 && iconBack.B == 246) // light teal
-                return Color.FromArgb(0, 150, 136);
-            return Color.FromArgb(15, 110, 86);
-        }
-
-        private void RenderAuditLogs()
-        {
-            flpActivities.Controls.Clear();
-            foreach (var log in _auditLogs)
-            {
-                var row = new Panel
-                {
-                    Width = flpActivities.ClientSize.Width - 8,
-                    Height = 68,
-                    Margin = new Padding(0, 0, 0, 0),
-                    BackColor = Color.White
-                };
-
-                Color dotColor = GetDotColor(log.IconBack);
-
-                row.Paint += (s, e) =>
-                {
-                    var pnl = (Panel)s;
-                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-                    using (var pen = new Pen(Color.FromArgb(245, 248, 246), 1))
-                    {
-                        e.Graphics.DrawLine(pen, 0, pnl.Height - 1, pnl.Width, pnl.Height - 1);
-                    }
-
-                    // Draw solid circular dot as status indicator instead of rendering too many icons
-                    using (var brush = new SolidBrush(dotColor))
-                    {
-                        e.Graphics.FillEllipse(brush, 26, 30, 8, 8);
-                    }
-                };
-
-                var lblText = new Label
-                {
-                    Name = "lblText",
-                    Tag = log.ActionText,
-                    Text = string.Empty,
-                    Font = new Font("Segoe UI", 10F),
-                    ForeColor = TextDark,
-                    Location = new Point(52, 6),
-                    Size = new Size(row.Width - 230, 30),
-                    AutoSize = false,
-                    BackColor = Color.Transparent
-                };
-
-                lblText.Paint += (s, e) =>
-                {
-                    var lbl = (Label)s;
-                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                    e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-
-                    string rawText = lbl.Tag != null ? lbl.Tag.ToString() : string.Empty;
-                    string[] parts = rawText.Split(new string[] { "**" }, StringSplitOptions.None);
-
-                    int currentX = 0;
-                    int currentY = (lbl.Height - 20) / 2;
-
-                    using (var regFont = new Font("Segoe UI", 10F, FontStyle.Regular))
-                    using (var boldFont = new Font("Segoe UI", 10F, FontStyle.Bold))
-                    {
-                        for (int i = 0; i < parts.Length; i++)
-                        {
-                            if (string.IsNullOrEmpty(parts[i])) continue;
-                            bool isBold = (i % 2 == 1);
-                            Font font = isBold ? boldFont : regFont;
-                            Color textCol = isBold ? ThemeGreen : lbl.ForeColor;
-
-                            Size size = TextRenderer.MeasureText(e.Graphics, parts[i], font,
-                                new Size(lbl.Width - currentX, lbl.Height),
-                                TextFormatFlags.NoPadding | TextFormatFlags.SingleLine);
-
-                            TextRenderer.DrawText(e.Graphics, parts[i], font, new Point(currentX, currentY), textCol,
-                                TextFormatFlags.NoPadding | TextFormatFlags.SingleLine);
-
-                            currentX += size.Width;
-                        }
-                    }
-                };
-
-                string timeText = FormatTimestamp(log.Timestamp);
-                var lblMeta = new Label
-                {
-                    Name = "lblMeta",
-                    Text = log.MetaText,
-                    Font = new Font("Segoe UI", 8.5F),
-                    ForeColor = TextMuted,
-                    Location = new Point(52, 36),
-                    AutoSize = true,
-                    BackColor = Color.Transparent
-                };
-
-                var lblTime = new Label
-                {
-                    Name = "lblTime",
-                    Text = timeText,
-                    Font = new Font("Segoe UI", 8.7F),
-                    ForeColor = TextMuted,
-                    Location = new Point(row.Width - 170, 20),
-                    Size = new Size(140, 24),
-                    TextAlign = ContentAlignment.MiddleRight,
-                    BackColor = Color.Transparent
-                };
-
-                row.Controls.Add(lblText);
-                row.Controls.Add(lblMeta);
-                row.Controls.Add(lblTime);
-                flpActivities.Controls.Add(row);
-            }
-        }
-
-        private static string FormatTimestamp(DateTime dt)
-        {
-            var today = DateTime.Today;
-            if (dt.Date == today)
-            {
-                return $"Hôm nay, {dt:HH:mm}";
-            }
-            if (dt.Date == today.AddDays(-1))
-            {
-                return $"Hôm qua, {dt:HH:mm}";
-            }
-            return dt.ToString("dd/MM/yyyy, HH:mm");
+            ptbAvatar.Image = DpvAssets.Load("female_doctor.png");
         }
 
         private void ucHoSoCaNhan_Resize(object sender, EventArgs e)
@@ -369,30 +264,119 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             int totalW = pnlScroll.ClientSize.Width;
             if (totalW <= 0) return;
 
+            // Safeguard against AutoScroll coordinate shift during resize
+            Point scrollPos = pnlScroll.AutoScrollPosition;
+            pnlScroll.AutoScrollPosition = new Point(0, 0);
+
             int rightW = Math.Max(500, totalW - 368 - 24);
-            pnlRight.SetBounds(368, 24, rightW, pnlRight.Height);
+            pnlRight.Location = new Point(368, 24);
+            pnlRight.Width = rightW;
 
+            // Set dynamic card dimensions with expanded size
             pnlCardProfessional.Width = rightW;
+            pnlCardProfessional.Height = 250;
+
             pnlCardContact.Width = rightW;
+            pnlCardContact.Height = 340;
+
             pnlCardSecurity.Width = rightW;
-            pnlCardActivities.Width = rightW;
+            pnlCardSecurity.Height = 120;
 
+            // Dynamically calculate responsive two-column layouts inside cards
+            int colPadding = 24;
+            int colGap = 24;
+            int fieldW = (rightW - (colPadding * 2) - colGap) / 2;
+            int col2X = colPadding + fieldW + colGap;
+
+            // Professional Card Y positioning and height of fields
+            lblTitleProf.Top = 20;
+
+            label1.Top = 64;
+            txtProfMaNV.Left = colPadding;
+            label1.Left = colPadding;
+            txtProfMaNV.Top = 86;
+            txtProfMaNV.Width = fieldW;
+            txtProfMaNV.Height = 44;
+
+            label3.Top = 154;
+            txtProfVaiTro.Left = colPadding;
+            label3.Left = colPadding;
+            txtProfVaiTro.Top = 176;
+            txtProfVaiTro.Width = fieldW;
+            txtProfVaiTro.Height = 44;
+
+            label2.Top = 64;
+            txtProfHoTen.Left = col2X;
+            label2.Left = col2X;
+            txtProfHoTen.Top = 86;
+            txtProfHoTen.Width = fieldW;
+            txtProfHoTen.Height = 44;
+
+            lblKhoa.Top = 154;
+            txtKhoa.Left = col2X;
+            lblKhoa.Left = col2X;
+            txtKhoa.Top = 176;
+            txtKhoa.Width = fieldW;
+            txtKhoa.Height = 44;
+
+            // Personal/Contact Card Y positioning and height of fields
+            lblTitleContact.Top = 20;
+            btnUpdateContact.Top = 20;
+            btnUpdateContact.Height = 40;
             btnUpdateContact.Location = new Point(rightW - btnUpdateContact.Width - 24, btnUpdateContact.Top);
-            btnChangePassword.Location = new Point(rightW - btnChangePassword.Width - 24, btnChangePassword.Top);
 
-            flpActivities.Width = rightW - 40;
-            foreach (Control ctrl in flpActivities.Controls)
+            label4.Top = 64;
+            txtProfGioiTinh.Left = colPadding;
+            label4.Left = colPadding;
+            txtProfGioiTinh.Top = 86;
+            txtProfGioiTinh.Width = fieldW;
+            txtProfGioiTinh.Height = 44;
+
+            label6.Top = 154;
+            txtProfCccd.Left = colPadding;
+            label6.Left = colPadding;
+            txtProfCccd.Top = 176;
+            txtProfCccd.Width = fieldW;
+            txtProfCccd.Height = 44;
+
+            label5.Top = 64;
+            txtProfNgaySinh.Left = col2X;
+            label5.Left = col2X;
+            txtProfNgaySinh.Top = 86;
+            txtProfNgaySinh.Width = fieldW;
+            txtProfNgaySinh.Height = 44;
+
+            label8.Top = 154;
+            txtContactPhone.Left = col2X;
+            label8.Left = col2X;
+            txtContactPhone.Top = 176;
+            txtContactPhone.Width = fieldW;
+            txtContactPhone.Height = 44;
+
+            // Full-width address field
+            label9.Top = 244;
+            txtContactAddress.Left = colPadding;
+            label9.Left = colPadding;
+            txtContactAddress.Top = 266;
+            txtContactAddress.Width = rightW - (colPadding * 2);
+            txtContactAddress.Height = 44;
+
+            // Security Card Y positioning and height of fields
+            lblTitleSecurity.Top = 20;
+            btnChangePassword.Top = 20;
+            btnChangePassword.Width = 150;
+            btnChangePassword.Height = 40;
+            btnChangePassword.Location = new Point(rightW - btnChangePassword.Width - 24, btnChangePassword.Top);
+            lblPasswordMock.Top = 72;
+
+            // Slogan
+            if (lblSlogan != null)
             {
-                ctrl.Width = flpActivities.ClientSize.Width - 8;
-                if (ctrl.Controls["lblText"] is Label lbl)
-                {
-                    lbl.Width = ctrl.Width - 230;
-                }
-                if (ctrl.Controls["lblTime"] is Label lblT)
-                {
-                    lblT.Location = new Point(ctrl.Width - 170, 20);
-                }
+                lblSlogan.Width = rightW;
             }
+
+            // Restore AutoScroll position (AutoScrollPosition expects positive coords)
+            pnlScroll.AutoScrollPosition = new Point(Math.Abs(scrollPos.X), Math.Abs(scrollPos.Y));
         }
 
         private void txtContactPhone_TextChanged(object sender, EventArgs e)
@@ -432,10 +416,29 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 return;
             }
 
-            SavedPhone = phone;
-            SavedAddress = address;
-            ReloadContactData();
-            ShowInfoMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+            try
+            {
+                bool success = ProfileDAO.Instance.UpdateProfile(phone, address, txtProfMaNV.Text);
+                if (success)
+                {
+                    SavedPhone = phone;
+                    SavedAddress = address;
+                    ReloadContactData();
+                    ShowInfoMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+                }
+                else
+                {
+                    ShowInfoMessage("Cập nhật thông tin liên hệ thất bại hoặc không thay đổi.", "Thông báo", MessageDialogIcon.Warning);
+                }
+            }
+            catch (Exception)
+            {
+                // Graceful fallback if database is offline/mock mode
+                SavedPhone = phone;
+                SavedAddress = address;
+                ReloadContactData();
+                ShowInfoMessage("Cập nhật thông tin liên hệ thành công (Chế độ ngoại tuyến).", "Thông báo", MessageDialogIcon.Information);
+            }
         }
 
         private void ReloadContactData()

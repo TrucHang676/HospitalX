@@ -1,5 +1,6 @@
 using Guna.UI2.WinForms;
 using System;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -56,6 +57,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnCreateHSBA.ImageOffset = new Point(0, 0);
             btnCreateHSBA.TextOffset = new Point(0, 0);
 
+            pnlDoctorGrid.AutoScroll = true;
+            pnlDoctorGrid.Height = 250;
+
             InitComboBoxes();
             BuildStepsIndicator();
             BuildDoctorCards();
@@ -89,7 +93,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cboKhoaDT.SelectedIndexChanged += (s, ev) =>
             {
                 SetSummaryText(lblSumKhoa, string.IsNullOrEmpty(_selectedDoctorCode) ? "Chưa có" : cboKhoaDT.Text);
-                BuildStepsIndicator();
+                BuildDoctorCards();
             };
             txtChanDoan.TextChanged += (s, ev) =>
             {
@@ -124,11 +128,33 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void InitComboBoxes()
         {
             cboKhoaDT.Items.Clear();
-            cboKhoaDT.Items.Add("Tim mạch (TM-001)");
-            cboKhoaDT.Items.Add("Nội tổng quát (NTQ-002)");
-            cboKhoaDT.Items.Add("Chỉnh hình (CH-003)");
-            cboKhoaDT.Items.Add("Sản khoa (SK-004)");
-            cboKhoaDT.Items.Add("Thần kinh (TK-005)");
+            try
+            {
+                DataTable dt = HospitalX.DAO.HsbaDAO.GetDepartments();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        if (row["CHUYENKHOA"] != DBNull.Value)
+                        {
+                            cboKhoaDT.Items.Add(row["CHUYENKHOA"].ToString().Trim());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Loi doc danh sach khoa tu view: " + ex.Message);
+            }
+
+            // Fallback if empty
+            if (cboKhoaDT.Items.Count == 0)
+            {
+                cboKhoaDT.Items.Add("Khoa tim mạch");
+                cboKhoaDT.Items.Add("Khoa tiêu hóa");
+                cboKhoaDT.Items.Add("Khoa thần kinh");
+            }
+
             cboKhoaDT.SelectedIndex = 0;
 
             dtpNgayMo.Value = DateTime.Now;
@@ -228,21 +254,58 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         // =============================================
         private void BuildDoctorCards()
         {
-            var doctors = new[]
+            pnlDoctorGrid.Controls.Clear();
+            _selectedDoctorCard = null;
+            _selectedDoctorCode = "";
+            _selectedDoctorName = "";
+            SetSummaryText(lblSumBS, "Chưa có");
+
+            string currentDept = "Khoa tim mạch";
+            if (cboKhoaDT.SelectedItem != null)
             {
-                new { Code = "BS-TM-001", Name = "BS. Trần Minh Khoa", Spec = "Tim mạch", Status = "● Đang rảnh", IsFree = true, IsSelected = false },
-                new { Code = "BS-TM-002", Name = "BS. Nguyễn Thị Hồng", Spec = "Tim mạch", Status = "● Đang bận", IsFree = false, IsSelected = false },
-                new { Code = "BS-TM-003", Name = "TS. Lê Đình Phước", Spec = "Tim mạch", Status = "● Đang rảnh", IsFree = true, IsSelected = false },
-                new { Code = "BS-TM-004", Name = "BS. Phạm Thu Hà", Spec = "Tim mạch", Status = "● Đang bận", IsFree = false, IsSelected = false },
-            };
+                currentDept = cboKhoaDT.SelectedItem.ToString().Trim();
+            }
+
+            var doctorsList = new System.Collections.Generic.List<dynamic>();
+
+            try
+            {
+                DataTable dt = HospitalX.DAO.HsbaDAO.GetDoctorsForTaoHSBA(currentDept);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        doctorsList.Add(new {
+                            Code = row["MANV"].ToString(),
+                            Name = row["HOTEN"].ToString(),
+                            Spec = row["CHUYENKHOA"].ToString(),
+                            Status = "● Đang rảnh",
+                            IsFree = true,
+                            IsSelected = false
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Loi doc danh sach bac si: " + ex.Message);
+            }
+
+            if (doctorsList.Count == 0)
+            {
+                doctorsList.Add(new { Code = "BS-TM-001", Name = "BS. Trần Minh Khoa", Spec = currentDept, Status = "● Đang rảnh", IsFree = true, IsSelected = false });
+                doctorsList.Add(new { Code = "BS-TM-002", Name = "BS. Nguyễn Thị Hồng", Spec = currentDept, Status = "● Đang bận", IsFree = false, IsSelected = false });
+                doctorsList.Add(new { Code = "BS-TM-003", Name = "TS. Lê Đình Phước", Spec = currentDept, Status = "● Đang rảnh", IsFree = true, IsSelected = false });
+                doctorsList.Add(new { Code = "BS-TM-004", Name = "BS. Phạm Thu Hà", Spec = currentDept, Status = "● Đang bận", IsFree = false, IsSelected = false });
+            }
 
             int cardW = 435;
             int cardH = 116;
             int gap = 10;
 
-            for (int i = 0; i < doctors.Length; i++)
+            for (int i = 0; i < doctorsList.Count; i++)
             {
-                var doc = doctors[i];
+                var doc = doctorsList[i];
                 int col = i % 2;
                 int row = i / 2;
 
@@ -297,7 +360,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 lblStatus.BackColor = Color.Transparent;
                 card.Controls.Add(lblStatus);
 
-                // Selected checkmark
                 if (doc.IsSelected)
                 {
                     var lblCheck = new Label();
@@ -311,12 +373,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     _selectedDoctorCard = card;
                 }
 
-                // Click handler — select this doctor
                 string code = doc.Code;
                 string name = doc.Name;
                 card.Click += (s, ev) => SelectDoctor(card, code, name);
 
-                // Also handle clicks on child labels
                 foreach (Control c in card.Controls)
                 {
                     c.Click += (s, ev) => SelectDoctor(card, code, name);
@@ -324,6 +384,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
                 pnlDoctorGrid.Controls.Add(card);
             }
+            BuildStepsIndicator();
+            AdjustLayout();
         }
 
         private void SelectDoctor(Guna2Panel card, string code, string name)
@@ -648,27 +710,29 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (string.IsNullOrWhiteSpace(query))
                 return;
 
-            string queryLower = query.ToLower();
-
-            // Ensure shared patients are initialized
-            PatientModel.InitializeSharedPatients();
-
-            // Find matching patient in the database (strict exact match on Name or MaBN, case-insensitive)
-            PatientModel matchedPatient = null;
-            foreach (var p in PatientModel.SharedPatients)
+            bool found = false;
+            try
             {
-                if (p.Id.ToLower() == queryLower || p.Name.ToLower() == queryLower || RemoveDiacritics(p.Name) == RemoveDiacritics(query))
+                DataTable dt = HospitalX.DAO.PatientDAO.SearchPatient(query);
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    matchedPatient = p;
-                    break;
+                    DataRow row = dt.Rows[0];
+                    string name = row["TENBN"] != DBNull.Value ? row["TENBN"].ToString().Trim() : "";
+                    string code = row["MABN"] != DBNull.Value ? row["MABN"].ToString().Trim() : "";
+                    string phai = row["PHAI"] != DBNull.Value ? row["PHAI"].ToString().Trim() : "";
+                    string dob = row["NGAYSINH"] != DBNull.Value ? Convert.ToDateTime(row["NGAYSINH"]).ToString("dd/MM/yyyy") : "";
+                    string dept = "Tim mạch";
+
+                    LoadPatient(name, code, phai, dob, dept);
+                    found = true;
                 }
             }
-
-            if (matchedPatient != null)
+            catch (Exception ex)
             {
-                LoadPatient(matchedPatient.Name, matchedPatient.Id, matchedPatient.Gender, matchedPatient.Dob, matchedPatient.Khoa);
+                Console.WriteLine("Loi tim kiem benh nhan cho HSBA: " + ex.Message);
             }
-            else
+
+            if (!found)
             {
                 ShowDialog("Không tìm thấy", $"Không tìm thấy bệnh nhân \"{query}\". Vui lòng thử lại.",
                     Guna.UI2.WinForms.MessageDialogIcon.Warning);
@@ -710,35 +774,47 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             pnlPatientFound.Visible = true;
 
-            // Generate unique HSBA code based on patient code suffix
-            string suffix = code.Length >= 4 ? code.Substring(code.Length - 4) : "9999";
-            txtMaHSBA.Text = $"HSBA-2026-{suffix}";
+            // Generate unique HSBA code from database sequential ID
+            try
+            {
+                txtMaHSBA.Text = HospitalX.DAO.HsbaDAO.GetNextHsbaId();
+            }
+            catch
+            {
+                string suffix = code.Length >= 4 ? code.Substring(code.Length - 4) : "9999";
+                txtMaHSBA.Text = $"HS26{suffix}";
+            }
 
             // Map patient registered department to cboKhoaDT to assist coordinator
             string deptLower = dept.ToLower();
-            if (deptLower.Contains("tim"))
+            int selectedIndex = -1;
+            for (int i = 0; i < cboKhoaDT.Items.Count; i++)
             {
-                cboKhoaDT.SelectedIndex = 0; // Tim mạch (TM-001)
+                string itemText = cboKhoaDT.Items[i].ToString().ToLower();
+                if (deptLower.Contains("tim") && itemText.Contains("tim"))
+                {
+                    selectedIndex = i;
+                    break;
+                }
+                if ((deptLower.Contains("thần") || deptLower.Contains("than")) && (itemText.Contains("thần") || itemText.Contains("than")))
+                {
+                    selectedIndex = i;
+                    break;
+                }
+                if ((deptLower.Contains("tiêu") || deptLower.Contains("tieu")) && (itemText.Contains("tiêu") || itemText.Contains("tieu")))
+                {
+                    selectedIndex = i;
+                    break;
+                }
             }
-            else if (deptLower.Contains("nội") || deptLower.Contains("noi"))
+
+            if (selectedIndex >= 0)
             {
-                cboKhoaDT.SelectedIndex = 1; // Nội tổng quát (NTQ-002)
+                cboKhoaDT.SelectedIndex = selectedIndex;
             }
-            else if (deptLower.Contains("chỉnh") || deptLower.Contains("chinh"))
+            else if (cboKhoaDT.Items.Count > 0)
             {
-                cboKhoaDT.SelectedIndex = 2; // Chỉnh hình (CH-003)
-            }
-            else if (deptLower.Contains("sản") || deptLower.Contains("san"))
-            {
-                cboKhoaDT.SelectedIndex = 3; // Sản khoa (SK-004)
-            }
-            else if (deptLower.Contains("thần") || deptLower.Contains("than"))
-            {
-                cboKhoaDT.SelectedIndex = 4; // Thần kinh (TK-005)
-            }
-            else
-            {
-                cboKhoaDT.SelectedIndex = 1; // Mặc định Nội tổng quát (NTQ-002)
+                cboKhoaDT.SelectedIndex = 0;
             }
 
             // Always clear clinical inputs so coordinator enters new record details manually
@@ -809,6 +885,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         // =============================================
         // CREATE HSBA
         // =============================================
+        private string MapKhoaToCode(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            string lower = text.ToLower();
+            if (lower.Contains("tim mạch") || lower.Contains("ktm")) return "KTM";
+            if (lower.Contains("thần kinh") || lower.Contains("ktk")) return "KTK";
+            if (lower.Contains("tiêu hóa") || lower.Contains("kth")) return "KTH";
+            
+            int start = text.IndexOf('(');
+            int end = text.IndexOf(')');
+            if (start >= 0 && end > start)
+            {
+                return text.Substring(start + 1, end - start - 1);
+            }
+            return text.Length > 10 ? text.Substring(0, 10) : text;
+        }
+
         private void CreateHSBA()
         {
             // Validate required fields
@@ -851,18 +944,53 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 return;
             }
 
+            string maHsba = txtMaHSBA.Text.Trim();
+            string maBn = lblSumMaBN.Text.Trim();
+            DateTime ngay = dtpNgayMo.Value;
+            string chanDoan = txtChanDoan.Text.Trim();
+            string dieuTri = txtDieuTri.Text.Trim();
+            string maBs = _selectedDoctorCode.Trim();
+            string maKhoa = MapKhoaToCode(cboKhoaDT.Text);
+            string ketLuan = txtKetLuan.Text.Trim();
+
+            bool dbSuccess = false;
+            string dbError = "";
+
+            try
+            {
+                maHsba = HospitalX.DAO.HsbaDAO.GetNextHsbaId();
+                txtMaHSBA.Text = maHsba;
+
+                dbSuccess = HospitalX.DAO.HsbaDAO.InsertHsba(
+                    maHsba, maBn, ngay, chanDoan, dieuTri, maBs, maKhoa, ketLuan
+                );
+            }
+            catch (Exception ex)
+            {
+                dbSuccess = false;
+                dbError = ex.Message;
+            }
+
+            if (!dbSuccess)
+            {
+                string showMsg = "Không thể tạo hồ sơ bệnh án mới.\nChi tiết lỗi: " + dbError;
+                ShowDialog("Lỗi Cơ Sở Dữ Liệu", showMsg, Guna.UI2.WinForms.MessageDialogIcon.Error);
+                return;
+            }
+
             // Set Step 4 completed
             _step4Done = true;
             BuildStepsIndicator();
 
             // Show success
             string successMsg = $"Tạo hồ sơ bệnh án thành công!\n\n"
-                + $"Mã HSBA: {txtMaHSBA.Text}\n"
-                + $"Bác sĩ: {_selectedDoctorName} ({_selectedDoctorCode})\n"
+                + $"Mã HSBA: {maHsba}\n"
+                + $"Bác sĩ: {_selectedDoctorName} ({maBs})\n"
                 + $"Khoa: {cboKhoaDT.Text}\n\n"
                 + "Bác sĩ đã được thông báo qua OLS.";
 
             ShowDialog("Thành công", successMsg, Guna.UI2.WinForms.MessageDialogIcon.Information);
+            ChangeBN();
         }
 
         // =============================================
@@ -909,8 +1037,17 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlDoctorGrid.Location = new Point(col1X, 162);
             pnlDoctorGrid.Width = pnlStep3Card.Width - 40;
 
+            // Save doctor scroll position and temporarily reset to (0, 0)
+            Point docScrollPos = pnlDoctorGrid.AutoScrollPosition;
+            pnlDoctorGrid.AutoScrollPosition = new Point(0, 0);
+
             // Scale doctor cards inside grid
-            int docW = (pnlDoctorGrid.Width - 14) / 2;
+            int gridWidth = pnlDoctorGrid.Width;
+            if (pnlDoctorGrid.Controls.Count > 4)
+            {
+                gridWidth -= SystemInformation.VerticalScrollBarWidth + 4;
+            }
+            int docW = (gridWidth - 14) / 2;
             int docH = 116;
             for (int i = 0; i < pnlDoctorGrid.Controls.Count; i++)
             {
@@ -930,6 +1067,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     }
                 }
             }
+
+            // Restore doctor scroll position
+            pnlDoctorGrid.AutoScrollPosition = new Point(Math.Abs(docScrollPos.X), Math.Abs(docScrollPos.Y));
 
             pnlStep3Card.Height = pnlDoctorGrid.Bottom + 20;
 

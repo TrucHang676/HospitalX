@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.Data;
 
 namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
@@ -38,9 +39,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private const int WorkloadLabelHeight = 18;
         private const int WorkloadRowSpacing = 12;
         private const int StatusPillHorizontalPad = 36;
-        private const int StatusColumnMinWidth = 168;
+        private const int StatusColumnMinWidth = 130;
 
         private int _hoveredPatientRow = -1;
+        private bool _isLayoutInProgress = false;
 
         private readonly Guna2Panel[] _kpiCards;
         private readonly Label[] _kpiIcons;
@@ -83,11 +85,61 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             SetupWorkloadBars();
             SetupActivityList();
             RelayoutScrollContent();
+            LoadRealDashboardData();
+        }
+
+        private void LoadRealDashboardData()
+        {
+            try
+            {
+                // 1. Load KPI Stats
+                DataTable dtStats = HospitalX.DAO.DashboardDAO.GetDashboardDPV();
+                if (dtStats != null && dtStats.Rows.Count > 0)
+                {
+                    DataRow row = dtStats.Rows[0];
+                    int todayPatients = row.Table.Columns.Contains("TODAY_PATIENTS") && row["TODAY_PATIENTS"] != DBNull.Value ? Convert.ToInt32(row["TODAY_PATIENTS"]) : 0;
+                    int activeKtvs = row.Table.Columns.Contains("ACTIVE_KTVS") && row["ACTIVE_KTVS"] != DBNull.Value ? Convert.ToInt32(row["ACTIVE_KTVS"]) : 0;
+                    int pendingKtv = row.Table.Columns.Contains("PENDING_KTV") && row["PENDING_KTV"] != DBNull.Value ? Convert.ToInt32(row["PENDING_KTV"]) : 0;
+                    int completedServices = row.Table.Columns.Contains("COMPLETED_SERVICES") && row["COMPLETED_SERVICES"] != DBNull.Value ? Convert.ToInt32(row["COMPLETED_SERVICES"]) : 0;
+
+                    UpdateKpiStats(todayPatients, activeKtvs, pendingKtv, completedServices);
+                }
+
+                // 2. Load Patient Grid
+                DataTable dtPatients = HospitalX.DAO.DashboardDAO.GetPatientsNeedAssignment();
+                _allPatientsData.Clear();
+                if (dtPatients != null && dtPatients.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dtPatients.Rows)
+                    {
+                        _allPatientsData.Add(new DashboardPatientRecord
+                        {
+                            MaHsba = row["MAHSBA"] != DBNull.Value ? Convert.ToString(row["MAHSBA"]) : string.Empty,
+                            TenBenhNhan = row["TEN_BENH_NHAN"] != DBNull.Value ? Convert.ToString(row["TEN_BENH_NHAN"]) : string.Empty,
+                            Khoa = row["KHOA"] != DBNull.Value ? Convert.ToString(row["KHOA"]) : string.Empty,
+                            DichVuCan = row["DICH_VU_CAN"] != DBNull.Value ? Convert.ToString(row["DICH_VU_CAN"]) : string.Empty,
+                            TrangThai = string.Empty
+                        });
+                    }
+                }
+                RenderAllData();
+
+                // 3. Load Workload Bars (Skipped: section hidden on UI)
+                // 4. Load Activity List (Skipped: section hidden on UI)
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error loading real dashboard data, falling back to mock: " + ex.Message);
+                MessageBox.Show("Lỗi tải dữ liệu từ database:\n" + ex.Message, "Lỗi Database", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void ConfigureCardStyles()
         {
-            foreach (var panel in new[] { pnlPatients, pnlQuick, pnlWorkload, pnlActivity })
+            pnlWorkload.Visible = false;
+            pnlActivity.Visible = false;
+
+            foreach (var panel in new[] { pnlPatients, pnlQuick })
             {
                 panel.ShadowDecoration.Enabled = false;
                 panel.BorderThickness = 1;
@@ -112,7 +164,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             };
 
             pnlMiddle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pnlActivity.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             btnViewAllPatients.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         }
 
@@ -292,13 +343,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 pnlKpiRow.Width = contentW;
                 pnlMiddle.Width = contentW;
-                pnlActivity.Width = contentW;
                 LayoutMiddleSection();
             }
 
             pnlMiddle.Location = new Point(pnlMiddle.Left, pnlKpiRow.Bottom + 24);
-            pnlActivity.Location = new Point(pnlActivity.Left, pnlMiddle.Bottom + 24);
-            pnlScroll.AutoScrollMinSize = new Size(0, pnlActivity.Bottom + 32);
+            pnlScroll.AutoScrollMinSize = new Size(0, pnlMiddle.Bottom + 32);
         }
 
 
@@ -317,40 +366,43 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void LayoutMiddleSection()
         {
-            int totalW = pnlMiddle.ClientSize.Width;
-            int totalH = pnlMiddle.ClientSize.Height;
-            if (totalW <= 0 || totalH <= 0) return;
+            if (_isLayoutInProgress) return;
+            _isLayoutInProgress = true;
 
-            int rightW = (int)(totalW * RightColumnWidthRatio);
-            rightW = Math.Max(RightColumnMinWidth, Math.Min(RightColumnMaxWidth, rightW));
-            int patientsW = totalW - rightW - MiddleColumnGap;
-            if (patientsW < 480)
+            try
             {
-                patientsW = Math.Max(480, totalW - rightW - MiddleColumnGap);
-                rightW = totalW - patientsW - MiddleColumnGap;
+                int totalW = pnlMiddle.ClientSize.Width;
+                if (totalW <= 0) return;
+
+                int patientsH = 500;
+                pnlPatients.SetBounds(0, 0, totalW, patientsH);
+
+                // Programmatically position and size controls inside pnlPatients to prevent layout engine clipping
+                lblPatientsTitle.Location = new Point(20, 18);
+                btnViewAllPatients.Location = new Point(pnlPatients.Width - btnViewAllPatients.Width - 20, 12);
+                dgvPatients.Location = new Point(20, 64);
+                dgvPatients.Size = new Size(pnlPatients.Width - 40, pnlPatients.Height - 84);
+
+                lblPatientsTitle.BringToFront();
+                btnViewAllPatients.BringToFront();
+                dgvPatients.BringToFront();
+
+                int quickY = patientsH + 20;
+                int quickH = 160;
+                pnlQuick.SetBounds(0, quickY, totalW, quickH);
+                LayoutQuickPanel(totalW, quickH);
+
+                pnlMiddle.Height = pnlQuick.Bottom + 8;
             }
-
-            pnlPatients.SetBounds(0, 0, patientsW, totalH);
-
-            int rightX = patientsW + MiddleColumnGap;
-            int quickH = Math.Max(200, (int)(totalH * QuickPanelHeightRatio));
-            int workloadH = totalH - quickH - QuickWorkloadGap;
-            if (workloadH < 180)
+            finally
             {
-                workloadH = 180;
-                quickH = totalH - workloadH - QuickWorkloadGap;
+                _isLayoutInProgress = false;
             }
-
-            pnlQuick.SetBounds(rightX, 0, rightW, quickH);
-            LayoutQuickPanel(rightW, quickH);
-
-            pnlWorkload.SetBounds(rightX, quickH + QuickWorkloadGap, rightW, workloadH);
-            LayoutWorkloadPanel(rightW, workloadH);
         }
 
         private void LayoutQuickPanel(int panelWidth, int panelHeight)
         {
-            int btnW = (panelWidth - RightSidePad * 2 - QuickButtonGap) / 2;
+            int btnW = (panelWidth - RightSidePad * 2 - QuickButtonGap * 3) / 4;
 
             // Đường kẻ ngang: dưới tiêu đề 8px để có khoảng cách cân đối
             int dividerY = SectionHeaderHeight + 10;
@@ -359,16 +411,22 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             // Vùng nội dung bắt đầu sau divider + 12px khoảng cách
             int contentTop = dividerY + 13;
-            int contentBottom = panelHeight - 12;
-            int availableH = Math.Max(120, contentBottom - contentTop);
-            int btnH = Math.Min(MaxQuickButtonHeight, (availableH - QuickButtonGap) / 2);
-            int row2Top = contentTop + btnH + QuickButtonGap;
+            int btnH = 80;
             int iconSize = 28;
+
+            lblQuickTitle.Location = new Point(20, 18);
+            lblQuickTitle.BringToFront();
+            pnlQuickDivider.BringToFront();
 
             PlaceQuickButton(btnQuick1, RightSidePad, contentTop, btnW, btnH, iconSize);
             PlaceQuickButton(btnQuick2, RightSidePad + btnW + QuickButtonGap, contentTop, btnW, btnH, iconSize);
-            PlaceQuickButton(btnQuick3, RightSidePad, row2Top, btnW, btnH, iconSize);
-            PlaceQuickButton(btnQuick4, RightSidePad + btnW + QuickButtonGap, row2Top, btnW, btnH, iconSize);
+            PlaceQuickButton(btnQuick3, RightSidePad + (btnW + QuickButtonGap) * 2, contentTop, btnW, btnH, iconSize);
+            PlaceQuickButton(btnQuick4, RightSidePad + (btnW + QuickButtonGap) * 3, contentTop, btnW, btnH, iconSize);
+
+            btnQuick1.BringToFront();
+            btnQuick2.BringToFront();
+            btnQuick3.BringToFront();
+            btnQuick4.BringToFront();
         }
 
         private static void PlaceQuickButton(Guna2Button button, int x, int y, int width, int height, int iconSize)
@@ -542,7 +600,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 col.SortMode = DataGridViewColumnSortMode.NotSortable;
 
             ApplyPatientColumnWeights();
-            UpdateStatusColumnMinWidth();
 
             dgvPatients.MouseMove -= dgvPatients_MouseMove;
             dgvPatients.MouseMove += dgvPatients_MouseMove;
@@ -552,23 +609,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvPatients.ColumnHeaderMouseClick += dgvPatients_ColumnHeaderMouseClick;
             dgvPatients.CellClick += dgvPatients_CellClick;
 
-            if (_allPatientsData.Count == 0)
+            dgvPatients.Paint += (s, ev) =>
             {
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0156", TenBenhNhan = "Nguyễn Văn An", Khoa = "Tim mạch", DichVuCan = "Siêu âm tim", TrangThai = "Chờ phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0157", TenBenhNhan = "Trần Thị Bích", Khoa = "Nội tổng quát", DichVuCan = "Xét nghiệm máu", TrangThai = "Đã phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0158", TenBenhNhan = "Phạm Quốc Hùng", Khoa = "Chỉnh hình", DichVuCan = "Chụp X-quang", TrangThai = "Chờ phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0159", TenBenhNhan = "Lê Thị Mai", Khoa = "Thần kinh", DichVuCan = "Điện não đồ", TrangThai = "Hoàn thành" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0160", TenBenhNhan = "Võ Minh Tuấn", Khoa = "Tim mạch", DichVuCan = "Holter ECG", TrangThai = "Đã phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0161", TenBenhNhan = "Đinh Công Sơn", Khoa = "Tim mạch", DichVuCan = "MRI tim", TrangThai = "Chờ phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0162", TenBenhNhan = "Ngô Thị Hằng", Khoa = "Nội tổng quát", DichVuCan = "Xét nghiệm máu", TrangThai = "Hoàn thành" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0163", TenBenhNhan = "Phan Thanh Bình", Khoa = "Chỉnh hình", DichVuCan = "Chụp CT scan", TrangThai = "Chờ phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0164", TenBenhNhan = "Lâm Kiến Quốc", Khoa = "Thần kinh", DichVuCan = "Chụp MRI não", TrangThai = "Chờ phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0165", TenBenhNhan = "Hoàng Xuân Hùng", Khoa = "Tim mạch", DichVuCan = "Điện tâm đồ", TrangThai = "Đã phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0166", TenBenhNhan = "Nguyễn Thị Đào", Khoa = "Nội tổng quát", DichVuCan = "Siêu âm bụng", TrangThai = "Hoàn thành" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0167", TenBenhNhan = "Đặng Minh Triết", Khoa = "Chỉnh hình", DichVuCan = "Nội soi khớp", TrangThai = "Chờ phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0168", TenBenhNhan = "Bùi Mỹ Nhân", Khoa = "Thần kinh", DichVuCan = "Điện cơ EMG", TrangThai = "Đã phân công" });
-                _allPatientsData.Add(new DashboardPatientRecord { MaHsba = "HSBA-0169", TenBenhNhan = "Lê Hoàng Nam", Khoa = "Tim mạch", DichVuCan = "Siêu âm tim Doppler", TrangThai = "Chờ phân công" });
-            }
+                if (dgvPatients.Rows.Count == 0)
+                {
+                    int headerHeight = dgvPatients.ColumnHeadersVisible ? dgvPatients.ColumnHeadersHeight : 0;
+                    Rectangle rect = new Rectangle(0, headerHeight, dgvPatients.Width, dgvPatients.Height - headerHeight);
+                    using (StringFormat sf = new StringFormat
+                    {
+                        Alignment = StringAlignment.Center,
+                        LineAlignment = StringAlignment.Center
+                    })
+                    using (Font font = new Font("Segoe UI", 11.25F, FontStyle.Regular))
+                    using (Brush brush = new SolidBrush(Color.FromArgb(122, 149, 137)))
+                    {
+                        ev.Graphics.DrawString("Không có hồ sơ cần phân công", font, brush, rect, sf);
+                    }
+                }
+            };
 
             dgvPatients.ScrollBars = ScrollBars.Vertical;
             RenderAllData();
@@ -579,12 +637,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvPatients.Rows.Clear();
             foreach (var record in _allPatientsData)
             {
-                dgvPatients.Rows.Add(record.MaHsba, record.TenBenhNhan, record.Khoa, record.DichVuCan, record.TrangThai);
+                dgvPatients.Rows.Add(record.MaHsba, record.TenBenhNhan, record.Khoa, record.DichVuCan);
             }
 
             dgvPatients.ClearSelection();
             dgvPatients.CurrentCell = null;
-            UpdateStatusColumnMinWidth();
         }
 
         /// <summary>
@@ -599,7 +656,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         /// <summary>Gọi sau khi bind dữ liệu thật vào bảng để căn lại cột trạng thái.</summary>
         public void RefreshPatientGridLayout()
         {
-            UpdateStatusColumnMinWidth();
             dgvPatients.Invalidate();
         }
 
@@ -636,36 +692,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void ApplyPatientColumnWeights()
         {
             colMaBN.FillWeight = 15F;
-            colHoTen.FillWeight = 20F;
-            colKhoa.FillWeight = 17F;
-            colBacSi.FillWeight = 18F;
-            colStatus.FillWeight = 30F;
-            colStatus.MinimumWidth = StatusColumnMinWidth;
-        }
-
-        private void UpdateStatusColumnMinWidth()
-        {
-            int maxPill = StatusColumnMinWidth;
-            using (Graphics g = dgvPatients.CreateGraphics())
-            {
-                foreach (DataGridViewRow row in dgvPatients.Rows)
-                {
-                    if (row.IsNewRow) continue;
-                    string status = Convert.ToString(row.Cells[colStatus.Index].Value);
-                    if (string.IsNullOrEmpty(status)) continue;
-                    maxPill = Math.Max(maxPill, MeasureStatusPillWidth(g, status, int.MaxValue));
-                }
-            }
-
-            colStatus.MinimumWidth = maxPill + 12;
-        }
-
-        private static int MeasureStatusPillWidth(Graphics g, string text, int maxWidth)
-        {
-            int textW = TextRenderer.MeasureText(g, text, StatusFont, Size.Empty,
-                TextFormatFlags.NoPadding | TextFormatFlags.SingleLine).Width;
-            int needed = textW + StatusPillHorizontalPad;
-            return Math.Min(maxWidth, Math.Max(needed, 80));
+            colHoTen.FillWeight = 40F;
+            colKhoa.FillWeight = 20F;
+            colBacSi.FillWeight = 25F;
         }
 
         private void dgvPatients_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -709,19 +738,22 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void SetupWorkloadBars()
         {
-            SetWorkload(pbTimMach, 6, 8, Color.FromArgb(255, 167, 38));
-            SetWorkload(pbNoiTongQuat, 5, 6, Color.FromArgb(229, 57, 53));
-            SetWorkload(pbChinhHinh, 3, 5, Color.FromArgb(15, 110, 86));
-            SetWorkload(pbThanKinh, 4, 5, Color.FromArgb(0, 150, 136));
+            SetWorkload(lblPb1, pbTimMach, "KTV Tim mạch", 6, 8, Color.FromArgb(255, 167, 38));
+            SetWorkload(lblPb2, pbNoiTongQuat, "KTV Nội tổng quát", 5, 6, Color.FromArgb(229, 57, 53));
+            SetWorkload(lblPb3, pbChinhHinh, "KTV Chỉnh hình", 3, 5, Color.FromArgb(15, 110, 86));
+            SetWorkload(lblPb4, pbThanKinh, "KTV Thần kinh", 4, 5, Color.FromArgb(0, 150, 136));
         }
 
-        private static void SetWorkload(Guna2ProgressBar bar, int current, int max, Color color)
+        private static void SetWorkload(Label label, Guna2ProgressBar bar, string name, int current, int max, Color color)
         {
-            bar.Maximum = max;
+            bar.Maximum = max > 0 ? max : 100;
             bar.Value = current;
             bar.ProgressColor = color;
             bar.ProgressColor2 = color;
             bar.FillColor = WorkloadTrackColor;
+
+            label.Tag = new[] { name, $"{current}/{max}" };
+            label.Invalidate();
         }
 
         private void SetupActivityList()
@@ -902,25 +934,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 return;
             }
 
-            if (e.ColumnIndex == colStatus.Index)
-            {
-                GetStatusColors(value, out Color back, out Color fore, out Color dot);
-                int maxPillW = cell.Width - 16;
-                int pillWidth = MeasureStatusPillWidth(e.Graphics, value, maxPillW);
-                Rectangle pill = new Rectangle(cell.X + 12, cell.Y + (cell.Height - 30) / 2, pillWidth, 30);
-                e.Graphics.FillRoundedRectangle(new SolidBrush(back), pill, 14);
-                using (var brush = new SolidBrush(dot))
-                    e.Graphics.FillEllipse(brush, pill.X + 12, pill.Y + 11, 7, 7);
 
-                var textFlags = TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.NoPadding;
-                if (pillWidth < MeasureStatusPillWidth(e.Graphics, value, int.MaxValue))
-                    textFlags |= TextFormatFlags.EndEllipsis;
-
-                TextRenderer.DrawText(e.Graphics, value, StatusFont,
-                    new Rectangle(pill.X + 24, pill.Y, pill.Width - 28, pill.Height), fore, textFlags);
-                e.Handled = true;
-                return;
-            }
 
             TextRenderer.DrawText(e.Graphics, value, dgvPatients.DefaultCellStyle.Font,
                 new Rectangle(cell.X + 14, cell.Y, cell.Width - 18, cell.Height),
@@ -929,27 +943,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             e.Handled = true;
         }
 
-        private static void GetStatusColors(string status, out Color back, out Color fore, out Color dot)
-        {
-            back = Color.FromArgb(238, 242, 240);
-            fore = Color.FromArgb(122, 149, 137);
-            dot = fore;
-            switch (status)
-            {
-                case "Chờ phân công":
-                    back = Color.FromArgb(255, 247, 230);
-                    fore = dot = Color.FromArgb(240, 165, 0); // Orange/Yellow
-                    break;
-                case "Đã phân công":
-                    back = Color.FromArgb(232, 240, 251);
-                    fore = dot = Color.FromArgb(45, 125, 210); // Blue
-                    break;
-                case "Hoàn thành":
-                    back = Color.FromArgb(230, 244, 240);
-                    fore = dot = Color.FromArgb(15, 110, 86);  // Teal/Green
-                    break;
-            }
-        }
+
 
         private void btnViewAllPatients_Click(object sender, EventArgs e)
         {
@@ -991,5 +985,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             form.ShowMessage(message, "Thông báo");
         }
+
     }
 }

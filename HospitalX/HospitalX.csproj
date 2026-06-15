@@ -101,7 +101,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAO\DashboardDAO.cs" />
     <Compile Include="DAO\DataProvider.cs" />
+    <Compile Include="DAO\PatientDAO.cs" />
+    <Compile Include="DAO\HsbaDAO.cs" />
+    <Compile Include="DAO\AssignmentDAO.cs" />
+    <Compile Include="DAO\ProfileDAO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="GUI\PH2\BacSi\Main_BS.cs">
       <SubType>Form</SubType>

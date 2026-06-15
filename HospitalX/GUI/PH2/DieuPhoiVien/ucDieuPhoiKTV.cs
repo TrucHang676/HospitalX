@@ -90,7 +90,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             DoubleBuffered = true;
 
             // Load data
-            LoadMockData();
+            LoadDatabaseData();
 
             // Set up resize handler
             this.Resize += (s, e) => LayoutPanels();
@@ -318,45 +318,88 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
         }
 
-        private void LoadMockData()
+        private void LoadDatabaseData()
         {
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0021", Hsba = "HSBA-2026-0155", PatientCode = "BN240001", PatientName = "Nguyễn Văn An", ServiceType = "Điện tâm đồ", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "24/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0022", Hsba = "HSBA-2026-0154", PatientCode = "BN240002", PatientName = "Phạm Thị Lan", ServiceType = "Xét nghiệm máu", Priority = "normal", AssignedKtv = "KTV. Lý Hoa", Status = "assigned", StatusLabel = "Đã phân công", ServiceDate = "24/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0023", Hsba = "HSBA-2026-0153", PatientCode = "BN240003", PatientName = "Hoàng Đức Nam", ServiceType = "Siêu âm tim", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "24/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0024", Hsba = "HSBA-2026-0152", PatientCode = "BN240004", PatientName = "Trần Thị Mai", ServiceType = "Siêu âm thai", Priority = "normal", AssignedKtv = "KTV. Nguyễn Bình", Status = "assigned", StatusLabel = "Đã phân công", ServiceDate = "24/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0025", Hsba = "HSBA-2026-0151", PatientCode = "BN240005", PatientName = "Lê Văn Hải", ServiceType = "X-Quang não", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "24/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0026", Hsba = "HSBA-2026-0150", PatientCode = "BN240006", PatientName = "Vũ Thị Bích", ServiceType = "Nội soi dạ dày", Priority = "normal", AssignedKtv = "KTV. Trần Đông", Status = "assigned", StatusLabel = "Đã phân công", ServiceDate = "24/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0027", Hsba = "HSBA-2026-0149", PatientCode = "BN240007", PatientName = "Đinh Công Sơn", ServiceType = "MRI tim", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "24/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0018", Hsba = "HSBA-2026-0147", PatientCode = "BN240008", PatientName = "Ngô Thị Hằng", ServiceType = "Xét nghiệm máu", Priority = "normal", AssignedKtv = "KTV. Bùi Nghĩa", Status = "done", StatusLabel = "Hoàn thành", ServiceDate = "24/05/2026", Result = "Chỉ số hồng cầu ổn định (4.5 T/L)" });
+            try
+            {
+                // 1. Fetch Technicians
+                System.Data.DataTable dtKtvs = HospitalX.DAO.AssignmentDAO.GetAllTechnicians();
+                _ktvs.Clear();
+                if (dtKtvs != null)
+                {
+                    foreach (System.Data.DataRow row in dtKtvs.Rows)
+                    {
+                        string code = row["MANV"] != DBNull.Value ? Convert.ToString(row["MANV"]) : string.Empty;
+                        string name = row["HOTEN"] != DBNull.Value ? Convert.ToString(row["HOTEN"]) : string.Empty;
+                        string skills = row["CHUYENKHOA"] != DBNull.Value ? Convert.ToString(row["CHUYENKHOA"]) : string.Empty;
 
-            // New 20 mock records to test pagination (28 records total)
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0028", Hsba = "HSBA-2026-0146", PatientCode = "BN240009", PatientName = "Phan Thanh Bình", ServiceType = "Chụp CT scan", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "25/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0029", Hsba = "HSBA-2026-0145", PatientCode = "BN240010", PatientName = "Lý Hoàng Nam", ServiceType = "Điện nano đồ", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "25/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0030", Hsba = "HSBA-2026-0144", PatientCode = "BN240011", PatientName = "Trần Văn Cường", ServiceType = "X-Quang phổi", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "25/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0031", Hsba = "HSBA-2026-0143", PatientCode = "BN240012", PatientName = "Đỗ Thị Dung", ServiceType = "Nội soi phế quan", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "25/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0032", Hsba = "HSBA-2026-0142", PatientCode = "BN240013", PatientName = "Hoàng Minh Tuấn", ServiceType = "Xét nghiệm sinh hoá", Priority = "normal", AssignedKtv = "KTV. Lý Hoa", Status = "assigned", StatusLabel = "Đã phân công", ServiceDate = "25/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0033", Hsba = "HSBA-2026-0141", PatientCode = "BN240014", PatientName = "Nguyễn Thị Hạnh", ServiceType = "Siêu âm tim", Priority = "normal", AssignedKtv = "KTV. Nguyễn Bình", Status = "assigned", StatusLabel = "Đã phân công", ServiceDate = "25/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0034", Hsba = "HSBA-2026-0140", PatientCode = "BN240015", PatientName = "Bùi Xuân Trường", ServiceType = "MRI cột sống", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "25/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0035", Hsba = "HSBA-2026-0139", PatientCode = "BN240016", PatientName = "Phan Thị Hương", ServiceType = "Xét nghiệm máu", Priority = "normal", AssignedKtv = "KTV. Bùi Nghĩa", Status = "done", StatusLabel = "Hoàn thành", ServiceDate = "25/05/2026", Result = "Số lượng bạch cầu bình thường" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0036", Hsba = "HSBA-2026-0138", PatientCode = "BN240017", PatientName = "Nguyễn Hữu Thắng", ServiceType = "X-Quang khớp gối", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "26/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0037", Hsba = "HSBA-2026-0137", PatientCode = "BN240018", PatientName = "Lê Mỹ Linh", ServiceType = "Nội soi đại tràng", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "26/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0038", Hsba = "HSBA-2026-0136", PatientCode = "BN240019", PatientName = "Trịnh Quốc Bảo", ServiceType = "Điện tâm đồ", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "26/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0039", Hsba = "HSBA-2026-0135", PatientCode = "BN240020", PatientName = "Võ Hoài Nam", ServiceType = "Siêu âm tổng quát", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "26/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0040", Hsba = "HSBA-2026-0134", PatientCode = "BN240021", PatientName = "Phạm Thanh Thảo", ServiceType = "Xét nghiệm nước tiểu", Priority = "normal", AssignedKtv = "KTV. Lý Hoa", Status = "done", StatusLabel = "Hoàn thành", ServiceDate = "26/05/2026", Result = "Không phát hiện vi khuẩn đường tiết niệu" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0041", Hsba = "HSBA-2026-0133", PatientCode = "BN240022", PatientName = "Nguyễn Thị Kim", ServiceType = "Chụp CT scan", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "26/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0042", Hsba = "HSBA-2026-0132", PatientCode = "BN240023", PatientName = "Trần Ngọc Sơn", ServiceType = "Siêu âm tim", Priority = "normal", AssignedKtv = "KTV. Nguyễn Bình", Status = "assigned", StatusLabel = "Đã phân công", ServiceDate = "26/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0043", Hsba = "HSBA-2026-0131", PatientCode = "BN240024", PatientName = "Lương Thế Vinh", ServiceType = "MRI khớp vai", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "27/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0044", Hsba = "HSBA-2026-0130", PatientCode = "BN240025", PatientName = "Đặng Thị Thắm", ServiceType = "Điện tâm đồ", Priority = "high", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "27/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0045", Hsba = "HSBA-2026-0129", PatientCode = "BN240026", PatientName = "Mai Văn Đức", ServiceType = "X-Quang xoang", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "27/05/2026" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0046", Hsba = "HSBA-2026-0128", PatientCode = "BN240027", PatientName = "Hồ Tuấn Anh", ServiceType = "Xét nghiệm máu", Priority = "normal", AssignedKtv = "KTV. Bùi Nghĩa", Status = "done", StatusLabel = "Hoàn thành", ServiceDate = "27/05/2026", Result = "Đường huyết lúc đói đạt 5.4 mmol/L" });
-            _requests.Add(new ServiceRequest { Id = "DV-2026-0047", Hsba = "HSBA-2026-0127", PatientCode = "BN240028", PatientName = "Nguyễn Thị Thủy", ServiceType = "Siêu âm tuyến giáp", Priority = "normal", AssignedKtv = "Chưa phân công", Status = "pending", StatusLabel = "Chờ phân công", ServiceDate = "27/05/2026" });
+                        string initials = GetInitialsHelper(name);
 
-            _ktvs.Add(new Technician { Code = "KTV-001", Name = "Lý Thị Hoa", Skills = "XN Máu, Sinh hoá", Load = "free", LoadLabel = "Rảnh (1 ca)", Color = Color.FromArgb(39, 169, 107), Initials = "LH" });
-            _ktvs.Add(new Technician { Code = "KTV-002", Name = "Bùi Trọng Nghĩa", Skills = "Siêu âm, Điện tim", Load = "moderate", LoadLabel = "Trung bình (3 ca)", Color = Color.FromArgb(240, 165, 0), Initials = "BN" });
-            _ktvs.Add(new Technician { Code = "KTV-003", Name = "Nguyễn Văn Bình", Skills = "Sản khoa, Siêu âm thai", Load = "free", LoadLabel = "Rảnh (2 ca)", Color = Color.FromArgb(45, 125, 210), Initials = "NB" });
-            _ktvs.Add(new Technician { Code = "KTV-004", Name = "Trần Mạnh Đông", Skills = "Nội soi, X-Quang", Load = "moderate", LoadLabel = "Trung bình (4 ca)", Color = Color.FromArgb(142, 68, 173), Initials = "TD" });
-            _ktvs.Add(new Technician { Code = "KTV-005", Name = "Phạm Thị Ngọc", Skills = "MRI, CT Scan", Load = "busy", LoadLabel = "Bận (6 ca)", Color = Color.FromArgb(224, 92, 58), Initials = "PN" });
-            _ktvs.Add(new Technician { Code = "KTV-006", Name = "Hoàng Anh Dũng", Skills = "X-Quang, Điện tim", Load = "free", LoadLabel = "Rảnh (0 ca)", Color = Color.FromArgb(15, 110, 86), Initials = "HD" });
+                        _ktvs.Add(new Technician
+                        {
+                            Code = code,
+                            Name = name,
+                            Skills = skills,
+                            Load = "free",
+                            LoadLabel = string.Empty,
+                            Color = ColorFree,
+                            Initials = initials
+                        });
+                    }
+                }
+
+                // 2. Fetch Service Requests
+                System.Data.DataTable dtRequests = HospitalX.DAO.AssignmentDAO.GetAllServiceRequests();
+                _requests.Clear();
+                if (dtRequests != null)
+                {
+                    foreach (System.Data.DataRow row in dtRequests.Rows)
+                    {
+                        string hsba = row["MAHSBA"] != DBNull.Value ? Convert.ToString(row["MAHSBA"]) : string.Empty;
+                        string patientCode = row["MA_BENH_NHAN"] != DBNull.Value ? Convert.ToString(row["MA_BENH_NHAN"]) : string.Empty;
+                        string patientName = row["TEN_BENH_NHAN"] != DBNull.Value ? Convert.ToString(row["TEN_BENH_NHAN"]) : string.Empty;
+                        string serviceType = row["DICH_VU_CAN"] != DBNull.Value ? Convert.ToString(row["DICH_VU_CAN"]) : string.Empty;
+                        string serviceDate = row["NGAY_DICH_VU"] != DBNull.Value ? Convert.ToDateTime(row["NGAY_DICH_VU"]).ToString("dd/MM/yyyy") : string.Empty;
+                        string result = row["KET_QUA"] != DBNull.Value ? Convert.ToString(row["KET_QUA"]) : string.Empty;
+                        string assignedKtv = row["KTV_PHU_TRACH"] != DBNull.Value ? Convert.ToString(row["KTV_PHU_TRACH"]) : string.Empty;
+                        string statusLabel = row["TRANG_THAI"] != DBNull.Value ? Convert.ToString(row["TRANG_THAI"]) : string.Empty;
+                        string maKtv = row["MA_KTV"] != DBNull.Value ? Convert.ToString(row["MA_KTV"]) : string.Empty;
+
+                        string status = "pending";
+                        if (statusLabel == "Đã phân công") status = "assigned";
+                        else if (statusLabel == "Hoàn thành") status = "done";
+
+                        _requests.Add(new ServiceRequest
+                        {
+                            Id = hsba + "_" + serviceType,
+                            Hsba = hsba,
+                            PatientCode = patientCode,
+                            PatientName = patientName,
+                            ServiceType = serviceType,
+                            Priority = "normal",
+                            AssignedKtv = string.IsNullOrEmpty(maKtv) ? "Chưa phân công" : "KTV. " + assignedKtv,
+                            Status = status,
+                            StatusLabel = statusLabel,
+                            ServiceDate = serviceDate,
+                            Result = result
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error loading database assignment data: " + ex.Message);
+                MessageBox.Show("Lỗi tải danh sách phân công:\n" + ex.Message, "Lỗi Database", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private static string GetInitialsHelper(string fullName)
+        {
+            if (string.IsNullOrWhiteSpace(fullName)) return "KT";
+            var parts = fullName.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= 2)
+                return (parts[0][0].ToString() + parts[parts.Length - 1][0].ToString()).ToUpper();
+            return parts[0].Length > 0 ? parts[0][0].ToString().ToUpper() : "KT";
         }
 
         private void ConfigureStyles()
@@ -540,14 +583,35 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                         {
                             if (frm.ShowDialog(this.FindForm()) == DialogResult.OK)
                             {
-                                req.AssignedKtv = "KTV. " + frm.SelectedKtv.Name;
-                                req.Status = "assigned";
-                                req.StatusLabel = "Đã phân công";
+                                // Perform database update
+                                bool ok = HospitalX.DAO.AssignmentDAO.AssignTechnician(req.Hsba, req.ServiceType, frm.SelectedKtv.Code);
+                                if (ok)
+                                {
+                                    // Reload from database to ensure consistency with DB states
+                                    LoadDatabaseData();
+                                    ApplyFilter();
 
-                                ApplyFilter();
-                                SelectRequest(originalIndex);
+                                    // Reselect the item by searching for matching Hsba and ServiceType
+                                    int newIndex = -1;
+                                    for (int i = 0; i < _requests.Count; i++)
+                                    {
+                                        if (_requests[i].Hsba == req.Hsba && _requests[i].ServiceType == req.ServiceType)
+                                        {
+                                            newIndex = i;
+                                            break;
+                                        }
+                                    }
+                                    if (newIndex >= 0)
+                                    {
+                                        SelectRequest(newIndex);
+                                    }
 
-                                ShowMessage($"Đã phân công thành công KTV {frm.SelectedKtv.Name} thực hiện dịch vụ {req.ServiceType} cho bệnh nhân {req.PatientName}.", "Bệnh viện X", MessageDialogIcon.Information);
+                                    ShowMessage($"Đã phân công thành công KTV {frm.SelectedKtv.Name} thực hiện dịch vụ {req.ServiceType} cho bệnh nhân {req.PatientName}.", "Bệnh viện X", MessageDialogIcon.Information);
+                                }
+                                else
+                                {
+                                    ShowMessage("Lỗi thực hiện phân công trên cơ sở dữ liệu.", "Lỗi", MessageDialogIcon.Warning);
+                                }
                             }
                         }
                     }

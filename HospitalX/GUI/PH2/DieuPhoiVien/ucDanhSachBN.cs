@@ -2,6 +2,7 @@ using Guna.UI2.WinForms;
 using HospitalX.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
@@ -43,7 +44,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             _imgEyeOpen = DpvAssets.Load("eye_open.png");
             _imgDpv3 = DpvAssets.Load("dpv_3.png");
 
-            InitMockData();
+            LoadRealPatients();
             SetupPatientGrid();
             // Modal popup is now frmChiTietBN (separate form)
 
@@ -53,6 +54,46 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             InitComboBoxes();
 
             ApplyFilter();
+        }
+
+        private void LoadRealPatients()
+        {
+            try
+            {
+                DataTable dt = HospitalX.DAO.PatientDAO.GetAllPatients();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    _allPatients.Clear();
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        var p = new PatientModel
+                        {
+                            Id = row["MABN"] != DBNull.Value ? row["MABN"].ToString() : "",
+                            Name = row["TENBN"] != DBNull.Value ? row["TENBN"].ToString() : "",
+                            Dob = row["NGAYSINH"] != DBNull.Value ? Convert.ToDateTime(row["NGAYSINH"]).ToString("dd/MM/yyyy") : "",
+                            Gender = row["PHAI"] != DBNull.Value ? row["PHAI"].ToString() : "",
+                            Cccd = row["CCCD"] != DBNull.Value ? row["CCCD"].ToString() : "",
+                            SoNha = row["SONHA"] != DBNull.Value ? row["SONHA"].ToString() : "",
+                            TenDuong = row["TENDUONG"] != DBNull.Value ? row["TENDUONG"].ToString() : "",
+                            QuanHuyen = row["QUANHUYEN"] != DBNull.Value ? row["QUANHUYEN"].ToString() : "",
+                            TinhTP = row["TINHTP"] != DBNull.Value ? row["TINHTP"].ToString() : "",
+                            TienSuBN = row["TIENSUBENH"] != DBNull.Value ? row["TIENSUBENH"].ToString() : "",
+                            TienSuGD = row["TIENSUBENHGD"] != DBNull.Value ? row["TIENSUBENHGD"].ToString() : "",
+                            DiUng = row["DIUNGTHUOC"] != DBNull.Value ? row["DIUNGTHUOC"].ToString() : ""
+                        };
+                        _allPatients.Add(p);
+                    }
+                }
+                else
+                {
+                    InitMockData();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Loi load du lieu benh nhan tu database: " + ex.Message);
+                InitMockData();
+            }
         }
 
         private void InitMockData()
@@ -155,19 +196,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Sort
             if (cboSortSelectedIndex == 0) // Newest
             {
-                _filteredPatients = _filteredPatients.OrderByDescending(p =>
-                {
-                    DateTime d;
-                    return DateTime.TryParseExact(p.Dob, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out d) ? d : DateTime.MinValue;
-                }).ThenByDescending(p => p.Id).ToList();
+                _filteredPatients = _filteredPatients.OrderByDescending(p => p.Id).ToList();
             }
             else // Oldest
             {
-                _filteredPatients = _filteredPatients.OrderBy(p =>
-                {
-                    DateTime d;
-                    return DateTime.TryParseExact(p.Dob, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out d) ? d : DateTime.MaxValue;
-                }).ThenBy(p => p.Id).ToList();
+                _filteredPatients = _filteredPatients.OrderBy(p => p.Id).ToList();
             }
 
             _currentPage = 1;

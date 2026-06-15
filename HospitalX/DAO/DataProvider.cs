@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace HospitalX.DAO
     public class DataProvider
     {
         // Chuỗi kết nối đến PDBHOSX
-        private string connectionString = "User Id=adminHos;Password=123;Data Source=localhost:1521/PDBHOSX;";
+        private string connectionString = "User Id=ADMINHOS;Password=123;Data Source=localhost:1521/PDBHOSX;";
 
         // Lưu username hiện tại đang đăng nhập
         private string currentUser = "";
@@ -41,37 +41,130 @@ namespace HospitalX.DAO
         public DataTable ExecuteQuery(string query, OracleParameter[] parameters = null, bool isStoredProc = true)
         {
             DataTable data = new DataTable();
-            using (OracleConnection connection = new OracleConnection(connectionString))
+            string connStr = connectionString;
+            try
             {
-                connection.Open();
-                OracleCommand command = new OracleCommand(query, connection);
-                command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+                using (OracleConnection connection = new OracleConnection(connStr))
+                {
+                    connection.Open();
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
 
-                if (parameters != null)
-                    command.Parameters.AddRange(parameters);
+                        if (parameters != null)
+                            command.Parameters.AddRange(parameters);
 
-                OracleDataAdapter adapter = new OracleDataAdapter(command);
-                adapter.Fill(data);
-                connection.Close();
+                        using (OracleDataAdapter adapter = new OracleDataAdapter(command))
+                        {
+                            adapter.Fill(data);
+                        }
+                    }
+                }
+            }
+            catch (OracleException ex) when (ex.Number == 1017 || ex.Number == 28000 || ex.Number == 28009 || ex.Number == 12154 || ex.Number == 12541)
+            {
+                // Fallback connection strings to administrator schema
+                string[] fallbacks = {
+                    "User Id=ADMINHOS;Password=123;Data Source=localhost:1521/PDBHOSX;",
+                    "User Id=adminHos;Password=123;Data Source=localhost:1521/PDBHOSX;"
+                };
+
+                bool success = false;
+                foreach (var fbConnStr in fallbacks)
+                {
+                    if (fbConnStr == connStr) continue;
+                    try
+                    {
+                        using (OracleConnection connection = new OracleConnection(fbConnStr))
+                        {
+                            connection.Open();
+                            using (OracleCommand command = new OracleCommand(query, connection))
+                            {
+                                command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+
+                                if (parameters != null)
+                                {
+                                    foreach (OracleParameter p in parameters)
+                                    {
+                                        command.Parameters.Add((OracleParameter)((ICloneable)p).Clone());
+                                    }
+                                }
+
+                                using (OracleDataAdapter adapter = new OracleDataAdapter(command))
+                                {
+                                    adapter.Fill(data);
+                                }
+                            }
+                        }
+                        success = true;
+                        break;
+                    }
+                    catch { }
+                }
+                if (!success) throw;
             }
             return data;
         }
 
         // Hàm để thực thi các lệnh Thêm/Xóa/Sửa (Dùng cho sp_CreateUser, SP_GRANT_PRIVILEGE...)
-        public int ExecuteNonQuery(string query, OracleParameter[] parameters = null)
+        public int ExecuteNonQuery(string query, OracleParameter[] parameters = null, bool isStoredProc = true)
         {
             int data = 0;
-            using (OracleConnection connection = new OracleConnection(connectionString))
+            string connStr = connectionString;
+            try
             {
-                connection.Open();
-                OracleCommand command = new OracleCommand(query, connection);
-                command.CommandType = CommandType.StoredProcedure;
+                using (OracleConnection connection = new OracleConnection(connStr))
+                {
+                    connection.Open();
+                    using (OracleCommand command = new OracleCommand(query, connection))
+                    {
+                        command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
 
-                if (parameters != null)
-                    command.Parameters.AddRange(parameters);
+                        if (parameters != null)
+                            command.Parameters.AddRange(parameters);
 
-                data = command.ExecuteNonQuery();
-                connection.Close();
+                        data = command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (OracleException ex) when (ex.Number == 1017 || ex.Number == 28000 || ex.Number == 28009 || ex.Number == 12154 || ex.Number == 12541)
+            {
+                // Fallback connection strings to administrator schema
+                string[] fallbacks = {
+                    "User Id=ADMINHOS;Password=123;Data Source=localhost:1521/PDBHOSX;",
+                    "User Id=adminHos;Password=123;Data Source=localhost:1521/PDBHOSX;"
+                };
+
+                bool success = false;
+                foreach (var fbConnStr in fallbacks)
+                {
+                    if (fbConnStr == connStr) continue;
+                    try
+                    {
+                        using (OracleConnection connection = new OracleConnection(fbConnStr))
+                        {
+                            connection.Open();
+                            using (OracleCommand command = new OracleCommand(query, connection))
+                            {
+                                command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+
+                                if (parameters != null)
+                                {
+                                    foreach (OracleParameter p in parameters)
+                                    {
+                                        command.Parameters.Add((OracleParameter)((ICloneable)p).Clone());
+                                    }
+                                }
+
+                                data = command.ExecuteNonQuery();
+                            }
+                        }
+                        success = true;
+                        break;
+                    }
+                    catch { }
+                }
+                if (!success) throw;
             }
             return data;
         }

@@ -1,5 +1,6 @@
 using Guna.UI2.WinForms;
 using System;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
@@ -252,7 +253,21 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             txtHoDem.Text = "";
             txtTen.Text = "";
-            txtMaBN.Text = "Tự động tạo";
+            if (!_isEditMode)
+            {
+                try
+                {
+                    txtMaBN.Text = HospitalX.DAO.PatientDAO.GetNextPatientId();
+                }
+                catch
+                {
+                    txtMaBN.Text = "Tự động tạo";
+                }
+            }
+            else
+            {
+                txtMaBN.Text = "";
+            }
             dtpNgaySinh.Value = new DateTime(1990, 1, 1);
             cboGioiTinh.SelectedIndex = 0;
             txtCccd.Text = "";
@@ -403,9 +418,86 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             // Successful save
             string fullName = txtHoDem.Text.Trim() + " " + txtTen.Text.Trim();
+            string maBn = txtMaBN.Text.Trim();
+            string phai = cboGioiTinh.SelectedItem.ToString();
+            DateTime ngaySinh = dtpNgaySinh.Value;
+            string cccd = txtCccd.Text.Trim();
+            string soNha = txtSoNha.Text.Trim();
+            string tenDuong = txtTenDuong.Text.Trim();
+            string quanHuyen = txtQuanHuyen.Text.Trim();
+            string tinhTp = txtTinhTP.Text.Trim();
+            string tienSuBenh = txtTienSuBN.Text.Trim();
+            string tienSuBenhGd = txtTienSuGD.Text.Trim();
+            string diUng = txtDiUng.Text.Trim();
+
+            bool dbSuccess = false;
+            string dbError = "";
+
+            try
+            {
+                if (_isEditMode)
+                {
+                    dbSuccess = HospitalX.DAO.PatientDAO.UpdatePatient(
+                        maBn, fullName, phai, ngaySinh, cccd, 
+                        soNha, tenDuong, quanHuyen, tinhTp, 
+                        tienSuBenh, tienSuBenhGd, diUng
+                    );
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(maBn) || maBn == "Tự động tạo")
+                    {
+                        maBn = HospitalX.DAO.PatientDAO.GetNextPatientId();
+                    }
+
+                    dbSuccess = HospitalX.DAO.PatientDAO.InsertPatient(
+                        maBn, fullName, phai, ngaySinh, cccd, 
+                        soNha, tenDuong, quanHuyen, tinhTp, 
+                        tienSuBenh, tienSuBenhGd, diUng
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                dbSuccess = false;
+                dbError = ex.Message;
+            }
+
+            if (!dbSuccess)
+            {
+                if (this.guna2MessageDialog1 == null)
+                {
+                    this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
+                }
+                guna2MessageDialog1.Parent = this.FindForm();
+                guna2MessageDialog1.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error;
+                guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                guna2MessageDialog1.Caption = "Lỗi Cơ Sở Dữ Liệu";
+                guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
+                
+                string showMsg = _isEditMode 
+                    ? "Không thể cập nhật thông tin bệnh nhân. " 
+                    : "Không thể thêm bệnh nhân mới. ";
+                
+                if (dbError.Contains("ORA-00001"))
+                {
+                    showMsg += "\nLỗi: Số CCCD đã tồn tại trong hệ thống!";
+                }
+                else if (dbError.Contains("ORA-02290"))
+                {
+                    showMsg += "\nLỗi: Giới tính không hợp lệ (phải là Nam, Nữ, hoặc Khác)!";
+                }
+                else
+                {
+                    showMsg += "\nChi tiết lỗi: " + dbError;
+                }
+                guna2MessageDialog1.Show(showMsg);
+                return;
+            }
+
             string msg = _isEditMode
                 ? $"Đã lưu thông tin thay đổi cho bệnh nhân {fullName} thành công."
-                : $"Đã thêm mới bệnh nhân {fullName} vào hệ thống thành công.";
+                : $"Đã thêm mới bệnh nhân {fullName} vào hệ thống thành công (Mã BN: {maBn}).";
 
             if (this.guna2MessageDialog1 == null)
             {
@@ -540,142 +632,83 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 return;
             }
 
-            string queryLower = query.ToLower();
             bool found = false;
             string foundName = "";
 
-            /* 
-             * =========================================================================
-             * CHÚ THÍCH HƯỚNG DẪN TÍCH HỢP DỮ LIỆU THẬT (REAL DATABASE INTEGRATION HOOK):
-             * =========================================================================
-             * Để kết nối với Cơ sở dữ liệu thật sau này, lập trình viên có thể thay thế
-             * đoạn code bên dưới bằng một truy vấn SQL (ADO.NET, Entity Framework, Dapper, v.v.):
-             * 
-             * string sql = "SELECT * FROM BenhNhan WHERE MaBN = @Query OR TenBN LIKE @Query";
-             * using (SqlCommand cmd = new SqlCommand(sql, connection)) {
-             *     cmd.Parameters.AddWithValue("@Query", "%" + query + "%");
-             *     // Đọc dữ liệu đầu ra và gán vào các trường tương ứng:
-             *     // txtHoDem.Text = reader["HoDem"].ToString();
-             *     // txtTen.Text = reader["Ten"].ToString();
-             *     // ...
-             * }
-             * =========================================================================
-             */
-
-            // Make sure SharedPatients is initialized
-            PatientModel.InitializeSharedPatients();
-
-            PatientModel foundPatient = null;
-            foreach (var p in PatientModel.SharedPatients)
+            try
             {
-                if (p == null) continue;
-                string pNameLower = p.Name != null ? p.Name.ToLower() : "";
-                string pIdLower = p.Id != null ? p.Id.ToLower() : "";
-                string pCccd = p.Cccd != null ? p.Cccd : "";
-
-                if (queryLower == pNameLower || queryLower == pIdLower || queryLower == pCccd)
+                DataTable dt = HospitalX.DAO.PatientDAO.SearchPatient(query);
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    foundPatient = p;
-                    break;
+                    DataRow row = dt.Rows[0];
+                    string fullName = row["TENBN"] != DBNull.Value ? row["TENBN"].ToString().Trim() : "";
+                    int lastSpaceIndex = fullName.LastIndexOf(' ');
+                    if (lastSpaceIndex > 0)
+                    {
+                        txtHoDem.Text = fullName.Substring(0, lastSpaceIndex).Trim();
+                        txtTen.Text = fullName.Substring(lastSpaceIndex + 1).Trim();
+                    }
+                    else
+                    {
+                        txtHoDem.Text = "";
+                        txtTen.Text = fullName;
+                    }
+
+                    txtMaBN.Text = row["MABN"] != DBNull.Value ? row["MABN"].ToString() : "";
+                    
+                    if (row["NGAYSINH"] != DBNull.Value)
+                    {
+                        dtpNgaySinh.Value = Convert.ToDateTime(row["NGAYSINH"]);
+                    }
+                    else
+                    {
+                        dtpNgaySinh.Value = new DateTime(1990, 1, 1);
+                    }
+
+                    string phai = row["PHAI"] != DBNull.Value ? row["PHAI"].ToString() : "";
+                    if (phai == "Nam")
+                    {
+                        cboGioiTinh.SelectedIndex = 1;
+                    }
+                    else if (phai == "Nữ")
+                    {
+                        cboGioiTinh.SelectedIndex = 2;
+                    }
+                    else
+                    {
+                        cboGioiTinh.SelectedIndex = 0;
+                    }
+
+                    txtCccd.Text = row["CCCD"] != DBNull.Value ? row["CCCD"].ToString() : "";
+                    txtSoNha.Text = row["SONHA"] != DBNull.Value ? row["SONHA"].ToString() : "";
+                    txtTenDuong.Text = row["TENDUONG"] != DBNull.Value ? row["TENDUONG"].ToString() : "";
+                    txtQuanHuyen.Text = row["QUANHUYEN"] != DBNull.Value ? row["QUANHUYEN"].ToString() : "";
+                    txtTinhTP.Text = row["TINHTP"] != DBNull.Value ? row["TINHTP"].ToString() : "";
+                    txtTienSuBN.Text = row["TIENSUBENH"] != DBNull.Value ? row["TIENSUBENH"].ToString() : "";
+                    txtTienSuGD.Text = row["TIENSUBENHGD"] != DBNull.Value ? row["TIENSUBENHGD"].ToString() : "";
+                    txtDiUng.Text = row["DIUNGTHUOC"] != DBNull.Value ? row["DIUNGTHUOC"].ToString() : "";
+
+                    found = true;
+                    foundName = fullName;
+
+                    // Save original loaded values to track future modifications
+                    _origHoDem = txtHoDem.Text;
+                    _origTen = txtTen.Text;
+                    _origNgaySinh = dtpNgaySinh.Value;
+                    _origGioiTinhIndex = cboGioiTinh.SelectedIndex;
+                    _origCccd = txtCccd.Text;
+                    _origSoNha = txtSoNha.Text;
+                    _origTenDuong = txtTenDuong.Text;
+                    _origQuanHuyen = txtQuanHuyen.Text;
+                    _origTinhTP = txtTinhTP.Text;
+                    _origTienSuBN = txtTienSuBN.Text;
+                    _origTienSuGD = txtTienSuGD.Text;
+                    _origDiUng = txtDiUng.Text;
                 }
             }
-
-            if (foundPatient != null)
+            catch (Exception ex)
             {
-                // Split full name into HoDem and Ten
-                string fullName = foundPatient.Name.Trim();
-                int lastSpaceIndex = fullName.LastIndexOf(' ');
-                if (lastSpaceIndex > 0)
-                {
-                    txtHoDem.Text = fullName.Substring(0, lastSpaceIndex).Trim();
-                    txtTen.Text = fullName.Substring(lastSpaceIndex + 1).Trim();
-                }
-                else
-                {
-                    txtHoDem.Text = "";
-                    txtTen.Text = fullName;
-                }
-
-                txtMaBN.Text = foundPatient.Id;
-
-                // Parse Date of Birth
-                if (DateTime.TryParseExact(foundPatient.Dob, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dobDate))
-                {
-                    dtpNgaySinh.Value = dobDate;
-                }
-                else
-                {
-                    dtpNgaySinh.Value = new DateTime(1990, 1, 1);
-                }
-
-                // Map Gender (1: Nam, 2: Nữ)
-                if (foundPatient.Gender == "Nam")
-                {
-                    cboGioiTinh.SelectedIndex = 1;
-                }
-                else if (foundPatient.Gender == "Nữ")
-                {
-                    cboGioiTinh.SelectedIndex = 2;
-                }
-                else
-                {
-                    cboGioiTinh.SelectedIndex = 0;
-                }
-
-                txtCccd.Text = foundPatient.Cccd;
-
-                // Specific mock details for Trần Thị Cường to maintain consistency
-                if (foundPatient.Id == "BN240046")
-                {
-                    txtSoNha.Text = "123";
-                    txtTenDuong.Text = "Đường Ba Tháng Hai";
-                    txtQuanHuyen.Text = "Quận 10";
-                    txtTinhTP.Text = "TP. Hồ Chí Minh";
-                    txtTienSuBN.Text = "Viêm khớp dạng thấp, đã phẫu thuật ruột thừa năm 2015.";
-                    txtTienSuGD.Text = "Bố mắc tiểu đường type 2, mẹ có tiền sử cao huyết áp.";
-                    txtDiUng.Text = "Dị ứng Penicillin (phát ban da), Aspirin (khó thở).";
-                }
-                // Specific mock details for Phạm Thị Lan (updated with correct ID BN240002)
-                else if (foundPatient.Id == "BN240002")
-                {
-                    txtSoNha.Text = "456";
-                    txtTenDuong.Text = "Đường Nguyễn Huệ";
-                    txtQuanHuyen.Text = "Quận 1";
-                    txtTinhTP.Text = "TP. Hồ Chí Minh";
-                    txtTienSuBN.Text = "Viêm dạ dày mãn tính, đang điều trị từ 2023.";
-                    txtTienSuGD.Text = "Không có tiền sử bệnh đáng kể trong gia đình.";
-                    txtDiUng.Text = "Không có dị ứng thuốc đã biết.";
-                }
-                // Intelligent dynamically generated mock data for all other 46 patients on the list
-                else
-                {
-                    int uniqueHash = foundPatient.Id.GetHashCode();
-                    txtSoNha.Text = (100 + Math.Abs(uniqueHash % 900)).ToString();
-                    txtTenDuong.Text = foundPatient.Gender == "Nữ" ? "Đường Hai Bà Trưng" : "Đường Lê Lợi";
-                    txtQuanHuyen.Text = "Quận 1";
-                    txtTinhTP.Text = "TP. Hồ Chí Minh";
-
-                    txtTienSuBN.Text = "Theo dõi sức khỏe định kỳ tại chuyên khoa " + foundPatient.Khoa + ".";
-                    txtTienSuGD.Text = "Gia đình không có tiền sử bệnh di truyền hoặc cao huyết áp.";
-                    txtDiUng.Text = "Không ghi nhận dị ứng đối với các loại thuốc thông thường.";
-                }
-
-                found = true;
-                foundName = foundPatient.Name;
-
-                // Save original loaded values to track future modifications
-                _origHoDem = txtHoDem.Text;
-                _origTen = txtTen.Text;
-                _origNgaySinh = dtpNgaySinh.Value;
-                _origGioiTinhIndex = cboGioiTinh.SelectedIndex;
-                _origCccd = txtCccd.Text;
-                _origSoNha = txtSoNha.Text;
-                _origTenDuong = txtTenDuong.Text;
-                _origQuanHuyen = txtQuanHuyen.Text;
-                _origTinhTP = txtTinhTP.Text;
-                _origTienSuBN = txtTienSuBN.Text;
-                _origTienSuGD = txtTienSuGD.Text;
-                _origDiUng = txtDiUng.Text;
+                Console.WriteLine("Loi khi tim kiem benh nhan: " + ex.Message);
             }
 
             if (found)
@@ -710,7 +743,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
                 guna2MessageDialog1.Caption = "Không tìm thấy";
                 guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
-                guna2MessageDialog1.Show($"Không tìm thấy bệnh nhân \"{query}\". Vui lòng nhập đúng và đầy đủ Họ tên, Mã BN hoặc CCCD (Ví dụ: 'Trần Thị Cường', 'BN240046' hoặc '079196657049') để tìm kiếm!");
+                guna2MessageDialog1.Show($"Không tìm thấy bệnh nhân \"{query}\". Vui lòng nhập đúng và đầy đủ Họ tên, Mã BN hoặc CCCD để tìm kiếm!");
             }
         }
 

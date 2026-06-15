@@ -144,10 +144,5 @@ namespace HospitalX.GUI
                 msgDialog.Show();
             }
         }
-
-        private void ptbChuThap_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
