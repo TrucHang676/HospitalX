@@ -76,5 +76,53 @@ namespace HospitalX.DAO
             ";
             return DataProvider.Instance.ExecuteQuery(sql, null, false);
         }
+
+        public static DataTable GetHsbaForDieuPhoi()
+        {
+            string sql = @"
+                SELECT 
+                    HS.MAHSBA,
+                    HS.MABN,
+                    BN.TENBN AS TEN_BENH_NHAN,
+                    HS.NGAY,
+                    HS.CHANDOAN,
+                    HS.DIEUTRI,
+                    HS.MABS,
+                    HS.MAKHOA,
+                    BS.HOTEN AS TEN_BACSI,
+                    BS.CHUYENKHOA AS CHUYENKHOA_BACSI,
+                    HS.KETLUAN
+                FROM ADMINHOS.HSBA HS
+                LEFT JOIN ADMINHOS.BENHNHAN BN
+                    ON HS.MABN = BN.MABN
+                LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI BS
+                    ON HS.MABS = BS.MANV
+                   AND TRIM(BS.VAITRO) = N'Bác sĩ/Y sĩ'
+                WHERE HS.MABS IS NULL
+                   OR BS.MANV IS NOT NULL
+                ORDER BY HS.MAHSBA
+            ";
+            return DataProvider.Instance.ExecuteQuery(sql, null, false);
+        }
+
+        public static bool UpdateHsbaDepartmentAndDoctor(string maHsba, string maKhoa, string maBs)
+        {
+            string sql = @"
+                UPDATE ADMINHOS.HSBA
+                SET MAKHOA = :maKhoa,
+                    MABS = :maBs
+                WHERE MAHSBA = :maHsba
+            ";
+
+            OracleParameter[] parameters = new OracleParameter[]
+            {
+                new OracleParameter(":maKhoa", OracleDbType.Varchar2) { Value = string.IsNullOrEmpty(maKhoa) ? (object)DBNull.Value : maKhoa.Trim() },
+                new OracleParameter(":maBs", OracleDbType.Varchar2) { Value = string.IsNullOrEmpty(maBs) ? (object)DBNull.Value : maBs.Trim() },
+                new OracleParameter(":maHsba", OracleDbType.Varchar2) { Value = maHsba.Trim() }
+            };
+
+            int result = DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
+            return result > 0;
+        }
     }
 }

@@ -444,7 +444,8 @@ namespace HospitalX.GUI
             string expectedUser;
             if (IsMockCredential(username, password, out expectedUser))
             {
-                string mockConnStr = "User Id=" + expectedUser + ";Password=" + password + ";Data Source=localhost:1521/PDBHOSX;";
+                string dbPassword = (expectedUser.StartsWith("DP") || expectedUser.StartsWith("BS") || expectedUser.StartsWith("KTV") || expectedUser.StartsWith("BN")) ? "Hos@123456" : password;
+                string mockConnStr = "User Id=" + expectedUser + ";Password=" + dbPassword + ";Data Source=localhost:1521/PDBHOSX;";
                 DataProvider.Instance.SetConnectionString(mockConnStr);
                 DataProvider.Instance.CurrentUser = expectedUser;
                 OpenMainForm(mockConnStr);

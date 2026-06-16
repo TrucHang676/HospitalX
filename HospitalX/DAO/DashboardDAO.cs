@@ -24,8 +24,8 @@ namespace HospitalX.DAO
                      WHERE KETQUA IS NOT NULL AND TRUNC(NGAYDV) = TRUNC(SYSDATE)) AS COMPLETED_SERVICES,
 
                     (SELECT COUNT(*) 
-                     FROM ADMINHOS.HSBA 
-                     WHERE TRUNC(NGAY) = TRUNC(SYSDATE)) AS SO_HSBA_HOM_NAY
+                     FROM ADMINHOS.VW_THONGBAO_APP
+                     WHERE TRUNC(NGAYGIO) = TRUNC(SYSDATE)) AS TODAY_NOTICES
                 FROM DUAL
             ";
 

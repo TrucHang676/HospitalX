@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Data;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
@@ -25,6 +27,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
 
             _isLoaded = true;
+
+            // Hide status filter and rearrange controls
+            cmbStatus.Visible = false;
+            cmbLevel.Location = new Point(cmbStatus.Location.X + cmbStatus.Width - cmbLevel.Width, cmbLevel.Location.Y);
+            cmbDateRange.Location = new Point(cmbLevel.Location.X - 16 - cmbDateRange.Width, cmbDateRange.Location.Y);
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            txtSearch.Width = cmbDateRange.Location.X - 16 - txtSearch.Location.X;
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+
             SeedData();
             WireEvents();
             ApplyFilters();
@@ -35,13 +46,55 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             txtSearch.TextChanged += (s, e) => ApplyFilters();
             cmbDateRange.SelectedIndexChanged += (s, e) => ApplyFilters();
             cmbLevel.SelectedIndexChanged += (s, e) => ApplyFilters();
-            cmbStatus.SelectedIndexChanged += (s, e) => ApplyFilters();
             flpNotificationList.Resize += (s, e) => ResizeCards();
         }
 
         private void SeedData()
         {
-            // Do not seed any mock notification data
+            _notifications.Clear();
+            try
+            {
+                DataTable dt = NoticeDAO.Instance.GetNotifications();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string matb = row["MATB"] != DBNull.Value ? row["MATB"].ToString().Trim() : "";
+                        string noidung = row["NOIDUNG"] != DBNull.Value ? row["NOIDUNG"].ToString().Trim() : "";
+                        DateTime ngaygio = row["NGAYGIO"] != DBNull.Value ? Convert.ToDateTime(row["NGAYGIO"]) : DateTime.Now;
+                        string diadiem = row["DIADIEM"] != DBNull.Value ? row["DIADIEM"].ToString().Trim() : "";
+                        string nhanOls = row["NHAN_OLS"] != DBNull.Value ? row["NHAN_OLS"].ToString().Trim() : "";
+
+                        var record = new NotificationRecord
+                        {
+                            Title = "Thông báo " + matb,
+                            Content = noidung,
+                            Time = ngaygio,
+                            Location = diadiem,
+                            Sender = "Ban Giám Đốc",
+                            Level = DetermineLevelFromOls(nhanOls),
+                            IsRead = false,
+                            IsImportant = matb == "T1" || matb == "T2" || matb == "T3"
+                        };
+                        _notifications.Add(record);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Loi doc danh sach thong bao: " + ex.Message);
+            }
+        }
+
+        private string DetermineLevelFromOls(string olsLabel)
+        {
+            if (string.IsNullOrEmpty(olsLabel)) return "Cơ sở y tế";
+            string upper = olsLabel.ToUpper();
+            if (upper.Contains("TM") || upper.Contains("TK") || upper.Contains("TH"))
+            {
+                return "Khoa";
+            }
+            return "Cơ sở y tế";
         }
 
         private void ApplyFilters()
@@ -49,7 +102,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             IEnumerable<NotificationRecord> query = _notifications;
             string keyword = txtSearch.Text.Trim().ToLowerInvariant();
             string level = cmbLevel.SelectedItem == null ? "Tất cả cấp" : cmbLevel.SelectedItem.ToString();
-            string status = cmbStatus.SelectedItem == null ? "Tất cả trạng thái" : cmbStatus.SelectedItem.ToString();
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
@@ -63,15 +115,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (level != "Tất cả cấp")
             {
                 query = query.Where(n => n.Level == level);
-            }
-
-            if (status == "Chưa đọc")
-            {
-                query = query.Where(n => !n.IsRead);
-            }
-            else if (status == "Đã đọc")
-            {
-                query = query.Where(n => n.IsRead);
             }
 
             DateTime fromDate;
@@ -153,12 +196,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 BorderColor = Color.FromArgb(218, 232, 226),
                 BorderRadius = 10,
                 BorderThickness = 1,
-                FillColor = record.IsRead ? Color.FromArgb(247, 249, 248) : Color.White,
+                FillColor = Color.White,
                 Margin = new Padding(0, 0, 0, 12),
                 Size = new Size(cardWidth, 140),
                 Tag = record
             };
-            card.ShadowDecoration.Enabled = !record.IsRead;
+            card.ShadowDecoration.Enabled = true;
             card.ShadowDecoration.Color = Color.FromArgb(226, 239, 234);
             card.ShadowDecoration.Depth = 5;
             card.MouseEnter += (s, e) => card.BorderColor = Color.FromArgb(26, 148, 112);

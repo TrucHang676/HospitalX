@@ -24,7 +24,7 @@ namespace HospitalX.DAO
 
         public DataTable GetProfile()
         {
-            string query = "SELECT MANV, HOTEN, PHAI, NGAYSINH, CMND, QUEQUAN, SODT, VAITRO, CHUYENKHOA FROM ADMINHOS.VW_NHANVIEN_SELF";
+            string query = "SELECT MANV, HOTEN, PHAI, NGAYSINH, CMND, QUEQUAN, SODT, VAITRO, CHUYENKHOA, COSO FROM ADMINHOS.VW_NHANVIEN_SELF";
             return DataProvider.Instance.ExecuteQuery(query, null, false);
         }
 
@@ -33,7 +33,11 @@ namespace HospitalX.DAO
             string query = @"
                 SELECT 
                     (SELECT COUNT(*) FROM ADMINHOS.HSBA) AS SO_HSBA,
-                    (SELECT COUNT(*) FROM ADMINHOS.HSBA_DV WHERE MAKTV IS NOT NULL) AS SO_PHAN_CONG
+                    (
+                        SELECT COUNT(*) 
+                        FROM ADMINHOS.HSBA_DV DV
+                        JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+                    ) AS SO_PHAN_CONG
                 FROM DUAL
             ";
             return DataProvider.Instance.ExecuteQuery(query, null, false);
