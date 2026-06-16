@@ -932,11 +932,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 valid = false;
                 errorMsg += "\n- Chưa chọn bệnh nhân";
             }
-            if (string.IsNullOrEmpty(_selectedDoctorCode))
-            {
-                valid = false;
-                errorMsg += "\n- Chưa chỉ định bác sĩ phụ trách";
-            }
 
             if (!valid)
             {
@@ -949,8 +944,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             DateTime ngay = dtpNgayMo.Value;
             string chanDoan = txtChanDoan.Text.Trim();
             string dieuTri = txtDieuTri.Text.Trim();
-            string maBs = _selectedDoctorCode.Trim();
-            string maKhoa = MapKhoaToCode(cboKhoaDT.Text);
+            string maBs = string.IsNullOrEmpty(_selectedDoctorCode) ? null : _selectedDoctorCode.Trim();
+            string maKhoa = string.IsNullOrEmpty(_selectedDoctorCode) ? null : MapKhoaToCode(cboKhoaDT.Text);
             string ketLuan = txtKetLuan.Text.Trim();
 
             bool dbSuccess = false;
@@ -984,10 +979,17 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             // Show success
             string successMsg = $"Tạo hồ sơ bệnh án thành công!\n\n"
-                + $"Mã HSBA: {maHsba}\n"
-                + $"Bác sĩ: {_selectedDoctorName} ({maBs})\n"
-                + $"Khoa: {cboKhoaDT.Text}\n\n"
-                + "Bác sĩ đã được thông báo qua OLS.";
+                + $"Mã HSBA: {maHsba}\n";
+            if (!string.IsNullOrEmpty(maBs))
+            {
+                successMsg += $"Bác sĩ: {_selectedDoctorName} ({maBs})\n"
+                    + $"Khoa: {cboKhoaDT.Text}\n\n"
+                    + "Bác sĩ đã được thông báo qua OLS.";
+            }
+            else
+            {
+                successMsg += "Hồ sơ bệnh án được tạo thành công mà chưa chỉ định Bác sĩ và Khoa điều trị.";
+            }
 
             ShowDialog("Thành công", successMsg, Guna.UI2.WinForms.MessageDialogIcon.Information);
             ChangeBN();
