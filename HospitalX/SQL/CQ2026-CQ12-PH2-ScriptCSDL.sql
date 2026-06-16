@@ -302,9 +302,9 @@ SELECT
     N'Hồ Chí Minh',
     '0911' || LPAD(LEVEL, 6, '0'),
     N'Bác sĩ/Y sĩ',
-    CASE
-        WHEN MOD(LEVEL, 3) = 0 THEN N'Khoa tiêu hóa'
-        WHEN MOD(LEVEL, 3) = 1 THEN N'Khoa thần kinh'
+    CASE MOD(MOD(LEVEL, 3) + FLOOR((LEVEL - 1) / 3), 3)
+        WHEN 0 THEN N'Khoa tiêu hóa'
+        WHEN 1 THEN N'Khoa thần kinh'
         ELSE N'Khoa tim mạch'
     END,
     CASE
@@ -329,9 +329,9 @@ SELECT
     N'Hồ Chí Minh',
     '0921' || LPAD(LEVEL, 6, '0'),
     N'Kỹ thuật viên',
-    CASE
-        WHEN MOD(LEVEL, 3) = 0 THEN N'Khoa tiêu hóa'
-        WHEN MOD(LEVEL, 3) = 1 THEN N'Khoa thần kinh'
+    CASE MOD(MOD(LEVEL, 3) + FLOOR((LEVEL - 1) / 3), 3)
+        WHEN 0 THEN N'Khoa tiêu hóa'
+        WHEN 1 THEN N'Khoa thần kinh'
         ELSE N'Khoa tim mạch'
     END,
     CASE
@@ -1010,9 +1010,17 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
     ) RETURN VARCHAR2 AS
     BEGIN
         IF IS_DPV THEN
-            -- Điều phối viên được xem toàn bộ HSBA,
-            -- thêm HSBA, cập nhật MAKHOA/MABS
-            RETURN '1 = 1';
+            -- Điều phối viên chỉ thấy HSBA của bác sĩ cùng cơ sở hoặc chưa chỉ định bác sĩ
+            RETURN 'MABS IS NULL OR MABS IN (
+                SELECT NV.MANV
+                FROM ADMINHOS.NHANVIEN NV
+                WHERE NV.COSO = (
+                    SELECT DP.COSO
+                    FROM ADMINHOS.NHANVIEN DP
+                    WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
+                      AND DP.VAITRO = N''Điều phối viên''
+                )
+            )';
         END IF;
 
         RETURN NULL;
@@ -1371,13 +1379,20 @@ SELECT
     NV.COSO
 FROM ADMINHOS.NHANVIEN NV
 WHERE NV.VAITRO IN (N'Bác sĩ/Y sĩ', N'Kỹ thuật viên')
-  AND NV.CHINHANH = (
-        SELECT DP.CHINHANH
-        FROM ADMINHOS.NHANVIEN DP
-        WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
-          AND DP.VAITRO = N'Điều phối viên'
+  AND (
+        NV.COSO = (
+            SELECT DP.COSO
+            FROM ADMINHOS.NHANVIEN DP
+            WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
+              AND DP.VAITRO = N'Điều phối viên'
+        )
+        OR NOT EXISTS (
+            SELECT 1
+            FROM ADMINHOS.NHANVIEN DP
+            WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
+              AND DP.VAITRO = N'Điều phối viên'
+        )
   );
-/
 /
 
 CREATE OR REPLACE PROCEDURE ADMINHOS.SP_YC1C3_GRANT_DPV AS
@@ -4971,6 +4986,29 @@ cho hệ thống bệnh viện X là kết hợp cả 3 lớp bảo vệ:
 CONNECT ADMINHOS/123@localhost:1521/PDBHOSX 
 SHOW USER
 
+SELECT COUNT(*), 
+    HS.*,
+    BN.TENBN AS TEN_BENH_NHAN,
+    BS.HOTEN AS TEN_BACSI,
+    BS.CHUYENKHOA AS CHUYENKHOA_BACSI,
+    BS.COSO AS COSO_BACSI
+FROM ADMINHOS.HSBA HS
+JOIN ADMINHOS.NHANVIEN BS
+    ON HS.MABS = BS.MANV
+   AND TRIM(BS.VAITRO) = N'Bác sĩ/Y sĩ'
+JOIN ADMINHOS.BENHNHAN BN
+    ON HS.MABN = BN.MABN
+WHERE TRIM(BS.COSO) = N'Hồ Chí Minh'
+ORDER BY HS.MAHSBA;
+
+                SELECT 
+                    NV.MANV,
+                    NV.HOTEN,
+                    NV.CHUYENKHOA,
+                    NV.COSO
+                FROM ADMINHOS.NHANVIEN NV
+                WHERE NV.VAITRO = N'Kỹ thuật viên'
+                ORDER BY NV.MANV ASC;
 
 INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
 VALUES ('HSBA00001', N'TEST - Chụp CT', SYSDATE, NULL, NULL);
@@ -4991,9 +5029,29 @@ COMMIT;
 
 
 CONN BS0001/"Hos@123456"@localhost:1521/PDBHOSX
+SELECT * FROM ADMINHOS.VW_NHANVIEN_SELF;
 
 CONN DP0001/"Hos@123456"@localhost:1521/PDBHOSX
 SHOW USER
+                SELECT 
+                    (SELECT COUNT(*) FROM ADMINHOS.HSBA) AS SO_HSBA,
+                    (
+                        SELECT COUNT(*) 
+                        FROM ADMINHOS.HSBA_DV DV
+                        JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+                    ) AS SO_PHAN_CONG
+                FROM DUAL;
+                
+                SELECT 
+                    NV.MANV,
+                    NV.HOTEN,
+                    NV.CHUYENKHOA,
+                    NV.COSO
+                FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI NV
+                WHERE NV.VAITRO = N'Kỹ thuật viên'
+                ORDER BY NV.MANV ASC;
+
+
 SELECT * FROM ADMINHOS.VW_NHANVIEN_SELF;
 
 SELECT 
