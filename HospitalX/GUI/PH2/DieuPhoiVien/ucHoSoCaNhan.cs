@@ -223,41 +223,57 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 }
                 else
                 {
-                    LoadMockProfileData();
+                    ClearProfileFields();
                 }
             }
             catch (Exception)
             {
-                // Fallback to mock data if DB connection fails
-                LoadMockProfileData();
+                ClearProfileFields();
             }
 
             AcceptCurrentContactValues();
             _isLoadingContact = false;
             UpdateContactSaveButton();
 
-            // Load dynamically calculated stats (mocked stats)
-            lblStat1Val.Text = "124";
-            lblStat2Val.Text = "98";
+            // Load dynamically calculated stats from database
+            try
+            {
+                DataTable dtStats = ProfileDAO.Instance.GetProfileStats();
+                if (dtStats != null && dtStats.Rows.Count > 0)
+                {
+                    lblStat1Val.Text = dtStats.Rows[0]["SO_HSBA"]?.ToString() ?? "0";
+                    lblStat2Val.Text = dtStats.Rows[0]["SO_PHAN_CONG"]?.ToString() ?? "0";
+                }
+                else
+                {
+                    lblStat1Val.Text = "0";
+                    lblStat2Val.Text = "0";
+                }
+            }
+            catch
+            {
+                lblStat1Val.Text = "0";
+                lblStat2Val.Text = "0";
+            }
         }
 
-        private void LoadMockProfileData()
+        private void ClearProfileFields()
         {
-            lblUserName.Text = "Lê Hoài Thương";
-            txtProfMaNV.Text = "NV-DPV-0047";
-            txtProfHoTen.Text = "Lê Hoài Thương";
-            txtProfVaiTro.Text = "Điều phối viên";
-            lblUserRole.Text = "Điều phối viên";
-            txtKhoa.Text = "Khoa Tim mạch";
-            lblDeptAndFacility.Text = "Khoa Tim mạch\r\nBệnh viện Đa khoa Tỉnh";
-            txtProfGioiTinh.Text = "Nữ";
-            txtProfNgaySinh.Text = "12/04/1992";
-            txtProfCccd.Text = "079192004567";
+            lblUserName.Text = "";
+            txtProfMaNV.Text = "";
+            txtProfHoTen.Text = "";
+            txtProfVaiTro.Text = "";
+            lblUserRole.Text = "";
+            txtKhoa.Text = "";
+            lblDeptAndFacility.Text = "";
+            txtProfGioiTinh.Text = "";
+            txtProfNgaySinh.Text = "";
+            txtProfCccd.Text = "";
 
-            txtContactPhone.Text = SavedPhone;
-            txtContactAddress.Text = SavedAddress;
-            ptbAvatar.Image = DpvAssets.Load("female_doctor.png");
+            txtContactPhone.Text = "";
+            txtContactAddress.Text = "";
         }
+
 
         private void ucHoSoCaNhan_Resize(object sender, EventArgs e)
         {

@@ -97,7 +97,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 if (dtStats != null && dtStats.Rows.Count > 0)
                 {
                     DataRow row = dtStats.Rows[0];
-                    int todayPatients = row.Table.Columns.Contains("TODAY_PATIENTS") && row["TODAY_PATIENTS"] != DBNull.Value ? Convert.ToInt32(row["TODAY_PATIENTS"]) : 0;
+                    int todayPatients = row.Table.Columns.Contains("SO_HSBA_HOM_NAY") && row["SO_HSBA_HOM_NAY"] != DBNull.Value ? Convert.ToInt32(row["SO_HSBA_HOM_NAY"]) : 0;
                     int activeKtvs = row.Table.Columns.Contains("ACTIVE_KTVS") && row["ACTIVE_KTVS"] != DBNull.Value ? Convert.ToInt32(row["ACTIVE_KTVS"]) : 0;
                     int pendingKtv = row.Table.Columns.Contains("PENDING_KTV") && row["PENDING_KTV"] != DBNull.Value ? Convert.ToInt32(row["PENDING_KTV"]) : 0;
                     int completedServices = row.Table.Columns.Contains("COMPLETED_SERVICES") && row["COMPLETED_SERVICES"] != DBNull.Value ? Convert.ToInt32(row["COMPLETED_SERVICES"]) : 0;
@@ -197,10 +197,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             string[] subTexts =
             {
-                "Cần xử lý ngay",
-                "▲ 5 hồ sơ mới",
-                "Cần xử lý ngay",
-                "▲ 8% tuần này"
+                "Chờ xử lý",
+                "Đang làm việc",
+                "Chờ xử lý",
+                "Hôm nay"
             };
 
             Color[] subBacks =
@@ -767,16 +767,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             flpActivity.Resize += FlpActivity_Resize;
 
             flpActivity.Controls.Clear();
-            AddActivity("buttonTick.png", Color.FromArgb(230, 244, 240),
-                "KTV **Bùi Trọng Nghĩa** hoàn thành siêu âm cho bệnh nhân **BN240003**", "08:42 — Tim mạch");
-            AddActivity("dpv_4.png", Color.FromArgb(255, 248, 225),
-                "Hồ sơ bệnh án **HSBA-2024-0156** đã được tạo cho bệnh nhân Nguyễn Văn An", "08:15 — Điều phối viên");
-            AddActivity("dpv_9.png", Color.FromArgb(253, 236, 234),
-                "Cảnh báo OLS: Phòng **Nội tổng quát** đang quá tải – 18/20 bệnh nhân", "07:50 — Hệ thống OLS");
-            AddActivity("dpv_12.png", Color.FromArgb(237, 231, 246),
-                "Bệnh nhân **Trần Thị Mai** được đăng ký vào khoa Sản khoa – BS. Võ Thu phụ trách", "07:30 — Điều phối viên");
-            AddActivity("dpv_10.png", Color.FromArgb(230, 248, 246),
-                "KTV **Lý Thị Hoa** được phân công xét nghiệm máu cho **BN240002**", "07:05 — Điều phối viên");
         }
 
         private void FlpActivity_Resize(object sender, EventArgs e)

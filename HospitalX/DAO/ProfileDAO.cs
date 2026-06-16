@@ -28,6 +28,18 @@ namespace HospitalX.DAO
             return DataProvider.Instance.ExecuteQuery(query, null, false);
         }
 
+        public DataTable GetProfileStats()
+        {
+            string query = @"
+                SELECT 
+                    (SELECT COUNT(*) FROM ADMINHOS.HSBA) AS SO_HSBA,
+                    (SELECT COUNT(*) FROM ADMINHOS.HSBA_DV WHERE MAKTV IS NOT NULL) AS SO_PHAN_CONG
+                FROM DUAL
+            ";
+            return DataProvider.Instance.ExecuteQuery(query, null, false);
+        }
+
+
         public bool UpdateProfile(string phone, string address, string manv)
         {
             string query = "UPDATE ADMINHOS.VW_NHANVIEN_SELF SET SODT = :sodt , QUEQUAN = :quequan WHERE MANV = :manv";

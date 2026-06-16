@@ -86,22 +86,21 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 }
                 else
                 {
-                    InitMockData();
+                    _allPatients.Clear();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Loi load du lieu benh nhan tu database: " + ex.Message);
-                InitMockData();
+                _allPatients.Clear();
             }
         }
 
         private void InitMockData()
         {
-            PatientModel.InitializeSharedPatients();
             _allPatients.Clear();
-            _allPatients.AddRange(PatientModel.SharedPatients);
         }
+
 
         private void InitComboBoxes()
         {
@@ -839,98 +838,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         public static void InitializeSharedPatients()
         {
-            if (SharedPatients.Count > 0) return;
-
-            // Initial 10 patients from HTML template
-            var seed = new System.Collections.Generic.List<PatientModel>
-            {
-                new PatientModel { Id = "BN240001", Name = "Nguyễn Văn An", Dob = "15/03/1978", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "24/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079204001234", SoNha = "78", TenDuong = "Đường Nguyễn Chí Thanh", QuanHuyen = "Quận 5", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Tăng huyết áp nhẹ, đang điều trị thuốc.", TienSuGD = "Bố có tiền sử bệnh tim mạch.", DiUng = "Không ghi nhận dị ứng thuốc." },
-                new PatientModel { Id = "BN240002", Name = "Phạm Thị Lan", Dob = "22/07/1985", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "24/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079285002345", SoNha = "456", TenDuong = "Đường Nguyễn Huệ", QuanHuyen = "Quận 1", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Viêm dạ dày mãn tính, đang điều trị từ 2023.", TienSuGD = "Không có tiền sử bệnh đáng kể trong gia đình.", DiUng = "Không có dị ứng thuốc đã biết." },
-                new PatientModel { Id = "BN240003", Name = "Hoàng Đức Nam", Dob = "09/11/1990", Gender = "Nam", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "23/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079290003456", SoNha = "142", TenDuong = "Đường Cách Mạng Tháng Tám", QuanHuyen = "Quận 3", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Khỏe mạnh, chưa phát hiện bệnh lý mãn tính.", TienSuGD = "Không có tiền sử bệnh di truyền.", DiUng = "Dị ứng phấn hoa." },
-                new PatientModel { Id = "BN240004", Name = "Trần Thị Mai", Dob = "30/01/1996", Gender = "Nữ", Khoa = "Sản khoa", Bs = "BS. Võ Thu", Date = "23/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079296004567", SoNha = "88", TenDuong = "Đường Hoàng Văn Thụ", QuanHuyen = "Quận Tân Bình", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Mang thai tuần thứ 32, theo dõi thai sản định kỳ.", TienSuGD = "Gia đình bình thường.", DiUng = "Không dị ứng thuốc." },
-                new PatientModel { Id = "BN240005", Name = "Lê Văn Hải", Dob = "12/06/1972", Gender = "Nam", Khoa = "Thần kinh", Bs = "BS. Phạm Sơn", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079272005678", SoNha = "204", TenDuong = "Đường Võ Văn Kiệt", QuanHuyen = "Quận 1", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Tiền sử chấn thương sọ não nhẹ năm 2020, đã hồi phục hoàn toàn.", TienSuGD = "Mẹ bị đái tháo đường.", DiUng = "Không." },
-                new PatientModel { Id = "BN240006", Name = "Vũ Thị Bích", Dob = "07/09/2000", Gender = "Nữ", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "22/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079200006789", SoNha = "15", TenDuong = "Đường Trần Hưng Đạo", QuanHuyen = "Quận 1", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Hen phế quản thể nhẹ, có thuốc xịt dự phòng.", TienSuGD = "Bố đẻ bị hen phế quản.", DiUng = "Dị ứng Aspirin." },
-                new PatientModel { Id = "BN240007", Name = "Đinh Công Sơn", Dob = "14/04/1965", Gender = "Nam", Khoa = "Tim mạch", Bs = "BS. Trần Minh", Date = "21/05/2026", Status = "urgent", StatusLabel = "Cần điều phối KTV", Cccd = "079265007890", SoNha = "312", TenDuong = "Đường Lê Hồng Phong", QuanHuyen = "Quận 10", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Rung nhĩ mãn tính, đang uống thuốc chống đông.", TienSuGD = "Bố đẻ tai biến mạch máu não.", DiUng = "Không có." },
-                new PatientModel { Id = "BN240008", Name = "Ngô Thị Hằng", Dob = "28/12/1982", Gender = "Nữ", Khoa = "Nhi khoa", Bs = "BS. Hồ Linh", Date = "21/05/2026", Status = "pending", StatusLabel = "Chờ xét nghiệm", Cccd = "079282008901", SoNha = "42", TenDuong = "Đường Phạm Thế Hiển", QuanHuyen = "Quận 8", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Viêm họng cấp tính, theo dõi dị ứng.", TienSuGD = "Không.", DiUng = "Không." },
-                new PatientModel { Id = "BN240009", Name = "Lương Minh Châu", Dob = "05/02/1958", Gender = "Nam", Khoa = "Nội tổng quát", Bs = "BS. Lê Hùng", Date = "20/05/2026", Status = "active", StatusLabel = "Đang điều trị", Cccd = "079258009012", SoNha = "99", TenDuong = "Đường Lý Thường Kiệt", QuanHuyen = "Quận Tân Bình", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Bệnh phổi tắc nghẽn mãn tính (COPD).", TienSuGD = "Không ghi nhận.", DiUng = "Không dị ứng thuốc." },
-                new PatientModel { Id = "BN240010", Name = "Đặng Thị Yến", Dob = "19/08/1993", Gender = "Nữ", Khoa = "Chỉnh hình", Bs = "BS. Nguyễn Hà", Date = "20/05/2026", Status = "done", StatusLabel = "Chờ xuất viện", Cccd = "079293010123", SoNha = "50", TenDuong = "Đường Điện Biên Phủ", QuanHuyen = "Quận Bình Thạnh", TinhTP = "TP. Hồ Chí Minh", TienSuBN = "Suy tĩnh mạch chi dưới, đang điều trị nội khoa.", TienSuGD = "Mẹ bị suy tĩnh mạch sâu.", DiUng = "Dị ứng Penicillin." }
-            };
-
-            SharedPatients.AddRange(seed);
-
-            // Generate additional records to make it total 48 patients (exactly like the HTML spec "48 patients total")
-            string[] firstNames = { "Nguyễn", "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Vũ", "Võ", "Đặng" };
-            string[] middleNames = { "Văn", "Thị", "Hữu", "Minh", "Đức", "Thành", "Hoài", "Quốc", "Xuân", "Mỹ" };
-            string[] lastNames = { "Anh", "Bình", "Cường", "Dương", "Giang", "Hương", "Khánh", "Linh", "Nam", "Phong", "Sơn", "Trang", "Vy", "Yến" };
-            string[] departments = { "Tim mạch", "Nội tổng quát", "Chỉnh hình", "Sản khoa", "Thần kinh", "Nhi khoa" };
-            string[] doctors = { "BS. Trần Minh", "BS. Lê Hùng", "BS. Nguyễn Hà", "BS. Võ Thu", "BS. Phạm Sơn", "BS. Hồ Linh" };
-            string[] statuses = { "active", "pending", "urgent", "done" };
-            string[] statusLabels = { "Đang điều trị", "Chờ xét nghiệm", "Cần điều phối KTV", "Chờ xuất viện" };
-            System.Random rand = new System.Random(42);
-
-            for (int i = 11; i <= 48; i++)
-            {
-                string id = $"BN24{i:D4}";
-                string gender = rand.Next(2) == 0 ? "Nam" : "Nữ";
-                string name = firstNames[rand.Next(firstNames.Length)] + " " +
-                              (gender == "Nữ" ? "Thị" : middleNames[rand.Next(middleNames.Length)]) + " " +
-                              lastNames[rand.Next(lastNames.Length)];
-                int age = rand.Next(18, 80);
-                string dob = $"{rand.Next(1, 29):D2}/{rand.Next(1, 13):D2}/{System.DateTime.Now.Year - age}";
-                string dept = departments[rand.Next(departments.Length)];
-                string doc = doctors[rand.Next(doctors.Length)];
-                int statusIdx = rand.Next(statuses.Length);
-                string status = statuses[statusIdx];
-                string statusLabel = statusLabels[statusIdx];
-                string date = $"{rand.Next(1, 25):D2}/05/2026";
-                string cccd = $"079{rand.Next(100, 300):D3}{rand.Next(100000, 999999):D6}";
-
-                // Specific mock details for Trần Thị Cường to maintain consistency
-                string soNha, tenDuong, quanHuyen, tinhTP, tienSuBN, tienSuGD, diUng;
-                if (id == "BN240046" || name.ToLower().Contains("cường"))
-                {
-                    soNha = "123";
-                    tenDuong = "Đường Ba Tháng Hai";
-                    quanHuyen = "Quận 10";
-                    tinhTP = "TP. Hồ Chí Minh";
-                    tienSuBN = "Viêm khớp dạng thấp, đã phẫu thuật ruột thừa năm 2015.";
-                    tienSuGD = "Bố mắc tiểu đường type 2, mẹ có tiền sử cao huyết áp.";
-                    diUng = "Dị ứng Penicillin (phát ban da), Aspirin (khó thở).";
-                }
-                else
-                {
-                    int uniqueHash = id.GetHashCode();
-                    soNha = (100 + Math.Abs(uniqueHash % 900)).ToString();
-                    tenDuong = gender == "Nữ" ? "Đường Hai Bà Trưng" : "Đường Lê Lợi";
-                    quanHuyen = "Quận 1";
-                    tinhTP = "TP. Hồ Chí Minh";
-                    tienSuBN = "Theo dõi sức khỏe định kỳ tại chuyên khoa " + dept + ".";
-                    tienSuGD = "Gia đình không có tiền sử bệnh di truyền hoặc cao huyết áp.";
-                    diUng = "Không ghi nhận dị ứng đối với các loại thuốc thông thường.";
-                }
-
-                SharedPatients.Add(new PatientModel
-                {
-                    Id = id,
-                    Name = name,
-                    Dob = dob,
-                    Gender = gender,
-                    Khoa = dept,
-                    Bs = doc,
-                    Date = date,
-                    Status = status,
-                    StatusLabel = statusLabel,
-                    Cccd = cccd,
-                    SoNha = soNha,
-                    TenDuong = tenDuong,
-                    QuanHuyen = quanHuyen,
-                    TinhTP = tinhTP,
-                    TienSuBN = tienSuBN,
-                    TienSuGD = tienSuGD,
-                    DiUng = diUng
-                });
-            }
+            // Do not seed any mock patient data
         }
+
 
         public string Id { get; set; }
         public string Name { get; set; }

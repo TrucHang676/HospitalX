@@ -41,62 +41,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void SeedData()
         {
-            if (_notifications.Count > 0)
-            {
-                return;
-            }
-
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Họp phổ biến quy trình cấp phát thuốc ngoại trú",
-                Level = "Cơ sở y tế",
-                Sender = "Ban Giám đốc bệnh viện",
-                Time = new DateTime(2026, 5, 21, 8, 0, 0),
-                Location = "Hội trường A - Tầng 2",
-                IsRead = false,
-                IsImportant = true,
-                Content = "Tất cả điều phối viên tham dự buổi họp phổ biến quy trình cấp phát thuốc ngoại trú mới. Nội dung tập trung vào phê duyệt đơn thuốc điện tử, quy trình đối soát dịch vụ và phối hợp với nhà thuốc bệnh viện."
-            });
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Triển khai hệ thống điều phối kỹ thuật viên mới",
-                Level = "Khoa",
-                Sender = "Trưởng phòng Điều phối",
-                Time = new DateTime(2026, 5, 21, 14, 0, 0),
-                Location = "Phòng họp số 3 - Tầng 1",
-                IsRead = false,
-                Content = "Giao ban chuyên môn tuần mới, tập huấn nghiệp vụ sử dụng module điều phối kỹ thuật viên tự động nhằm giảm thiểu thời gian chờ xét nghiệm của bệnh nhân."
-            });
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Đào tạo nghiệp vụ phân công KTV phòng chụp nâng cao",
-                Level = "Khoa",
-                Sender = "Trưởng phòng Điều phối",
-                Time = new DateTime(2026, 5, 20, 9, 0, 0),
-                Location = "Phòng đào tạo - Tầng 5",
-                IsRead = false,
-                Content = "Phòng Điều phối tổ chức tập huấn kỹ năng giải quyết xung đột lịch trực của kỹ thuật viên phòng chụp MRI và CT Scanner. Đề nghị các điều phối viên tham dự đầy đủ."
-            });
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Họp bảo mật tài khoản và đổi mật khẩu định kỳ",
-                Level = "Cơ sở y tế",
-                Sender = "Phòng CNTT",
-                Time = new DateTime(2026, 5, 20, 15, 30, 0),
-                Location = "Phòng họp trực tuyến MS Teams",
-                IsRead = true,
-                Content = "Phòng CNTT nhắc lại quy định đổi mật khẩu định kỳ 90 ngày, cách xử lý tài khoản bị khóa và các yêu cầu bảo mật khi truy cập hệ thống bệnh viện."
-            });
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Họp tổng kết hoạt động chuyên môn tháng 5",
-                Level = "Cơ sở y tế",
-                Sender = "Phòng Kế hoạch Tổng hợp",
-                Time = new DateTime(2026, 5, 14, 14, 0, 0),
-                Location = "Hội trường B",
-                IsRead = true,
-                Content = "Tổng kết hoạt động khám chữa bệnh, rà soát chỉ số điều phối bệnh nhân ngoại trú và triển khai kế hoạch chuyên môn tháng tiếp theo."
-            });
+            // Do not seed any mock notification data
         }
 
         private void ApplyFilters()
