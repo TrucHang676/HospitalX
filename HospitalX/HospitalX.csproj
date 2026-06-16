@@ -362,6 +362,12 @@
     <Compile Include="GUI\PH2\DieuPhoiVien\ucTaoHSBA.Designer.cs">
       <DependentUpon>ucTaoHSBA.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucCapNhatHSBA.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PH2\DieuPhoiVien\ucCapNhatHSBA.Designer.cs">
+      <DependentUpon>ucCapNhatHSBA.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\PH2\DieuPhoiVien\ucDieuPhoiKTV.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -657,6 +663,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucTaoHSBA.resx">
       <DependentUpon>ucTaoHSBA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PH2\DieuPhoiVien\ucCapNhatHSBA.resx">
+      <DependentUpon>ucCapNhatHSBA.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PH2\KyThuatVien\UcKtvDichVu.resx">
       <DependentUpon>UcKtvDichVu.cs</DependentUpon>

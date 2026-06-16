@@ -74,6 +74,7 @@ namespace HospitalX.GUI.PH2
             StyleNavButton(btnDanhSachBN);
             StyleNavButton(btnThemSuaBN);
             StyleNavButton(btnTaoHSBA);
+            StyleNavButton(btnCapNhatHSBA);
             StyleNavButton(btnDieuPhoiKTV);
             StyleNavButton(btnThongBaoNoiBo);
             StyleNavButton(btnHoSoCaNhan);
@@ -114,6 +115,7 @@ namespace HospitalX.GUI.PH2
             SetButtonIcons(btnDanhSachBN, "dpv_2_black.png", "dpv_2.png", iconSize);
             SetButtonIcons(btnThemSuaBN, "pencil.png", "pencil (1).png", iconSize);
             SetButtonIcons(btnTaoHSBA, "medical-record (1).png", "medical-record.png", iconSize);
+            SetButtonIcons(btnCapNhatHSBA, "layout (1).png", "layout.png", iconSize);
             SetButtonIcons(btnDieuPhoiKTV, "setting.png", "setting (1).png", iconSize);
             SetButtonIcons(btnThongBaoNoiBo, "notification.png", "notification (1).png", iconSize);
             SetButtonIcons(btnHoSoCaNhan, "user (1).png", "user (2).png", iconSize);
@@ -134,6 +136,7 @@ namespace HospitalX.GUI.PH2
             btnDanhSachBN.Click += (s, e) => NavigateToDanhSachBN();
             btnThemSuaBN.Click += (s, e) => NavigateToThemSuaBN();
             btnTaoHSBA.Click += (s, e) => NavigateToTaoHSBA();
+            btnCapNhatHSBA.Click += (s, e) => NavigateToCapNhatHSBA();
             btnDieuPhoiKTV.Click += (s, e) => NavigateToDieuPhoiKTV();
             btnThongBaoNoiBo.Click += (s, e) => NavigateToThongBao();
             btnHoSoCaNhan.Click += (s, e) => NavigateToHoSoCaNhan();
@@ -169,6 +172,12 @@ namespace HospitalX.GUI.PH2
         {
             LoadPage(new ucTaoHSBA(), "Tạo hồ sơ bệnh án", "/ HSBA");
             btnTaoHSBA.Checked = true;
+        }
+
+        public void NavigateToCapNhatHSBA()
+        {
+            LoadPage(new ucCapNhatHSBA(), "Cập nhật hồ sơ bệnh án", "/ HSBA");
+            btnCapNhatHSBA.Checked = true;
         }
 
         public void NavigateToDieuPhoiKTV()
