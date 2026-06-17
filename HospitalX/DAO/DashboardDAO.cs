@@ -66,5 +66,53 @@ namespace HospitalX.DAO
 
             return DataProvider.Instance.ExecuteQuery(sql, null, false);
         }
+
+        // Dashboard Bác sĩ: hồ sơ bệnh án đang phụ trách, đang đợi phân KTV, đang chờ kết quả xét nghiệm, số thông báo hôm nay
+        public static DataTable GetDashboardBS()
+        {
+            string sql = @"
+                SELECT
+                    (SELECT COUNT(*) FROM ADMINHOS.HSBA WHERE MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')) AS MANAGED_HSBAS,
+                    (SELECT COUNT(DISTINCT DV.MAHSBA)
+                     FROM ADMINHOS.HSBA_DV DV
+                     JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+                     WHERE HS.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
+                       AND DV.MAKTV IS NULL) AS PENDING_KTV,
+                    (SELECT COUNT(DISTINCT DV.MAHSBA)
+                     FROM ADMINHOS.HSBA_DV DV
+                     JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+                     WHERE HS.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
+                       AND DV.MAKTV IS NOT NULL
+                       AND (DV.KETQUA IS NULL OR DV.KETQUA = N'Chưa có kết quả')) AS PENDING_RESULTS,
+                    (SELECT COUNT(*)
+                     FROM ADMINHOS.VW_THONGBAO_APP
+                     WHERE TRUNC(NGAYGIO) = TRUNC(SYSDATE)) AS TODAY_NOTICES
+                FROM DUAL
+            ";
+
+            return DataProvider.Instance.ExecuteQuery(sql, null, false);
+        }
+
+        // Lấy danh sách hồ sơ bệnh án được lập trong tháng này của bác sĩ đăng nhập
+        public static DataTable GetRecentHsbaThisMonth()
+        {
+            string sql = @"
+                SELECT 
+                    HS.MAHSBA,
+                    BN.TENBN,
+                    BN.MABN,
+                    BN.PHAI,
+                    FLOOR(MONTHS_BETWEEN(SYSDATE, BN.NGAYSINH) / 12) AS TUOI,
+                    HS.NGAY,
+                    HS.CHANDOAN
+                FROM ADMINHOS.HSBA HS
+                JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+                WHERE HS.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
+                  AND TRUNC(HS.NGAY, 'MM') = TRUNC(SYSDATE, 'MM')
+                ORDER BY HS.NGAY DESC, HS.MAHSBA DESC
+            ";
+
+            return DataProvider.Instance.ExecuteQuery(sql, null, false);
+        }
     }
 }

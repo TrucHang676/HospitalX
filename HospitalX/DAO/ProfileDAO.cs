@@ -37,7 +37,8 @@ namespace HospitalX.DAO
                         SELECT COUNT(*) 
                         FROM ADMINHOS.HSBA_DV DV
                         JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
-                    ) AS SO_PHAN_CONG
+                    ) AS SO_PHAN_CONG,
+                    (SELECT COUNT(DISTINCT MABN) FROM ADMINHOS.HSBA) AS SO_BENH_NHAN
                 FROM DUAL
             ";
             return DataProvider.Instance.ExecuteQuery(query, null, false);

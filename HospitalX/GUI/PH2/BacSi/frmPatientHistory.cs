@@ -82,16 +82,39 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            _patient.Allergy = txtAllergy.Text.Trim();
-            _patient.MedicalHistory = txtMedicalHistory.Text.Trim();
-            _patient.FamilyHistory = txtFamilyHistory.Text.Trim();
-            _originalAllergy = _patient.Allergy;
-            _originalMedicalHistory = _patient.MedicalHistory;
-            _originalFamilyHistory = _patient.FamilyHistory;
-            UpdateSaveButtonState();
-            msgDialog.Icon = MessageDialogIcon.Information;
-            msgDialog.Buttons = MessageDialogButtons.OK;
-            msgDialog.Show("Đã cập nhật tiền sử bệnh.", "HospitalX");
+            string allergy = txtAllergy.Text.Trim();
+            string medicalHistory = txtMedicalHistory.Text.Trim();
+            string familyHistory = txtFamilyHistory.Text.Trim();
+
+            try
+            {
+                bool success = HospitalX.DAO.PatientDAO.UpdatePatientHistory(_patient.Code, allergy, medicalHistory, familyHistory);
+                if (success)
+                {
+                    _patient.Allergy = allergy;
+                    _patient.MedicalHistory = medicalHistory;
+                    _patient.FamilyHistory = familyHistory;
+                    _originalAllergy = _patient.Allergy;
+                    _originalMedicalHistory = _patient.MedicalHistory;
+                    _originalFamilyHistory = _patient.FamilyHistory;
+                    UpdateSaveButtonState();
+                    msgDialog.Icon = MessageDialogIcon.Information;
+                    msgDialog.Buttons = MessageDialogButtons.OK;
+                    msgDialog.Show("Đã cập nhật tiền sử bệnh thành công.", "HospitalX");
+                }
+                else
+                {
+                    msgDialog.Icon = MessageDialogIcon.Error;
+                    msgDialog.Buttons = MessageDialogButtons.OK;
+                    msgDialog.Show("Cập nhật tiền sử bệnh thất bại. Vui lòng kiểm tra lại quyền hạn.", "Lỗi");
+                }
+            }
+            catch (Exception ex)
+            {
+                msgDialog.Icon = MessageDialogIcon.Error;
+                msgDialog.Buttons = MessageDialogButtons.OK;
+                msgDialog.Show("Lỗi kết nối cơ sở dữ liệu: " + ex.Message, "Lỗi");
+            }
         }
     }
 }

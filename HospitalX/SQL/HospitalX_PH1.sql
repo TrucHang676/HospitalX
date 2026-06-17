@@ -64,6 +64,7 @@ GRANT DROP ANY VIEW TO adminHos;
 
 -- TỰ ĐỘNG CHUYỂN SANG ADMINHOS
 conn adminHos/123@localhost:1521/PDBHOSX
+SET SQLBLANKLINES ON;
 
 -- ==========================================================
 -- DEMO DATA - PHÂN HỆ 1: QUẢN TRỊ NGƯỜI DÙNG & BẢO MẬT

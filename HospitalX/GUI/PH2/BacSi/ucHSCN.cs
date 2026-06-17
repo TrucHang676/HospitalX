@@ -2,9 +2,11 @@ using Guna.UI2.WinForms;
 using HospitalX.GUI.PH2.DieuPhoiVien;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2.BacSi
 {
@@ -15,7 +17,6 @@ namespace HospitalX.GUI.PH2.BacSi
         private static readonly Color TextDark = Color.FromArgb(24, 48, 42);
         private static readonly Color TextMuted = Color.FromArgb(122, 149, 137);
 
-        private readonly List<ActivityItem> _activities = new List<ActivityItem>();
         private Guna2MessageDialog _messageDialog;
         private string _originalContactPhone;
         private string _originalContactAddress;
@@ -24,52 +25,125 @@ namespace HospitalX.GUI.PH2.BacSi
         private static string SavedPhone = "090 123 4567";
         private static string SavedAddress = "Q. Bình Thạnh, TP.HCM";
 
-        private sealed class ActivityItem
-        {
-            public string Title { get; set; }
-            public string Code { get; set; }
-            public string Time { get; set; }
-            public Color DotColor { get; set; }
-        }
-
         public ucHSCN()
         {
             InitializeComponent();
             DoubleBuffered = true;
-            txtContactPhone.TextChanged += ContactFieldChanged;
-            txtAddress.TextChanged += ContactFieldChanged;
+            txtContactPhone.TextChanged += txtContactPhone_TextChanged;
+            txtContactAddress.TextChanged += txtContactAddress_TextChanged;
+            btnUpdateContact.Click += btnUpdateContact_Click;
         }
 
         private void ucHSCN_Load(object sender, EventArgs e)
         {
-            LoadProfileData();
             SetupStyles();
-            LoadRecentActivities();
+            LoadProfileData();
             ConfigureScrolling();
         }
 
         private void LoadProfileData()
         {
-            lblUserName.Text = "BS. Trúc Hằng";
-            lblUserRole.Text = "Bác sĩ / Y sĩ";
-            lblDeptAndFacility.Text = "Khoa Thần kinh\r\nBV Đa Khoa Tỉnh";
+            _isLoadingContact = true;
 
-            txtProfMaNV.Text = "NV-BS-0047";
-            txtProfHoTen.Text = "Nguyễn Thị Trúc Hằng";
-            txtProfVaiTro.Text = "Bác sĩ";
-            txtKhoa.Text = "Thần kinh";
-            txtProfGioiTinh.Text = "Nữ";
-            txtProfNgaySinh.Text = "12/04/1992";
+            try
+            {
+                DataTable dt = ProfileDAO.Instance.GetProfile();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    string maNV = row["MANV"]?.ToString() ?? string.Empty;
+                    string hoTen = row["HOTEN"]?.ToString() ?? string.Empty;
+                    string phai = row["PHAI"]?.ToString() ?? string.Empty;
+                    string ngaySinh = string.Empty;
+                    if (row["NGAYSINH"] != DBNull.Value)
+                    {
+                        ngaySinh = Convert.ToDateTime(row["NGAYSINH"]).ToString("dd/MM/yyyy");
+                    }
+                    string cmnd = row["CMND"]?.ToString() ?? string.Empty;
+                    string queQuan = row["QUEQUAN"]?.ToString() ?? string.Empty;
+                    string soDT = row["SODT"]?.ToString() ?? string.Empty;
+                    string vaiTro = row["VAITRO"]?.ToString() ?? string.Empty;
+                    string chuyenKhoa = row["CHUYENKHOA"]?.ToString() ?? string.Empty;
+                    string coSo = row["COSO"]?.ToString() ?? string.Empty;
 
-            txtContactPhone.Text = SavedPhone;
-            txtAddress.Text = SavedAddress;
-            txtProfCccd.Text = "079192004567";
+                    lblUserName.Text = hoTen;
+                    txtProfMaNV.Text = maNV;
+                    txtProfHoTen.Text = hoTen;
+                    txtProfVaiTro.Text = vaiTro;
+                    lblUserRole.Text = vaiTro;
+                    txtKhoa.Text = chuyenKhoa;
+                    lblDeptAndFacility.Text = $"Bệnh viện Đa khoa Tỉnh\r\nChi nhánh {coSo}";
+                    txtProfGioiTinh.Text = phai;
+                    txtProfNgaySinh.Text = ngaySinh;
+                    txtProfCccd.Text = cmnd;
+
+                    txtContactPhone.Text = soDT;
+                    txtContactAddress.Text = queQuan;
+
+                    // Set gender-appropriate avatar
+                    if (phai.Equals("Nam", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ptbAvatar.Image = DpvAssets.Load("male_doctor.png");
+                    }
+                    else
+                    {
+                        ptbAvatar.Image = DpvAssets.Load("female_doctor.png");
+                    }
+
+                    SavedPhone = soDT;
+                    SavedAddress = queQuan;
+                }
+                else
+                {
+                    ClearProfileFields();
+                }
+            }
+            catch (Exception)
+            {
+                ClearProfileFields();
+            }
+
             AcceptCurrentContactValues();
+            _isLoadingContact = false;
+            UpdateContactSaveButton();
 
-            lblStat1Val.Text = "59";
-            lblStat1Cap.Text = "HSBA liên quan";
-            lblStat2Val.Text = "9";
-            lblStat2Cap.Text = "Bệnh nhân";
+            // Load dynamically calculated stats from database
+            try
+            {
+                DataTable dtStats = ProfileDAO.Instance.GetProfileStats();
+                if (dtStats != null && dtStats.Rows.Count > 0)
+                {
+                    lblStat1Val.Text = dtStats.Rows[0]["SO_HSBA"]?.ToString() ?? "0";
+                    lblStat2Val.Text = dtStats.Rows[0]["SO_BENH_NHAN"]?.ToString() ?? "0";
+                }
+                else
+                {
+                    lblStat1Val.Text = "0";
+                    lblStat2Val.Text = "0";
+                }
+            }
+            catch
+            {
+                lblStat1Val.Text = "0";
+                lblStat2Val.Text = "0";
+            }
+        }
+
+        private void ClearProfileFields()
+        {
+            lblUserName.Text = "";
+            txtProfMaNV.Text = "";
+            txtProfHoTen.Text = "";
+            txtProfVaiTro.Text = "";
+            lblUserRole.Text = "";
+            txtKhoa.Text = "";
+            lblDeptAndFacility.Text = "";
+            txtProfGioiTinh.Text = "";
+            txtProfNgaySinh.Text = "";
+            txtProfCccd.Text = "";
+
+            txtContactPhone.Text = "";
+            txtContactAddress.Text = "";
         }
 
         private void SetupStyles()
@@ -89,8 +163,8 @@ namespace HospitalX.GUI.PH2.BacSi
             lblDeptAndFacility.ForeColor = TextMuted;
             lblDeptAndFacility.Font = new Font("Segoe UI", 9F);
 
-            StyleStatPanel(pnlStat1, lblStat1Val, lblStat1Cap);
-            StyleStatPanel(pnlStat2, lblStat2Val, lblStat2Cap);
+            StyleStatPanel(pnlStat1, lblStat1Val, lblStat1Cap, "0", "HSBA liên quan");
+            StyleStatPanel(pnlStat2, lblStat2Val, lblStat2Cap, "0", "Bệnh nhân");
 
             lblStatusBadge.FillColor = Color.FromArgb(230, 244, 240);
             lblStatusBadge.ForeColor = ThemeGreen;
@@ -101,7 +175,7 @@ namespace HospitalX.GUI.PH2.BacSi
             lblStatusBadge.PressedColor = Color.FromArgb(230, 244, 240);
             lblStatusBadge.Cursor = Cursors.Default;
 
-            foreach (var panel in new[] { pnlCardProfessional, pnlCardContact, pnlCardSecurity, pnlCardActivities })
+            foreach (var panel in new[] { pnlCardProfessional, pnlCardContact, pnlCardSecurity })
             {
                 panel.BorderColor = BorderGray;
                 panel.BorderThickness = 1;
@@ -109,10 +183,34 @@ namespace HospitalX.GUI.PH2.BacSi
                 panel.FillColor = Color.White;
             }
 
+            var titleFont = new Font("Segoe UI Semibold", 12.5F, FontStyle.Bold);
+            lblTitleProf.Font = titleFont;
+            lblTitleContact.Font = titleFont;
+            lblTitleSecurity.Font = titleFont;
             lblTitleProf.ForeColor = ThemeGreen;
             lblTitleContact.ForeColor = ThemeGreen;
             lblTitleSecurity.ForeColor = ThemeGreen;
-            lblTitleActivities.ForeColor = ThemeGreen;
+
+            var labelFont = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            foreach (var lbl in new[] { label1, label2, label3, lblKhoa, label4, label5, label6, label8, label9 })
+            {
+                if (lbl != null)
+                {
+                    lbl.Font = labelFont;
+                    lbl.ForeColor = TextMuted;
+                }
+            }
+
+            pnlCardProfessional.Margin = new Padding(0, 0, 0, 20);
+            pnlCardContact.Margin = new Padding(0, 0, 0, 20);
+            pnlCardSecurity.Margin = new Padding(0, 0, 0, 20);
+
+            if (lblSlogan != null)
+            {
+                lblSlogan.Font = new Font("Segoe UI", 11F, FontStyle.Italic);
+                lblSlogan.ForeColor = Color.FromArgb(80, 110, 95);
+                lblSlogan.Margin = new Padding(0, 16, 0, 24);
+            }
 
             SetupReadOnlyField(txtProfMaNV);
             SetupReadOnlyField(txtProfHoTen);
@@ -122,11 +220,13 @@ namespace HospitalX.GUI.PH2.BacSi
             SetupReadOnlyField(txtProfNgaySinh);
             SetupReadOnlyField(txtProfCccd);
 
-            txtContactPhone.Font = new Font("Segoe UI", 9.5F);
-            txtAddress.Font = new Font("Segoe UI", 9.5F);
+            lblKhoa.Text = "CHUYÊN KHOA";
+
+            txtContactPhone.Font = new Font("Segoe UI", 10.5F);
+            txtContactAddress.Font = new Font("Segoe UI", 10.5F);
 
             btnUpdateContact.FillColor = ThemeGreen;
-            btnUpdateContact.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnUpdateContact.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnUpdateContact.ForeColor = Color.White;
             btnUpdateContact.HoverState.FillColor = Color.FromArgb(10, 82, 64);
             UpdateContactSaveButton();
@@ -134,22 +234,24 @@ namespace HospitalX.GUI.PH2.BacSi
             btnChangePassword.BorderColor = ThemeGreen;
             btnChangePassword.BorderThickness = 1;
             btnChangePassword.FillColor = Color.Transparent;
-            btnChangePassword.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnChangePassword.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnChangePassword.ForeColor = ThemeGreen;
             btnChangePassword.HoverState.FillColor = Color.FromArgb(230, 244, 240);
             btnChangePassword.Cursor = Cursors.Hand;
         }
 
-        private void StyleStatPanel(Guna2Panel panel, Label valueLabel, Label captionLabel)
+        private void StyleStatPanel(Guna2Panel panel, Label valueLabel, Label captionLabel, string value, string caption)
         {
             panel.BorderColor = Color.FromArgb(230, 238, 235);
             panel.BorderThickness = 1;
             panel.BorderRadius = 10;
             panel.FillColor = Color.FromArgb(247, 249, 248);
 
+            valueLabel.Text = value;
             valueLabel.ForeColor = ThemeGreen;
             valueLabel.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
 
+            captionLabel.Text = caption;
             captionLabel.ForeColor = TextMuted;
             captionLabel.Font = new Font("Segoe UI", 8F);
         }
@@ -161,144 +263,127 @@ namespace HospitalX.GUI.PH2.BacSi
             box.FillColor = Color.FromArgb(247, 249, 248);
             box.BorderColor = Color.FromArgb(230, 238, 235);
             box.ForeColor = Color.FromArgb(90, 110, 100);
-            box.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-        }
-
-        private void LoadRecentActivities()
-        {
-            _activities.Clear();
-            _activities.Add(new ActivityItem
-            {
-                Title = "Cập nhật chẩn đoán và điều trị",
-                Code = "HSBA-0821",
-                Time = "Hôm nay, 08:45",
-                DotColor = ThemeGreen
-            });
-            _activities.Add(new ActivityItem
-            {
-                Title = "Thêm dịch vụ Siêu âm tim",
-                Code = "HSBA-0821",
-                Time = "Hôm nay, 09:16",
-                DotColor = Color.FromArgb(58, 130, 196)
-            });
-            _activities.Add(new ActivityItem
-            {
-                Title = "Kê thêm Aspirin 81mg vào đơn thuốc",
-                Code = "HSBA-0821",
-                Time = "Hôm nay, 10:05",
-                DotColor = Color.FromArgb(232, 168, 56)
-            });
-            _activities.Add(new ActivityItem
-            {
-                Title = "Xem hồ sơ bệnh án",
-                Code = "HSBA-0819",
-                Time = "Hôm qua, 14:20",
-                DotColor = TextMuted
-            });
-
-            RenderActivities();
-        }
-
-        private void RenderActivities()
-        {
-            flpActivities.Controls.Clear();
-            int top = 0;
-            foreach (var activity in _activities)
-            {
-                int rowWidth = GetActivityRowWidth();
-                var row = new Panel
-                {
-                    Width = rowWidth,
-                    Height = 68,
-                    Location = new Point(0, top),
-                    Margin = new Padding(0),
-                    BackColor = Color.White
-                };
-
-                row.Paint += (s, e) =>
-                {
-                    var panel = (Panel)s;
-                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                    using (var pen = new Pen(Color.FromArgb(245, 248, 246), 1))
-                    {
-                        e.Graphics.DrawLine(pen, 0, panel.Height - 1, panel.Width, panel.Height - 1);
-                    }
-                    using (var brush = new SolidBrush(activity.DotColor))
-                    {
-                        e.Graphics.FillEllipse(brush, 26, 30, 8, 8);
-                    }
-                };
-
-                var lblTitle = new Label
-                {
-                    AutoEllipsis = true,
-                    Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                    ForeColor = TextDark,
-                    Location = new Point(52, 8),
-                    Size = new Size(rowWidth - 230, 26),
-                    Text = activity.Title
-                };
-
-                var lblCode = new Label
-                {
-                    AutoEllipsis = true,
-                    Font = new Font("Consolas", 8.7F, FontStyle.Bold),
-                    ForeColor = ThemeGreen,
-                    Location = new Point(52, 36),
-                    Size = new Size(150, 24),
-                    Text = activity.Code
-                };
-
-                var lblTime = new Label
-                {
-                    Font = new Font("Segoe UI", 8.7F),
-                    ForeColor = TextMuted,
-                    Location = new Point(rowWidth - 170, 20),
-                    Size = new Size(140, 24),
-                    Text = activity.Time,
-                    TextAlign = ContentAlignment.MiddleRight
-                };
-
-                row.Controls.Add(lblTitle);
-                row.Controls.Add(lblCode);
-                row.Controls.Add(lblTime);
-                flpActivities.Controls.Add(row);
-                top += row.Height;
-            }
-
-            flpActivities.AutoScrollMinSize = new Size(0, (_activities.Count * 68) + 8);
-            LayoutActivityRows();
-            HideActivityHorizontalScroll();
+            box.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
         }
 
         private void ucHSCN_Resize(object sender, EventArgs e)
         {
-            pnlScroll.AutoScrollMinSize = new Size(0, pnlRight.Bottom + 24);
-            LayoutActivityRows();
-            HideActivityHorizontalScroll();
-        }
+            int totalW = pnlScroll.ClientSize.Width;
+            if (totalW <= 0) return;
 
-        private void LayoutActivityRows()
-        {
-            int rowWidth = GetActivityRowWidth();
-            int top = 0;
-            foreach (Control row in flpActivities.Controls)
+            // Safeguard against AutoScroll coordinate shift during resize
+            Point scrollPos = pnlScroll.AutoScrollPosition;
+            pnlScroll.AutoScrollPosition = new Point(0, 0);
+
+            int rightW = Math.Max(500, totalW - 368 - 24);
+            pnlRight.Location = new Point(368, 24);
+            pnlRight.Width = rightW;
+
+            // Set dynamic card dimensions with expanded size
+            pnlCardProfessional.Width = rightW;
+            pnlCardProfessional.Height = 250;
+
+            pnlCardContact.Width = rightW;
+            pnlCardContact.Height = 340;
+
+            pnlCardSecurity.Width = rightW;
+            pnlCardSecurity.Height = 120;
+
+            // Dynamically calculate responsive two-column layouts inside cards
+            int colPadding = 24;
+            int colGap = 24;
+            int fieldW = (rightW - (colPadding * 2) - colGap) / 2;
+            int col2X = colPadding + fieldW + colGap;
+
+            // Professional Card Y positioning and height of fields
+            lblTitleProf.Top = 20;
+
+            label1.Top = 64;
+            txtProfMaNV.Left = colPadding;
+            label1.Left = colPadding;
+            txtProfMaNV.Top = 86;
+            txtProfMaNV.Width = fieldW;
+            txtProfMaNV.Height = 44;
+
+            label3.Top = 154;
+            txtProfVaiTro.Left = colPadding;
+            label3.Left = colPadding;
+            txtProfVaiTro.Top = 176;
+            txtProfVaiTro.Width = fieldW;
+            txtProfVaiTro.Height = 44;
+
+            label2.Top = 64;
+            txtProfHoTen.Left = col2X;
+            label2.Left = col2X;
+            txtProfHoTen.Top = 86;
+            txtProfHoTen.Width = fieldW;
+            txtProfHoTen.Height = 44;
+
+            lblKhoa.Top = 154;
+            txtKhoa.Left = col2X;
+            lblKhoa.Left = col2X;
+            txtKhoa.Top = 176;
+            txtKhoa.Width = fieldW;
+            txtKhoa.Height = 44;
+
+            // Personal/Contact Card Y positioning and height of fields
+            lblTitleContact.Top = 20;
+            btnUpdateContact.Top = 20;
+            btnUpdateContact.Height = 40;
+            btnUpdateContact.Location = new Point(rightW - btnUpdateContact.Width - 24, btnUpdateContact.Top);
+
+            label4.Top = 64;
+            txtProfGioiTinh.Left = colPadding;
+            label4.Left = colPadding;
+            txtProfGioiTinh.Top = 86;
+            txtProfGioiTinh.Width = fieldW;
+            txtProfGioiTinh.Height = 44;
+
+            label6.Top = 154;
+            txtProfCccd.Left = colPadding;
+            label6.Left = colPadding;
+            txtProfCccd.Top = 176;
+            txtProfCccd.Width = fieldW;
+            txtProfCccd.Height = 44;
+
+            label5.Top = 64;
+            txtProfNgaySinh.Left = col2X;
+            label5.Left = col2X;
+            txtProfNgaySinh.Top = 86;
+            txtProfNgaySinh.Width = fieldW;
+            txtProfNgaySinh.Height = 44;
+
+            label8.Top = 154;
+            txtContactPhone.Left = col2X;
+            label8.Left = col2X;
+            txtContactPhone.Top = 176;
+            txtContactPhone.Width = fieldW;
+            txtContactPhone.Height = 44;
+
+            // Full-width address field
+            label9.Top = 244;
+            txtContactAddress.Left = colPadding;
+            label9.Left = colPadding;
+            txtContactAddress.Top = 266;
+            txtContactAddress.Width = rightW - (colPadding * 2);
+            txtContactAddress.Height = 44;
+
+            // Security Card Y positioning and height of fields
+            lblTitleSecurity.Top = 20;
+            btnChangePassword.Top = 20;
+            btnChangePassword.Width = 150;
+            btnChangePassword.Height = 40;
+            btnChangePassword.Location = new Point(rightW - btnChangePassword.Width - 24, btnChangePassword.Top);
+            lblPasswordMock.Top = 72;
+
+            // Slogan
+            if (lblSlogan != null)
             {
-                row.Location = new Point(0, top);
-                row.Width = rowWidth;
-                if (row.Controls.Count >= 3)
-                {
-                    row.Controls[0].Width = row.Width - 230;
-                    row.Controls[2].Left = row.Width - 170;
-                }
-                top += row.Height;
+                lblSlogan.Width = rightW;
             }
-        }
 
-        private int GetActivityRowWidth()
-        {
-            int reserved = SystemInformation.VerticalScrollBarWidth;
-            return Math.Max(320, flpActivities.ClientSize.Width - reserved - 6);
+            // Restore AutoScroll position
+            pnlScroll.AutoScrollPosition = new Point(Math.Abs(scrollPos.X), Math.Abs(scrollPos.Y));
         }
 
         private void ConfigureScrolling()
@@ -307,37 +392,16 @@ namespace HospitalX.GUI.PH2.BacSi
             pnlScroll.AutoScrollMargin = new Size(0, 24);
             pnlScroll.AutoScrollMinSize = new Size(0, pnlRight.Bottom + 24);
 
-            flpActivities.AutoScroll = true;
-            flpActivities.AutoScrollMargin = new Size(0, 8);
-            flpActivities.AutoScrollMinSize = new Size(0, (_activities.Count * 68) + 8);
-            HideActivityHorizontalScroll();
-
             pnlScroll.MouseWheel += ScrollRoot_MouseWheel;
             pnlRight.MouseWheel += ScrollRoot_MouseWheel;
             pnlCardProfessional.MouseWheel += ScrollRoot_MouseWheel;
             pnlCardContact.MouseWheel += ScrollRoot_MouseWheel;
             pnlCardSecurity.MouseWheel += ScrollRoot_MouseWheel;
-            pnlCardActivities.MouseWheel += ScrollRoot_MouseWheel;
-            flpActivities.MouseWheel += Activities_MouseWheel;
-        }
-
-        private void HideActivityHorizontalScroll()
-        {
-            flpActivities.HorizontalScroll.Enabled = false;
-            flpActivities.HorizontalScroll.Visible = false;
-            flpActivities.HorizontalScroll.Maximum = 0;
-            flpActivities.AutoScrollMinSize = new Size(0, flpActivities.AutoScrollMinSize.Height);
         }
 
         private void ScrollRoot_MouseWheel(object sender, MouseEventArgs e)
         {
             ScrollContainer(pnlScroll, e.Delta);
-        }
-
-        private void Activities_MouseWheel(object sender, MouseEventArgs e)
-        {
-            bool activityListNeedsScroll = flpActivities.DisplayRectangle.Height > flpActivities.ClientSize.Height;
-            ScrollContainer(activityListNeedsScroll ? (ScrollableControl)flpActivities : pnlScroll, e.Delta);
         }
 
         private static void ScrollContainer(ScrollableControl container, int delta)
@@ -355,7 +419,7 @@ namespace HospitalX.GUI.PH2.BacSi
         private void btnUpdateContact_Click(object sender, EventArgs e)
         {
             string phone = txtContactPhone.Text.Trim();
-            string address = txtAddress.Text.Trim();
+            string address = txtContactAddress.Text.Trim();
 
             if (string.IsNullOrWhiteSpace(phone) || phone.Replace(" ", "").Length < 10 || !IsPhoneNumber(phone))
             {
@@ -369,13 +433,42 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            SavedPhone = phone;
-            SavedAddress = address;
-            ReloadContactData();
-            ShowMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+            try
+            {
+                bool success = ProfileDAO.Instance.UpdateProfile(phone, address, txtProfMaNV.Text);
+                if (success)
+                {
+                    SavedPhone = phone;
+                    SavedAddress = address;
+                    ReloadContactData();
+                    ShowMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+                }
+                else
+                {
+                    ShowMessage("Cập nhật thông tin liên hệ thất bại hoặc không thay đổi.", "Thông báo", MessageDialogIcon.Warning);
+                }
+            }
+            catch (Exception)
+            {
+                // Graceful fallback if database is offline/mock mode
+                SavedPhone = phone;
+                SavedAddress = address;
+                ReloadContactData();
+                ShowMessage("Cập nhật thông tin liên hệ thành công (Chế độ ngoại tuyến).", "Thông báo", MessageDialogIcon.Information);
+            }
         }
 
-        private void ContactFieldChanged(object sender, EventArgs e)
+        private void txtContactPhone_TextChanged(object sender, EventArgs e)
+        {
+            ContactFieldChanged();
+        }
+
+        private void txtContactAddress_TextChanged(object sender, EventArgs e)
+        {
+            ContactFieldChanged();
+        }
+
+        private void ContactFieldChanged()
         {
             if (_isLoadingContact)
             {
@@ -389,7 +482,7 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             _isLoadingContact = true;
             txtContactPhone.Text = SavedPhone;
-            txtAddress.Text = SavedAddress;
+            txtContactAddress.Text = SavedAddress;
             AcceptCurrentContactValues();
             _isLoadingContact = false;
             UpdateContactSaveButton();
@@ -398,13 +491,13 @@ namespace HospitalX.GUI.PH2.BacSi
         private void AcceptCurrentContactValues()
         {
             _originalContactPhone = NormalizeContactText(txtContactPhone.Text);
-            _originalContactAddress = NormalizeContactText(txtAddress.Text);
+            _originalContactAddress = NormalizeContactText(txtContactAddress.Text);
         }
 
         private void UpdateContactSaveButton()
         {
             bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
-                || NormalizeContactText(txtAddress.Text) != _originalContactAddress;
+                || NormalizeContactText(txtContactAddress.Text) != _originalContactAddress;
 
             btnUpdateContact.Visible = true;
             btnUpdateContact.Enabled = changed;

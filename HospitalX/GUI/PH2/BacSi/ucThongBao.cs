@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Data;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2.BacSi
 {
@@ -25,6 +27,15 @@ namespace HospitalX.GUI.PH2.BacSi
             }
 
             _isLoaded = true;
+
+            // Hide status filter and rearrange controls
+            cmbStatus.Visible = false;
+            cmbLevel.Location = new Point(cmbStatus.Location.X + cmbStatus.Width - cmbLevel.Width, cmbLevel.Location.Y);
+            cmbDateRange.Location = new Point(cmbLevel.Location.X - 16 - cmbDateRange.Width, cmbDateRange.Location.Y);
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            txtSearch.Width = cmbDateRange.Location.X - 16 - txtSearch.Location.X;
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+
             SeedData();
             WireEvents();
             ApplyFilters();
@@ -35,68 +46,55 @@ namespace HospitalX.GUI.PH2.BacSi
             txtSearch.TextChanged += (s, e) => ApplyFilters();
             cmbDateRange.SelectedIndexChanged += (s, e) => ApplyFilters();
             cmbLevel.SelectedIndexChanged += (s, e) => ApplyFilters();
-            cmbStatus.SelectedIndexChanged += (s, e) => ApplyFilters();
             flpNotificationList.Resize += (s, e) => ResizeCards();
         }
 
         private void SeedData()
         {
-            if (_notifications.Count > 0)
+            _notifications.Clear();
+            try
             {
-                return;
-            }
+                DataTable dt = NoticeDAO.Instance.GetNotifications();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string matb = row["MATB"] != DBNull.Value ? row["MATB"].ToString().Trim() : "";
+                        string noidung = row["NOIDUNG"] != DBNull.Value ? row["NOIDUNG"].ToString().Trim() : "";
+                        DateTime ngaygio = row["NGAYGIO"] != DBNull.Value ? Convert.ToDateTime(row["NGAYGIO"]) : DateTime.Now;
+                        string diadiem = row["DIADIEM"] != DBNull.Value ? row["DIADIEM"].ToString().Trim() : "";
+                        string nhanOls = row["NHAN_OLS"] != DBNull.Value ? row["NHAN_OLS"].ToString().Trim() : "";
 
-            _notifications.Add(new NotificationRecord
+                        var record = new NotificationRecord
+                        {
+                            Title = "Thông báo " + matb,
+                            Content = noidung,
+                            Time = ngaygio,
+                            Location = diadiem,
+                            Sender = "Ban Giám Đốc",
+                            Level = DetermineLevelFromOls(nhanOls),
+                            IsRead = false,
+                            IsImportant = matb == "T1" || matb == "T2" || matb == "T3"
+                        };
+                        _notifications.Add(record);
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                Title = "Họp phổ biến quy trình cấp phát thuốc ngoại trú",
-                Level = "Cơ sở y tế",
-                Sender = "Ban Giám đốc bệnh viện",
-                Time = new DateTime(2026, 5, 21, 8, 0, 0),
-                Location = "Hội trường A - Tầng 2",
-                IsRead = false,
-                IsImportant = true,
-                Content = "Tất cả bác sĩ tham dự buổi họp phổ biến quy trình cấp phát thuốc ngoại trú mới. Nội dung tập trung vào phê duyệt đơn thuốc điện tử, chữ ký số và quy trình phối hợp với nhà thuốc bệnh viện."
-            });
-            _notifications.Add(new NotificationRecord
+                Console.WriteLine("Loi doc danh sach thong bao: " + ex.Message);
+            }
+        }
+
+        private string DetermineLevelFromOls(string olsLabel)
+        {
+            if (string.IsNullOrEmpty(olsLabel)) return "Cơ sở y tế";
+            string upper = olsLabel.ToUpper();
+            if (upper.Contains("TM") || upper.Contains("TK") || upper.Contains("TH"))
             {
-                Title = "Họp giao ban Khoa Tim Mạch tuần 22-28/05",
-                Level = "Khoa",
-                Sender = "Trưởng Khoa Tim Mạch",
-                Time = new DateTime(2026, 5, 21, 14, 0, 0),
-                Location = "Phòng họp Khoa Tim Mạch - Tầng 3",
-                IsRead = false,
-                Content = "Giao ban chuyên môn tuần mới, rà soát lịch trực, bàn giao các ca bệnh nặng và phân công hoàn tất hồ sơ bệnh án trước đợt kiểm tra chất lượng."
-            });
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Tập huấn phác đồ điều trị suy tim cập nhật 2026",
-                Level = "Khoa",
-                Sender = "Trưởng Khoa Tim Mạch",
-                Time = new DateTime(2026, 5, 20, 9, 0, 0),
-                Location = "Phòng đào tạo - Tầng 5",
-                IsRead = false,
-                Content = "Khoa tổ chức tập huấn phác đồ điều trị suy tim cập nhật theo hướng dẫn mới. Đề nghị bác sĩ chuẩn bị câu hỏi lâm sàng và đọc tài liệu trước khi tham dự."
-            });
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Họp bảo mật tài khoản và đổi mật khẩu định kỳ",
-                Level = "Cơ sở y tế",
-                Sender = "Phòng CNTT",
-                Time = new DateTime(2026, 5, 20, 15, 30, 0),
-                Location = "Phòng họp trực tuyến MS Teams",
-                IsRead = true,
-                Content = "Phòng CNTT nhắc lại quy định đổi mật khẩu định kỳ 90 ngày, cách xử lý tài khoản bị khóa và các yêu cầu bảo mật khi truy cập hệ thống bệnh viện."
-            });
-            _notifications.Add(new NotificationRecord
-            {
-                Title = "Họp tổng kết hoạt động chuyên môn tháng 5",
-                Level = "Cơ sở y tế",
-                Sender = "Phòng Kế hoạch Tổng hợp",
-                Time = new DateTime(2026, 5, 14, 14, 0, 0),
-                Location = "Hội trường B",
-                IsRead = true,
-                Content = "Tổng kết hoạt động khám chữa bệnh, rà soát chỉ số hoàn thành hồ sơ bệnh án và triển khai kế hoạch chuyên môn tháng tiếp theo."
-            });
+                return "Khoa";
+            }
+            return "Cơ sở y tế";
         }
 
         private void ApplyFilters()
@@ -104,7 +102,6 @@ namespace HospitalX.GUI.PH2.BacSi
             IEnumerable<NotificationRecord> query = _notifications;
             string keyword = txtSearch.Text.Trim().ToLowerInvariant();
             string level = cmbLevel.SelectedItem == null ? "Tất cả cấp" : cmbLevel.SelectedItem.ToString();
-            string status = cmbStatus.SelectedItem == null ? "Tất cả trạng thái" : cmbStatus.SelectedItem.ToString();
 
             if (!string.IsNullOrWhiteSpace(keyword))
             {
@@ -118,15 +115,6 @@ namespace HospitalX.GUI.PH2.BacSi
             if (level != "Tất cả cấp")
             {
                 query = query.Where(n => n.Level == level);
-            }
-
-            if (status == "Chưa đọc")
-            {
-                query = query.Where(n => !n.IsRead);
-            }
-            else if (status == "Đã đọc")
-            {
-                query = query.Where(n => n.IsRead);
             }
 
             DateTime fromDate;
@@ -208,12 +196,12 @@ namespace HospitalX.GUI.PH2.BacSi
                 BorderColor = Color.FromArgb(218, 232, 226),
                 BorderRadius = 10,
                 BorderThickness = 1,
-                FillColor = record.IsRead ? Color.FromArgb(247, 249, 248) : Color.White,
+                FillColor = Color.White,
                 Margin = new Padding(0, 0, 0, 12),
                 Size = new Size(cardWidth, 140),
                 Tag = record
             };
-            card.ShadowDecoration.Enabled = !record.IsRead;
+            card.ShadowDecoration.Enabled = true;
             card.ShadowDecoration.Color = Color.FromArgb(226, 239, 234);
             card.ShadowDecoration.Depth = 5;
             card.MouseEnter += (s, e) => card.BorderColor = Color.FromArgb(26, 148, 112);

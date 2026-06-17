@@ -22,6 +22,7 @@
 -- ==========================================================
 
 SET SERVEROUTPUT ON;
+SET SQLBLANKLINES ON;
 
 -- Chuyển sang PDB của dự án
 SHOW CON_NAME;
@@ -127,6 +128,7 @@ SHOW CON_NAME;
 -- ==========================================================
 
 SET SERVEROUTPUT ON;
+SET SQLBLANKLINES ON;
 
 -- Username Oracle của nhân viên = MANV trong NHANVIEN
 -- Username Oracle của bệnh nhân = MABN trong BENHNHAN
@@ -244,8 +246,24 @@ CREATE TABLE HSBA_DV (
         FOREIGN KEY (MAHSBA) REFERENCES HSBA(MAHSBA),
 
     CONSTRAINT FK_HSBADV_KTV
-        FOREIGN KEY (MAKTV) REFERENCES NHANVIEN(MANV)
+        FOREIGN KEY (MAKTV) REFERENCES NHANVIEN(MANV),
+
+    CONSTRAINT CK_HSBADV_KTV_KETQUA
+        CHECK (MAKTV IS NOT NULL OR KETQUA IS NULL OR KETQUA = N'Chưa có kết quả')
 );
+
+
+CREATE OR REPLACE TRIGGER ADMINHOS.TRG_DELETE_HSBA_DV_MAKTV
+BEFORE DELETE ON ADMINHOS.HSBA_DV
+FOR EACH ROW
+BEGIN
+    IF :OLD.MAKTV IS NOT NULL THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Không thể xóa dịch vụ đã được phân công kỹ thuật viên.');
+    END IF;
+END;
+/
+
+
 
 
 CREATE TABLE DONTHUOC (
@@ -381,9 +399,9 @@ SELECT
     N'Chẩn đoán ban đầu ' || TO_NCHAR(LEVEL),
     N'Hướng điều trị ' || TO_NCHAR(LEVEL),
     'BS' || LPAD(MOD(LEVEL - 1, 100) + 1, 4, '0'),
-    CASE
-        WHEN MOD(LEVEL, 3) = 0 THEN 'KTH' --khoa tiêu hóa
-        WHEN MOD(LEVEL, 3) = 1 THEN 'KTK' --khoa thần kinh
+    CASE MOD(LEVEL + FLOOR((LEVEL - 1) / 3), 3)
+        WHEN 0 THEN 'KTH' --khoa tiêu hóa
+        WHEN 1 THEN 'KTK' --khoa thần kinh
         ELSE 'KTM'  --khoa tim mạch
     END,
     N'Đang theo dõi'
@@ -441,6 +459,73 @@ SET
 WHERE MANV = 'DP0001';
 
 COMMIT;
+
+
+-- Tại đây 
+-- Chèn 10 HSBA cho BS0001
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00101', 'BN000001', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Đau dạ dày cấp', N'Uống thuốc dạ dày', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00102', 'BN000002', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Rối loạn tiêu hóa', N'Kháng sinh và men tiêu hóa', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00103', 'BN000003', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Trào ngược dạ dày', N'Uống thuốc kháng acid', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00104', 'BN000004', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Viêm đại tràng', N'Chế độ ăn kiêng và kháng sinh', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00105', 'BN000005', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Đau bụng chưa rõ nguyên nhân', N'Theo dõi lâm sàng', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00106', 'BN000006', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ngộ độc thực phẩm', N'Truyền dịch', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00107', 'BN000007', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Viêm dạ dày mãn tính', N'Điều trị kết hợp', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00108', 'BN000008', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Loét dạ dày tá tràng', N'Phác đồ diệt HP', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00109', 'BN000009', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Hội chứng ruột kích thích', N'Điều chỉnh lối sống', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00110', 'BN000010', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Xuất huyết tiêu hóa nhẹ', N'Nội soi can thiệp', 'BS0001', 'KTH', N'Đang theo dõi');
+
+-- 2 đơn thuốc cho mỗi HSBA từ HSBA00101 đến HSBA00110
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00101', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Paracetamol 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00101', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Omeprazole 20mg', N'Ngày 1 lần trước ăn sáng');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00102', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Amoxicillin 500mg', N'Ngày 3 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00102', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Enterogermina', N'Ngày uống 2 ống');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00103', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Gaviscon', N'Uống 1 gói sau ăn');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00103', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Esomeprazole 40mg', N'Ngày 1 viên trước ăn sáng');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00104', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Metronidazole 250mg', N'Ngày 3 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00104', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Loperamide 2mg', N'Uống khi tiêu chảy');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00105', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Drotaverine 40mg', N'Ngày 2 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00105', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Pancreatin', N'Ngày 3 lần uống trong bữa ăn');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00106', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Oresol', N'Pha 1 gói uống cả ngày');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00106', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ciprofloxacin 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00107', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Rabeprazole 20mg', N'Ngày 1 lần trước ăn sáng');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00107', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Phosphalugel', N'Uống khi đau dạ dày');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00108', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Clarithromycin 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00108', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Pantoprazole 40mg', N'Ngày 1 lần trước ăn sáng');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00109', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Mebeverine 200mg', N'Ngày 2 lần, trước ăn 20 phút');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00109', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Probiotics', N'Ngày 1 gói uống buổi tối');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00110', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Tranexamic acid 500mg', N'Ngày 3 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00110', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Lansoprazole 30mg', N'Ngày 1 lần trước ăn sáng');
+
+COMMIT;
+-- Kết thúc
 
 -- ==========================================================
 -- 4. TẠO VIEW VÀ ROLE RBAC CHO KỸ THUẬT VIÊN VÀ BỆNH NHÂN
@@ -809,7 +894,17 @@ BEGIN
     DBMS_RLS.DROP_POLICY(
         object_schema => 'ADMINHOS',
         object_name   => 'HSBA',
-        policy_name   => 'VPD_YC1C3_HSBA_DPV'
+        policy_name   => 'VPD_YC1C3_HSBA_SEL_DPV'
+    );
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+
+BEGIN
+    DBMS_RLS.DROP_POLICY(
+        object_schema => 'ADMINHOS',
+        object_name   => 'HSBA',
+        policy_name   => 'VPD_YC1C3_HSBA_UPD_DPV'
     );
 EXCEPTION WHEN OTHERS THEN NULL;
 END;
@@ -895,6 +990,16 @@ END;
 --    - Chỉ được cập nhật TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC của bệnh nhân đó.
 -- =====================================================================
 
+-- Create context for VPD bypass
+BEGIN
+    EXECUTE IMMEDIATE 'DROP CONTEXT HSBA_BYPASS_CTX';
+EXCEPTION
+    WHEN OTHERS THEN NULL;
+END;
+/
+CREATE CONTEXT HSBA_BYPASS_CTX USING ADMINHOS.PKG_VPD_YC1C3;
+/
+
 CREATE OR REPLACE PACKAGE ADMINHOS.PKG_VPD_YC1C3 AS
 
     -- ================================================================
@@ -905,7 +1010,12 @@ CREATE OR REPLACE PACKAGE ADMINHOS.PKG_VPD_YC1C3 AS
         p_object IN VARCHAR2
     ) RETURN VARCHAR2;
 
-    FUNCTION FN_HSBA_DPV(
+    FUNCTION FN_HSBA_SEL_DPV(
+        p_schema IN VARCHAR2,
+        p_object IN VARCHAR2
+    ) RETURN VARCHAR2;
+
+    FUNCTION FN_HSBA_UPD_DPV(
         p_schema IN VARCHAR2,
         p_object IN VARCHAR2
     ) RETURN VARCHAR2;
@@ -938,6 +1048,8 @@ CREATE OR REPLACE PACKAGE ADMINHOS.PKG_VPD_YC1C3 AS
         p_schema IN VARCHAR2,
         p_object IN VARCHAR2
     ) RETURN VARCHAR2;
+
+    FUNCTION FN_GET_NEXT_HSBA_ID RETURN VARCHAR2;
 
 END PKG_VPD_YC1C3;
 /
@@ -1004,13 +1116,18 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
     END FN_BENHNHAN_DPV;
 
 
-    FUNCTION FN_HSBA_DPV(
+    FUNCTION FN_HSBA_SEL_DPV(
         p_schema IN VARCHAR2,
         p_object IN VARCHAR2
     ) RETURN VARCHAR2 AS
     BEGIN
+        -- Check if we should bypass this policy (e.g. when generating next sequence ID)
+        IF SYS_CONTEXT('HSBA_BYPASS_CTX', 'BYPASS_VPD') = 'TRUE' THEN
+            RETURN NULL;
+        END IF;
+
         IF IS_DPV THEN
-            -- Điều phối viên chỉ thấy HSBA của bác sĩ cùng cơ sở hoặc chưa chỉ định bác sĩ
+            -- Điều phối viên chỉ xem được HSBA có bác sĩ làm cùng chi nhánh/cơ sở (hoặc chưa chỉ định bác sĩ)
             RETURN 'MABS IS NULL OR MABS IN (
                 SELECT NV.MANV
                 FROM ADMINHOS.NHANVIEN NV
@@ -1024,7 +1141,30 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
         END IF;
 
         RETURN NULL;
-    END FN_HSBA_DPV;
+    END FN_HSBA_SEL_DPV;
+
+
+    FUNCTION FN_HSBA_UPD_DPV(
+        p_schema IN VARCHAR2,
+        p_object IN VARCHAR2
+    ) RETURN VARCHAR2 AS
+    BEGIN
+        IF IS_DPV THEN
+            -- Chỉ cho phép cập nhật HSBA mà bác sĩ làm cùng chi nhánh/cơ sở hoặc chưa chỉ định bác sĩ
+            RETURN 'MABS IS NULL OR MABS IN (
+                SELECT NV.MANV
+                FROM ADMINHOS.NHANVIEN NV
+                WHERE NV.COSO = (
+                    SELECT DP.COSO
+                    FROM ADMINHOS.NHANVIEN DP
+                    WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
+                      AND DP.VAITRO = N''Điều phối viên''
+                )
+            )';
+        END IF;
+
+        RETURN NULL;
+    END FN_HSBA_UPD_DPV;
 
 
     FUNCTION FN_HSBADV_DPV(
@@ -1113,10 +1253,33 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
         RETURN NULL;
     END FN_BENHNHAN_BS;
 
+
+    FUNCTION FN_GET_NEXT_HSBA_ID RETURN VARCHAR2 AS
+        v_max NUMBER;
+    BEGIN
+        -- Set bypass context
+        DBMS_SESSION.SET_CONTEXT('HSBA_BYPASS_CTX', 'BYPASS_VPD', 'TRUE');
+        
+        SELECT NVL(MAX(TO_NUMBER(SUBSTR(MAHSBA, 5))), 0) + 1 INTO v_max
+        FROM ADMINHOS.HSBA
+        WHERE MAHSBA LIKE 'HSBA%';
+        
+        -- Clear bypass context
+        DBMS_SESSION.SET_CONTEXT('HSBA_BYPASS_CTX', 'BYPASS_VPD', 'FALSE');
+        
+        RETURN 'HSBA' || LPAD(TO_CHAR(v_max), 5, '0');
+    EXCEPTION
+        WHEN OTHERS THEN
+            DBMS_SESSION.SET_CONTEXT('HSBA_BYPASS_CTX', 'BYPASS_VPD', 'FALSE');
+            RAISE;
+    END FN_GET_NEXT_HSBA_ID;
+
 END PKG_VPD_YC1C3;
 /
 
 SHOW ERRORS PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3;
+
+GRANT EXECUTE ON ADMINHOS.PKG_VPD_YC1C3 TO public;
 
 
 -- =====================================================================
@@ -1154,15 +1317,26 @@ BEGIN
     DBMS_RLS.ADD_POLICY(
         object_schema   => 'ADMINHOS',
         object_name     => 'HSBA',
-        policy_name     => 'VPD_YC1C3_HSBA_DPV',
+        policy_name     => 'VPD_YC1C3_HSBA_SEL_DPV',
         function_schema => 'ADMINHOS',
-        policy_function => 'PKG_VPD_YC1C3.FN_HSBA_DPV',
-        statement_types => 'SELECT, INSERT, UPDATE',
+        policy_function => 'PKG_VPD_YC1C3.FN_HSBA_SEL_DPV',
+        statement_types => 'SELECT, INSERT',
         update_check    => TRUE,
         enable          => TRUE
     );
 
-    DBMS_OUTPUT.PUT_LINE('OK: Da tao policy VPD_YC1C3_HSBA_DPV');
+    DBMS_RLS.ADD_POLICY(
+        object_schema   => 'ADMINHOS',
+        object_name     => 'HSBA',
+        policy_name     => 'VPD_YC1C3_HSBA_UPD_DPV',
+        function_schema => 'ADMINHOS',
+        policy_function => 'PKG_VPD_YC1C3.FN_HSBA_UPD_DPV',
+        statement_types => 'UPDATE',
+        update_check    => TRUE,
+        enable          => TRUE
+    );
+
+    DBMS_OUTPUT.PUT_LINE('OK: Da tao policies VPD_YC1C3_HSBA_SEL_DPV va VPD_YC1C3_HSBA_UPD_DPV');
 END;
 /
 
@@ -4986,6 +5160,76 @@ cho hệ thống bệnh viện X là kết hợp cả 3 lớp bảo vệ:
 CONNECT ADMINHOS/123@localhost:1521/PDBHOSX 
 SHOW USER
 
+-- Tại đây 
+-- Chèn 10 HSBA cho BS0001
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00101', 'BN000001', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Đau dạ dày cấp', N'Uống thuốc dạ dày', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00102', 'BN000002', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Rối loạn tiêu hóa', N'Kháng sinh và men tiêu hóa', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00103', 'BN000003', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Trào ngược dạ dày', N'Uống thuốc kháng acid', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00104', 'BN000004', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Viêm đại tràng', N'Chế độ ăn kiêng và kháng sinh', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00105', 'BN000005', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Đau bụng chưa rõ nguyên nhân', N'Theo dõi lâm sàng', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00106', 'BN000006', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ngộ độc thực phẩm', N'Truyền dịch', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00107', 'BN000007', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Viêm dạ dày mãn tính', N'Điều trị kết hợp', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00108', 'BN000008', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Loét dạ dày tá tràng', N'Phác đồ diệt HP', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00109', 'BN000009', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Hội chứng ruột kích thích', N'Điều chỉnh lối sống', 'BS0001', 'KTH', N'Đang theo dõi');
+
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+VALUES ('HSBA00110', 'BN000010', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Xuất huyết tiêu hóa nhẹ', N'Nội soi can thiệp', 'BS0001', 'KTH', N'Đang theo dõi');
+
+-- 2 đơn thuốc cho mỗi HSBA từ HSBA00101 đến HSBA00110
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00101', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Paracetamol 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00101', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Omeprazole 20mg', N'Ngày 1 lần trước ăn sáng');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00102', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Amoxicillin 500mg', N'Ngày 3 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00102', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Enterogermina', N'Ngày uống 2 ống');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00103', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Gaviscon', N'Uống 1 gói sau ăn');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00103', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Esomeprazole 40mg', N'Ngày 1 viên trước ăn sáng');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00104', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Metronidazole 250mg', N'Ngày 3 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00104', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Loperamide 2mg', N'Uống khi tiêu chảy');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00105', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Drotaverine 40mg', N'Ngày 2 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00105', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Pancreatin', N'Ngày 3 lần uống trong bữa ăn');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00106', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Oresol', N'Pha 1 gói uống cả ngày');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00106', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ciprofloxacin 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00107', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Rabeprazole 20mg', N'Ngày 1 lần trước ăn sáng');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00107', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Phosphalugel', N'Uống khi đau dạ dày');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00108', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Clarithromycin 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00108', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Pantoprazole 40mg', N'Ngày 1 lần trước ăn sáng');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00109', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Mebeverine 200mg', N'Ngày 2 lần, trước ăn 20 phút');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00109', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Probiotics', N'Ngày 1 gói uống buổi tối');
+
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00110', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Tranexamic acid 500mg', N'Ngày 3 lần, mỗi lần 1 viên');
+INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00110', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Lansoprazole 30mg', N'Ngày 1 lần trước ăn sáng');
+
+COMMIT;
+-- Kết thúc
+
+
+SELECT *
+FROM ADMINHOS.DONTHUOC;
+
 SELECT COUNT(*), 
     HS.*,
     BN.TENBN AS TEN_BENH_NHAN,
@@ -5031,8 +5275,32 @@ COMMIT;
 CONN BS0001/"Hos@123456"@localhost:1521/PDBHOSX
 SELECT * FROM ADMINHOS.VW_NHANVIEN_SELF;
 
+                SELECT
+                    DT.MAHSBA,
+                    DT.NGAYDT,
+                    HS.MABN,
+                    BN.TENBN,
+                    BN.PHAI,
+                    FLOOR(MONTHS_BETWEEN(SYSDATE, BN.NGAYSINH) / 12) AS TUOI,
+                    DT.TENTHUOC,
+                    DT.LIEUDUNG
+                FROM ADMINHOS.DONTHUOC DT
+                JOIN ADMINHOS.HSBA HS
+                    ON DT.MAHSBA = HS.MAHSBA
+                JOIN ADMINHOS.BENHNHAN BN
+                    ON HS.MABN = BN.MABN
+                ORDER BY DT.NGAYDT DESC, DT.MAHSBA ASC;
+                
+
 CONN DP0001/"Hos@123456"@localhost:1521/PDBHOSX
 SHOW USER
+SELECT 
+    MATB,
+    NOIDUNG,
+    DIADIEM
+FROM ADMINHOS.VW_THONGBAO_APP
+ORDER BY MATB;
+
                 SELECT 
                     (SELECT COUNT(*) FROM ADMINHOS.HSBA) AS SO_HSBA,
                     (
@@ -5054,13 +5322,7 @@ SHOW USER
 
 SELECT * FROM ADMINHOS.VW_NHANVIEN_SELF;
 
-SELECT 
-    MATB,
-    NOIDUNG,
-    DIADIEM,
-    NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
+
                
             
                

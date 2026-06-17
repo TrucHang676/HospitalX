@@ -23,7 +23,7 @@ namespace HospitalX.GUI.PH2.BacSi
             lblTimeValue.Text = _record.Time.ToString("HH:mm · dd/MM/yyyy");
             lblLocationValue.Text = _record.Location;
             txtContent.Text = _record.Content;
-            btnMarkRead.Visible = !_record.IsRead;
+            btnMarkRead.Visible = false;
         }
 
         private void ConfigureReadOnlyTextBox()

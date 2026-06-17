@@ -24,6 +24,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             base.OnLoad(e);
             
             ConfigureStyles();
+            
+            cboFacilityFilter.Visible = false;
+
             LoadHsbaData();
             LoadDepartments();
             ApplyFilter();
@@ -34,6 +37,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cboKhoa.SelectedIndexChanged += CboKhoa_SelectedIndexChanged;
             cboBacSi.SelectedIndexChanged += CboBacSi_SelectedIndexChanged;
             btnUpdate.Click += BtnUpdate_Click;
+            cboDeptFilter.SelectedIndexChanged += (s, ev) => ApplyFilter();
 
             // Handle responsiveness
             this.Resize += (s, ev) => AdjustLayout();
@@ -84,6 +88,17 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvHsba.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 244, 240);
             dgvHsba.DefaultCellStyle.SelectionForeColor = Color.FromArgb(24, 48, 42);
             dgvHsba.RowTemplate.Height = 48;
+
+            cboFacilityFilter.Visible = false;
+
+            cboDeptFilter.Height = 36;
+            cboDeptFilter.BorderRadius = 8;
+            cboDeptFilter.FillColor = Color.FromArgb(247, 249, 248);
+            cboDeptFilter.BorderColor = Color.FromArgb(218, 232, 226);
+            cboDeptFilter.FocusedState.BorderColor = Color.FromArgb(15, 110, 86);
+            cboDeptFilter.HoverState.BorderColor = Color.FromArgb(15, 110, 86);
+            cboDeptFilter.Font = new Font("Segoe UI", 9.75F);
+            cboDeptFilter.ForeColor = Color.FromArgb(24, 48, 42);
         }
 
         private void LoadHsbaData()
@@ -107,7 +122,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                             MaBs = row["MABS"] != DBNull.Value ? row["MABS"].ToString().Trim() : "",
                             MaKhoa = row["MAKHOA"] != DBNull.Value ? row["MAKHOA"].ToString().Trim() : "",
                             TenBs = row["TEN_BACSI"] != DBNull.Value ? row["TEN_BACSI"].ToString().Trim() : "",
-                            KetLuan = row["KETLUAN"] != DBNull.Value ? row["KETLUAN"].ToString().Trim() : ""
+                            KetLuan = row["KETLUAN"] != DBNull.Value ? row["KETLUAN"].ToString().Trim() : "",
+                            CungCoSo = row.Table.Columns.Contains("CUNG_CO_SO") && row["CUNG_CO_SO"] != DBNull.Value ? Convert.ToInt32(row["CUNG_CO_SO"]) : 1
                         };
 
                         if (string.IsNullOrEmpty(item.MaKhoa) && row["CHUYENKHOA_BACSI"] != DBNull.Value)
@@ -129,6 +145,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             cboKhoa.Items.Clear();
             cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "", TenKhoa = "Chưa chọn khoa" });
+
+            cboDeptFilter.Items.Clear();
             
             try
             {
@@ -142,6 +160,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                             string tenKhoa = row["CHUYENKHOA"].ToString().Trim();
                             string maKhoa = MapKhoaToCode(tenKhoa);
                             cboKhoa.Items.Add(new DepartmentItem { MaKhoa = maKhoa, TenKhoa = tenKhoa });
+                            cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = maKhoa, TenKhoa = tenKhoa });
                         }
                     }
                 }
@@ -152,9 +171,14 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTM", TenKhoa = "Khoa tim mạch" });
                 cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTH", TenKhoa = "Khoa tiêu hóa" });
                 cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTK", TenKhoa = "Khoa thần kinh" });
+
+                cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "KTM", TenKhoa = "Khoa tim mạch" });
+                cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "KTH", TenKhoa = "Khoa tiêu hóa" });
+                cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "KTK", TenKhoa = "Khoa thần kinh" });
             }
             
             cboKhoa.SelectedIndex = 0;
+            cboDeptFilter.SelectedIndex = 0;
         }
 
         private void LoadDoctorsForDepartment(string maKhoa)
@@ -200,6 +224,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 selectedMaHsba = dgvHsba.SelectedRows[0].Cells[colMaHSBA.Index].Value?.ToString() ?? "";
             }
 
+            string selectedDept = "";
+            if (cboDeptFilter.SelectedItem is DepartmentItem selectedDeptItem)
+            {
+                selectedDept = selectedDeptItem.MaKhoa;
+            }
+
             dgvHsba.Rows.Clear();
             string search = txtSearch.Text.Trim().ToLower();
 
@@ -208,6 +238,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             foreach (var item in _hsbaList)
             {
+                if (!string.IsNullOrEmpty(selectedDept) && item.MaKhoa != selectedDept)
+                {
+                    continue;
+                }
+
                 string bsDisplay = string.IsNullOrEmpty(item.MaBs) ? "Chưa chỉ định" : $"{item.TenBs} ({item.MaBs})";
                 string khoaDisplay = string.IsNullOrEmpty(item.MaKhoa) ? "Chưa chọn khoa" : MapCodeToKhoa(item.MaKhoa);
 
@@ -215,7 +250,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 {
                     if (!item.MaHsba.ToLower().Contains(search) &&
                         !item.MaBn.ToLower().Contains(search) &&
-                        !item.TenBn.ToLower().Contains(search))
+                        !item.TenBn.ToLower().Contains(search) &&
+                        !item.MaBs.ToLower().Contains(search) &&
+                        !item.TenBs.ToLower().Contains(search))
                     {
                         continue;
                     }
@@ -273,6 +310,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             
             cboKhoa.Enabled = false;
             cboBacSi.Enabled = false;
+            lblWarning.Visible = false;
             if (cboKhoa.Items.Count > 0) cboKhoa.SelectedIndex = 0;
             if (cboBacSi.Items.Count > 0) cboBacSi.SelectedIndex = 0;
             
@@ -301,8 +339,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 txtDieuTri.Text = item.DieuTri;
                 txtKetLuan.Text = item.KetLuan;
 
-                cboKhoa.Enabled = true;
-                cboBacSi.Enabled = true;
+                bool isEditable = (item.CungCoSo == 1);
+                cboKhoa.Enabled = isEditable;
+                cboBacSi.Enabled = isEditable;
+                lblWarning.Visible = !isEditable;
 
                 // Select khoa in combobox
                 bool foundKhoa = false;
@@ -368,6 +408,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         {
             if (_isSelectingRow) return;
             if (dgvHsba.SelectedRows.Count == 0)
+            {
+                btnUpdate.Enabled = false;
+                return;
+            }
+
+            var selectedRow = dgvHsba.SelectedRows[0];
+            if (selectedRow.Tag is HsbaItem item && item.CungCoSo == 0)
             {
                 btnUpdate.Enabled = false;
                 return;
@@ -503,7 +550,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlDetailCard.Width = rightW;
             pnlDetailCard.Height = pnlScroll.ClientSize.Height - 40;
 
+            int gap = 10;
+            txtSearch.Width = 200;
             txtSearch.Left = pnlListCard.Width - txtSearch.Width - 20;
+
+            cboFacilityFilter.Visible = false;
+
+            cboDeptFilter.Width = 180; // Increased width to contain full department name
+            cboDeptFilter.Left = txtSearch.Left - cboDeptFilter.Width - gap;
+            cboDeptFilter.Top = txtSearch.Top;
+
             dgvHsba.Width = pnlListCard.Width - 40;
             dgvHsba.Height = pnlListCard.Height - dgvHsba.Top - 20;
 
@@ -524,6 +580,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnUpdate.Width = cardInnerW;
 
             btnUpdate.Top = pnlDetailCard.Height - btnUpdate.Height - 20;
+
+            lblWarning.Width = cardInnerW;
+            lblWarning.Top = btnUpdate.Top - lblWarning.Height - 15;
         }
 
         private class DepartmentItem
@@ -558,6 +617,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             public string ChanDoan { get; set; }
             public string DieuTri { get; set; }
             public string KetLuan { get; set; }
+            public int CungCoSo { get; set; }
         }
     }
 }

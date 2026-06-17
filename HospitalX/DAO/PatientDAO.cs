@@ -131,5 +131,62 @@ namespace HospitalX.DAO
             int result = DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
             return result > 0;
         }
+
+        public static DataTable GetPatientsForDoctor()
+        {
+            string sql = @"
+                SELECT
+                    BN.MABN,
+                    BN.TENBN,
+                    BN.PHAI,
+                    BN.NGAYSINH,
+                    FLOOR(MONTHS_BETWEEN(SYSDATE, BN.NGAYSINH) / 12) AS TUOI,
+                    BN.CCCD,
+                    BN.SONHA,
+                    BN.TENDUONG,
+                    BN.QUANHUYEN,
+                    BN.TINHTP,
+                    BN.TIENSUBENH,
+                    BN.TIENSUBENHGD,
+                    BN.DIUNGTHUOC,
+                    (
+                        SELECT COUNT(*)
+                        FROM ADMINHOS.HSBA HS
+                        WHERE HS.MABN = BN.MABN
+                    ) AS SO_HSBA,
+                    (
+                        SELECT COUNT(*)
+                        FROM ADMINHOS.DONTHUOC DT
+                        JOIN ADMINHOS.HSBA HS
+                            ON DT.MAHSBA = HS.MAHSBA
+                        WHERE HS.MABN = BN.MABN
+                    ) AS SO_DONTHUOC
+                FROM ADMINHOS.BENHNHAN BN
+                ORDER BY BN.MABN
+            ";
+            return DataProvider.Instance.ExecuteQuery(sql, null, false);
+        }
+
+        public static bool UpdatePatientHistory(string maBn, string allergy, string medicalHistory, string familyHistory)
+        {
+            string sql = @"
+                UPDATE ADMINHOS.BENHNHAN
+                SET DIUNGTHUOC = :allergy,
+                    TIENSUBENH = :medicalHistory,
+                    TIENSUBENHGD = :familyHistory
+                WHERE MABN = :maBn
+            ";
+
+            OracleParameter[] parameters = new OracleParameter[]
+            {
+                new OracleParameter(":allergy", OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(allergy) ? (object)DBNull.Value : allergy.Trim() },
+                new OracleParameter(":medicalHistory", OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(medicalHistory) ? (object)DBNull.Value : medicalHistory.Trim() },
+                new OracleParameter(":familyHistory", OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(familyHistory) ? (object)DBNull.Value : familyHistory.Trim() },
+                new OracleParameter(":maBn", OracleDbType.Varchar2) { Value = maBn.Trim() }
+            };
+
+            int result = DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
+            return result > 0;
+        }
     }
 }

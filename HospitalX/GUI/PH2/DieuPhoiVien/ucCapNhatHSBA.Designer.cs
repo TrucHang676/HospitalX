@@ -55,6 +55,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.cboBacSi = new Guna.UI2.WinForms.Guna2ComboBox();
             this.btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
+            this.cboFacilityFilter = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.lblWarning = new System.Windows.Forms.Label();
+            this.cboDeptFilter = new Guna.UI2.WinForms.Guna2ComboBox();
             this.pnlScroll.SuspendLayout();
             this.pnlListCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHsba)).BeginInit();
@@ -84,6 +87,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlListCard.Controls.Add(this.lblListSub);
             this.pnlListCard.Controls.Add(this.txtSearch);
             this.pnlListCard.Controls.Add(this.dgvHsba);
+            this.pnlListCard.Controls.Add(this.cboFacilityFilter);
+            this.pnlListCard.Controls.Add(this.cboDeptFilter);
             this.pnlListCard.FillColor = System.Drawing.Color.White;
             this.pnlListCard.Location = new System.Drawing.Point(20, 20);
             this.pnlListCard.Name = "pnlListCard";
@@ -269,6 +274,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.pnlDetailCard.Controls.Add(this.lblBacSiLabel);
             this.pnlDetailCard.Controls.Add(this.cboBacSi);
             this.pnlDetailCard.Controls.Add(this.btnUpdate);
+            this.pnlDetailCard.Controls.Add(this.lblWarning);
             this.pnlDetailCard.FillColor = System.Drawing.Color.White;
             this.pnlDetailCard.Location = new System.Drawing.Point(770, 20);
             this.pnlDetailCard.Name = "pnlDetailCard";
@@ -571,6 +577,52 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
             this.guna2MessageDialog1.Text = null;
             // 
+            // cboFacilityFilter
+            // 
+            this.cboFacilityFilter.BackColor = System.Drawing.Color.Transparent;
+            this.cboFacilityFilter.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cboFacilityFilter.BorderRadius = 8;
+            this.cboFacilityFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboFacilityFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboFacilityFilter.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboFacilityFilter.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboFacilityFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cboFacilityFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            this.cboFacilityFilter.ItemHeight = 30;
+            this.cboFacilityFilter.Location = new System.Drawing.Point(150, 16);
+            this.cboFacilityFilter.Name = "cboFacilityFilter";
+            this.cboFacilityFilter.Size = new System.Drawing.Size(170, 36);
+            this.cboFacilityFilter.TabIndex = 4;
+            // 
+            // lblWarning
+            // 
+            this.lblWarning.AutoSize = true;
+            this.lblWarning.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.lblWarning.Location = new System.Drawing.Point(20, 620);
+            this.lblWarning.Name = "lblWarning";
+            this.lblWarning.Size = new System.Drawing.Size(350, 20);
+            this.lblWarning.TabIndex = 19;
+            this.lblWarning.Text = "⚠️ Chỉ được chỉnh sửa hồ sơ thuộc cơ sở của mình.";
+            this.lblWarning.Visible = false;
+            // 
+            // cboDeptFilter
+            // 
+            this.cboDeptFilter.BackColor = System.Drawing.Color.Transparent;
+            this.cboDeptFilter.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cboDeptFilter.BorderRadius = 8;
+            this.cboDeptFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboDeptFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDeptFilter.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboDeptFilter.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboDeptFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cboDeptFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            this.cboDeptFilter.ItemHeight = 30;
+            this.cboDeptFilter.Location = new System.Drawing.Point(330, 16);
+            this.cboDeptFilter.Name = "cboDeptFilter";
+            this.cboDeptFilter.Size = new System.Drawing.Size(150, 36);
+            this.cboDeptFilter.TabIndex = 5;
+            // 
             // ucCapNhatHSBA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -624,5 +676,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private Guna.UI2.WinForms.Guna2ComboBox cboBacSi;
         private Guna.UI2.WinForms.Guna2Button btnUpdate;
         private Guna.UI2.WinForms.Guna2MessageDialog guna2MessageDialog1;
+        private Guna.UI2.WinForms.Guna2ComboBox cboFacilityFilter;
+        private System.Windows.Forms.Label lblWarning;
+        private Guna.UI2.WinForms.Guna2ComboBox cboDeptFilter;
     }
 }

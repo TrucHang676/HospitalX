@@ -23,7 +23,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dtpFrom = new Guna.UI2.WinForms.Guna2DateTimePicker();
             this.cmbDateRange = new Guna.UI2.WinForms.Guna2ComboBox();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            this.pnlStats = new System.Windows.Forms.FlowLayoutPanel();
             this.flpPrescriptionList = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlToolbar.SuspendLayout();
             this.SuspendLayout();
@@ -43,7 +42,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlToolbar.Controls.Add(this.cmbDateRange);
             this.pnlToolbar.Controls.Add(this.txtSearch);
             this.pnlToolbar.FillColor = System.Drawing.Color.White;
-            this.pnlToolbar.Location = new System.Drawing.Point(24, 18);
+            this.pnlToolbar.Location = new System.Drawing.Point(24, 25);
             this.pnlToolbar.Name = "pnlToolbar";
             this.pnlToolbar.Size = new System.Drawing.Size(1080, 110);
             this.pnlToolbar.TabIndex = 0;
@@ -171,23 +170,13 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtSearch.IconLeftOffset = new System.Drawing.Point(10, 0);
             this.txtSearch.IconLeftSize = new System.Drawing.Size(18, 18);
             this.txtSearch.Location = new System.Drawing.Point(24, 26);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.txtSearch.PlaceholderText = "Tìm theo tên bệnh nhân hoặc tên thuốc...";
             this.txtSearch.SelectedText = "";
             this.txtSearch.Size = new System.Drawing.Size(340, 38);
             this.txtSearch.TabIndex = 1;
-            // 
-            // pnlStats
-            // 
-            this.pnlStats.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlStats.BackColor = System.Drawing.Color.Transparent;
-            this.pnlStats.Location = new System.Drawing.Point(24, 142);
-            this.pnlStats.Name = "pnlStats";
-            this.pnlStats.Size = new System.Drawing.Size(1080, 78);
-            this.pnlStats.TabIndex = 1;
-            this.pnlStats.WrapContents = false;
             // 
             // flpPrescriptionList
             // 
@@ -197,20 +186,19 @@ namespace HospitalX.GUI.PH2.BacSi
             this.flpPrescriptionList.AutoScroll = true;
             this.flpPrescriptionList.BackColor = System.Drawing.Color.Transparent;
             this.flpPrescriptionList.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpPrescriptionList.Location = new System.Drawing.Point(24, 230);
+            this.flpPrescriptionList.Location = new System.Drawing.Point(24, 171);
             this.flpPrescriptionList.Name = "flpPrescriptionList";
             this.flpPrescriptionList.Padding = new System.Windows.Forms.Padding(0, 0, 8, 16);
-            this.flpPrescriptionList.Size = new System.Drawing.Size(1080, 528);
+            this.flpPrescriptionList.Size = new System.Drawing.Size(1080, 570);
             this.flpPrescriptionList.TabIndex = 2;
             this.flpPrescriptionList.WrapContents = false;
             // 
             // ucDonThuoc
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.Controls.Add(this.flpPrescriptionList);
-            this.Controls.Add(this.pnlStats);
             this.Controls.Add(this.pnlToolbar);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "ucDonThuoc";
@@ -228,7 +216,6 @@ namespace HospitalX.GUI.PH2.BacSi
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpTo;
         private Guna.UI2.WinForms.Guna2ComboBox cmbSort;
         private System.Windows.Forms.Label lblResultCount;
-        private System.Windows.Forms.FlowLayoutPanel pnlStats;
         private System.Windows.Forms.FlowLayoutPanel flpPrescriptionList;
     }
 }

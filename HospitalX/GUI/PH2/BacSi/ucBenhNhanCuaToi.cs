@@ -18,7 +18,7 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             InitializeComponent();
             SetupActionButtons();
-            SeedPatients();
+            LoadPatientsFromDatabase();
             ApplyFilters();
         }
 
@@ -30,16 +30,18 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvPatients.RowsDefaultCellStyle.BackColor = Color.White;
             dgvPatients.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            dgvPatients.Columns["colPatient"].FillWeight = 30F;
+            dgvPatients.Columns["colPatient"].FillWeight = 20F;
             dgvPatients.Columns["colGender"].FillWeight = 10F;
-            dgvPatients.Columns["colAge"].FillWeight = 7F;
-            dgvPatients.Columns["colHsbaCount"].FillWeight = 8F;
-            dgvPatients.Columns["colRxCount"].FillWeight = 10F;
-            dgvPatients.Columns["colHometown"].FillWeight = 15F;
-            dgvPatients.Columns["colDetail"].FillWeight = 13F;
+            dgvPatients.Columns["colAge"].FillWeight = 8F;
+            dgvPatients.Columns["colHsbaCount"].FillWeight = 9F;
+            dgvPatients.Columns["colRxCount"].FillWeight = 11F;
+            dgvPatients.Columns["colHometown"].FillWeight = 14F;
+            dgvPatients.Columns["colDetail"].FillWeight = 14F;
             dgvPatients.Columns["colHistory"].FillWeight = 14F;
             dgvPatients.Columns["colDetail"].MinimumWidth = 132;
             dgvPatients.Columns["colHistory"].MinimumWidth = 142;
+
+            dgvPatients.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgvPatients.CellPainting += dgvPatients_CellPainting;
             dgvPatients.MouseMove += dgvPatients_MouseMove;
@@ -47,123 +49,62 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvPatients.CellMouseLeave += dgvPatients_CellMouseLeave;
         }
 
-        private void SeedPatients()
+        private void LoadPatientsFromDatabase()
         {
-            _patients.Add(new PatientRecord
+            _patients.Clear();
+            try
             {
-                Code = "BN-00341",
-                Name = "Nguyễn Văn An",
-                Gender = "Nam",
-                Age = 52,
-                Hometown = "TP.HCM",
-                Cccd = "079074012345",
-                HsbaCount = 3,
-                PrescriptionCount = 2,
-                Allergy = "Không có dị ứng thuốc ghi nhận",
-                MedicalHistory = "Tăng huyết áp từ năm 2018. Không hút thuốc lá.",
-                FamilyHistory = "Cha có tiền sử tăng huyết áp.",
-                HsbaList = new List<string>
+                System.Data.DataTable dt = HospitalX.DAO.PatientDAO.GetPatientsForDoctor();
+                if (dt != null)
                 {
-                    "HSBA-0821 | 21/05/2026 | Tăng huyết áp độ II, rối loạn nhịp tim",
-                    "HSBA-0794 | 03/03/2026 | Theo dõi huyết áp định kỳ",
-                    "HSBA-0741 | 12/01/2026 | Khám tim mạch tổng quát"
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        var patient = new PatientRecord
+                        {
+                            Code = row["MABN"].ToString().Trim(),
+                            Name = row["TENBN"].ToString().Trim(),
+                            Gender = row["PHAI"].ToString().Trim(),
+                            Age = row["TUOI"] != DBNull.Value ? Convert.ToInt32(row["TUOI"]) : 0,
+                            HsbaCount = row["SO_HSBA"] != DBNull.Value ? Convert.ToInt32(row["SO_HSBA"]) : 0,
+                            PrescriptionCount = row["SO_DONTHUOC"] != DBNull.Value ? Convert.ToInt32(row["SO_DONTHUOC"]) : 0,
+                            Cccd = row["CCCD"] != DBNull.Value ? row["CCCD"].ToString().Trim() : "",
+                            Allergy = row["DIUNGTHUOC"] != DBNull.Value ? row["DIUNGTHUOC"].ToString().Trim() : "",
+                            MedicalHistory = row["TIENSUBENH"] != DBNull.Value ? row["TIENSUBENH"].ToString().Trim() : "",
+                            FamilyHistory = row["TIENSUBENHGD"] != DBNull.Value ? row["TIENSUBENHGD"].ToString().Trim() : "",
+                            TinhTp = row["TINHTP"] != DBNull.Value ? row["TINHTP"].ToString().Trim() : "",
+                            HsbaList = new List<string>()
+                        };
+
+                        // Build Hometown/Address
+                        string address = "";
+                        if (row["SONHA"] != DBNull.Value) address += row["SONHA"].ToString().Trim() + " ";
+                        if (row["TENDUONG"] != DBNull.Value) address += row["TENDUONG"].ToString().Trim() + ", ";
+                        if (row["QUANHUYEN"] != DBNull.Value) address += row["QUANHUYEN"].ToString().Trim() + ", ";
+                        if (row["TINHTP"] != DBNull.Value) address += row["TINHTP"].ToString().Trim();
+                        address = address.Trim().TrimEnd(',');
+                        patient.Hometown = string.IsNullOrEmpty(address) ? "(Chưa cập nhật)" : address;
+
+                        // Fetch medical records lists (HsbaList)
+                        System.Data.DataTable dtHsba = HospitalX.DAO.HsbaDAO.GetHsbaForPatient(patient.Code);
+                        if (dtHsba != null)
+                        {
+                            foreach (System.Data.DataRow hRow in dtHsba.Rows)
+                            {
+                                string hsbaId = hRow["MAHSBA"].ToString().Trim();
+                                string dateStr = hRow["NGAY"] != DBNull.Value ? Convert.ToDateTime(hRow["NGAY"]).ToString("dd/MM/yyyy") : "";
+                                string chandoan = hRow["CHANDOAN"] != DBNull.Value ? hRow["CHANDOAN"].ToString().Trim() : "";
+                                patient.HsbaList.Add($"{hsbaId} | {dateStr} | {chandoan}");
+                            }
+                        }
+
+                        _patients.Add(patient);
+                    }
                 }
-            });
-            _patients.Add(new PatientRecord
+            }
+            catch (Exception ex)
             {
-                Code = "BN-00298",
-                Name = "Lê Thị Bích",
-                Gender = "Nữ",
-                Age = 38,
-                Hometown = "Đồng Nai",
-                Cccd = "075186002981",
-                HsbaCount = 2,
-                PrescriptionCount = 1,
-                Allergy = "Dị ứng Penicillin",
-                MedicalHistory = "Rối loạn nhịp tim kịch phát trên thất, đang theo dõi Holter 24h.",
-                FamilyHistory = "Mẹ có tiền sử đái tháo đường type 2.",
-                HsbaList = new List<string>
-                {
-                    "HSBA-0819 | 20/05/2026 | Rối loạn nhịp tim kịch phát",
-                    "HSBA-0766 | 18/02/2026 | Đánh giá đau ngực"
-                }
-            });
-            _patients.Add(new PatientRecord
-            {
-                Code = "BN-00215",
-                Name = "Phạm Quốc Hùng",
-                Gender = "Nam",
-                Age = 67,
-                Hometown = "Long An",
-                Cccd = "080159002150",
-                HsbaCount = 4,
-                PrescriptionCount = 3,
-                Allergy = "Không ghi nhận",
-                MedicalHistory = "Suy tim độ II - NYHA, có tiền sử đái tháo đường type 2.",
-                FamilyHistory = "Anh ruột có bệnh mạch vành.",
-                HsbaList = new List<string>
-                {
-                    "HSBA-0815 | 18/05/2026 | Suy tim độ II",
-                    "HSBA-0788 | 28/03/2026 | Kiểm tra đường huyết",
-                    "HSBA-0730 | 11/01/2026 | Theo dõi suy tim",
-                    "HSBA-0699 | 10/11/2025 | Khám nội tim mạch"
-                }
-            });
-            _patients.Add(new PatientRecord
-            {
-                Code = "BN-00304",
-                Name = "Hoàng Thị Xuân",
-                Gender = "Nữ",
-                Age = 61,
-                Hometown = "Bình Dương",
-                Cccd = "074161003049",
-                HsbaCount = 2,
-                PrescriptionCount = 2,
-                Allergy = "Dị ứng Aspirin liều cao",
-                MedicalHistory = "Nhồi máu cơ tim cũ, đang điều trị ổn định bằng thuốc chống đông.",
-                FamilyHistory = "Cha mất do bệnh tim mạch.",
-                HsbaList = new List<string>
-                {
-                    "HSBA-0814 | 17/05/2026 | Nhồi máu cơ tim cũ",
-                    "HSBA-0712 | 09/12/2025 | Theo dõi sau can thiệp"
-                }
-            });
-            _patients.Add(new PatientRecord
-            {
-                Code = "BN-00189",
-                Name = "Trần Thị Mai",
-                Gender = "Nữ",
-                Age = 45,
-                Hometown = "Cần Thơ",
-                Cccd = "092145001899",
-                HsbaCount = 1,
-                PrescriptionCount = 1,
-                Allergy = "Không ghi nhận",
-                MedicalHistory = "Tăng huyết áp kiểm soát tốt.",
-                FamilyHistory = "Không ghi nhận bệnh lý di truyền.",
-                HsbaList = new List<string>
-                {
-                    "HSBA-0801 | 12/05/2026 | Tăng huyết áp kiểm soát tốt"
-                }
-            });
-            _patients.Add(new PatientRecord
-            {
-                Code = "BN-00174",
-                Name = "Võ Minh Tuấn",
-                Gender = "Nam",
-                Age = 29,
-                Hometown = "Tây Ninh",
-                Cccd = "072199001742",
-                HsbaCount = 1,
-                PrescriptionCount = 0,
-                Allergy = "Không ghi nhận",
-                MedicalHistory = "Rối loạn nhịp ngoại tâm thu lành tính.",
-                FamilyHistory = "Không ghi nhận.",
-                HsbaList = new List<string>
-                {
-                    "HSBA-0799 | 10/05/2026 | Rối loạn nhịp ngoại tâm thu"
-                }
-            });
+                MessageBox.Show("Lỗi tải danh sách bệnh nhân từ cơ sở dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void FilterChanged(object sender, EventArgs e)
@@ -192,7 +133,7 @@ namespace HospitalX.GUI.PH2.BacSi
                     patient.Age,
                     patient.HsbaCount,
                     patient.PrescriptionCount,
-                    patient.Hometown,
+                    string.IsNullOrEmpty(patient.TinhTp) ? "(Chưa cập nhật)" : patient.TinhTp,
                     "Xem chi tiết",
                     "Tiền sử bệnh");
                 dgvPatients.Rows[rowIndex].Tag = patient;
@@ -220,6 +161,8 @@ namespace HospitalX.GUI.PH2.BacSi
                 {
                     frm.ShowDialog(FindForm());
                 }
+                LoadPatientsFromDatabase();
+                ApplyFilters();
             }
             else if (dgvPatients.Columns[e.ColumnIndex].Name == "colHistory")
             {
@@ -227,6 +170,8 @@ namespace HospitalX.GUI.PH2.BacSi
                 {
                     frm.ShowDialog(FindForm());
                 }
+                LoadPatientsFromDatabase();
+                ApplyFilters();
             }
         }
 
@@ -247,19 +192,7 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            if (columnName == "colGender")
-            {
-                PaintGenderCell(e);
-                e.Handled = true;
-                return;
-            }
 
-            if (columnName == "colHsbaCount" || columnName == "colRxCount")
-            {
-                PaintCountCell(e, columnName == "colHsbaCount");
-                e.Handled = true;
-                return;
-            }
 
             if (!IsActionColumn(e.ColumnIndex))
             {
@@ -374,9 +307,8 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             int width = Math.Min(cell.Width - 18, 128);
             int height = 36;
-            int leftOffset = 35;
             return new Rectangle(
-                cell.X + (cell.Width - width) / 2 - leftOffset,
+                cell.X + (cell.Width - width) / 2,
                 cell.Y + (cell.Height - height) / 2,
                 width,
                 height);
@@ -494,8 +426,9 @@ namespace HospitalX.GUI.PH2.BacSi
         private void PaintPlainCell(DataGridViewCellPaintingEventArgs e)
         {
             string columnName = dgvPatients.Columns[e.ColumnIndex].Name;
-            bool center = columnName == "colAge";
-            Rectangle textRect = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y, e.CellBounds.Width - 28, e.CellBounds.Height);
+            bool center = true;
+            int padding = center ? 0 : 8;
+            Rectangle textRect = new Rectangle(e.CellBounds.X + padding, e.CellBounds.Y, e.CellBounds.Width - (padding * 2), e.CellBounds.Height);
             TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis;
             flags |= center ? TextFormatFlags.HorizontalCenter : TextFormatFlags.Left;
 
@@ -579,6 +512,7 @@ namespace HospitalX.GUI.PH2.BacSi
             public string Allergy { get; set; }
             public string MedicalHistory { get; set; }
             public string FamilyHistory { get; set; }
+            public string TinhTp { get; set; }
             public List<string> HsbaList { get; set; }
         }
     }

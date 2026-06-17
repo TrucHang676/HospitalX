@@ -73,18 +73,41 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            _record.Diagnosis = txtDiagnosis.Text.Trim();
-            _record.Treatment = txtTreatment.Text.Trim();
-            _record.Conclusion = txtConclusion.Text.Trim();
-            _originalDiagnosis = _record.Diagnosis;
-            _originalTreatment = _record.Treatment;
-            _originalConclusion = _record.Conclusion;
-            UpdateSaveButtonState();
-            msgDialog.Icon = MessageDialogIcon.Information;
-            msgDialog.Buttons = MessageDialogButtons.OK;
-            msgDialog.Show("Đã lưu thay đổi HSBA.", "Thành công");
-            DialogResult = DialogResult.OK;
-            Close();
+            string chanDoan = txtDiagnosis.Text.Trim();
+            string dieuTri = txtTreatment.Text.Trim();
+            string ketLuan = txtConclusion.Text.Trim();
+
+            try
+            {
+                bool success = HospitalX.DAO.HsbaDAO.UpdateHsbaDetails(_record.Id, chanDoan, dieuTri, ketLuan);
+                if (success)
+                {
+                    _record.Diagnosis = chanDoan;
+                    _record.Treatment = dieuTri;
+                    _record.Conclusion = ketLuan;
+                    _originalDiagnosis = _record.Diagnosis;
+                    _originalTreatment = _record.Treatment;
+                    _originalConclusion = _record.Conclusion;
+                    UpdateSaveButtonState();
+                    msgDialog.Icon = MessageDialogIcon.Information;
+                    msgDialog.Buttons = MessageDialogButtons.OK;
+                    msgDialog.Show("Đã lưu thay đổi HSBA.", "Thành công");
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+                else
+                {
+                    msgDialog.Icon = MessageDialogIcon.Error;
+                    msgDialog.Buttons = MessageDialogButtons.OK;
+                    msgDialog.Show("Lưu thay đổi HSBA thất bại. Vui lòng kiểm tra lại quyền hạn.", "Lỗi");
+                }
+            }
+            catch (Exception ex)
+            {
+                msgDialog.Icon = MessageDialogIcon.Error;
+                msgDialog.Buttons = MessageDialogButtons.OK;
+                msgDialog.Show("Lỗi kết nối cơ sở dữ liệu: " + ex.Message, "Lỗi");
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)

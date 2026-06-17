@@ -86,12 +86,31 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            _record.Prescriptions.Add(medicine + " - " + dose);
-            ResetInputFields();
-            RefreshPrescriptions();
-            msgDialog.Icon = MessageDialogIcon.Information;
-            msgDialog.Buttons = MessageDialogButtons.OK;
-            msgDialog.Show("Đã thêm thuốc vào đơn hiện tại.", "Thành công");
+            try
+            {
+                bool success = HospitalX.DAO.HsbaDAO.InsertDonThuoc(_record.Id, medicine, dose);
+                if (success)
+                {
+                    _record.Prescriptions.Add(medicine + " - " + dose);
+                    ResetInputFields();
+                    RefreshPrescriptions();
+                    msgDialog.Icon = MessageDialogIcon.Information;
+                    msgDialog.Buttons = MessageDialogButtons.OK;
+                    msgDialog.Show("Đã thêm thuốc vào đơn hiện tại.", "Thành công");
+                }
+                else
+                {
+                    msgDialog.Icon = MessageDialogIcon.Error;
+                    msgDialog.Buttons = MessageDialogButtons.OK;
+                    msgDialog.Show("Thêm thuốc vào đơn thuốc thất bại. Vui lòng kiểm tra lại quyền hạn.", "Lỗi");
+                }
+            }
+            catch (Exception ex)
+            {
+                msgDialog.Icon = MessageDialogIcon.Error;
+                msgDialog.Buttons = MessageDialogButtons.OK;
+                msgDialog.Show("Lỗi kết nối cơ sở dữ liệu: " + ex.Message, "Lỗi");
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
