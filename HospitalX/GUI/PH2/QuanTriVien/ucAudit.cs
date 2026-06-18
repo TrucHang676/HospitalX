@@ -18,6 +18,9 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private bool _isLoaded;
         private int _hoveredDetailRowIndex = -1;
 
+        private Guna2ComboBox cmbAuditType;
+        private Label lblAuditType;
+
         public ucAudit()
         {
             InitializeComponent();
@@ -31,10 +34,49 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
 
             _isLoaded = true;
-            SeedData();
+            InitializeAuditTypeFilter();
             SetupAuditGrids();
+            InitializeDateFilters();
+            LoadLogsFromDatabase();
             WireEvents();
             ApplyFilters();
+        }
+
+        private void InitializeAuditTypeFilter()
+        {
+            lblAuditType = new Label
+            {
+                Text = "LOẠI AUDIT",
+                Location = new Point(cmbSort.Left + cmbSort.Width + 16, lblSort.Top),
+                Size = lblSort.Size,
+                Font = lblSort.Font,
+                ForeColor = lblSort.ForeColor,
+                BackColor = Color.Transparent
+            };
+
+            cmbAuditType = new Guna2ComboBox
+            {
+                Location = new Point(cmbSort.Left + cmbSort.Width + 16, cmbSort.Top),
+                Size = cmbSort.Size,
+                BorderRadius = cmbSort.BorderRadius,
+                BorderColor = cmbSort.BorderColor,
+                Font = cmbSort.Font,
+                ForeColor = cmbSort.ForeColor,
+                FocusedColor = cmbSort.FocusedColor
+            };
+            cmbAuditType.Items.AddRange(new object[] { "Tất cả loại", "STANDARD", "FGA" });
+            cmbAuditType.StartIndex = 0;
+
+            cmbAuditType.SelectedIndexChanged += FilterChanged;
+
+            pnlFilter.Controls.Add(lblAuditType);
+            pnlFilter.Controls.Add(cmbAuditType);
+        }
+
+        private void InitializeDateFilters()
+        {
+            dtpFrom.Value = DateTime.Today.AddDays(-30);
+            dtpTo.Value = DateTime.Today;
         }
 
         private void WireEvents()
@@ -57,13 +99,25 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         {
             SetupSoftGrid(dgvLogs, 62, 44);
             dgvLogs.DefaultCellStyle.Font = new Font("Segoe UI", 9.4F);
+
+            dgvLogs.Columns["colAuditId"].HeaderText = "Mã audit";
+            dgvLogs.Columns["colTime"].HeaderText = "Thời gian";
+            dgvLogs.Columns["colUser"].HeaderText = "User";
+            dgvLogs.Columns["colAction"].HeaderText = "Hành vi";
+            dgvLogs.Columns["colObject"].HeaderText = "Đối tượng";
+            dgvLogs.Columns["colDetail"].HeaderText = "Chi tiết";
+            dgvLogs.Columns["colRows"].HeaderText = "Mã lỗi";
+            dgvLogs.Columns["colIp"].HeaderText = "Loại audit";
+            dgvLogs.Columns["colResult"].HeaderText = "Kết quả";
+            dgvLogs.Columns["colDetailAction"].HeaderText = "";
+
             dgvLogs.Columns["colAuditId"].FillWeight = 104F;
             dgvLogs.Columns["colTime"].FillWeight = 110F;
             dgvLogs.Columns["colUser"].FillWeight = 96F;
             dgvLogs.Columns["colAction"].FillWeight = 82F;
             dgvLogs.Columns["colObject"].FillWeight = 104F;
             dgvLogs.Columns["colDetail"].FillWeight = 238F;
-            dgvLogs.Columns["colRows"].FillWeight = 48F;
+            dgvLogs.Columns["colRows"].FillWeight = 68F;
             dgvLogs.Columns["colIp"].FillWeight = 88F;
             dgvLogs.Columns["colResult"].FillWeight = 112F;
             dgvLogs.Columns["colDetailAction"].FillWeight = 70F;
@@ -119,32 +173,67 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             }
         }
 
-        private void SeedData()
+        private void LoadLogsFromDatabase()
         {
-            if (_logs.Count > 0)
+            _logs.Clear();
+            try
             {
-                return;
+                DataTable dt = HospitalX.DAO.AuditLogDAO.GetAuditLogs();
+                if (dt != null)
+                {
+                    int seqId = 1;
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string loaiAudit = row["LOAI_AUDIT"].ToString().Trim();
+                        string username = row["USER_NAME"].ToString().Trim();
+                        string objectName = row["DOI_TUONG"] != DBNull.Value ? row["DOI_TUONG"].ToString().Trim() : "-";
+                        string action = row["HANH_VI"] != DBNull.Value ? row["HANH_VI"].ToString().Trim() : "-";
+                        string policyName = row["POLICY_NAME"] != DBNull.Value ? row["POLICY_NAME"].ToString().Trim() : "-";
+                        string errorCode = row["MA_LOI"] != DBNull.Value ? row["MA_LOI"].ToString().Trim() : "0";
+                        string result = row["KET_QUA"].ToString().Trim();
+                        DateTime time = Convert.ToDateTime(row["THOI_GIAN"]);
+                        string sqlText = row["SQL_TEXT"] != DBNull.Value ? row["SQL_TEXT"].ToString().Trim() : "";
+                        string detail = row["CHI_TIET"] != DBNull.Value ? row["CHI_TIET"].ToString().Trim() : "";
+                        string terminal = row["TERMINAL"] != DBNull.Value ? row["TERMINAL"].ToString().Trim() : "-";
+
+                        string prefix = loaiAudit == "STANDARD" ? "STD" : "FGA";
+                        string id = $"{prefix}-{seqId:D5}";
+
+                        var log = new AuditLogRecord(
+                            id: id,
+                            auditType: loaiAudit,
+                            time: time,
+                            username: username,
+                            action: action,
+                            objectName: objectName,
+                            policyName: policyName,
+                            errorCode: errorCode,
+                            result: result,
+                            detail: string.IsNullOrEmpty(sqlText) ? detail : $"[Policy: {policyName}] {sqlText}",
+                            terminal: terminal
+                        );
+
+                        _logs.Add(log);
+                        seqId++;
+                    }
+                }
+            }
+            catch (Oracle.ManagedDataAccess.Client.OracleException ex) when (ex.Number == 942 || ex.Number == 1031)
+            {
+                MessageBox.Show("Quyền truy cập nhật ký kiểm toán bị từ chối.\nVui lòng đảm bảo tài khoản Admin có quyền SELECT trên DBA_AUDIT_TRAIL và DBA_FGA_AUDIT_TRAIL.", "Cảnh báo quyền kiểm toán", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải nhật ký kiểm toán từ cơ sở dữ liệu: " + ex.Message, "Lỗi kiểm toán", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+            _scenarios.Clear();
             _scenarios.Add(new AuditScenario("STD-01", "Standard Audit", "Đăng nhập hệ thống", "CREATE SESSION", "Ghi nhận đăng nhập thành công và thất bại của user cụ thể.", "Đã bật"));
-            _scenarios.Add(new AuditScenario("STD-02", "Standard Audit", "Theo dõi đối tượng", "HSBA, HSBA_DV, ĐƠNTHUỐC", "Theo dõi INSERT, UPDATE, DELETE, SELECT trên table/view/procedure/function được chọn.", "Đã bật"));
-            _scenarios.Add(new AuditScenario("FGA-01", "Fine-grained Audit", "Cập nhật đơn thuốc", "ĐƠNTHUỐC", "Audit UPDATE trên MAHSBA, NGÀYĐT, TÊNTHUỐC, LIỀUDÙNG sau khi đơn thuốc đã được tạo.", "Đã bật"));
-            _scenarios.Add(new AuditScenario("FGA-02", "Fine-grained Audit", "Cập nhật HSBA hợp lệ", "HSBA", "Audit bác sĩ/y sĩ cập nhật CHẨNĐOÁN, ĐIỀUTRỊ, KẾTLUẬN trên HSBA do mình điều trị.", "Đã bật"));
-            _scenarios.Add(new AuditScenario("FGA-03", "Fine-grained Audit", "Cập nhật HSBA bất hợp pháp", "HSBA", "Audit cập nhật trái quyền trên CHẨNĐOÁN, ĐIỀUTRỊ, KẾTLUẬN.", "Theo dõi"));
+            _scenarios.Add(new AuditScenario("STD-02", "Standard Audit", "Theo dõi đối tượng", "HSBA, HSBA_DV, DONTHUOC", "Theo dõi INSERT, UPDATE, DELETE, SELECT trên table/view/procedure/function được chọn.", "Đã bật"));
+            _scenarios.Add(new AuditScenario("FGA-01", "Fine-grained Audit", "Cập nhật đơn thuốc", "DONTHUOC", "Audit UPDATE trên MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG sau khi đơn thuốc đã được tạo.", "Đã bật"));
+            _scenarios.Add(new AuditScenario("FGA-02", "Fine-grained Audit", "Cập nhật HSBA hợp lệ", "HSBA", "Audit bác sĩ/y sĩ cập nhật CHANDOAN, DIEUTRI, KETLUAN trên HSBA do mình điều trị.", "Đã bật"));
+            _scenarios.Add(new AuditScenario("FGA-03", "Fine-grained Audit", "Cập nhật HSBA bất hợp pháp", "HSBA", "Audit cập nhật trái quyền trên CHANDOAN, DIEUTRI, KETLUAN.", "Theo dõi"));
             _scenarios.Add(new AuditScenario("FGA-04", "Fine-grained Audit", "Thao tác bất hợp pháp HSBA_DV", "HSBA_DV", "Audit thêm, xóa, sửa bất hợp pháp trên quan hệ HSBA_DV.", "Theo dõi"));
-
-            _logs.Add(new AuditLogRecord("AUD-08412", new DateTime(2026, 5, 24, 14, 32, 18), "bs_tim_01", "UPDATE", "ĐƠNTHUỐC", "MAHSBA=HSBA-0821; TÊNTHUỐC=Amlodipine 5mg; LIỀUDÙNG=1 viên/ngày", 1, "10.0.2.17", true, "FGA-01"));
-            _logs.Add(new AuditLogRecord("AUD-08411", new DateTime(2026, 5, 24, 14, 25, 55), "ys_noitru_03", "UPDATE", "HSBA", "Cập nhật CHẨNĐOÁN, ĐIỀUTRỊ, KẾTLUẬN cho HSBA-0819", 1, "10.0.2.33", true, "FGA-02"));
-            _logs.Add(new AuditLogRecord("AUD-08410", new DateTime(2026, 5, 24, 14, 18, 43), "nv_khoa_a_07", "UPDATE", "HSBA", "Bị từ chối cập nhật CHẨNĐOÁN trên HSBA-0815", 0, "10.0.1.18", false, "FGA-03"));
-            _logs.Add(new AuditLogRecord("AUD-08409", new DateTime(2026, 5, 24, 14, 12, 06), "nv_khoa_b_03", "DELETE", "HSBA_DV", "Bị từ chối xóa dịch vụ DV-20260524-0099", 0, "10.0.1.31", false, "FGA-04"));
-            _logs.Add(new AuditLogRecord("AUD-08408", new DateTime(2026, 5, 24, 13, 58, 20), "dba_admin", "SELECT", "DBA_AUDIT_TRAIL", "Đọc nhật ký kiểm toán môi trường Standard Audit", 500, "10.0.0.1", true, "STD-02"));
-            _logs.Add(new AuditLogRecord("AUD-08407", new DateTime(2026, 5, 24, 13, 41, 55), "bs_tim_02", "SELECT", "HSBA", "WHERE NGÀYĐT BETWEEN :d1 AND :d2", 87, "10.0.2.21", true, "STD-02"));
-            _logs.Add(new AuditLogRecord("AUD-08406", new DateTime(2026, 5, 24, 13, 20, 18), "dba_admin", "INSERT", "AUDIT_POLICY", "Kích hoạt policy FGA-03 cho bảng HSBA", 1, "10.0.0.1", true, "STD-02"));
-            _logs.Add(new AuditLogRecord("AUD-08405", new DateTime(2026, 5, 24, 11, 20, 44), "backup_job", "INSERT", "BACKUP_HISTORY", "Ghi nhận incremental backup hoàn tất", 1, "10.0.0.2", true, "STD-02"));
-            _logs.Add(new AuditLogRecord("AUD-08404", new DateTime(2026, 5, 23, 17, 10, 02), "bachmai_user", "LOGIN", "SESSION", "Sai mật khẩu lần 3", 0, "10.0.1.42", false, "STD-01"));
-            _logs.Add(new AuditLogRecord("AUD-08403", new DateTime(2026, 5, 23, 16, 55, 22), "bs_tim_01", "LOGIN", "SESSION", "Đăng nhập thành công", 1, "10.0.2.17", true, "STD-01"));
-            _logs.Add(new AuditLogRecord("AUD-08402", new DateTime(2026, 5, 22, 10, 15, 09), "ys_noitru_03", "UPDATE", "ĐƠNTHUỐC", "Thay đổi NGÀYĐT cho HSBA-0794", 1, "10.0.2.33", true, "FGA-01"));
-            _logs.Add(new AuditLogRecord("AUD-08401", new DateTime(2026, 5, 21, 9, 30, 0), "nv_khoa_a_09", "INSERT", "HSBA_DV", "Bị từ chối thêm dịch vụ vào HSBA không phụ trách", 0, "10.0.1.22", false, "FGA-04"));
         }
 
         private void ApplyFilters()
@@ -155,31 +244,62 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             if (!string.IsNullOrWhiteSpace(keyword))
             {
                 query = query.Where(log => RemoveDiacritics(
-                    log.Id + " " + log.Username + " " + log.Action + " " + log.ObjectName + " " + log.Detail + " " + log.PolicyCode)
+                    log.Id + " " + log.Username + " " + log.Action + " " + log.ObjectName + " " + log.Detail + " " + log.PolicyName)
                     .ToLowerInvariant()
                     .Contains(keyword));
+            }
+
+            string selectedAuditType = GetSelectedValue(cmbAuditType);
+            if (!string.IsNullOrEmpty(selectedAuditType))
+            {
+                query = query.Where(log => log.AuditType == selectedAuditType);
             }
 
             string selectedObject = GetSelectedValue(cmbObject);
             if (!string.IsNullOrEmpty(selectedObject))
             {
-                query = query.Where(log => log.ObjectName == selectedObject);
+                if (selectedObject == "ĐƠNTHUỐC")
+                {
+                    query = query.Where(log => log.ObjectName == "DONTHUOC" || log.ObjectName == "ĐƠNTHUỐC");
+                }
+                else
+                {
+                    query = query.Where(log => log.ObjectName == selectedObject);
+                }
             }
 
             string selectedAction = GetSelectedValue(cmbAction);
             if (!string.IsNullOrEmpty(selectedAction))
             {
-                query = query.Where(log => log.Action == selectedAction);
+                if (selectedAction == "LOGIN")
+                {
+                    query = query.Where(log => log.Action == "LOGON" || log.Action == "LOGOFF" || log.Action.Contains("LOGON") || log.Action.Contains("SESSION"));
+                }
+                else
+                {
+                    query = query.Where(log => log.Action == selectedAction);
+                }
             }
 
             string selectedResult = GetSelectedValue(cmbResult);
-            if (selectedResult == "Thành công")
+            if (!string.IsNullOrEmpty(selectedResult))
             {
-                query = query.Where(log => log.Success);
-            }
-            else if (selectedResult == "Thất bại")
-            {
-                query = query.Where(log => !log.Success);
+                if (selectedResult == "Thành công")
+                {
+                    query = query.Where(log => log.Result == "Thành công" || log.Result == "Thanh cong" || log.Result == "Ghi nhận FGA" || log.Result == "Ghi nhan FGA");
+                }
+                else if (selectedResult == "Thất bại")
+                {
+                    query = query.Where(log => log.Result == "Thất bại" || log.Result == "That bai");
+                }
+                else if (selectedResult == "Cảnh báo")
+                {
+                    query = query.Where(log => log.Result == "Cảnh báo" || log.Result == "Canh bao");
+                }
+                else
+                {
+                    query = query.Where(log => log.Result == selectedResult);
+                }
             }
 
             DateTime fromDate = dtpFrom.Value.Date <= dtpTo.Value.Date ? dtpFrom.Value.Date : dtpTo.Value.Date;
@@ -222,12 +342,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                     log.Action,
                     log.ObjectName,
                     log.Detail,
-                    log.RowsAffected,
-                    log.SourceIp,
-                    log.Success ? "Thành công" : "Thất bại",
+                    log.ErrorCode,
+                    log.AuditType,
+                    log.Result,
                     "Xem");
                 dgvLogs.Rows[rowIndex].Tag = log;
-                dgvLogs.Rows[rowIndex].DefaultCellStyle.BackColor = log.Success ? Color.White : Color.FromArgb(255, 247, 247);
+                dgvLogs.Rows[rowIndex].DefaultCellStyle.BackColor = (log.Result == "Thành công" || log.Result == "Ghi nhận FGA" || log.Result == "Thanh cong" || log.Result == "Ghi nhan FGA") ? Color.White : ((log.Result == "Cảnh báo" || log.Result == "Canh bao") ? Color.FromArgb(255, 253, 240) : Color.FromArgb(255, 247, 247));
                 dgvLogs.Rows[rowIndex].DividerHeight = 0;
             }
 
@@ -302,9 +422,22 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             if (columnName == "colResult")
             {
                 AuditLogRecord record = dgvLogs.Rows[e.RowIndex].Tag as AuditLogRecord;
-                bool success = record == null || record.Success;
-                back = success ? Color.FromArgb(220, 252, 231) : Color.FromArgb(254, 226, 226);
-                fore = success ? Color.FromArgb(22, 101, 52) : Color.FromArgb(185, 28, 28);
+                string res = record != null ? record.Result : "Thành công";
+                if (res == "Thành công" || res == "Ghi nhận FGA" || res == "Thanh cong" || res == "Ghi nhan FGA")
+                {
+                    back = Color.FromArgb(220, 252, 231);
+                    fore = Color.FromArgb(22, 101, 52);
+                }
+                else if (res == "Cảnh báo" || res == "Canh bao")
+                {
+                    back = Color.FromArgb(254, 243, 199);
+                    fore = Color.FromArgb(180, 83, 9);
+                }
+                else
+                {
+                    back = Color.FromArgb(254, 226, 226);
+                    fore = Color.FromArgb(185, 28, 28);
+                }
             }
             else
             {
@@ -320,9 +453,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         {
             AuditLogRecord record = dgvLogs.Rows[e.RowIndex].Tag as AuditLogRecord;
             Color fill;
-            if (record != null && !record.Success)
+            if (record != null && (record.Result == "Thất bại" || record.Result == "That bai"))
             {
                 fill = Color.FromArgb(255, 248, 248);
+            }
+            else if (record != null && (record.Result == "Cảnh báo" || record.Result == "Canh bao"))
+            {
+                fill = Color.FromArgb(255, 253, 240);
             }
             else
             {
@@ -464,8 +601,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             cmbAction.SelectedIndex = 0;
             cmbResult.SelectedIndex = 0;
             cmbSort.SelectedIndex = 0;
-            dtpFrom.Value = new DateTime(2026, 5, 21);
-            dtpTo.Value = new DateTime(2026, 5, 24);
+            if (cmbAuditType != null) cmbAuditType.SelectedIndex = 0;
+            InitializeDateFilters();
             ApplyFilters();
         }
 
@@ -490,7 +627,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 }
 
                 List<string> lines = new List<string>();
-                lines.Add("AuditId,Time,User,Action,Object,Detail,Rows,Ip,Result,Policy");
+                lines.Add("AuditId,Time,User,Action,Object,Detail,ErrorCode,AuditType,Result,Policy,Terminal");
                 foreach (DataGridViewRow row in dgvLogs.Rows)
                 {
                     AuditLogRecord log = row.Tag as AuditLogRecord;
@@ -507,10 +644,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                         Csv(log.Action),
                         Csv(log.ObjectName),
                         Csv(log.Detail),
-                        Csv(log.RowsAffected.ToString()),
-                        Csv(log.SourceIp),
-                        Csv(log.Success ? "OK" : "FAIL"),
-                        Csv(log.PolicyCode)
+                        Csv(log.ErrorCode),
+                        Csv(log.AuditType),
+                        Csv(log.Result),
+                        Csv(log.PolicyName),
+                        Csv(log.Terminal)
                     }));
                 }
 
@@ -545,7 +683,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private string GetSelectedValue(Guna2ComboBox comboBox)
         {
-            if (comboBox.SelectedItem == null)
+            if (comboBox == null || comboBox.SelectedItem == null)
             {
                 return string.Empty;
             }
@@ -602,29 +740,31 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
     public class AuditLogRecord
     {
-        public AuditLogRecord(string id, DateTime time, string username, string action, string objectName, string detail, int rowsAffected, string sourceIp, bool success, string policyCode)
+        public AuditLogRecord(string id, string auditType, DateTime time, string username, string action, string objectName, string policyName, string errorCode, string result, string detail, string terminal)
         {
             Id = id;
+            AuditType = auditType;
             Time = time;
             Username = username;
             Action = action;
             ObjectName = objectName;
+            PolicyName = policyName;
+            ErrorCode = errorCode;
+            Result = result;
             Detail = detail;
-            RowsAffected = rowsAffected;
-            SourceIp = sourceIp;
-            Success = success;
-            PolicyCode = policyCode;
+            Terminal = terminal;
         }
 
         public string Id { get; private set; }
+        public string AuditType { get; private set; }
         public DateTime Time { get; private set; }
         public string Username { get; private set; }
         public string Action { get; private set; }
         public string ObjectName { get; private set; }
+        public string PolicyName { get; private set; }
+        public string ErrorCode { get; private set; }
+        public string Result { get; private set; }
         public string Detail { get; private set; }
-        public int RowsAffected { get; private set; }
-        public string SourceIp { get; private set; }
-        public bool Success { get; private set; }
-        public string PolicyCode { get; private set; }
+        public string Terminal { get; private set; }
     }
 }

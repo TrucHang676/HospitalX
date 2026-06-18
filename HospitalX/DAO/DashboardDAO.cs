@@ -114,5 +114,25 @@ namespace HospitalX.DAO
 
             return DataProvider.Instance.ExecuteQuery(sql, null, false);
         }
+
+        // Lấy thông tin tổng quan của QTV: số tài khoản hoạt động, tổng số audit event, alert bất thường
+        public static DataTable GetDashboardQTV()
+        {
+            string sql = @"
+                SELECT
+                    (SELECT COUNT(*) FROM ADMINHOS.NHANVIEN) + (SELECT COUNT(*) FROM ADMINHOS.BENHNHAN) AS ACTIVE_USERS,
+                    
+                    (SELECT COUNT(*) FROM DBA_AUDIT_TRAIL WHERE OWNER = 'ADMINHOS'
+                     AND OBJ_NAME IN ('HSBA', 'DONTHUOC', 'HSBA_DV', 'VW_NHANVIEN_SELF', 'VW_BENHNHAN_SELF', 'SP_CAPNHAT_KETLUAN_HSBA', 'FN_DEM_DONTHUOC')) +
+                    (SELECT COUNT(*) FROM DBA_FGA_AUDIT_TRAIL WHERE OBJECT_SCHEMA = 'ADMINHOS'
+                     AND POLICY_NAME IN ('FGA_DONTHUOC_UPDATE', 'FGA_HSBA_UPDATE_HOPPHAP', 'FGA_HSBA_UPDATE_BATHOPPHAP', 'FGA_HSBA_DV_INSERT_BATHOPPHAP', 'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP')) AS TOTAL_AUDIT,
+                     
+                    (SELECT COUNT(*) FROM DBA_AUDIT_TRAIL WHERE OWNER = 'ADMINHOS' AND RETURNCODE != 0
+                     AND OBJ_NAME IN ('HSBA', 'DONTHUOC', 'HSBA_DV', 'VW_NHANVIEN_SELF', 'VW_BENHNHAN_SELF', 'SP_CAPNHAT_KETLUAN_HSBA', 'FN_DEM_DONTHUOC')) +
+                    (SELECT COUNT(*) FROM DBA_FGA_AUDIT_TRAIL WHERE OBJECT_SCHEMA = 'ADMINHOS' AND POLICY_NAME LIKE '%BATHOPPHAP%') AS ABNORMAL_ALERTS
+                FROM DUAL
+            ";
+            return DataProvider.Instance.ExecuteQuery(sql, null, false);
+        }
     }
 }

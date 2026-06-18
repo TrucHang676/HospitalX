@@ -81,5 +81,20 @@ namespace HospitalX.DAO
             };
             return DataProvider.Instance.ExecuteNonQuery(sql, parameters, false) > 0;
         }
+
+        public static int GetPrescriptionCount(string maHsba)
+        {
+            string sql = "SELECT COUNT(*) FROM ADMINHOS.DONTHUOC WHERE MAHSBA = :maHsba";
+            OracleParameter[] parameters = new OracleParameter[]
+            {
+                new OracleParameter(":maHsba", OracleDbType.Varchar2) { Value = maHsba.Trim() }
+            };
+            DataTable dt = DataProvider.Instance.ExecuteQuery(sql, parameters, false);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                return Convert.ToInt32(dt.Rows[0][0]);
+            }
+            return 0;
+        }
     }
 }

@@ -201,19 +201,26 @@ namespace HospitalX.DAO
             string sql = @"
                 UPDATE ADMINHOS.HSBA
                 SET CHANDOAN = :chanDoan,
-                    DIEUTRI = :dieuTri,
-                    KETLUAN = :ketLuan
+                    DIEUTRI = :dieuTri
                 WHERE MAHSBA = :maHsba
             ";
             OracleParameter[] parameters = new OracleParameter[]
             {
                 new OracleParameter(":chanDoan", OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(chanDoan) ? (object)DBNull.Value : chanDoan.Trim() },
                 new OracleParameter(":dieuTri", OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(dieuTri) ? (object)DBNull.Value : dieuTri.Trim() },
-                new OracleParameter(":ketLuan", OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(ketLuan) ? (object)DBNull.Value : ketLuan.Trim() },
                 new OracleParameter(":maHsba", OracleDbType.Varchar2) { Value = maHsba.Trim() }
             };
             int result = DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
-            return result > 0;
+
+            string spSql = "ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA";
+            OracleParameter[] spParams = new OracleParameter[]
+            {
+                new OracleParameter("p_mahsba", OracleDbType.Varchar2) { Value = maHsba.Trim() },
+                new OracleParameter("p_ketluan", OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(ketLuan) ? (object)DBNull.Value : ketLuan.Trim() }
+            };
+            int spResult = DataProvider.Instance.ExecuteNonQuery(spSql, spParams, true);
+
+            return result > 0 || spResult > 0;
         }
 
         public static bool InsertHsbaService(string maHsba, string loaiDv, string ketQua)
