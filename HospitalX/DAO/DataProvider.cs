@@ -42,68 +42,22 @@ namespace HospitalX.DAO
         {
             DataTable data = new DataTable();
             string connStr = connectionString;
-            try
+            using (OracleConnection connection = new OracleConnection(connStr))
             {
-                using (OracleConnection connection = new OracleConnection(connStr))
+                connection.Open();
+                using (OracleCommand command = new OracleCommand(query, connection))
                 {
-                    connection.Open();
-                    using (OracleCommand command = new OracleCommand(query, connection))
+                    command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+                    command.BindByName = true;
+
+                    if (parameters != null)
+                        command.Parameters.AddRange(parameters);
+
+                    using (OracleDataAdapter adapter = new OracleDataAdapter(command))
                     {
-                        command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
-                        command.BindByName = true;
-
-                        if (parameters != null)
-                            command.Parameters.AddRange(parameters);
-
-                        using (OracleDataAdapter adapter = new OracleDataAdapter(command))
-                        {
-                            adapter.Fill(data);
-                        }
+                        adapter.Fill(data);
                     }
                 }
-            }
-            catch (OracleException ex) when (ex.Number == 1017 || ex.Number == 28000 || ex.Number == 28009 || ex.Number == 12154 || ex.Number == 12541)
-            {
-                // Fallback connection strings to administrator schema
-                string[] fallbacks = {
-                    "User Id=ADMINHOS;Password=123;Data Source=localhost:1521/PDBHOSX;",
-                    "User Id=adminHos;Password=123;Data Source=localhost:1521/PDBHOSX;"
-                };
-
-                bool success = false;
-                foreach (var fbConnStr in fallbacks)
-                {
-                    if (fbConnStr == connStr) continue;
-                    try
-                    {
-                        using (OracleConnection connection = new OracleConnection(fbConnStr))
-                        {
-                            connection.Open();
-                            using (OracleCommand command = new OracleCommand(query, connection))
-                            {
-                                command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
-                                command.BindByName = true;
-
-                                if (parameters != null)
-                                {
-                                    foreach (OracleParameter p in parameters)
-                                    {
-                                        command.Parameters.Add((OracleParameter)((ICloneable)p).Clone());
-                                    }
-                                }
-
-                                using (OracleDataAdapter adapter = new OracleDataAdapter(command))
-                                {
-                                    adapter.Fill(data);
-                                }
-                            }
-                        }
-                        success = true;
-                        break;
-                    }
-                    catch { }
-                }
-                if (!success) throw;
             }
             return data;
         }
@@ -113,70 +67,23 @@ namespace HospitalX.DAO
         {
             int data = 0;
             string connStr = connectionString;
-            try
+            using (OracleConnection connection = new OracleConnection(connStr))
             {
-                using (OracleConnection connection = new OracleConnection(connStr))
+                connection.Open();
+                using (OracleCommand command = new OracleCommand(query, connection))
                 {
-                    connection.Open();
-                    using (OracleCommand command = new OracleCommand(query, connection))
+                    command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+                    command.BindByName = true;
+
+                    if (parameters != null)
+                        command.Parameters.AddRange(parameters);
+
+                    data = command.ExecuteNonQuery();
+                    if (isStoredProc && data == -1)
                     {
-                        command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
-                        command.BindByName = true;
-
-                        if (parameters != null)
-                            command.Parameters.AddRange(parameters);
-
-                        data = command.ExecuteNonQuery();
-                        if (isStoredProc && data == -1)
-                        {
-                            data = 1; // Map -1 to 1 to represent successful execution of stored procedure for DAO success checks (result > 0)
-                        }
+                        data = 1; // Map -1 to 1 to represent successful execution of stored procedure for DAO success checks (result > 0)
                     }
                 }
-            }
-            catch (OracleException ex) when (ex.Number == 1017 || ex.Number == 28000 || ex.Number == 28009 || ex.Number == 12154 || ex.Number == 12541)
-            {
-                // Fallback connection strings to administrator schema
-                string[] fallbacks = {
-                    "User Id=ADMINHOS;Password=123;Data Source=localhost:1521/PDBHOSX;",
-                    "User Id=adminHos;Password=123;Data Source=localhost:1521/PDBHOSX;"
-                };
-
-                bool success = false;
-                foreach (var fbConnStr in fallbacks)
-                {
-                    if (fbConnStr == connStr) continue;
-                    try
-                    {
-                        using (OracleConnection connection = new OracleConnection(fbConnStr))
-                        {
-                            connection.Open();
-                            using (OracleCommand command = new OracleCommand(query, connection))
-                            {
-                                command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
-                                command.BindByName = true;
-
-                                if (parameters != null)
-                                {
-                                    foreach (OracleParameter p in parameters)
-                                    {
-                                        command.Parameters.Add((OracleParameter)((ICloneable)p).Clone());
-                                    }
-                                }
-
-                                data = command.ExecuteNonQuery();
-                                if (isStoredProc && data == -1)
-                                {
-                                    data = 1; // Map -1 to 1 to represent successful execution of stored procedure
-                                }
-                            }
-                        }
-                        success = true;
-                        break;
-                    }
-                    catch { }
-                }
-                if (!success) throw;
             }
             return data;
         }
