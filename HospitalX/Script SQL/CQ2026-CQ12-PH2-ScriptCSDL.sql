@@ -5563,6 +5563,8 @@ CREATE OR REPLACE PROCEDURE SP_INSERT_PATIENT (
 )
 AUTHID DEFINER
 AS
+    v_count NUMBER;
+    v_sql   VARCHAR2(1000);
 BEGIN
     INSERT INTO ADMINHOS.BENHNHAN (
         MABN, TENBN, PHAI, NGAYSINH, CCCD, 
@@ -5573,6 +5575,22 @@ BEGIN
         p_sonha, p_tenduong, p_quanhuyen, p_tinhtp, 
         p_tiensubenh, p_tiensubenhgd, p_diungthuoc
     );
+
+    -- Tự động tạo user Oracle cho bệnh nhân mới để đăng nhập
+    SELECT COUNT(*)
+    INTO v_count
+    FROM DBA_USERS
+    WHERE USERNAME = UPPER(TRIM(p_mabn));
+
+    IF v_count = 0 THEN
+        v_sql := 'CREATE USER ' || UPPER(TRIM(p_mabn)) || ' IDENTIFIED BY "123" ACCOUNT UNLOCK';
+        EXECUTE IMMEDIATE v_sql;
+        v_sql := 'GRANT CREATE SESSION TO ' || UPPER(TRIM(p_mabn));
+        EXECUTE IMMEDIATE v_sql;
+        v_sql := 'GRANT ROLE_BENHNHAN TO ' || UPPER(TRIM(p_mabn));
+        EXECUTE IMMEDIATE v_sql;
+    END IF;
+
     COMMIT;
 END;
 /
