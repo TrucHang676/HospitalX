@@ -24,37 +24,35 @@ namespace HospitalX.DAO
 
         public DataTable GetProfile()
         {
-            string query = "SELECT MANV, HOTEN, PHAI, NGAYSINH, CMND, QUEQUAN, SODT, VAITRO, CHUYENKHOA, COSO FROM ADMINHOS.VW_NHANVIEN_SELF";
-            return DataProvider.Instance.ExecuteQuery(query, null, false);
+            string procName = "ADMINHOS.SP_GET_PROFILE";
+            OracleParameter[] parameters = new OracleParameter[]
+            {
+                new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+            };
+            return DataProvider.Instance.ExecuteQuery(procName, parameters, true);
         }
 
         public DataTable GetProfileStats()
         {
-            string query = @"
-                SELECT 
-                    (SELECT COUNT(*) FROM ADMINHOS.HSBA) AS SO_HSBA,
-                    (
-                        SELECT COUNT(*) 
-                        FROM ADMINHOS.HSBA_DV DV
-                        JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
-                    ) AS SO_PHAN_CONG,
-                    (SELECT COUNT(DISTINCT MABN) FROM ADMINHOS.HSBA) AS SO_BENH_NHAN
-                FROM DUAL
-            ";
-            return DataProvider.Instance.ExecuteQuery(query, null, false);
+            string procName = "ADMINHOS.SP_GET_PROFILE_STATS";
+            OracleParameter[] parameters = new OracleParameter[]
+            {
+                new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+            };
+            return DataProvider.Instance.ExecuteQuery(procName, parameters, true);
         }
 
 
         public bool UpdateProfile(string phone, string address, string manv)
         {
-            string query = "UPDATE ADMINHOS.VW_NHANVIEN_SELF SET SODT = :sodt , QUEQUAN = :quequan WHERE MANV = :manv";
+            string procName = "ADMINHOS.SP_UPDATE_PROFILE";
             OracleParameter[] parameters = new OracleParameter[]
             {
-                new OracleParameter("sodt", phone),
-                new OracleParameter("quequan", address),
-                new OracleParameter("manv", manv)
+                new OracleParameter("p_sodt", OracleDbType.Varchar2) { Value = phone },
+                new OracleParameter("p_quequan", OracleDbType.NVarchar2) { Value = address },
+                new OracleParameter("p_manv", OracleDbType.Varchar2) { Value = manv }
             };
-            int result = DataProvider.Instance.ExecuteNonQuery(query, parameters, false);
+            int result = DataProvider.Instance.ExecuteNonQuery(procName, parameters, true);
             return result > 0;
         }
     }
