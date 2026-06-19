@@ -24,8 +24,12 @@ namespace HospitalX.DAO
 
         public DataTable GetNotifications()
         {
-            string query = "SELECT MATB, NOIDUNG, NGAYGIO, DIADIEM, NHAN_OLS FROM ADMINHOS.VW_THONGBAO_APP ORDER BY NGAYGIO DESC";
-            return DataProvider.Instance.ExecuteQuery(query, null, false);
+            string procName = "ADMINHOS.SP_GET_NOTIFICATIONS";
+            OracleParameter[] parameters = new OracleParameter[]
+            {
+                new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+            };
+            return DataProvider.Instance.ExecuteQuery(procName, parameters, true);
         }
     }
 }

@@ -5160,6 +5160,991 @@ cho hệ thống bệnh viện X là kết hợp cả 3 lớp bảo vệ:
 CONNECT ADMINHOS/123@localhost:1521/PDBHOSX 
 SHOW USER
 
+-- Xóa các SP nếu đã tồn tại
+BEGIN
+    FOR r IN (
+        SELECT object_name, object_type 
+        FROM user_objects 
+        WHERE object_type IN ('PROCEDURE', 'FUNCTION')
+          AND object_name IN (
+              'SP_XEM_AUDIT_LOG', 'SP_GET_DASHBOARD_QTV', 'SP_GET_DASHBOARD_DPV', 'SP_GET_PATIENTS_NEED_ASSIGNMENT',
+              'SP_GET_DASHBOARD_BS', 'SP_GET_RECENT_HSBA_THIS_MONTH', 'SP_GET_PRESCRIPTIONS_FOR_DOCTOR', 'SP_INSERT_DRUG',
+              'SP_UPDATE_DRUG', 'SP_DELETE_DRUG', 'SP_GET_PROFILE', 'SP_GET_PROFILE_STATS', 'SP_UPDATE_PROFILE',
+              'SP_GET_ALL_PATIENTS', 'SP_SEARCH_PATIENT', 'FN_GET_NEXT_PATIENT_ID', 'SP_INSERT_PATIENT', 'SP_UPDATE_PATIENT',
+              'SP_GET_PATIENTS_FOR_DOCTOR', 'SP_UPDATE_PATIENT_HISTORY', 'SP_INSERT_HSBA', 'SP_GET_DOCTORS_FOR_TAOHSBA',
+              'SP_GET_DEPARTMENTS', 'SP_GET_HSBA_FOR_DIEUPHOI', 'SP_UPDATE_HSBA_DEPT_DOC', 'SP_GET_HSBA_FOR_DOCTOR',
+              'SP_GET_SERVICES_FOR_HSBA', 'SP_DELETE_HSBA_SERVICE', 'SP_GET_PRESCRIPTIONS_FOR_HSBA', 'SP_UPDATE_HSBA_DETAILS',
+              'SP_INSERT_HSBA_SERVICE', 'SP_INSERT_DONTHUOC', 'SP_GET_HSBA_FOR_PATIENT', 'SP_GET_HSBA_DETAILS_BY_ID',
+              'SP_GET_ALL_SERVICE_REQUESTS', 'SP_GET_ALL_TECHNICIANS', 'SP_ASSIGN_TECHNICIAN', 'SP_GET_NOTIFICATIONS'
+          )
+    ) LOOP
+        EXECUTE IMMEDIATE 'DROP ' || r.object_type || ' ' || r.object_name;
+    END LOOP;
+END;
+/
+
+-- Tạo các sp
+
+-- 1. Xem nhật ký kiểm toán
+CREATE OR REPLACE PROCEDURE SP_XEM_AUDIT_LOG (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT *
+    FROM (
+        SELECT
+            CAST('STANDARD' AS VARCHAR2(20)) AS LOAI_AUDIT,
+            CAST(USERNAME AS VARCHAR2(128)) AS USER_NAME,
+            CAST(OWNER AS VARCHAR2(128)) AS OWNER,
+            CAST(OBJ_NAME AS VARCHAR2(128)) AS DOI_TUONG,
+            CAST(ACTION_NAME AS VARCHAR2(50)) AS HANH_VI,
+            CAST(NULL AS VARCHAR2(128)) AS POLICY_NAME,
+            RETURNCODE AS MA_LOI,
+            CAST(
+                CASE
+                    WHEN RETURNCODE = 0 THEN 'Thanh cong'
+                    ELSE 'That bai'
+                END AS VARCHAR2(50)
+            ) AS KET_QUA,
+            TIMESTAMP AS THOI_GIAN,
+            CAST(NULL AS VARCHAR2(4000)) AS SQL_TEXT,
+            CAST(ACTION_NAME || ' ON ' || OBJ_NAME AS VARCHAR2(4000)) AS CHI_TIET,
+            CAST(TERMINAL AS VARCHAR2(128)) AS TERMINAL
+        FROM DBA_AUDIT_TRAIL
+        WHERE OWNER = 'ADMINHOS'
+          AND OBJ_NAME IN (
+              'HSBA',
+              'DONTHUOC',
+              'HSBA_DV',
+              'VW_NHANVIEN_SELF',
+              'VW_BENHNHAN_SELF',
+              'SP_CAPNHAT_KETLUAN_HSBA',
+              'FN_DEM_DONTHUOC'
+          )
+        UNION ALL
+        SELECT
+            CAST('FGA' AS VARCHAR2(20)) AS LOAI_AUDIT,
+            CAST(DB_USER AS VARCHAR2(128)) AS USER_NAME,
+            CAST(OBJECT_SCHEMA AS VARCHAR2(128)) AS OWNER,
+            CAST(OBJECT_NAME AS VARCHAR2(128)) AS DOI_TUONG,
+            CAST(STATEMENT_TYPE AS VARCHAR2(50)) AS HANH_VI,
+            CAST(POLICY_NAME AS VARCHAR2(128)) AS POLICY_NAME,
+            0 AS MA_LOI,
+            CAST(
+                CASE
+                    WHEN POLICY_NAME LIKE '%BATHOPPHAP%' THEN 'Canh bao'
+                    ELSE 'Ghi nhan FGA'
+                END AS VARCHAR2(50)
+            ) AS KET_QUA,
+            CAST(EXTENDED_TIMESTAMP AS DATE) AS THOI_GIAN,
+            CAST(SUBSTR(SQL_TEXT, 1, 4000) AS VARCHAR2(4000)) AS SQL_TEXT,
+            CAST(SUBSTR(SQL_TEXT, 1, 4000) AS VARCHAR2(4000)) AS CHI_TIET,
+            CAST(USERHOST AS VARCHAR2(128)) AS TERMINAL
+        FROM DBA_FGA_AUDIT_TRAIL
+        WHERE OBJECT_SCHEMA = 'ADMINHOS'
+          AND POLICY_NAME IN (
+              'FGA_DONTHUOC_UPDATE',
+              'FGA_HSBA_UPDATE_HOPPHAP',
+              'FGA_HSBA_UPDATE_BATHOPPHAP',
+              'FGA_HSBA_DV_INSERT_BATHOPPHAP',
+              'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
+          )
+    )
+    ORDER BY THOI_GIAN DESC;
+END;
+/
+
+-- 2. Thống kê dashboard QTV
+CREATE OR REPLACE PROCEDURE SP_GET_DASHBOARD_QTV (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT
+        (SELECT COUNT(*) FROM ADMINHOS.NHANVIEN) + (SELECT COUNT(*) FROM ADMINHOS.BENHNHAN) AS ACTIVE_USERS,
+        (SELECT COUNT(*) FROM DBA_AUDIT_TRAIL WHERE OWNER = 'ADMINHOS'
+         AND OBJ_NAME IN ('HSBA', 'DONTHUOC', 'HSBA_DV', 'VW_NHANVIEN_SELF', 'VW_BENHNHAN_SELF', 'SP_CAPNHAT_KETLUAN_HSBA', 'FN_DEM_DONTHUOC')) +
+        (SELECT COUNT(*) FROM DBA_FGA_AUDIT_TRAIL WHERE OBJECT_SCHEMA = 'ADMINHOS'
+         AND POLICY_NAME IN ('FGA_DONTHUOC_UPDATE', 'FGA_HSBA_UPDATE_HOPPHAP', 'FGA_HSBA_UPDATE_BATHOPPHAP', 'FGA_HSBA_DV_INSERT_BATHOPPHAP', 'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP')) AS TOTAL_AUDIT,
+        (SELECT COUNT(*) FROM DBA_AUDIT_TRAIL WHERE OWNER = 'ADMINHOS' AND RETURNCODE != 0
+         AND OBJ_NAME IN ('HSBA', 'DONTHUOC', 'HSBA_DV', 'VW_NHANVIEN_SELF', 'VW_BENHNHAN_SELF', 'SP_CAPNHAT_KETLUAN_HSBA', 'FN_DEM_DONTHUOC')) +
+        (SELECT COUNT(*) FROM DBA_FGA_AUDIT_TRAIL WHERE OBJECT_SCHEMA = 'ADMINHOS' AND POLICY_NAME LIKE '%BATHOPPHAP%') AS ABNORMAL_ALERTS
+    FROM DUAL;
+END;
+/
+
+-- 3. Thống kê dashboard DPV
+CREATE OR REPLACE PROCEDURE SP_GET_DASHBOARD_DPV (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        (SELECT COUNT(DISTINCT MAKTV) 
+         FROM ADMINHOS.HSBA_DV 
+         WHERE TRUNC(NGAYDV) = TRUNC(SYSDATE) AND MAKTV IS NOT NULL) AS ACTIVE_KTVS,
+        (SELECT COUNT(*) 
+         FROM ADMINHOS.HSBA_DV 
+         WHERE MAKTV IS NULL) AS PENDING_KTV,
+        (SELECT COUNT(*) 
+         FROM ADMINHOS.HSBA_DV 
+         WHERE KETQUA IS NOT NULL AND TRUNC(NGAYDV) = TRUNC(SYSDATE)) AS COMPLETED_SERVICES,
+        (SELECT COUNT(*) 
+         FROM ADMINHOS.VW_THONGBAO_APP
+         WHERE TRUNC(NGAYGIO) = TRUNC(SYSDATE)) AS TODAY_NOTICES
+    FROM DUAL;
+END;
+/
+
+-- 4. Danh sách bệnh nhân cần phân công KTV
+CREATE OR REPLACE PROCEDURE SP_GET_PATIENTS_NEED_ASSIGNMENT (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        DV.MAHSBA,
+        BN.TENBN AS TEN_BENH_NHAN,
+        COALESCE(
+            NV.CHUYENKHOA,
+            CASE HS.MAKHOA
+                WHEN 'KTH' THEN N'Khoa tiêu hóa'
+                WHEN 'KTK' THEN N'Khoa thần kinh'
+                WHEN 'KTM' THEN N'Khoa tim mạch'
+                ELSE N'Chưa xác định'
+            END
+        ) AS KHOA,
+        DV.LOAIDV AS DICH_VU_CAN
+    FROM ADMINHOS.HSBA_DV DV
+    JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+    JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI NV ON HS.MABS = NV.MANV AND NV.VAITRO = N'Bác sĩ/Y sĩ'
+    WHERE DV.MAKTV IS NULL;
+END;
+/
+
+-- 5. Thống kê dashboard BS
+CREATE OR REPLACE PROCEDURE SP_GET_DASHBOARD_BS (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT
+        (SELECT COUNT(*) FROM ADMINHOS.HSBA WHERE MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')) AS MANAGED_HSBAS,
+        (SELECT COUNT(DISTINCT DV.MAHSBA)
+         FROM ADMINHOS.HSBA_DV DV
+         JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+         WHERE HS.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
+           AND DV.MAKTV IS NULL) AS PENDING_KTV,
+        (SELECT COUNT(DISTINCT DV.MAHSBA)
+         FROM ADMINHOS.HSBA_DV DV
+         JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+         WHERE HS.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
+           AND DV.MAKTV IS NOT NULL
+           AND (DV.KETQUA IS NULL OR DV.KETQUA = N'Chưa có kết quả')) AS PENDING_RESULTS,
+        (SELECT COUNT(*)
+         FROM ADMINHOS.VW_THONGBAO_APP
+         WHERE TRUNC(NGAYGIO) = TRUNC(SYSDATE)) AS TODAY_NOTICES
+    FROM DUAL;
+END;
+/
+
+-- 6. Danh sách HSBA lập trong tháng của bác sĩ
+CREATE OR REPLACE PROCEDURE SP_GET_RECENT_HSBA_THIS_MONTH (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        HS.MAHSBA,
+        BN.TENBN,
+        BN.MABN,
+        BN.PHAI,
+        FLOOR(MONTHS_BETWEEN(SYSDATE, BN.NGAYSINH) / 12) AS TUOI,
+        HS.NGAY,
+        HS.CHANDOAN
+    FROM ADMINHOS.HSBA HS
+    JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    WHERE HS.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
+      AND TRUNC(HS.NGAY, 'MM') = TRUNC(SYSDATE, 'MM')
+    ORDER BY HS.NGAY DESC, HS.MAHSBA DESC;
+END;
+/
+
+-- 7. Danh sách đơn thuốc của bác sĩ quản lý
+CREATE OR REPLACE PROCEDURE SP_GET_PRESCRIPTIONS_FOR_DOCTOR (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT
+        DT.MAHSBA,
+        DT.NGAYDT,
+        HS.MABN,
+        BN.TENBN,
+        BN.PHAI,
+        FLOOR(MONTHS_BETWEEN(SYSDATE, BN.NGAYSINH) / 12) AS TUOI,
+        DT.TENTHUOC,
+        DT.LIEUDUNG
+    FROM ADMINHOS.DONTHUOC DT
+    JOIN ADMINHOS.HSBA HS ON DT.MAHSBA = HS.MAHSBA
+    JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    ORDER BY DT.NGAYDT DESC, DT.MAHSBA ASC;
+END;
+/
+
+-- 8. Thêm thuốc mới
+CREATE OR REPLACE PROCEDURE SP_INSERT_DRUG (
+    p_mahsba IN VARCHAR2,
+    p_ngaydt IN DATE,
+    p_tenthuoc IN NVARCHAR2,
+    p_lieudung IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    INSERT INTO ADMINHOS.DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG)
+    VALUES (p_mahsba, p_ngaydt, p_tenthuoc, p_lieudung);
+    COMMIT;
+END;
+/
+
+-- 9. Cập nhật thuốc
+CREATE OR REPLACE PROCEDURE SP_UPDATE_DRUG (
+    p_mahsba IN VARCHAR2,
+    p_ngaydt IN DATE,
+    p_old_tenthuoc IN NVARCHAR2,
+    p_new_tenthuoc IN NVARCHAR2,
+    p_new_lieudung IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    UPDATE ADMINHOS.DONTHUOC
+    SET TENTHUOC = p_new_tenthuoc,
+        LIEUDUNG = p_new_lieudung
+    WHERE MAHSBA = p_mahsba
+      AND NGAYDT = p_ngaydt
+      AND TENTHUOC = p_old_tenthuoc;
+    COMMIT;
+END;
+/
+
+-- 10. Xóa thuốc
+CREATE OR REPLACE PROCEDURE SP_DELETE_DRUG (
+    p_mahsba IN VARCHAR2,
+    p_ngaydt IN DATE,
+    p_tenthuoc IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    DELETE FROM ADMINHOS.DONTHUOC
+    WHERE MAHSBA = p_mahsba
+      AND NGAYDT = p_ngaydt
+      AND TENTHUOC = p_tenthuoc;
+    COMMIT;
+END;
+/
+
+-- 11. Lấy thông tin cá nhân nhân viên
+CREATE OR REPLACE PROCEDURE SP_GET_PROFILE (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT MANV, HOTEN, PHAI, NGAYSINH, CMND, QUEQUAN, SODT, VAITRO, CHUYENKHOA, COSO 
+    FROM ADMINHOS.VW_NHANVIEN_SELF;
+END;
+/
+
+-- 12. Lấy thống kê hồ sơ của nhân viên
+CREATE OR REPLACE PROCEDURE SP_GET_PROFILE_STATS (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        (SELECT COUNT(*) FROM ADMINHOS.HSBA) AS SO_HSBA,
+        (
+            SELECT COUNT(*) 
+            FROM ADMINHOS.HSBA_DV DV
+            JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+        ) AS SO_PHAN_CONG,
+        (SELECT COUNT(DISTINCT MABN) FROM ADMINHOS.HSBA) AS SO_BENH_NHAN
+    FROM DUAL;
+END;
+/
+
+-- 13. Cập nhật hồ sơ nhân viên
+CREATE OR REPLACE PROCEDURE SP_UPDATE_PROFILE (
+    p_sodt IN VARCHAR2,
+    p_quequan IN NVARCHAR2,
+    p_manv IN VARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    UPDATE ADMINHOS.VW_NHANVIEN_SELF
+    SET SODT = p_sodt,
+        QUEQUAN = p_quequan
+    WHERE MANV = p_manv;
+    COMMIT;
+END;
+/
+
+-- 14. Lấy toàn bộ bệnh nhân
+CREATE OR REPLACE PROCEDURE SP_GET_ALL_PATIENTS (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT MABN, TENBN, PHAI, NGAYSINH, CCCD, SONHA, TENDUONG, QUANHUYEN, TINHTP, TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC 
+    FROM ADMINHOS.BENHNHAN
+    ORDER BY MABN;
+END;
+/
+
+-- 15. Tìm kiếm bệnh nhân
+CREATE OR REPLACE PROCEDURE SP_SEARCH_PATIENT (
+    p_query IN VARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT MABN, TENBN, PHAI, NGAYSINH, CCCD, SONHA, TENDUONG, QUANHUYEN, TINHTP, TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC 
+    FROM ADMINHOS.BENHNHAN
+    WHERE LOWER(MABN) = LOWER(p_query)
+       OR LOWER(TENBN) = LOWER(p_query)
+       OR CCCD = p_query;
+END;
+/
+
+-- 16. Lấy mã bệnh nhân kế tiếp
+CREATE OR REPLACE FUNCTION FN_GET_NEXT_PATIENT_ID
+RETURN VARCHAR2
+AS
+    v_next_num NUMBER;
+BEGIN
+    SELECT NVL(MAX(TO_NUMBER(SUBSTR(MABN, 3))), 0) + 1
+    INTO v_next_num
+    FROM BENHNHAN
+    WHERE MABN LIKE 'BN%';
+    RETURN 'BN' || TO_CHAR(v_next_num, 'FM000000');
+END;
+/
+
+-- 17. Thêm bệnh nhân mới
+CREATE OR REPLACE PROCEDURE SP_INSERT_PATIENT (
+    p_mabn IN VARCHAR2,
+    p_tenbn IN NVARCHAR2,
+    p_phai IN NVARCHAR2,
+    p_ngaysinh IN DATE,
+    p_cccd IN VARCHAR2,
+    p_sonha IN NVARCHAR2,
+    p_tenduong IN NVARCHAR2,
+    p_quanhuyen IN NVARCHAR2,
+    p_tinhtp IN NVARCHAR2,
+    p_tiensubenh IN NVARCHAR2,
+    p_tiensubenhgd IN NVARCHAR2,
+    p_diungthuoc IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    INSERT INTO ADMINHOS.BENHNHAN (
+        MABN, TENBN, PHAI, NGAYSINH, CCCD, 
+        SONHA, TENDUONG, QUANHUYEN, TINHTP, 
+        TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC
+    ) VALUES (
+        p_mabn, p_tenbn, p_phai, p_ngaysinh, p_cccd, 
+        p_sonha, p_tenduong, p_quanhuyen, p_tinhtp, 
+        p_tiensubenh, p_tiensubenhgd, p_diungthuoc
+    );
+    COMMIT;
+END;
+/
+
+-- 18. Cập nhật bệnh nhân
+CREATE OR REPLACE PROCEDURE SP_UPDATE_PATIENT (
+    p_mabn IN VARCHAR2,
+    p_tenbn IN NVARCHAR2,
+    p_phai IN NVARCHAR2,
+    p_ngaysinh IN DATE,
+    p_cccd IN VARCHAR2,
+    p_sonha IN NVARCHAR2,
+    p_tenduong IN NVARCHAR2,
+    p_quanhuyen IN NVARCHAR2,
+    p_tinhtp IN NVARCHAR2,
+    p_tiensubenh IN NVARCHAR2,
+    p_tiensubenhgd IN NVARCHAR2,
+    p_diungthuoc IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    UPDATE ADMINHOS.BENHNHAN 
+    SET TENBN = p_tenbn, 
+        PHAI = p_phai, 
+        NGAYSINH = p_ngaysinh, 
+        CCCD = p_cccd, 
+        SONHA = p_sonha, 
+        TENDUONG = p_tenduong, 
+        QUANHUYEN = p_quanhuyen, 
+        TINHTP = p_tinhtp, 
+        TIENSUBENH = p_tiensubenh, 
+        TIENSUBENHGD = p_tiensubenhgd, 
+        DIUNGTHUOC = p_diungthuoc
+    WHERE MABN = p_mabn;
+    COMMIT;
+END;
+/
+
+-- 19. Lấy danh sách bệnh nhân cho bác sĩ
+CREATE OR REPLACE PROCEDURE SP_GET_PATIENTS_FOR_DOCTOR (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT
+        BN.MABN,
+        BN.TENBN,
+        BN.PHAI,
+        BN.NGAYSINH,
+        FLOOR(MONTHS_BETWEEN(SYSDATE, BN.NGAYSINH) / 12) AS TUOI,
+        BN.CCCD,
+        BN.SONHA,
+        BN.TENDUONG,
+        BN.QUANHUYEN,
+        BN.TINHTP,
+        BN.TIENSUBENH,
+        BN.TIENSUBENHGD,
+        BN.DIUNGTHUOC,
+        (
+            SELECT COUNT(*)
+            FROM ADMINHOS.HSBA HS
+            WHERE HS.MABN = BN.MABN
+        ) AS SO_HSBA,
+        (
+            SELECT COUNT(*)
+            FROM ADMINHOS.DONTHUOC DT
+            JOIN ADMINHOS.HSBA HS ON DT.MAHSBA = HS.MAHSBA
+            WHERE HS.MABN = BN.MABN
+        ) AS SO_DONTHUOC
+    FROM ADMINHOS.BENHNHAN BN
+    ORDER BY BN.MABN;
+END;
+/
+
+-- 20. Cập nhật tiền sử bệnh nhân
+CREATE OR REPLACE PROCEDURE SP_UPDATE_PATIENT_HISTORY (
+    p_mabn IN VARCHAR2,
+    p_allergy IN NVARCHAR2,
+    p_medical_history IN NVARCHAR2,
+    p_family_history IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    UPDATE ADMINHOS.BENHNHAN
+    SET DIUNGTHUOC = p_allergy,
+        TIENSUBENH = p_medical_history,
+        TIENSUBENHGD = p_family_history
+    WHERE MABN = p_mabn;
+    COMMIT;
+END;
+/
+
+-- 21. Thêm HSBA mới
+CREATE OR REPLACE PROCEDURE SP_INSERT_HSBA (
+    p_mahsba IN VARCHAR2,
+    p_mabn IN VARCHAR2,
+    p_ngay IN DATE,
+    p_chandoan IN NVARCHAR2,
+    p_dieutri IN NVARCHAR2,
+    p_mabs IN VARCHAR2,
+    p_makhoa IN VARCHAR2,
+    p_ketluan IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    INSERT INTO ADMINHOS.HSBA (
+        MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN
+    ) VALUES (
+        p_mahsba, p_mabn, p_ngay, p_chandoan, p_dieutri, p_mabs, p_makhoa, p_ketluan
+    );
+    COMMIT;
+END;
+/
+
+-- 22. Lấy danh sách bác sĩ cho giao diện tạo HSBA
+CREATE OR REPLACE PROCEDURE SP_GET_DOCTORS_FOR_TAOHSBA (
+    p_specialty IN NVARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT MANV, HOTEN, CHUYENKHOA
+    FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI
+    WHERE VAITRO = N'Bác sĩ/Y sĩ'
+      AND CHUYENKHOA = p_specialty
+    ORDER BY MANV ASC;
+END;
+/
+
+-- 23. Lấy danh sách chuyên khoa
+CREATE OR REPLACE PROCEDURE SP_GET_DEPARTMENTS (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT DISTINCT CHUYENKHOA 
+    FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI 
+    WHERE CHUYENKHOA IS NOT NULL 
+      AND VAITRO = N'Bác sĩ/Y sĩ'
+    ORDER BY CHUYENKHOA ASC;
+END;
+/
+
+-- 24. Lấy danh sách HSBA cho điều phối
+CREATE OR REPLACE PROCEDURE SP_GET_HSBA_FOR_DIEUPHOI (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        HS.MAHSBA,
+        HS.MABN,
+        BN.TENBN AS TEN_BENH_NHAN,
+        HS.NGAY,
+        HS.CHANDOAN,
+        HS.DIEUTRI,
+        HS.MABS,
+        HS.MAKHOA,
+        BS.HOTEN AS TEN_BACSI,
+        BS.CHUYENKHOA AS CHUYENKHOA_BACSI,
+        HS.KETLUAN,
+        CASE WHEN HS.MABS IS NULL OR BS.MANV IS NOT NULL THEN 1 ELSE 0 END AS CUNG_CO_SO
+    FROM ADMINHOS.HSBA HS
+    LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI BS ON HS.MABS = BS.MANV AND TRIM(BS.VAITRO) = N'Bác sĩ/Y sĩ'
+    ORDER BY HS.MAHSBA;
+END;
+/
+
+-- 25. Điều phối bác sĩ khoa phòng cho HSBA
+CREATE OR REPLACE PROCEDURE SP_UPDATE_HSBA_DEPT_DOC (
+    p_mahsba IN VARCHAR2,
+    p_makhoa IN VARCHAR2,
+    p_mabs IN VARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    UPDATE ADMINHOS.HSBA
+    SET MAKHOA = p_makhoa,
+        MABS = p_mabs
+    WHERE MAHSBA = p_mahsba;
+    COMMIT;
+END;
+/
+
+-- 26. Lấy danh sách HSBA cho bác sĩ
+CREATE OR REPLACE PROCEDURE SP_GET_HSBA_FOR_DOCTOR (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        HS.MAHSBA,
+        HS.MABN,
+        BN.TENBN AS TEN_BENH_NHAN,
+        BN.PHAI AS GIOI_TINH,
+        BN.NGAYSINH,
+        BN.CCCD,
+        BN.SONHA,
+        BN.TENDUONG,
+        BN.QUANHUYEN,
+        BN.TINHTP,
+        BN.DIUNGTHUOC,
+        BN.TIENSUBENH,
+        HS.NGAY,
+        HS.CHANDOAN,
+        HS.DIEUTRI,
+        HS.MAKHOA,
+        HS.KETLUAN
+    FROM ADMINHOS.HSBA HS
+    LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    ORDER BY HS.NGAY DESC;
+END;
+/
+
+-- 27. Lấy danh sách dịch vụ của HSBA
+CREATE OR REPLACE PROCEDURE SP_GET_SERVICES_FOR_HSBA (
+    p_mahsba IN VARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT LOAIDV, NGAYDV, MAKTV, KETQUA
+    FROM ADMINHOS.HSBA_DV
+    WHERE MAHSBA = p_mahsba
+    ORDER BY NGAYDV ASC;
+END;
+/
+
+-- 28. Xóa dịch vụ kỹ thuật chưa thực hiện khỏi HSBA
+CREATE OR REPLACE PROCEDURE SP_DELETE_HSBA_SERVICE (
+    p_mahsba IN VARCHAR2,
+    p_loaidv IN NVARCHAR2,
+    p_ngaydv IN DATE
+)
+AUTHID DEFINER
+AS
+BEGIN
+    DELETE FROM ADMINHOS.HSBA_DV
+    WHERE MAHSBA = p_mahsba
+      AND LOAIDV = p_loaidv
+      AND NGAYDV = p_ngaydv
+      AND MAKTV IS NULL;
+    COMMIT;
+END;
+/
+
+-- 29. Lấy danh sách đơn thuốc của HSBA
+CREATE OR REPLACE PROCEDURE SP_GET_PRESCRIPTIONS_FOR_HSBA (
+    p_mahsba IN VARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT TENTHUOC, LIEUDUNG
+    FROM ADMINHOS.DONTHUOC
+    WHERE MAHSBA = p_mahsba
+    ORDER BY NGAYDT ASC;
+END;
+/
+
+-- 30. Cập nhật chi tiết chẩn đoán và điều trị của HSBA
+CREATE OR REPLACE PROCEDURE SP_UPDATE_HSBA_DETAILS (
+    p_mahsba IN VARCHAR2,
+    p_chandoan IN NVARCHAR2,
+    p_dieutri IN NVARCHAR2,
+    p_ketluan IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    UPDATE ADMINHOS.HSBA
+    SET CHANDOAN = p_chandoan,
+        DIEUTRI = p_dieutri
+    WHERE MAHSBA = p_mahsba;
+    
+    -- Gọi SP cập nhật kết luận cũ
+    SP_CAPNHAT_KETLUAN_HSBA(p_mahsba, p_ketluan);
+    COMMIT;
+END;
+/
+
+-- 31. Chỉ định dịch vụ kỹ thuật cho HSBA
+CREATE OR REPLACE PROCEDURE SP_INSERT_HSBA_SERVICE (
+    p_mahsba IN VARCHAR2,
+    p_loaidv IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    INSERT INTO ADMINHOS.HSBA_DV (
+        MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA
+    ) VALUES (
+        p_mahsba, p_loaidv, SYSDATE, NULL, N'Chưa có kết quả'
+    );
+    COMMIT;
+END;
+/
+
+-- 32. Kê đơn thuốc mới cho HSBA
+CREATE OR REPLACE PROCEDURE SP_INSERT_DONTHUOC (
+    p_mahsba IN VARCHAR2,
+    p_tenthuoc IN NVARCHAR2,
+    p_lieudung IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    INSERT INTO ADMINHOS.DONTHUOC (
+        MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG
+    ) VALUES (
+        p_mahsba, SYSDATE, p_tenthuoc, p_lieudung
+    );
+    COMMIT;
+END;
+/
+
+-- 33. Lấy danh sách HSBA của bệnh nhân
+CREATE OR REPLACE PROCEDURE SP_GET_HSBA_FOR_PATIENT (
+    p_mabn IN VARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        HS.MAHSBA,
+        HS.MABN,
+        BN.TENBN AS TEN_BENH_NHAN,
+        BN.PHAI AS GIOI_TINH,
+        BN.NGAYSINH,
+        BN.CCCD,
+        BN.SONHA,
+        BN.TENDUONG,
+        BN.QUANHUYEN,
+        BN.TINHTP,
+        BN.DIUNGTHUOC,
+        BN.TIENSUBENH,
+        HS.NGAY,
+        HS.CHANDOAN,
+        HS.DIEUTRI,
+        HS.MAKHOA,
+        HS.KETLUAN
+    FROM ADMINHOS.HSBA HS
+    LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    WHERE HS.MABN = p_mabn
+    ORDER BY HS.NGAY DESC;
+END;
+/
+
+-- 34. Lấy chi tiết HSBA theo mã
+CREATE OR REPLACE PROCEDURE SP_GET_HSBA_DETAILS_BY_ID (
+    p_mahsba IN VARCHAR2,
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        HS.MAHSBA,
+        HS.MABN,
+        BN.TENBN AS TEN_BENH_NHAN,
+        BN.PHAI AS GIOI_TINH,
+        BN.NGAYSINH,
+        BN.CCCD,
+        BN.SONHA,
+        BN.TENDUONG,
+        BN.QUANHUYEN,
+        BN.TINHTP,
+        BN.DIUNGTHUOC,
+        BN.TIENSUBENH,
+        HS.NGAY,
+        HS.CHANDOAN,
+        HS.DIEUTRI,
+        HS.MAKHOA,
+        HS.KETLUAN
+    FROM ADMINHOS.HSBA HS
+    LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    WHERE HS.MAHSBA = p_mahsba;
+END;
+/
+
+-- 35. Lay danh sach yeu cau dich vu cho phan cong
+CREATE OR REPLACE PROCEDURE SP_GET_ALL_SERVICE_REQUESTS (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        DV.MAHSBA,
+        BN.MABN AS MA_BENH_NHAN,
+        BN.TENBN AS TEN_BENH_NHAN,
+        DV.LOAIDV AS DICH_VU_CAN,
+        DV.NGAYDV AS NGAY_DICH_VU,
+        DV.KETQUA AS KET_QUA,
+        DV.MAKTV AS MA_KTV,
+        CASE 
+            WHEN DV.MAKTV IS NULL THEN N'Chưa phân công'
+            ELSE NV.HOTEN
+            END AS KTV_PHU_TRACH,
+        CASE 
+            WHEN DV.MAKTV IS NULL THEN N'Chờ phân công'
+            WHEN DV.KETQUA = N'Chưa có kết quả' THEN N'Đã phân công'
+            ELSE N'Hoàn thành'
+        END AS TRANG_THAI
+    FROM ADMINHOS.HSBA_DV DV
+    JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
+    JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI NV 
+        ON DV.MAKTV = NV.MANV 
+        AND NV.VAITRO = N'Kỹ thuật viên'
+    ORDER BY DV.NGAYDV DESC, DV.MAHSBA DESC;
+END;
+/
+
+-- 36. Lay danh sach ky thuat vien
+CREATE OR REPLACE PROCEDURE SP_GET_ALL_TECHNICIANS (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT 
+        NV.MANV,
+        NV.HOTEN,
+        NV.CHUYENKHOA
+    FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI NV
+    WHERE NV.VAITRO = N'Kỹ thuật viên'
+    ORDER BY NV.MANV ASC;
+END;
+/
+
+-- 37. Phan cong ky thuat vien cho dich vu
+CREATE OR REPLACE PROCEDURE SP_ASSIGN_TECHNICIAN (
+    p_mahsba IN VARCHAR2,
+    p_loaidv IN NVARCHAR2,
+    p_maktv IN VARCHAR2
+)
+AUTHID DEFINER
+AS
+BEGIN
+    UPDATE ADMINHOS.HSBA_DV 
+    SET MAKTV = p_maktv
+    WHERE MAHSBA = p_mahsba AND LOAIDV = p_loaidv;
+    COMMIT;
+END;
+/
+
+-- 38. Lay danh sach thong bao
+CREATE OR REPLACE PROCEDURE SP_GET_NOTIFICATIONS (
+    p_cursor OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT MATB, NOIDUNG, NGAYGIO, DIADIEM, NHAN_OLS 
+    FROM ADMINHOS.VW_THONGBAO_APP 
+    ORDER BY NGAYGIO DESC;
+END;
+/
+
+-- Cấp quyền thực thi cho các role và user
+GRANT EXECUTE ON SP_XEM_AUDIT_LOG TO admin_ph2;
+GRANT EXECUTE ON SP_XEM_AUDIT_LOG TO DBA;
+
+GRANT EXECUTE ON SP_GET_DASHBOARD_QTV TO admin_ph2;
+GRANT EXECUTE ON SP_GET_DASHBOARD_QTV TO DBA;
+
+DECLARE
+    -- Mảng chứa các SP/FN của Điều phối viên
+    TYPE t_name_list IS TABLE OF VARCHAR2(100);
+    v_dpv_procs t_name_list := t_name_list(
+        'SP_GET_DASHBOARD_DPV',
+        'SP_GET_PATIENTS_NEED_ASSIGNMENT',
+        'SP_GET_ALL_PATIENTS',
+        'SP_SEARCH_PATIENT',
+        'FN_GET_NEXT_PATIENT_ID',
+        'SP_INSERT_PATIENT',
+        'SP_UPDATE_PATIENT',
+        'SP_INSERT_HSBA',
+        'SP_GET_DOCTORS_FOR_TAOHSBA',
+        'SP_GET_DEPARTMENTS',
+        'SP_GET_HSBA_FOR_DIEUPHOI',
+        'SP_UPDATE_HSBA_DEPT_DOC',
+        'SP_GET_ALL_SERVICE_REQUESTS',
+        'SP_GET_ALL_TECHNICIANS',
+        'SP_ASSIGN_TECHNICIAN'
+    );
+    
+    -- Mảng chứa các SP/FN của Bác sĩ/Y sĩ
+    v_bs_procs t_name_list := t_name_list(
+        'SP_GET_DASHBOARD_BS',
+        'SP_GET_RECENT_HSBA_THIS_MONTH',
+        'SP_GET_PRESCRIPTIONS_FOR_DOCTOR',
+        'SP_INSERT_DRUG',
+        'SP_UPDATE_DRUG',
+        'SP_DELETE_DRUG',
+        'SP_UPDATE_PATIENT_HISTORY',
+        'SP_GET_PATIENTS_FOR_DOCTOR',
+        'SP_GET_HSBA_FOR_DOCTOR',
+        'SP_GET_SERVICES_FOR_HSBA',
+        'SP_DELETE_HSBA_SERVICE',
+        'SP_GET_PRESCRIPTIONS_FOR_HSBA',
+        'SP_UPDATE_HSBA_DETAILS',
+        'SP_INSERT_HSBA_SERVICE',
+        'SP_INSERT_DONTHUOC',
+        'SP_GET_HSBA_FOR_PATIENT',
+        'SP_GET_HSBA_DETAILS_BY_ID',
+        'FN_DEM_DONTHUOC',
+        'SP_CAPNHAT_KETLUAN_HSBA'
+    );
+    
+    -- Mảng chứa các SP/FN dùng chung cho cả hai vai trò
+    v_common_procs t_name_list := t_name_list(
+        'SP_GET_PROFILE',
+        'SP_GET_PROFILE_STATS',
+        'SP_UPDATE_PROFILE',
+        'SP_GET_NOTIFICATIONS'
+    );
+BEGIN
+    -- 1. Cấp quyền cho Điều phối viên (DPV)
+    FOR u IN (
+        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = N'Điều phối viên'
+    ) LOOP
+        -- Cấp SP riêng của DPV
+        FOR i IN 1..v_dpv_procs.COUNT LOOP
+            EXECUTE IMMEDIATE 'GRANT EXECUTE ON ADMINHOS.' || v_dpv_procs(i) || ' TO ' || u.MANV;
+        END LOOP;
+        
+        -- Cấp SP dùng chung
+        FOR i IN 1..v_common_procs.COUNT LOOP
+            EXECUTE IMMEDIATE 'GRANT EXECUTE ON ADMINHOS.' || v_common_procs(i) || ' TO ' || u.MANV;
+        END LOOP;
+    END LOOP;
+
+    -- 2. Cấp quyền cho Bác sĩ/Y sĩ (BS)
+    FOR u IN (
+        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = N'Bác sĩ/Y sĩ'
+    ) LOOP
+        -- Cấp SP riêng của BS
+        FOR i IN 1..v_bs_procs.COUNT LOOP
+            EXECUTE IMMEDIATE 'GRANT EXECUTE ON ADMINHOS.' || v_bs_procs(i) || ' TO ' || u.MANV;
+        END LOOP;
+        
+        -- Cấp SP dùng chung
+        FOR i IN 1..v_common_procs.COUNT LOOP
+            EXECUTE IMMEDIATE 'GRANT EXECUTE ON ADMINHOS.' || v_common_procs(i) || ' TO ' || u.MANV;
+        END LOOP;
+    END LOOP;
+END;
+/
+
+
+-- Chạy thử thủ tục kiểm toán
+SET SERVEROUTPUT ON;
+VARIABLE test_cur REFCURSOR;
+EXEC SP_XEM_AUDIT_LOG(:test_cur);
+PRINT test_cur;
+
+
 -- Tại đây 
 -- Chèn 10 HSBA cho BS0001
 INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)

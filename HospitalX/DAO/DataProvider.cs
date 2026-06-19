@@ -50,6 +50,7 @@ namespace HospitalX.DAO
                     using (OracleCommand command = new OracleCommand(query, connection))
                     {
                         command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+                        command.BindByName = true;
 
                         if (parameters != null)
                             command.Parameters.AddRange(parameters);
@@ -81,6 +82,7 @@ namespace HospitalX.DAO
                             using (OracleCommand command = new OracleCommand(query, connection))
                             {
                                 command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+                                command.BindByName = true;
 
                                 if (parameters != null)
                                 {
@@ -119,11 +121,16 @@ namespace HospitalX.DAO
                     using (OracleCommand command = new OracleCommand(query, connection))
                     {
                         command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+                        command.BindByName = true;
 
                         if (parameters != null)
                             command.Parameters.AddRange(parameters);
 
                         data = command.ExecuteNonQuery();
+                        if (isStoredProc && data == -1)
+                        {
+                            data = 1; // Map -1 to 1 to represent successful execution of stored procedure for DAO success checks (result > 0)
+                        }
                     }
                 }
             }
@@ -147,6 +154,7 @@ namespace HospitalX.DAO
                             using (OracleCommand command = new OracleCommand(query, connection))
                             {
                                 command.CommandType = isStoredProc ? CommandType.StoredProcedure : CommandType.Text;
+                                command.BindByName = true;
 
                                 if (parameters != null)
                                 {
@@ -157,6 +165,10 @@ namespace HospitalX.DAO
                                 }
 
                                 data = command.ExecuteNonQuery();
+                                if (isStoredProc && data == -1)
+                                {
+                                    data = 1; // Map -1 to 1 to represent successful execution of stored procedure
+                                }
                             }
                         }
                         success = true;
