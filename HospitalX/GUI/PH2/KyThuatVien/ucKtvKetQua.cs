@@ -743,10 +743,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             btnComplete.TextOffset = new Point(0, 0);
             btnComplete.Click += (s, e) =>
             {
-                string details = $"Máº­t Ä‘á»™/HÃ¬nh áº£nh: {txtDensity.Text}; MÃ´ táº£ tá»•n thÆ°Æ¡ng: {txtLesion.Text}; Káº¿t luáº­n: {cboConclusion.Text}";
+                if (activeService == null) return;
+                string details = $"Mật độ/Hình ảnh: {txtDensity.Text}; Mô tả tổn thương: {txtLesion.Text}; Kết luận: {cboConclusion.Text}";
                 string note = txtRemarks.Text.Trim();
-                activeService.KetQua = string.IsNullOrWhiteSpace(note) ? details : details + ". Ghi chÃº: " + note;
-                ShowToastNotification("ÄÃ£ lÆ°u KETQUA vÃ o HSBA_DV thÃ nh cÃ´ng!");
+                string res = string.IsNullOrWhiteSpace(note) ? details : details + ". Ghi chú: " + note;
+                bool ok = KtvData.UpdateServiceResult(activeService.MaHsba, activeService.Service, activeService.NgayDv, res);
+                if (ok)
+                {
+                    activeService.KetQua = res;
+                    ShowToastNotification("✅ Đã lưu KETQUA vào HSBA_DV thành công!");
+                }
+                else
+                {
+                    ShowToastNotification("❌ Không thể lưu kết quả! Vui lòng thử lại.");
+                }
             };
             pnlFormContainer.Controls.Add(btnComplete);
 
@@ -1252,32 +1262,54 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblActionsKtvInfo = KtvTheme.Label("Ká»¹ thuáº­t viÃªn: Nguyá»…n Thá»‹ Thu Â· Khoa xÃ©t nghiá»‡m", 20, 26, 9F, FontStyle.Bold, KtvTheme.TextMid);
             cardActions.Controls.Add(lblActionsKtvInfo);
 
-            // Buttons â€” only 2 actions: LÆ°u káº¿t quáº£ (set KETQUA) + Xem láº¡i
-            // btnSendDoctor removed â€” 'Äang thá»±c hiá»‡n' does not exist in HSBA_DV
-            btnSaveDraft = KtvTheme.Button("LÆ°u", Color.White, KtvTheme.TextMid);
+            btnSaveDraft = KtvTheme.Button("Lưu", Color.White, KtvTheme.TextMid);
             btnSaveDraft.BorderColor = KtvTheme.Border;
             btnSaveDraft.BorderThickness = 1;
             btnSaveDraft.Size = new Size(112, 40);
             btnSaveDraft.TextAlign = HorizontalAlignment.Center;
             btnSaveDraft.TextOffset = new Point(0, 0);
-            btnSaveDraft.Click += (s, e) => ShowToastNotification("ðŸ’¾ Káº¿t quáº£ Ä‘Ã£ Ä‘Æ°á»£c lÆ°u thÃ nh cÃ´ng! (KETQUA Ä‘Æ°á»£c cáº­p nháº­t)");
+            btnSaveDraft.Click += (s, e) =>
+            {
+                if (activeService == null) return;
+                string currentResult = txtRemarks.Text.Trim();
+                bool ok = KtvData.UpdateServiceResult(activeService.MaHsba, activeService.Service, activeService.NgayDv, currentResult);
+                if (ok)
+                {
+                    activeService.KetQua = currentResult;
+                    ShowToastNotification("💾 Đã lưu nháp KETQUA thành công!");
+                    BuildQueueItems();
+                }
+                else
+                {
+                    ShowToastNotification("❌ Lưu nháp thất bại! Vui lòng thử lại.");
+                }
+            };
             cardActions.Controls.Add(btnSaveDraft);
 
-            btnComplete = KtvTheme.Button("âœ… XÃ¡c nháº­n & HoÃ n thÃ nh", KtvTheme.Teal, Color.White);
-            btnComplete.Text = "XÃ¡c nháº­n hoÃ n táº¥t (KETQUA IS NOT NULL)";
+            btnComplete = KtvTheme.Button("✅ Xác nhận & Hoàn thành", KtvTheme.Teal, Color.White);
             btnComplete.Size = new Size(280, 40);
             btnComplete.TextAlign = HorizontalAlignment.Center;
             btnComplete.TextOffset = new Point(0, 0);
             btnComplete.Click += (s, e) =>
             {
-                activeService.KetQua = txtRemarks.Text.Trim().Length > 0
+                if (activeService == null) return;
+                string res = txtRemarks.Text.Trim().Length > 0
                     ? txtRemarks.Text.Trim()
-                    : (activeService.Service + ": káº¿t quáº£ bÃ¬nh thÆ°á»ng");
-                ShowToastNotification("âœ… ÄÃ£ lÆ°u KETQUA vÃ o HSBA_DV thÃ nh cÃ´ng!");
-                BuildQueueItems();
-                var next = allServices.FirstOrDefault(x => x.Status != "HoÃ n thÃ nh");
-                if (next != null) SelectPatient(next);
-                else SelectPatient(allServices.First());
+                    : (activeService.Service + ": kết quả bình thường");
+                bool ok = KtvData.UpdateServiceResult(activeService.MaHsba, activeService.Service, activeService.NgayDv, res);
+                if (ok)
+                {
+                    activeService.KetQua = res;
+                    ShowToastNotification("✅ Đã lưu KETQUA vào HSBA_DV thành công!");
+                    BuildQueueItems();
+                    var next = allServices.FirstOrDefault(x => x.Status != "Hoàn thành");
+                    if (next != null) SelectPatient(next);
+                    else SelectPatient(allServices.First());
+                }
+                else
+                {
+                    ShowToastNotification("❌ Không thể lưu kết quả! Vui lòng thử lại.");
+                }
             };
             cardActions.Controls.Add(btnComplete);
 
