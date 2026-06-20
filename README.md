@@ -124,11 +124,11 @@ Connect to `PDBHOSX` as `sysdba` and execute the SQL script packages:
 *   **Course**: Information System Security - FIT HCMUS (Class CQ2023/1)
 *   **Group**: CQ12
 *   **Members (Sorted by Student ID)**:
-    1.  Hoàng Quốc Việt (MSSV: 23120189)
-    2.  Trần Kim Yến (MSSV: 23120193) — Team Leader    
-    3.  Nguyễn Thị Trúc Hằng (MSSV: 23120201)
-    4.  Lê Hoàng Nhật Anh (MSSV: 23120209)
-    5.  Lê Lâm Trí Đức (MSSV: 23120237)
+1.  Hoàng Quốc Việt (MSSV: 23120189)
+2.  Trần Kim Yến (MSSV: 23120193) — Team Leader    
+3.  Nguyễn Thị Trúc Hằng (MSSV: 23120201)
+4.  Lê Hoàng Nhật Anh (MSSV: 23120209)
+5.  Lê Lâm Trí Đức (MSSV: 23120237)
 
 ---
 
