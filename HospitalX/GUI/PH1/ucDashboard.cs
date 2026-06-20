@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -346,77 +346,105 @@ namespace HospitalX.GUI.PH1
                 pnlTongUser.FillColor = Color.FromArgb(232, 244, 251);
                 pnlTongUser.Controls.Add(lblTotal);
 
-                int rowHeight = 49;
-                int rowGap = 6;
-
-                foreach (var (abbr, displayName, soUser, mau) in rolesList)
-                {
-                    // --- Cột 1: Avatar pill có chữ viết tắt màu nền theo role ---
-                    var pill = new Guna.UI2.WinForms.Guna2Panel
-                    {
-                        Size = new Size(49, 49),
-                        BorderRadius = 10,
-                        FillColor = mau,
-                        Margin = new Padding(0, 0, 0, rowGap),
-                    };
-                    var lblAbbr = new Label
-                    {
-                        Text = abbr,
-                        Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
-                        ForeColor = Color.White,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        Dock = DockStyle.Fill,
-                        BackColor = Color.Transparent,
-                    };
-                    pill.Controls.Add(lblAbbr);
-                    flpAvatar.Controls.Add(pill);
-
-                    // --- Cột 2: Tên hiển thị của role ---
-                    var namePanel = new Panel
-                    {
-                        Width = flpName.Width - 4,
-                        Height = rowHeight,
-                        BackColor = Color.Transparent,
-                        Margin = new Padding(0, 0, 0, rowGap),
-                    };
-                    var lblName = new Label
-                    {
-                        Text = displayName,
-                        Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                        ForeColor = Color.FromArgb(10, 42, 64),
-                        Location = new Point(0, (rowHeight - 20) / 2),
-                        AutoSize = true,
-                        BackColor = Color.Transparent,
-                    };
-                    namePanel.Controls.Add(lblName);
-                    flpName.Controls.Add(namePanel);
-
-                    // --- Cột 3: Số user thuộc role đó, căn phải ---
-                    var countPanel = new Panel
-                    {
-                        Width = flpCount.Width - 4,
-                        Height = rowHeight,
-                        BackColor = Color.Transparent,
-                        Margin = new Padding(0, 0, 0, rowGap),
-                    };
-                    var lblCount = new Label
-                    {
-                        Text = $"{soUser} user",
-                        Font = new Font("Segoe UI", 9.5f),
-                        ForeColor = Color.FromArgb(138, 168, 190),
-                        Dock = DockStyle.Fill,
-                        TextAlign = ContentAlignment.MiddleRight,
-                        BackColor = Color.Transparent,
-                    };
-                    countPanel.Controls.Add(lblCount);
-                    flpCount.Controls.Add(countPanel);
-                }
+                PopulateRoleDistributionList(rolesList);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("LoadRoleDistribution error: " + ex.Message);
                 // Fallback vào mock data nếu lỗi
                 LoadRoleDistributionMockData();
+            }
+        }
+
+        private void PopulateRoleDistributionList(List<(string abbr, string displayName, int count, Color color)> rolesList)
+        {
+            flpAvatar.Visible = false;
+            flpName.Visible = false;
+            flpCount.Visible = false;
+
+            FlowLayoutPanel flpRolesList = pnlRoleCard.Controls["flpRolesList"] as FlowLayoutPanel;
+            if (flpRolesList == null)
+            {
+                flpRolesList = new FlowLayoutPanel
+                {
+                    Name = "flpRolesList",
+                    Location = new Point(21, 81),
+                    Size = new Size(pnlRoleCard.Width - 55, 569),
+                    AutoScroll = true,
+                    FlowDirection = FlowDirection.TopDown,
+                    WrapContents = false,
+                    BackColor = Color.Transparent,
+                    Padding = new Padding(0, 0, 0, 15) // Add bottom padding to allow full scrolling of the last item
+                };
+                pnlRoleCard.Controls.Add(flpRolesList);
+            }
+            else
+            {
+                flpRolesList.Controls.Clear();
+                flpRolesList.Size = new Size(pnlRoleCard.Width - 55, 569);
+                flpRolesList.Padding = new Padding(0, 0, 0, 15);
+            }
+
+            int rowHeight = 49;
+            int rowGap = 6;
+
+            foreach (var (abbr, displayName, soUser, mau) in rolesList)
+            {
+                var rowPanel = new Panel
+                {
+                    Width = flpRolesList.Width - 25,
+                    Height = rowHeight,
+                    BackColor = Color.Transparent,
+                    Margin = new Padding(0, 0, 0, rowGap)
+                };
+
+                // --- Cột 1: Avatar pill ---
+                var pill = new Guna.UI2.WinForms.Guna2Panel
+                {
+                    Size = new Size(49, 49),
+                    BorderRadius = 10,
+                    FillColor = mau,
+                    Location = new Point(0, 0)
+                };
+                var lblAbbr = new Label
+                {
+                    Text = abbr,
+                    Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Dock = DockStyle.Fill,
+                    BackColor = Color.Transparent
+                };
+                pill.Controls.Add(lblAbbr);
+                rowPanel.Controls.Add(pill);
+
+                // --- Cột 2: Tên hiển thị của role ---
+                var lblName = new Label
+                {
+                    Text = displayName,
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(10, 42, 64),
+                    Location = new Point(103, 0),
+                    Size = new Size(rowPanel.Width - 110 - 103 - 10, rowHeight), // Dynamically calculate name width
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    BackColor = Color.Transparent
+                };
+                rowPanel.Controls.Add(lblName);
+
+                // --- Cột 3: Số user thuộc role đó ---
+                var lblCount = new Label
+                {
+                    Text = $"{soUser} user",
+                    Font = new Font("Segoe UI", 9.5f),
+                    ForeColor = Color.FromArgb(138, 168, 190),
+                    Location = new Point(rowPanel.Width - 110, 0), // Dynamically position count column
+                    Size = new Size(100, rowHeight),
+                    TextAlign = ContentAlignment.MiddleRight,
+                    BackColor = Color.Transparent
+                };
+                rowPanel.Controls.Add(lblCount);
+
+                flpRolesList.Controls.Add(rowPanel);
             }
         }
 
@@ -493,68 +521,12 @@ namespace HospitalX.GUI.PH1
             pnlTongUser.FillColor = Color.FromArgb(232, 244, 251);
             pnlTongUser.Controls.Add(lblTotal);
 
-            int rowHeight = 49;
-            int rowGap = 6;
-
-            foreach (var (abbr, displayName, soUser, mau) in mockRoles)
+            var rolesList = new List<(string abbr, string displayName, int count, Color color)>();
+            foreach (var r in mockRoles)
             {
-                var pill = new Guna.UI2.WinForms.Guna2Panel
-                {
-                    Size = new Size(49, 49),
-                    BorderRadius = 10,
-                    FillColor = mau,
-                    Margin = new Padding(0, 0, 0, rowGap),
-                };
-                var lblAbbr = new Label
-                {
-                    Text = abbr,
-                    Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
-                    ForeColor = Color.White,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Dock = DockStyle.Fill,
-                    BackColor = Color.Transparent,
-                };
-                pill.Controls.Add(lblAbbr);
-                flpAvatar.Controls.Add(pill);
-
-                var namePanel = new Panel
-                {
-                    Width = flpName.Width - 4,
-                    Height = rowHeight,
-                    BackColor = Color.Transparent,
-                    Margin = new Padding(0, 0, 0, rowGap),
-                };
-                var lblName = new Label
-                {
-                    Text = displayName,
-                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(10, 42, 64),
-                    Location = new Point(0, (rowHeight - 20) / 2),
-                    AutoSize = true,
-                    BackColor = Color.Transparent,
-                };
-                namePanel.Controls.Add(lblName);
-                flpName.Controls.Add(namePanel);
-
-                var countPanel = new Panel
-                {
-                    Width = flpCount.Width - 4,
-                    Height = rowHeight,
-                    BackColor = Color.Transparent,
-                    Margin = new Padding(0, 0, 0, rowGap),
-                };
-                var lblCount = new Label
-                {
-                    Text = $"{soUser} user",
-                    Font = new Font("Segoe UI", 9.5f),
-                    ForeColor = Color.FromArgb(138, 168, 190),
-                    Dock = DockStyle.Fill,
-                    TextAlign = ContentAlignment.MiddleRight,
-                    BackColor = Color.Transparent,
-                };
-                countPanel.Controls.Add(lblCount);
-                flpCount.Controls.Add(countPanel);
+                rolesList.Add((r.Item1, r.Item2, r.Item3, r.Item4));
             }
+            PopulateRoleDistributionList(rolesList);
         }
     }
 }

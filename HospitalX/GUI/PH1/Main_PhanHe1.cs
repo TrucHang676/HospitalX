@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH1
@@ -6,11 +6,14 @@ namespace HospitalX.GUI.PH1
     public partial class Main_PhanHe1 : Form
     {
         private string _connStr;
+        private bool _isLoggingOut = false;
+
         public Main_PhanHe1(string connStr = "")
         {
             InitializeComponent();
             this.DoubleBuffered = true;
             _connStr = connStr;
+            this.FormClosed += Main_PhanHe1_FormClosed;
             // Wire thủ công để chắc chắn, không phụ thuộc designer
             this.Load += Main_PhanHe1_Load;
             this.btnMenuDashboard.Click += btnMenuDashboard_Click;
@@ -88,7 +91,17 @@ namespace HospitalX.GUI.PH1
             msgLogout.Text = "Bạn có chắc chắn muốn đăng xuất không?";
             if (msgLogout.Show() == DialogResult.Yes)
             {
-                Application.Restart();
+                _isLoggingOut = true;
+                this.Close();
+            }
+        }
+
+        private void Main_PhanHe1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!_isLoggingOut)
+            {
+                Application.Exit();
+                Environment.Exit(0);
             }
         }
 

@@ -11,6 +11,7 @@ namespace HospitalX.GUI
         public RoleSelection()
         {
             InitializeComponent();
+            this.FormClosed += RoleSelection_FormClosed;
             SetupBrandingAndIcons();
             WireRoleButtons();
         }
@@ -420,6 +421,12 @@ namespace HospitalX.GUI
             }
             catch { }
             return null;
+        }
+
+        private void RoleSelection_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+            Environment.Exit(0);
         }
     }
 
