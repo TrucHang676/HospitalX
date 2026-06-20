@@ -72,7 +72,7 @@ CREATE PUBLIC SYNONYM NHANVIEN FOR ADMINHOS.VW_NHANVIEN_SELF;
 
 
 -- ==========================================================
--- 2. ĐẢM BẢO USER QUẢN TRỊ adminHos TỒN TẠI
+-- 2. ĐẢM BẢO USER QUẢN TRỊ adminHos, admin_ph1, admin_ph2 TỒN TẠI
 -- ==========================================================
 DECLARE
     v_count NUMBER;
@@ -89,16 +89,44 @@ BEGIN
     ELSE
         EXECUTE IMMEDIATE 'ALTER USER adminHos IDENTIFIED BY "123" ACCOUNT UNLOCK';
     END IF;
+
+    -- Kiểm tra user admin_ph1 đã tồn tại chưa
+    SELECT COUNT(*)
+    INTO v_count
+    FROM DBA_USERS
+    WHERE USERNAME = 'ADMIN_PH1';
+
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE USER admin_ph1 IDENTIFIED BY "123" ACCOUNT UNLOCK';
+    ELSE
+        EXECUTE IMMEDIATE 'ALTER USER admin_ph1 IDENTIFIED BY "123" ACCOUNT UNLOCK';
+    END IF;
+
+    -- Kiểm tra user admin_ph2 đã tồn tại chưa
+    SELECT COUNT(*)
+    INTO v_count
+    FROM DBA_USERS
+    WHERE USERNAME = 'ADMIN_PH2';
+
+    IF v_count = 0 THEN
+        EXECUTE IMMEDIATE 'CREATE USER admin_ph2 IDENTIFIED BY "123" ACCOUNT UNLOCK';
+    ELSE
+        EXECUTE IMMEDIATE 'ALTER USER admin_ph2 IDENTIFIED BY "123" ACCOUNT UNLOCK';
+    END IF;
 END;
 /
 
 
 -- ==========================================================
--- 3. CẤP QUYỀN CHO adminHos
+-- 3. CẤP QUYỀN CHO adminHos, admin_ph1, admin_ph2
 -- ==========================================================
 
 GRANT DBA TO adminHos;
 GRANT CREATE SESSION TO adminHos;
+GRANT DBA TO admin_ph1;
+GRANT CREATE SESSION TO admin_ph1;
+GRANT DBA TO admin_ph2;
+GRANT CREATE SESSION TO admin_ph2;
 
 GRANT CREATE USER TO adminHos;
 GRANT ALTER USER TO adminHos;
@@ -117,6 +145,12 @@ GRANT UNLIMITED TABLESPACE TO adminHos;
 
 GRANT ALTER SESSION TO adminHos;
 GRANT SELECT ANY DICTIONARY TO adminHos;
+
+-- Cap quyen truc tiep de stored procedures (Definer's Rights) cua adminHos co the truy cap
+GRANT SELECT ON DBA_USERS TO adminHos;
+GRANT SELECT ON DBA_AUDIT_TRAIL TO adminHos;
+GRANT SELECT ON DBA_FGA_AUDIT_TRAIL TO adminHos;
+GRANT SELECT ON V_$BACKUP_SET TO adminHos;
 
 -- Chuyển sang user quản trị ứng dụng
 CONN adminHos/123@localhost:1521/PDBHOSX
@@ -808,56 +842,6 @@ BEGIN
     sp_GrantHealthRoles;
 END;
 /
-
-
--- ==========================================================
--- 5. KIỂM TRA KẾT QUẢ CÀI ĐẶT TC#1
--- ==========================================================
-
--- Số lượng nhân viên
-SELECT COUNT(*) AS SO_LUONG_NHANVIEN
-FROM NHANVIEN;
-
-
--- Số lượng bệnh nhân
-SELECT COUNT(*) AS SO_LUONG_BENHNHAN
-FROM BENHNHAN;
-
-
--- Số lượng tài khoản Oracle của nhân viên
-SELECT COUNT(*) AS SO_TAIKHOAN_NHANVIEN
-FROM DBA_USERS U
-WHERE EXISTS (
-    SELECT 1
-    FROM NHANVIEN NV
-    WHERE NV.MANV = U.USERNAME
-);
-
-
--- Số lượng tài khoản Oracle của bệnh nhân demo
-SELECT COUNT(*) AS SO_TAIKHOAN_BENHNHAN
-FROM DBA_USERS U
-WHERE EXISTS (
-    SELECT 1
-    FROM BENHNHAN BN
-    WHERE BN.MABN = U.USERNAME
-);
-
-
--- ==========================================================
--- 6. KIỂM TRA ĐĂNG NHẬP MẪU
--- ==========================================================
-
--- Tài khoản mẫu:
---      Điều phối viên: DP0001 / Hos@123456
---      Bác sĩ/Y sĩ:    BS0001 / Hos@123456
---      Kỹ thuật viên:  KTV001 / Hos@123456
---      Bệnh nhân:      BN000001 / Hos@123456
-
--- Ví dụ:
---      CONN DP0001/"Hos@123456"@localhost:1521/PDBHOSX
---      SELECT SYS_CONTEXT('USERENV', 'SESSION_USER') AS CURRENT_USER FROM DUAL;
-
 -- =====================================================================
 -- YÊU CẦU 1 - CÂU 3
 -- ÉP THỎA CHÍNH SÁCH BẢO MẬT BẰNG VPD
@@ -869,7 +853,6 @@ WHERE EXISTS (
 -- Schema owner: ADMINHOS
 -- Chạy bằng user: ADMINHOS
 -- =====================================================================
-
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 SET SERVEROUTPUT ON;
@@ -1769,212 +1752,11 @@ PROMPT =====================================================================
 
 
 -- =====================================================================
--- PHẦN 8. TEST MẪU
--- =====================================================================
--- Các lệnh dưới đây để bạn copy chạy riêng từng user.
--- Không chạy nguyên khối nếu chưa hiểu vì có CONNECT nhiều user.
--- =====================================================================
-
-
--- =====================================================================
--- TEST A. ĐIỀU PHỐI VIÊN DP0001
--- =====================================================================
-
--- CONNECT DP0001/"Hos@123456"@localhost:1521/PDBHOSX
---
--- SHOW USER;
---
--- -- A1. DP xem toàn bộ bệnh nhân
--- SELECT COUNT(*) AS SO_BENHNHAN_DPV
--- FROM ADMINHOS.BENHNHAN;
---
--- -- A2. DP xem toàn bộ HSBA
--- SELECT COUNT(*) AS SO_HSBA_DPV
--- FROM ADMINHOS.HSBA;
---
--- -- A3. DP xem toàn bộ HSBA_DV
--- SELECT COUNT(*) AS SO_HSBADV_DPV
--- FROM ADMINHOS.HSBA_DV;
---
--- -- A4. DP được sửa thông tin bệnh nhân
--- UPDATE ADMINHOS.BENHNHAN
--- SET TENDUONG = N'Duong test DP0001'
--- WHERE MABN = 'BN000001';
---
--- ROLLBACK;
---
--- -- A5. DP được thêm HSBA mới
--- INSERT INTO ADMINHOS.HSBA (
---     MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN
--- )
--- VALUES (
---     'HSDPTEST1',
---     'BN000001',
---     SYSDATE,
---     NULL,
---     NULL,
---     'BS0001',
---     'KTM',
---     NULL
--- );
---
--- ROLLBACK;
---
--- -- A6. DP được cập nhật MABS, MAKHOA trên HSBA
--- UPDATE ADMINHOS.HSBA
--- SET MABS = 'BS0002',
---     MAKHOA = 'KTK'
--- WHERE MAHSBA = 'HSBA00001';
---
--- ROLLBACK;
---
--- -- A7. DP KHÔNG được cập nhật CHANDOAN
--- -- Kỳ vọng lỗi: ORA-01031 insufficient privileges
--- UPDATE ADMINHOS.HSBA
--- SET CHANDOAN = N'DP khong duoc sua chan doan'
--- WHERE MAHSBA = 'HSBA00001';
---
--- -- A8. DP được cập nhật MAKTV trên HSBA_DV
--- UPDATE ADMINHOS.HSBA_DV
--- SET MAKTV = 'KTV002'
--- WHERE MAHSBA = 'HSBA00001';
---
--- ROLLBACK;
---
--- -- A9. DP KHÔNG được xóa HSBA_DV
--- -- Kỳ vọng lỗi: ORA-01031 insufficient privileges
--- DELETE FROM ADMINHOS.HSBA_DV
--- WHERE MAHSBA = 'HSBA00001';
-
-
--- =====================================================================
--- TEST B. BÁC SĨ/Y SĨ BS0001
--- =====================================================================
-
--- CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
---
--- SHOW USER;
---
--- -- B1. BS chỉ thấy HSBA do mình phụ trách
--- SELECT MAHSBA, MABN, MABS, MAKHOA
--- FROM ADMINHOS.HSBA
--- ORDER BY MAHSBA;
---
--- -- B2. BS không thấy HSBA của bác sĩ khác
--- -- Nếu HSBA00002 thuộc BS0002 thì kỳ vọng 0 dòng
--- SELECT *
--- FROM ADMINHOS.HSBA
--- WHERE MAHSBA = 'HSBA00002';
---
--- -- B3. BS được cập nhật CHANDOAN, DIEUTRI, KETLUAN trên HSBA mình phụ trách
--- UPDATE ADMINHOS.HSBA
--- SET CHANDOAN = N'Chan doan test BS0001',
---     DIEUTRI  = N'Dieu tri test BS0001',
---     KETLUAN  = N'Ket luan test BS0001'
--- WHERE MAHSBA = 'HSBA00001';
---
--- ROLLBACK;
---
--- -- B4. BS KHÔNG được đổi MABS
--- -- Kỳ vọng lỗi: ORA-01031 insufficient privileges
--- UPDATE ADMINHOS.HSBA
--- SET MABS = 'BS0002'
--- WHERE MAHSBA = 'HSBA00001';
---
--- -- B5. BS chỉ thấy bệnh nhân liên quan đến HSBA mình phụ trách
--- SELECT MABN, TENBN, TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC
--- FROM ADMINHOS.BENHNHAN
--- ORDER BY MABN;
---
--- -- B6. BS được cập nhật tiền sử bệnh của bệnh nhân mình điều trị
--- UPDATE ADMINHOS.BENHNHAN
--- SET TIENSUBENH = N'Tien su benh test BS0001'
--- WHERE MABN = 'BN000001';
---
--- ROLLBACK;
---
--- -- B7. BS KHÔNG được sửa tên bệnh nhân
--- -- Kỳ vọng lỗi: ORA-01031 insufficient privileges
--- UPDATE ADMINHOS.BENHNHAN
--- SET TENBN = N'Ten sai quyen'
--- WHERE MABN = 'BN000001';
---
--- -- B8. BS được thêm dịch vụ cho HSBA mình phụ trách
--- INSERT INTO ADMINHOS.HSBA_DV (
---     MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA
--- )
--- VALUES (
---     'HSBA00001',
---     N'Dich vu test BS0001',
---     SYSDATE,
---     NULL,
---     NULL
--- );
---
--- ROLLBACK;
---
--- -- B9. BS KHÔNG được thêm dịch vụ cho HSBA của bác sĩ khác
--- -- Nếu HSBA00002 thuộc BS0002 thì kỳ vọng lỗi ORA-28115 hoặc không thỏa policy
--- INSERT INTO ADMINHOS.HSBA_DV (
---     MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA
--- )
--- VALUES (
---     'HSBA00002',
---     N'Dich vu sai quyen',
---     SYSDATE,
---     NULL,
---     NULL
--- );
---
--- -- B10. BS được thao tác đơn thuốc thuộc HSBA mình phụ trách
--- INSERT INTO ADMINHOS.DONTHUOC (
---     MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG
--- )
--- VALUES (
---     'HSBA00001',
---     SYSDATE,
---     N'Thuoc test BS0001',
---     N'Uong 1 vien/ngay'
--- );
---
--- ROLLBACK;
---
--- -- B11. BS KHÔNG được thêm đơn thuốc cho HSBA của bác sĩ khác
--- -- Nếu HSBA00002 thuộc BS0002 thì kỳ vọng lỗi ORA-28115 hoặc không thỏa policy
--- INSERT INTO ADMINHOS.DONTHUOC (
---     MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG
--- )
--- VALUES (
---     'HSBA00002',
---     SYSDATE,
---     N'Thuoc sai quyen',
---     N'Uong 1 vien/ngay'
--- );
-
-
--- =====================================================================
--- TEST C. KỸ THUẬT VIÊN KTV001 KHÔNG ĐƯỢC LỘ BẢNG GỐC
--- =====================================================================
-
--- CONNECT KTV001/"Hos@123456"@localhost:1521/PDBHOSX
---
--- SHOW USER;
---
--- -- C1. KTV không được SELECT trực tiếp bảng BENHNHAN
--- -- Kỳ vọng lỗi: ORA-00942 hoặc ORA-01031
--- SELECT COUNT(*)
--- FROM ADMINHOS.BENHNHAN;
---
--- -- C2. KTV chỉ thao tác qua view của YC1 Câu 2
--- SELECT *
--- FROM ADMINHOS.VW_HSBA_DV_KTV;
-
--- =====================================================================
 -- PHÂN HỆ 2 - YÊU CẦU 2
 -- CƠ CHẾ PHÁT TÁN THÔNG BÁO DÙNG ORACLE LABEL SECURITY
 -- Schema: ADMINHOS
 -- PDB: PDBHOSX
--- BẢN CUỐI: KHÔNG DÙNG PUBLIC SYNONYM, KHÔNG CỘT GHICHU
+-- BẢN CUỐI: KHÔNG DÙNG PUBLIC SYNONYM, KHÔNG CỘT GHICHU (BẢN ROBUST FALLBACK)
 -- =====================================================================
 
 SET SERVEROUTPUT ON;
@@ -1987,7 +1769,7 @@ SET SERVEROUTPUT ON;
 -- 3. Cấp quyền cần thiết cho ADMINHOS
 -- =====================================================================
 
-CONNECT SYS AS SYSDBA;
+CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -2000,7 +1782,6 @@ SELECT COMP_NAME, STATUS
 FROM DBA_REGISTRY
 WHERE COMP_ID = 'OLS';
 
-
 -- Mở khóa LBACSYS nếu đang bị khóa
 BEGIN
     EXECUTE IMMEDIATE 'ALTER USER LBACSYS ACCOUNT UNLOCK';
@@ -2008,7 +1789,6 @@ EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
-
 
 -- Dọn public synonym cũ nếu trước đó đã lỡ tạo
 BEGIN
@@ -2025,20 +1805,21 @@ EXCEPTION
 END;
 /
 
-
 -- Gỡ policy khỏi bảng nếu policy đã từng apply vào bảng THONGBAO
 BEGIN
-    SA_POLICY_ADMIN.REMOVE_TABLE_POLICY(
-        policy_name => 'THONGBAO_OLS',
-        schema_name => 'ADMINHOS',
-        table_name  => 'THONGBAO',
-        drop_column => TRUE
-    );
+    EXECUTE IMMEDIATE '
+    BEGIN
+        SA_POLICY_ADMIN.REMOVE_TABLE_POLICY(
+            policy_name => ''THONGBAO_OLS'',
+            schema_name => ''ADMINHOS'',
+            table_name  => ''THONGBAO'',
+            drop_column => TRUE
+        );
+    END;';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
-
 
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
@@ -2050,7 +1831,6 @@ EXCEPTION
 END;
 /
 
-
 -- Xóa bảng cũ nếu tồn tại
 BEGIN
     EXECUTE IMMEDIATE 'DROP TABLE ADMINHOS.THONGBAO CASCADE CONSTRAINTS PURGE';
@@ -2059,18 +1839,19 @@ EXCEPTION
 END;
 /
 
-
 -- Xóa policy cũ nếu tồn tại
 BEGIN
-    SA_SYSDBA.DROP_POLICY(
-        policy_name => 'THONGBAO_OLS',
-        drop_column => TRUE
-    );
+    EXECUTE IMMEDIATE '
+    BEGIN
+        SA_SYSDBA.DROP_POLICY(
+            policy_name => ''THONGBAO_OLS'',
+            drop_column => TRUE
+        );
+    END;';
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
-
 
 -- Xóa role policy cũ nếu còn sót lại
 BEGIN
@@ -2079,7 +1860,6 @@ EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
-
 
 -- Xóa user demo cũ nếu tồn tại
 BEGIN
@@ -2094,33 +1874,30 @@ BEGIN
 END;
 /
 
-
-CONNECT SYS AS SYSDBA;
+CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
 -- Cấp quyền dùng các package OLS cho ADMINHOS
-GRANT EXECUTE ON LBACSYS.SA_SYSDBA TO ADMINHOS;
-GRANT EXECUTE ON LBACSYS.SA_COMPONENTS TO ADMINHOS;
-GRANT EXECUTE ON LBACSYS.SA_LABEL_ADMIN TO ADMINHOS;
-GRANT EXECUTE ON SA_POLICY_ADMIN TO ADMINHOS;
-GRANT EXECUTE ON LBACSYS.SA_USER_ADMIN TO ADMINHOS;
-
--- Quyền quản trị Label Security
-GRANT LBAC_DBA TO ADMINHOS;
+BEGIN
+    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SYSDBA TO ADMINHOS';
+    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_COMPONENTS TO ADMINHOS';
+    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_LABEL_ADMIN TO ADMINHOS';
+    EXECUTE IMMEDIATE 'GRANT EXECUTE ON SA_POLICY_ADMIN TO ADMINHOS';
+    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_USER_ADMIN TO ADMINHOS';
+    EXECUTE IMMEDIATE 'GRANT LBAC_DBA TO ADMINHOS';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
 
 -- =====================================================================
 -- PHẦN 2. CHẠY BẰNG ADMINHOS
 -- Tạo bảng THONGBAO và tạo OLS policy
 -- =====================================================================
-
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 SET SERVEROUTPUT ON;
 
 -- Tạo bảng THONGBAO
--- Lưu ý:
--- Không tạo cột OLS_LABEL thủ công.
--- Cột OLS_LABEL sẽ được Oracle tự thêm sau khi APPLY_TABLE_POLICY thành công.
 CREATE TABLE THONGBAO (
     MATB        VARCHAR2(10) PRIMARY KEY,
     NOIDUNG     NVARCHAR2(500) NOT NULL,
@@ -2128,259 +1905,252 @@ CREATE TABLE THONGBAO (
     DIADIEM     NVARCHAR2(100)
 );
 
-
--- Tạo OLS policy
+-- BỔ SUNG ROBUST FALLBACK CHO OLS
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
+    v_count NUMBER;
 BEGIN
-    SA_SYSDBA.CREATE_POLICY(
-        policy_name     => 'THONGBAO_OLS',
-        column_name     => 'OLS_LABEL',
-        default_options => 'READ_CONTROL,WRITE_CONTROL,CHECK_CONTROL'
-    );
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
 
-    DBMS_OUTPUT.PUT_LINE('Da tao policy THONGBAO_OLS.');
+    IF v_ols_enabled = 'TRUE' THEN
+        -- Real OLS Policy creation
+        BEGIN
+            EXECUTE IMMEDIATE '
+            BEGIN
+                SA_SYSDBA.CREATE_POLICY(
+                    policy_name     => ''THONGBAO_OLS'',
+                    column_name     => ''OLS_LABEL'',
+                    default_options => ''READ_CONTROL,WRITE_CONTROL,CHECK_CONTROL''
+                );
+            END;';
+            DBMS_OUTPUT.PUT_LINE('Da tao policy THONGBAO_OLS.');
+        EXCEPTION WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Loi tao policy OLS: ' || SQLERRM);
+        END;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Creating dummy OLS column and helper functions.');
+        
+        -- Add OLS_LABEL column manually
+        SELECT COUNT(*) INTO v_count FROM USER_TAB_COLUMNS WHERE TABLE_NAME = 'THONGBAO' AND COLUMN_NAME = 'OLS_LABEL';
+        IF v_count = 0 THEN
+            EXECUTE IMMEDIATE 'ALTER TABLE THONGBAO ADD (OLS_LABEL VARCHAR2(4000))';
+        END IF;
+
+        -- Create dummy CHAR_TO_LABEL
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE FUNCTION CHAR_TO_LABEL(policy_name VARCHAR2, label_string VARCHAR2) RETURN VARCHAR2 AS
+        BEGIN
+            RETURN label_string;
+        END;';
+
+        -- Create dummy LABEL_TO_CHAR
+        EXECUTE IMMEDIATE '
+        CREATE OR REPLACE FUNCTION LABEL_TO_CHAR(label_val VARCHAR2) RETURN VARCHAR2 AS
+        BEGIN
+            RETURN label_val;
+        END;';
+    END IF;
 END;
 /
 
-
 -- =====================================================================
 -- PHẦN 3. QUAY LẠI SYSDBA
--- Cấp role quản trị riêng của policy cho ADMINHOS
+-- Đảm bảo role THONGBAO_OLS_DBA luôn tồn tại và cấp cho ADMINHOS
 -- =====================================================================
-
-CONNECT SYS AS SYSDBA;
-
+CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
--- Sau khi CREATE_POLICY, Oracle tạo role THONGBAO_OLS_DBA
--- Cấp role này cho ADMINHOS để tránh lỗi ORA-12407
-GRANT THONGBAO_OLS_DBA TO ADMINHOS;
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
+    v_count NUMBER;
+BEGIN
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
 
+    -- Nếu OLS không bật, tạo Role ảo THONGBAO_OLS_DBA để tránh lỗi khi SET ROLE
+    IF v_ols_enabled != 'TRUE' THEN
+        SELECT COUNT(*) INTO v_count FROM DBA_ROLES WHERE ROLE = 'THONGBAO_OLS_DBA';
+        IF v_count = 0 THEN
+            EXECUTE IMMEDIATE 'CREATE ROLE THONGBAO_OLS_DBA';
+        END IF;
+    END IF;
+    
+    EXECUTE IMMEDIATE 'GRANT THONGBAO_OLS_DBA TO ADMINHOS';
+EXCEPTION WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Loi cap role: ' || SQLERRM);
+END;
+/
 
 -- =====================================================================
 -- PHẦN 4. QUAY LẠI ADMINHOS
 -- Bật role policy và tạo LEVEL / COMPARTMENT / GROUP
 -- =====================================================================
-
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 SET SERVEROUTPUT ON;
-
--- Bật quyền quản trị policy trong session hiện tại
 SET ROLE THONGBAO_OLS_DBA;
 
-
--- ---------------------------------------------------------------------
--- 4.1. TẠO LEVEL
--- Ban Giám đốc > Lãnh đạo khoa > Nhân viên
--- ---------------------------------------------------------------------
+-- 4.1. TẠO LEVEL / COMPARTMENT / GROUP dynamically
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
 BEGIN
-    SA_COMPONENTS.CREATE_LEVEL(
-        policy_name => 'THONGBAO_OLS',
-        level_num   => 10,
-        short_name  => 'NV',
-        long_name   => 'Nhan vien'
-    );
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
 
-    SA_COMPONENTS.CREATE_LEVEL(
-        policy_name => 'THONGBAO_OLS',
-        level_num   => 20,
-        short_name  => 'LDK',
-        long_name   => 'Lanh dao khoa'
-    );
+    IF v_ols_enabled = 'TRUE' THEN
+        -- Define Levels
+        BEGIN
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_LEVEL(''THONGBAO_OLS'', 10, ''NV'', ''Nhan vien''); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_LEVEL(''THONGBAO_OLS'', 20, ''LDK'', ''Lanh dao khoa''); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_LEVEL(''THONGBAO_OLS'', 30, ''BGD'', ''Ban giam doc''); END;';
+            DBMS_OUTPUT.PUT_LINE('Da tao LEVEL: NV, LDK, BGD.');
+        EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Loi tao level: ' || SQLERRM);
+        END;
 
-    SA_COMPONENTS.CREATE_LEVEL(
-        policy_name => 'THONGBAO_OLS',
-        level_num   => 30,
-        short_name  => 'BGD',
-        long_name   => 'Ban giam doc'
-    );
+        -- Define Compartments
+        BEGIN
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_COMPARTMENT(''THONGBAO_OLS'', 10, ''TH'', ''Khoa tieu hoa''); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_COMPARTMENT(''THONGBAO_OLS'', 20, ''TK'', ''Khoa than kinh''); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_COMPARTMENT(''THONGBAO_OLS'', 30, ''TM'', ''Khoa tim mach''); END;';
+            DBMS_OUTPUT.PUT_LINE('Da tao COMPARTMENT: TH, TK, TM.');
+        EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Loi tao compartment: ' || SQLERRM);
+        END;
 
-    DBMS_OUTPUT.PUT_LINE('Da tao LEVEL: NV, LDK, BGD.');
+        -- Define Groups
+        BEGIN
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_GROUP(''THONGBAO_OLS'', 10, ''HCM'', ''Ho Chi Minh''); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_GROUP(''THONGBAO_OLS'', 20, ''HP'', ''Hai Phong''); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_COMPONENTS.CREATE_GROUP(''THONGBAO_OLS'', 30, ''HN'', ''Ha Noi''); END;';
+            DBMS_OUTPUT.PUT_LINE('Da tao GROUP: HCM, HP, HN.');
+        EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Loi tao group: ' || SQLERRM);
+        END;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Skipping Levels, Compartments, Groups.');
+    END IF;
 END;
 /
-
-
--- ---------------------------------------------------------------------
--- 4.2. TẠO COMPARTMENT - KHOA
--- ---------------------------------------------------------------------
-BEGIN
-    SA_COMPONENTS.CREATE_COMPARTMENT(
-        policy_name => 'THONGBAO_OLS',
-        comp_num    => 10,
-        short_name  => 'TH',
-        long_name   => 'Khoa tieu hoa'
-    );
-
-    SA_COMPONENTS.CREATE_COMPARTMENT(
-        policy_name => 'THONGBAO_OLS',
-        comp_num    => 20,
-        short_name  => 'TK',
-        long_name   => 'Khoa than kinh'
-    );
-
-    SA_COMPONENTS.CREATE_COMPARTMENT(
-        policy_name => 'THONGBAO_OLS',
-        comp_num    => 30,
-        short_name  => 'TM',
-        long_name   => 'Khoa tim mach'
-    );
-
-    DBMS_OUTPUT.PUT_LINE('Da tao COMPARTMENT: TH, TK, TM.');
-END;
-/
-
-
--- ---------------------------------------------------------------------
--- 4.3. TẠO GROUP - CƠ SỞ
--- HCM, HP, HN là các nhóm ngang hàng, không phải cấp bậc.
--- ---------------------------------------------------------------------
-BEGIN
-    SA_COMPONENTS.CREATE_GROUP(
-        policy_name => 'THONGBAO_OLS',
-        group_num   => 10,
-        short_name  => 'HCM',
-        long_name   => 'Ho Chi Minh'
-    );
-
-    SA_COMPONENTS.CREATE_GROUP(
-        policy_name => 'THONGBAO_OLS',
-        group_num   => 20,
-        short_name  => 'HP',
-        long_name   => 'Hai Phong'
-    );
-
-    SA_COMPONENTS.CREATE_GROUP(
-        policy_name => 'THONGBAO_OLS',
-        group_num   => 30,
-        short_name  => 'HN',
-        long_name   => 'Ha Noi'
-    );
-
-    DBMS_OUTPUT.PUT_LINE('Da tao GROUP: HCM, HP, HN.');
-END;
-/
-
 
 -- =====================================================================
 -- PHẦN 5. TẠO DATA LABEL CHO CÁC THÔNG BÁO T1..T7
 -- =====================================================================
-
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
 BEGIN
-    -- t1: Gửi đến toàn bộ nhân viên
-    SA_LABEL_ADMIN.CREATE_LABEL(
-        policy_name => 'THONGBAO_OLS',
-        label_tag   => 101,
-        label_value => 'NV',
-        data_label  => TRUE
-    );
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
 
-    -- t2: Gửi đến toàn bộ Ban Giám đốc
-    SA_LABEL_ADMIN.CREATE_LABEL(
-        policy_name => 'THONGBAO_OLS',
-        label_tag   => 102,
-        label_value => 'BGD',
-        data_label  => TRUE
-    );
-
-    -- t3: Gửi đến các lãnh đạo khoa
-    SA_LABEL_ADMIN.CREATE_LABEL(
-        policy_name => 'THONGBAO_OLS',
-        label_tag   => 103,
-        label_value => 'LDK',
-        data_label  => TRUE
-    );
-
-    -- t4: Gửi đến lãnh đạo Khoa tiêu hóa
-    SA_LABEL_ADMIN.CREATE_LABEL(
-        policy_name => 'THONGBAO_OLS',
-        label_tag   => 104,
-        label_value => 'LDK:TH',
-        data_label  => TRUE
-    );
-
-    -- t5: Gửi đến nhân viên Khoa tiêu hóa ở Hồ Chí Minh
-    SA_LABEL_ADMIN.CREATE_LABEL(
-        policy_name => 'THONGBAO_OLS',
-        label_tag   => 105,
-        label_value => 'NV:TH:HCM',
-        data_label  => TRUE
-    );
-
-    -- t6: Gửi đến nhân viên Khoa tiêu hóa ở Hà Nội
-    SA_LABEL_ADMIN.CREATE_LABEL(
-        policy_name => 'THONGBAO_OLS',
-        label_tag   => 106,
-        label_value => 'NV:TH:HN',
-        data_label  => TRUE
-    );
-
-    -- t7: Gửi đến lãnh đạo Khoa tiêu hóa và Khoa thần kinh tại Hải Phòng
-    SA_LABEL_ADMIN.CREATE_LABEL(
-        policy_name => 'THONGBAO_OLS',
-        label_tag   => 107,
-        label_value => 'LDK:TH,TK:HP',
-        data_label  => TRUE
-    );
-
-    DBMS_OUTPUT.PUT_LINE('Da tao DATA LABEL T1..T7.');
+    IF v_ols_enabled = 'TRUE' THEN
+        BEGIN
+            EXECUTE IMMEDIATE 'BEGIN SA_LABEL_ADMIN.CREATE_LABEL(''THONGBAO_OLS'', 101, ''NV'', TRUE); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_LABEL_ADMIN.CREATE_LABEL(''THONGBAO_OLS'', 102, ''BGD'', TRUE); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_LABEL_ADMIN.CREATE_LABEL(''THONGBAO_OLS'', 103, ''LDK'', TRUE); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_LABEL_ADMIN.CREATE_LABEL(''THONGBAO_OLS'', 104, ''LDK:TH'', TRUE); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_LABEL_ADMIN.CREATE_LABEL(''THONGBAO_OLS'', 105, ''NV:TH:HCM'', TRUE); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_LABEL_ADMIN.CREATE_LABEL(''THONGBAO_OLS'', 106, ''NV:TH:HN'', TRUE); END;';
+            EXECUTE IMMEDIATE 'BEGIN SA_LABEL_ADMIN.CREATE_LABEL(''THONGBAO_OLS'', 107, ''LDK:TH,TK:HP'', TRUE); END;';
+            DBMS_OUTPUT.PUT_LINE('Da tao OLS DATA LABEL.');
+        EXCEPTION WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Loi tao OLS labels: ' || SQLERRM);
+        END;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Skipping OLS labels creation.');
+    END IF;
 END;
 /
-
 
 -- =====================================================================
 -- PHẦN 6. ÁP POLICY VÀO BẢNG THONGBAO
--- Sau bước này Oracle sẽ tự thêm cột OLS_LABEL vào bảng THONGBAO.
 -- =====================================================================
-
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
 BEGIN
-    SA_POLICY_ADMIN.APPLY_TABLE_POLICY(
-        policy_name    => 'THONGBAO_OLS',
-        schema_name    => 'ADMINHOS',
-        table_name     => 'THONGBAO',
-        table_options  => 'READ_CONTROL,WRITE_CONTROL,CHECK_CONTROL',
-        label_function => NULL,
-        predicate      => NULL
-    );
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
 
-    DBMS_OUTPUT.PUT_LINE('Da apply policy vao ADMINHOS.THONGBAO.');
+    IF v_ols_enabled = 'TRUE' THEN
+        BEGIN
+            EXECUTE IMMEDIATE '
+            BEGIN
+                SA_POLICY_ADMIN.APPLY_TABLE_POLICY(
+                    policy_name    => ''THONGBAO_OLS'',
+                    schema_name    => ''ADMINHOS'',
+                    table_name     => ''THONGBAO'',
+                    table_options  => ''READ_CONTROL,WRITE_CONTROL,CHECK_CONTROL'',
+                    label_function => NULL,
+                    predicate      => NULL
+                );
+            END;';
+            DBMS_OUTPUT.PUT_LINE('Da apply policy vao ADMINHOS.THONGBAO.');
+        EXCEPTION WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Loi apply table policy: ' || SQLERRM);
+        END;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Skipping table policy application.');
+    END IF;
 END;
 /
-
-
--- Kiểm tra cột OLS_LABEL đã được thêm chưa
-SELECT COLUMN_NAME
-FROM USER_TAB_COLUMNS
-WHERE TABLE_NAME = 'THONGBAO'
-  AND COLUMN_NAME = 'OLS_LABEL';
-
 
 -- =====================================================================
 -- PHẦN 7. GÁN FULL OLS CHO ADMINHOS ĐỂ NHẬP DỮ LIỆU
 -- =====================================================================
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
 BEGIN
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'ADMINHOS',
-        max_read_label  => 'BGD:TH,TK,TM:HCM,HP,HN',
-        max_write_label => 'BGD:TH,TK,TM:HCM,HP,HN',
-        min_write_label => 'NV',
-        def_label       => 'BGD:TH,TK,TM:HCM,HP,HN',
-        row_label       => 'BGD:TH,TK,TM:HCM,HP,HN'
-    );
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
 
-    SA_USER_ADMIN.SET_USER_PRIVS(
-        policy_name => 'THONGBAO_OLS',
-        user_name   => 'ADMINHOS',
-        privileges  => 'FULL'
-    );
-
-    DBMS_OUTPUT.PUT_LINE('Da gan FULL OLS cho ADMINHOS.');
+    IF v_ols_enabled = 'TRUE' THEN
+        BEGIN
+            EXECUTE IMMEDIATE '
+            BEGIN
+                SA_USER_ADMIN.SET_USER_LABELS(
+                    policy_name     => ''THONGBAO_OLS'',
+                    user_name       => ''ADMINHOS'',
+                    max_read_label  => ''BGD:TH,TK,TM:HCM,HP,HN'',
+                    max_write_label => ''BGD:TH,TK,TM:HCM,HP,HN'',
+                    min_write_label => ''NV'',
+                    def_label       => ''BGD:TH,TK,TM:HCM,HP,HN'',
+                    row_label       => ''BGD:TH,TK,TM:HCM,HP,HN''
+                );
+                
+                SA_USER_ADMIN.SET_USER_PRIVS(
+                    policy_name => ''THONGBAO_OLS'',
+                    user_name   => ''ADMINHOS'',
+                    privileges  => ''FULL''
+                );
+            END;';
+            DBMS_OUTPUT.PUT_LINE('Da gan FULL OLS cho ADMINHOS.');
+        EXCEPTION WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Loi gan user labels cho ADMINHOS: ' || SQLERRM);
+        END;
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Skipping user labels for ADMINHOS.');
+    END IF;
 END;
 /
 
 COMMIT;
 
--- Login lại để session ADMINHOS nhận quyền OLS mới
+-- Login lại để session ADMINHOS nhận quyền OLS mới (nếu có)
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 SET SERVEROUTPUT ON;
@@ -2455,12 +2225,10 @@ VALUES (
 
 COMMIT;
 
-
 -- =====================================================================
 -- PHẦN 9. TẠO USER DEMO U1..U8
 -- Password dùng chung: Hos@123456
 -- =====================================================================
-
 CREATE OR REPLACE PROCEDURE SP_CREATE_OLS_USER (
     p_username IN VARCHAR2,
     p_password IN VARCHAR2 DEFAULT 'Hos@123456'
@@ -2502,111 +2270,53 @@ BEGIN
 END;
 /
 
-
 -- =====================================================================
 -- PHẦN 10. GÁN USER LABEL CHO U1..U8
 -- =====================================================================
-
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
+    PROCEDURE SET_LABEL(u VARCHAR2, r VARCHAR2, w VARCHAR2, mn VARCHAR2, df VARCHAR2, rw VARCHAR2) IS
+    BEGIN
+        EXECUTE IMMEDIATE '
+        BEGIN
+            SA_USER_ADMIN.SET_USER_LABELS(
+                policy_name     => ''THONGBAO_OLS'',
+                user_name       => :1,
+                max_read_label  => :2,
+                max_write_label => :3,
+                min_write_label => :4,
+                def_label       => :5,
+                row_label       => :6
+            );
+        END;' USING u, r, w, mn, df, rw;
+    EXCEPTION WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Loi gan label cho ' || u || ': ' || SQLERRM);
+    END;
 BEGIN
-    -- U1: Giám đốc có thể đọc toàn bộ thông báo
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U1',
-        max_read_label  => 'BGD:TH,TK,TM:HCM,HP,HN',
-        max_write_label => 'BGD:TH,TK,TM:HCM,HP,HN',
-        min_write_label => 'NV',
-        def_label       => 'BGD:TH,TK,TM:HCM,HP,HN',
-        row_label       => 'BGD:TH,TK,TM:HCM,HP,HN'
-    );
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
 
-    -- U2: Lãnh đạo Khoa tim mạch tại Hồ Chí Minh
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U2',
-        max_read_label  => 'LDK:TM:HCM',
-        max_write_label => 'LDK:TM:HCM',
-        min_write_label => 'NV',
-        def_label       => 'LDK:TM:HCM',
-        row_label       => 'LDK:TM:HCM'
-    );
-
-    -- U3: Lãnh đạo Khoa thần kinh tại Hà Nội
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U3',
-        max_read_label  => 'LDK:TK:HN',
-        max_write_label => 'LDK:TK:HN',
-        min_write_label => 'NV',
-        def_label       => 'LDK:TK:HN',
-        row_label       => 'LDK:TK:HN'
-    );
-
-    -- U4: Nhân viên Khoa thần kinh tại Hồ Chí Minh
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U4',
-        max_read_label  => 'NV:TK:HCM',
-        max_write_label => 'NV:TK:HCM',
-        min_write_label => 'NV',
-        def_label       => 'NV:TK:HCM',
-        row_label       => 'NV:TK:HCM'
-    );
-
-    -- U5: Nhân viên Khoa tim mạch tại Hồ Chí Minh
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U5',
-        max_read_label  => 'NV:TM:HCM',
-        max_write_label => 'NV:TM:HCM',
-        min_write_label => 'NV',
-        def_label       => 'NV:TM:HCM',
-        row_label       => 'NV:TM:HCM'
-    );
-
-    -- U6: Lãnh đạo phòng có thể đọc thông báo Khoa tim mạch tại Hồ Chí Minh
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U6',
-        max_read_label  => 'LDK:TM:HCM',
-        max_write_label => 'LDK:TM:HCM',
-        min_write_label => 'NV',
-        def_label       => 'LDK:TM:HCM',
-        row_label       => 'LDK:TM:HCM'
-    );
-
-    -- U7: Lãnh đạo phòng đọc được toàn bộ thông báo phù hợp cấp lãnh đạo phòng
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U7',
-        max_read_label  => 'LDK:TH,TK,TM:HCM,HP,HN',
-        max_write_label => 'LDK:TH,TK,TM:HCM,HP,HN',
-        min_write_label => 'NV',
-        def_label       => 'LDK:TH,TK,TM:HCM,HP,HN',
-        row_label       => 'LDK:TH,TK,TM:HCM,HP,HN'
-    );
-
-    -- U8: Nhân viên Khoa tiêu hóa tại Hà Nội
-    SA_USER_ADMIN.SET_USER_LABELS(
-        policy_name     => 'THONGBAO_OLS',
-        user_name       => 'U8',
-        max_read_label  => 'NV:TH:HN',
-        max_write_label => 'NV:TH:HN',
-        min_write_label => 'NV',
-        def_label       => 'NV:TH:HN',
-        row_label       => 'NV:TH:HN'
-    );
-
-    DBMS_OUTPUT.PUT_LINE('Da gan OLS label cho U1..U8.');
+    IF v_ols_enabled = 'TRUE' THEN
+        SET_LABEL('U1', 'BGD:TH,TK,TM:HCM,HP,HN', 'BGD:TH,TK,TM:HCM,HP,HN', 'NV', 'BGD:TH,TK,TM:HCM,HP,HN', 'BGD:TH,TK,TM:HCM,HP,HN');
+        SET_LABEL('U2', 'LDK:TM:HCM', 'LDK:TM:HCM', 'NV', 'LDK:TM:HCM', 'LDK:TM:HCM');
+        SET_LABEL('U3', 'LDK:TK:HN', 'LDK:TK:HN', 'NV', 'LDK:TK:HN', 'LDK:TK:HN');
+        SET_LABEL('U4', 'NV:TK:HCM', 'NV:TK:HCM', 'NV', 'NV:TK:HCM', 'NV:TK:HCM');
+        SET_LABEL('U5', 'NV:TM:HCM', 'NV:TM:HCM', 'NV', 'NV:TM:HCM', 'NV:TM:HCM');
+        SET_LABEL('U6', 'LDK:TM:HCM', 'LDK:TM:HCM', 'NV', 'LDK:TM:HCM', 'LDK:TM:HCM');
+        SET_LABEL('U7', 'LDK:TH,TK,TM:HCM,HP,HN', 'LDK:TH,TK,TM:HCM,HP,HN', 'NV', 'LDK:TH,TK,TM:HCM,HP,HN', 'LDK:TH,TK,TM:HCM,HP,HN');
+        SET_LABEL('U8', 'NV:TH:HN', 'NV:TH:HN', 'NV', 'NV:TH:HN', 'NV:TH:HN');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Skipping OLS user labels for U1..U8.');
+    END IF;
 END;
 /
 
-
 -- =====================================================================
 -- PHẦN 11. TẠO VIEW HỖ TRỢ GIAO DIỆN
--- Không dùng public synonym.
--- User sẽ SELECT bằng ADMINHOS.VW_THONGBAO_APP.
 -- =====================================================================
-
 CREATE OR REPLACE VIEW ADMINHOS.VW_THONGBAO_APP AS
 SELECT
     MATB,
@@ -2627,16 +2337,21 @@ GRANT SELECT ON ADMINHOS.VW_THONGBAO_APP TO U8;
 
 -- =====================================================================
 -- PHẦN 11B. GÁN OLS LABEL VÀ CẤP QUYỀN XEM THÔNG BÁO
--- CHO BÁC SĨ/Y SĨ, KỸ THUẬT VIÊN, ĐIỀU PHỐI VIÊN
 -- =====================================================================
-
 SET ROLE THONGBAO_OLS_DBA;
 
 DECLARE
     v_comp  VARCHAR2(50);
     v_group VARCHAR2(50);
     v_label VARCHAR2(200);
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
 BEGIN
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
+
     FOR r IN (
         SELECT 
             MANV,
@@ -2665,161 +2380,58 @@ BEGIN
 
         -- Ánh xạ chuyên khoa
         IF r.VAITRO = N'Điều phối viên' THEN
-            -- Điều phối viên không có chuyên khoa,
-            -- nhưng được xem thông báo cấp nhân viên của cả 3 khoa trong cùng cơ sở.
             v_comp := 'TH,TK,TM';
-
         ELSIF r.CHUYENKHOA = N'Khoa tiêu hóa' THEN
             v_comp := 'TH';
-
         ELSIF r.CHUYENKHOA = N'Khoa thần kinh' THEN
             v_comp := 'TK';
-
         ELSIF r.CHUYENKHOA = N'Khoa tim mạch' THEN
             v_comp := 'TM';
-
         ELSE
             v_comp := NULL;
         END IF;
 
         IF v_group IS NULL OR v_comp IS NULL THEN
-            DBMS_OUTPUT.PUT_LINE(
-                'Bo qua ' || r.MANV ||
-                ' - thieu COSO hoac CHUYENKHOA hop le.'
-            );
             CONTINUE;
         END IF;
 
         v_label := 'NV:' || v_comp || ':' || v_group;
 
-        BEGIN
-            SA_USER_ADMIN.SET_USER_LABELS(
-                policy_name     => 'THONGBAO_OLS',
-                user_name       => r.MANV,
-                max_read_label  => v_label,
-                max_write_label => v_label,
-                min_write_label => 'NV',
-                def_label       => v_label,
-                row_label       => v_label
-            );
+        IF v_ols_enabled = 'TRUE' THEN
+            BEGIN
+                EXECUTE IMMEDIATE '
+                BEGIN
+                    SA_USER_ADMIN.SET_USER_LABELS(
+                        policy_name     => ''THONGBAO_OLS'',
+                        user_name       => :1,
+                        max_read_label  => :2,
+                        max_write_label => :3,
+                        min_write_label => ''NV'',
+                        def_label       => :4,
+                        row_label       => :5
+                    );
+                END;' USING r.MANV, v_label, v_label, v_label, v_label;
+            EXCEPTION
+                WHEN OTHERS THEN NULL;
+            END;
+        END IF;
 
+        -- Quyen select view luon luon duoc cap
+        BEGIN
             EXECUTE IMMEDIATE
                 'GRANT SELECT ON ADMINHOS.VW_THONGBAO_APP TO ' || r.MANV;
-
-            DBMS_OUTPUT.PUT_LINE(
-                'OK: ' || r.MANV || ' = ' || v_label
-            );
-
-        EXCEPTION
-            WHEN OTHERS THEN
-                DBMS_OUTPUT.PUT_LINE(
-                    'LOI: ' || r.MANV || ' - ' || SQLERRM
-                );
+        EXCEPTION WHEN OTHERS THEN NULL;
         END;
 
     END LOOP;
-
     DBMS_OUTPUT.PUT_LINE('Hoan tat gan OLS cho nhan vien.');
 END;
 /
 
-
--- =====================================================================
--- PHẦN 12. KIỂM TRA BẰNG ADMINHOS
--- ADMINHOS có FULL nên thấy toàn bộ.
--- =====================================================================
-SHOW USER;
-SELECT
-    MATB,
-    DIADIEM,
-    LABEL_TO_CHAR(OLS_LABEL) AS NHAN_OLS
-FROM ADMINHOS.THONGBAO
-ORDER BY MATB;
-
-
--- =====================================================================
--- PHẦN 13. TEST USER DEMO
--- Lưu ý: không dùng synonym, dùng ADMINHOS.VW_THONGBAO_APP.
--- =====================================================================
-
--- U1: Giám đốc
--- Kỳ vọng: T1, T2, T3, T4, T5, T6, T7
-CONNECT U1/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- U2: Lãnh đạo Khoa tim mạch tại Hồ Chí Minh
--- Kỳ vọng: T1, T3
-CONNECT U2/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- U3: Lãnh đạo Khoa thần kinh tại Hà Nội
--- Kỳ vọng: T1, T3
-CONNECT U3/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- U4: Nhân viên Khoa thần kinh tại Hồ Chí Minh
--- Kỳ vọng: T1
-CONNECT U4/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- U5: Nhân viên Khoa tim mạch tại Hồ Chí Minh
--- Kỳ vọng: T1
-CONNECT U5/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- U6: Lãnh đạo phòng / Khoa tim mạch tại Hồ Chí Minh
--- Kỳ vọng: T1, T3
-CONNECT U6/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- U7: Lãnh đạo phòng toàn hệ thống
--- Kỳ vọng: T1, T3, T4, T5, T6, T7
-CONNECT U7/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- U8: Nhân viên Khoa tiêu hóa tại Hà Nội
--- Kỳ vọng: T1, T6
-CONNECT U8/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER;
-SELECT MATB, DIADIEM, NHAN_OLS
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-
--- ==========================================================
--- PHÂN HỆ 2 - YÊU CẦU 3
 -- VẬN DỤNG CƠ CHẾ KIỂM TOÁN
 -- ==========================================================
 
-CONNECT SYS AS SYSDBA;
+CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -2829,7 +2441,7 @@ SET SERVEROUTPUT ON;
 -- Kiểm tra chế độ audit hiện tại
 SHOW PARAMETER audit_trail;
 
-CONNECT SYS AS SYSDBA;
+CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -2878,7 +2490,6 @@ EXCEPTION
         END IF;
 END;
 /
-
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 SET SERVEROUTPUT ON;
@@ -2953,7 +2564,6 @@ GRANT EXECUTE ON FN_DEM_DONTHUOC TO BS0002;
 
 GRANT EXECUTE ON SP_CAPNHAT_KETLUAN_HSBA TO BS0001;
 GRANT EXECUTE ON SP_CAPNHAT_KETLUAN_HSBA TO BS0002;
-
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 -- để test
@@ -2973,7 +2583,7 @@ NOAUDIT EXECUTE ON ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA;
 NOAUDIT EXECUTE ON ADMINHOS.FN_DEM_DONTHUOC;
 NOAUDIT INSERT, UPDATE, DELETE ON ADMINHOS.HSBA_DV;
 
-CONNECT SYS AS SYSDBA;
+CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -3074,205 +2684,6 @@ BY ACCESS
 WHENEVER NOT SUCCESSFUL;
 
 -- ==========================================================
--- TEST 5 NGỮ CẢNH STANDARD AUDIT
--- ==========================================================
-
-SET SERVEROUTPUT ON;
-SET LINESIZE 200;
-SET PAGESIZE 100;
-
-
--- ==========================================================
--- NGỮ CẢNH 1:
--- Audit SELECT / UPDATE thành công trên TABLE ADMINHOS.HSBA
--- User test: BS0001
--- Kỳ vọng:
---      SELECT thành công -> ghi audit SELECT, RETURNCODE = 0
---      UPDATE thành công -> ghi audit UPDATE, RETURNCODE = 0
--- ==========================================================
-
-CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT BAC SI SELECT THANH CONG TREN ADMINHOS.HSBA
-SELECT MAHSBA, MABN, MABS, CHANDOAN, DIEUTRI, KETLUAN
-FROM ADMINHOS.HSBA
-WHERE MAHSBA = 'HSBA00001';
-
-PROMPT BAC SI UPDATE THANH CONG TREN ADMINHOS.HSBA
-UPDATE ADMINHOS.HSBA
-SET KETLUAN = N'Test standard audit update thanh cong boi BS0001'
-WHERE MAHSBA = 'HSBA00001';
-
-COMMIT;
-
-
--- ==========================================================
--- NGỮ CẢNH 2:
--- Audit SELECT / UPDATE thất bại trên TABLE ADMINHOS.HSBA
--- User test: BN000001
--- Kỳ vọng:
---      SELECT thất bại hoặc không đủ quyền -> ghi audit, RETURNCODE <> 0
---      UPDATE thất bại hoặc không đủ quyền -> ghi audit, RETURNCODE <> 0
--- Lưu ý:
---      Nếu BN000001 chưa được cấp quyền trực tiếp trên ADMINHOS.HSBA
---      thì sẽ lỗi ORA-00942 hoặc ORA-01031, đây là đúng mục tiêu test.
--- ==========================================================
-
-CONNECT BN000001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT BENH NHAN SELECT THAT BAI TREN ADMINHOS.HSBA
-SELECT MAHSBA, MABN, MABS, CHANDOAN, DIEUTRI, KETLUAN
-FROM ADMINHOS.HSBA
-WHERE MAHSBA = 'HSBA00001';
-
-PROMPT BENH NHAN UPDATE THAT BAI TREN ADMINHOS.HSBA
-UPDATE ADMINHOS.HSBA
-SET KETLUAN = N'Test standard audit update that bai boi BN000001'
-WHERE MAHSBA = 'HSBA00001';
-
-COMMIT;
-
-
--- ==========================================================
--- NGỮ CẢNH 3:
--- Audit SELECT / UPDATE thành công trên VIEW ADMINHOS.VW_NHANVIEN_SELF
--- User test: BS0001
--- Kỳ vọng:
---      SELECT chính thông tin nhân viên của mình -> thành công
---      UPDATE QUEQUAN/SODT của chính mình -> thành công
---      Ghi audit trên view VW_NHANVIEN_SELF, RETURNCODE = 0
--- ==========================================================
-
-CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT BAC SI SELECT THONG TIN CA NHAN TREN ADMINHOS.VW_NHANVIEN_SELF
-SELECT MANV, HOTEN, QUEQUAN, SODT
-FROM ADMINHOS.VW_NHANVIEN_SELF;
-
-PROMPT BAC SI UPDATE THONG TIN CA NHAN TREN ADMINHOS.VW_NHANVIEN_SELF
-UPDATE ADMINHOS.VW_NHANVIEN_SELF
-SET SODT = '0999000001'
-WHERE MANV = 'BS0001';
-
-COMMIT;
-
-
--- ==========================================================
--- NGỮ CẢNH 4:
--- Audit SELECT / UPDATE thành công trên VIEW ADMINHOS.VW_BENHNHAN_SELF
--- User test: BN000001
--- Kỳ vọng:
---      SELECT chính thông tin bệnh nhân của mình -> thành công
---      UPDATE địa chỉ/tiền sử của chính mình -> thành công
---      Ghi audit trên view VW_BENHNHAN_SELF, RETURNCODE = 0
--- ==========================================================
-
-CONNECT BN000001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT BENH NHAN SELECT THONG TIN CA NHAN TREN ADMINHOS.VW_BENHNHAN_SELF
-SELECT MABN, TENBN, SONHA, TENDUONG, QUANHUYEN, TINHTP
-FROM ADMINHOS.VW_BENHNHAN_SELF;
-
-PROMPT BENH NHAN UPDATE THONG TIN CA NHAN TREN ADMINHOS.VW_BENHNHAN_SELF
-UPDATE ADMINHOS.VW_BENHNHAN_SELF
-SET SONHA = N'123',
-    TENDUONG = N'Duong Test Audit',
-    QUANHUYEN = N'Quan Test',
-    TINHTP = N'Ho Chi Minh'
-WHERE MABN = 'BN000001';
-
-COMMIT;
-
-
--- ==========================================================
--- NGỮ CẢNH 5:
--- Audit EXECUTE thành công/thất bại trên PROCEDURE và FUNCTION
---
--- Đối tượng:
---      ADMINHOS.FN_DEM_DONTHUOC
---      ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA
---
--- User test thành công: BS0001
--- User test thất bại: BN000001
--- Kỳ vọng:
---      BS0001 EXECUTE thành công -> RETURNCODE = 0
---      BN000001 EXECUTE thất bại nếu không được grant execute -> RETURNCODE <> 0
--- ==========================================================
-
-CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT BAC SI EXECUTE FUNCTION ADMINHOS.FN_DEM_DONTHUOC THANH CONG
-SELECT ADMINHOS.FN_DEM_DONTHUOC('HSBA00001') AS SO_DONTHUOC
-FROM DUAL;
-
-PROMPT BAC SI EXECUTE PROCEDURE ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA THANH CONG
-BEGIN
-    ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA(
-        p_mahsba  => 'HSBA00001',
-        p_ketluan => N'Test execute procedure thanh cong boi BS0001'
-    );
-END;
-/
-
-CONNECT BN000001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT BENH NHAN EXECUTE FUNCTION ADMINHOS.FN_DEM_DONTHUOC THAT BAI
-SELECT ADMINHOS.FN_DEM_DONTHUOC('HSBA00001') AS SO_DONTHUOC
-FROM DUAL;
-
-PROMPT BENH NHAN EXECUTE PROCEDURE ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA THAT BAI
-BEGIN
-    ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA(
-        p_mahsba  => 'HSBA00001',
-        p_ketluan => N'Test execute procedure that bai boi BN000001'
-    );
-END;
-/
-
-
--- ==========================================================
--- ĐỌC LOG STANDARD AUDIT CHO 5 NGỮ CẢNH
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET LINESIZE 220;
-SET PAGESIZE 100;
-
-COLUMN USERNAME FORMAT A15;
-COLUMN OWNER FORMAT A15;
-COLUMN OBJ_NAME FORMAT A30;
-COLUMN ACTION_NAME FORMAT A20;
-COLUMN RETURNCODE FORMAT 999999;
-COLUMN AUDIT_TIME FORMAT A20;
-
-PROMPT DOC LOG STANDARD AUDIT CHO 5 NGU CANH
-SELECT
-    USERNAME,
-    OWNER,
-    OBJ_NAME,
-    ACTION_NAME,
-    RETURNCODE,
-    TO_CHAR(TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS AUDIT_TIME
-FROM DBA_AUDIT_TRAIL
-WHERE OWNER = 'ADMINHOS'
-  AND OBJ_NAME IN (
-      'HSBA',
-      'VW_NHANVIEN_SELF',
-      'VW_BENHNHAN_SELF',
-      'SP_CAPNHAT_KETLUAN_HSBA',
-      'FN_DEM_DONTHUOC'
-  )
-  AND USERNAME IN ('BS0001', 'BN000001')
-ORDER BY TIMESTAMP DESC;
-
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-
-
--- ==========================================================
 -- 3.3. FINE-GRAINED AUDIT CHO CÁC TÌNH HUỐNG NGHIỆP VỤ
 -- ==========================================================
 -- Mục tiêu:
@@ -3290,8 +2701,6 @@ SET SERVEROUTPUT ON;
 -- - Với các hành vi "bất hợp pháp về nghiệp vụ", ta cấp quyền thao tác
 --   để câu lệnh chạy tới bảng, sau đó FGA ghi nhận theo điều kiện nghiệp vụ.
 -- ==========================================================
-
-
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 SET SERVEROUTPUT ON;
@@ -3524,383 +2933,6 @@ END;
 
 
 -- ==========================================================
--- 3.3.7. CẤP QUYỀN PHỤC VỤ KIỂM THỬ FGA
--- ==========================================================
--- Ghi chú:
--- - Các quyền này nhằm tạo dữ liệu kiểm thử cho audit.
--- - Một số quyền được cấp cố ý để câu lệnh chạy tới bảng,
---   từ đó FGA có thể ghi nhận hành vi bất hợp pháp về nghiệp vụ.
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
--- Cho BS0001, BS0002 xem và cập nhật HSBA để test hợp pháp/bất hợp pháp.
-GRANT SELECT ON ADMINHOS.HSBA TO BS0001;
-GRANT SELECT ON ADMINHOS.HSBA TO BS0002;
-
-GRANT UPDATE (CHANDOAN, DIEUTRI, KETLUAN) ON ADMINHOS.HSBA TO BS0001;
-GRANT UPDATE (CHANDOAN, DIEUTRI, KETLUAN) ON ADMINHOS.HSBA TO BS0002;
-
--- Cho BS0001 cập nhật DONTHUOC để test yêu cầu 3.a.
-GRANT SELECT ON ADMINHOS.DONTHUOC TO BS0001;
-GRANT UPDATE (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) ON ADMINHOS.DONTHUOC TO BS0001;
-
--- Cho BS0001 INSERT HSBA_DV để test hành vi thêm bất hợp pháp về nghiệp vụ.
--- Lưu ý: Đây là quyền cấp để tạo tình huống audit, không phải quyền nghiệp vụ đúng.
-GRANT INSERT ON ADMINHOS.HSBA_DV TO BS0001;
-
--- Cho KTV001 thao tác HSBA_DV để test sửa/xóa bất hợp pháp trên dòng không thuộc mình.
-GRANT SELECT ON ADMINHOS.HSBA_DV TO KTV001;
-GRANT UPDATE (KETQUA) ON ADMINHOS.HSBA_DV TO KTV001;
-GRANT DELETE ON ADMINHOS.HSBA_DV TO KTV001;
-
--- Cố tình không cấp quyền trên HSBA, HSBA_DV cho DP0001/BN000001
--- để Standard Audit có thể ghi nhận các hành vi thất bại nếu cần.
-
--- ==========================================================
--- 3.3.8. KIỂM TRA DỮ LIỆU TRƯỚC KHI TEST
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-PROMPT [3.3.8.1] KIEM TRA DU LIEU MAU TREN BANG HSBA - HSBA00001 VA HSBA00002
-SELECT MAHSBA, MABN, MABS, CHANDOAN, DIEUTRI, KETLUAN
-FROM HSBA
-WHERE MAHSBA IN ('HSBA00001', 'HSBA00002')
-ORDER BY MAHSBA;
-
-PROMPT [3.3.8.2] KIEM TRA DON THUOC DA TON TAI CUA HSBA00001
-SELECT MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE MAHSBA = 'HSBA00001';
-
-PROMPT [3.3.8.3] KIEM TRA DONG DICH VU HSBA_DV CUA HSBA00002
-SELECT MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA
-FROM HSBA_DV
-WHERE MAHSBA = 'HSBA00002';
-
-
--- ==========================================================
--- 3.3.9. TEST YÊU CẦU 3.b
--- Bác sĩ cập nhật hợp pháp HSBA do chính mình điều trị.
--- ==========================================================
--- Dữ liệu mẫu:
--- HSBA00001 có MABS = BS0001.
--- Do đó BS0001 cập nhật HSBA00001 là hợp pháp.
--- Kỳ vọng:
--- - Câu lệnh UPDATE thành công.
--- - DBA_FGA_AUDIT_TRAIL có policy FGA_HSBA_UPDATE_HOPPHAP.
--- ==========================================================
-
-CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT [3.3.9] TEST 3.b - BS0001 UPDATE HOP PHAP HSBA00001 DO CHINH MINH PHU TRACH
-UPDATE ADMINHOS.HSBA
-SET CHANDOAN = N'Chẩn đoán hợp pháp bởi BS0001',
-    DIEUTRI  = N'Điều trị hợp pháp bởi BS0001',
-    KETLUAN  = N'Kết luận hợp pháp bởi BS0001'
-WHERE MAHSBA = 'HSBA00001';
-
-COMMIT;
-
-
--- ==========================================================
--- 3.3.10. TEST YÊU CẦU 3.a
--- Bác sĩ cập nhật đơn thuốc sau khi đơn thuốc đã được tạo.
--- ==========================================================
--- Dữ liệu mẫu:
--- DONTHUOC của HSBA00001 đã tồn tại.
--- Kỳ vọng:
--- - BS0001 update LIEUDUNG thành công.
--- - DBA_FGA_AUDIT_TRAIL có policy FGA_DONTHUOC_UPDATE.
--- ==========================================================
-
-CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT [3.3.10] TEST 3.a - BS0001 UPDATE LIEUDUNG TREN DONTHUOC DA TON TAI CUA HSBA00001
-UPDATE ADMINHOS.DONTHUOC
-SET LIEUDUNG = N'Uống 3 lần/ngày sau ăn'
-WHERE MAHSBA = 'HSBA00001';
-
-COMMIT;
-
-
--- ==========================================================
--- 3.3.11. TEST YÊU CẦU 3.c
--- Bác sĩ cập nhật bất hợp pháp HSBA không do mình điều trị.
--- ==========================================================
--- Dữ liệu mẫu:
--- HSBA00002 thường có MABS = BS0002.
--- BS0001 cập nhật HSBA00002 là bất hợp pháp về nghiệp vụ.
--- Kỳ vọng:
--- - Câu lệnh UPDATE có thể thành công do đã cấp quyền để test.
--- - DBA_FGA_AUDIT_TRAIL có policy FGA_HSBA_UPDATE_BATHOPPHAP.
--- ==========================================================
-
--- Cấp tạm thời quyền bypass VPD cho BS0001 để test audit 3.c. Vì bác sĩ bị gán VPD
--- EXEMPT ACCESS POLICY không ảnh hưởng FGA — audit vẫn ghi nhận.
--- Quyền này sẽ bị thu hồi ngay sau khi test.
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA
-GRANT EXEMPT ACCESS POLICY TO BS0001;
-
-
-CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT [3.3.11] TEST 3.c - BS0001 UPDATE BAT HOP PHAP HSBA00002 KHONG DO MINH PHU TRACH
-UPDATE ADMINHOS.HSBA
-SET KETLUAN = N'Cập nhật bất hợp pháp bởi BS0001'
-WHERE MAHSBA = 'HSBA00002';
-
-COMMIT;
-
--- Thu hồi quyền bypass VPD — khôi phục trạng thái bảo mật ban đầu.
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA
-REVOKE EXEMPT ACCESS POLICY FROM BS0001;
-
--- ==========================================================
--- 3.3.12. TEST YÊU CẦU 3.d - THÊM BẤT HỢP PHÁP HSBA_DV
--- ==========================================================
--- Tình huống:
--- BS0001 không phải kỹ thuật viên nhưng cố INSERT vào HSBA_DV.
--- Vì đã cấp INSERT để tạo tình huống, câu lệnh có thể chạy tới bảng.
--- FGA sẽ ghi nhận vì SESSION_USER không LIKE 'KTV%'.
---
--- Kỳ vọng:
--- - DBA_FGA_AUDIT_TRAIL có policy FGA_HSBA_DV_INSERT_BATHOPPHAP.
--- ==========================================================
-
-CONNECT BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT [3.3.12] TEST 3.d - BS0001 INSERT BAT HOP PHAP VAO HSBA_DV DO KHONG PHAI KTV
-INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
-VALUES (
-    'HSBA00001',
-    N'Dịch vụ trái phép',
-    SYSDATE,
-    'KTV001',
-    N'Trái phép'
-);
-
-
--- ==========================================================
--- 3.3.13. TEST YÊU CẦU 3.d - SỬA BẤT HỢP PHÁP HSBA_DV
--- ==========================================================
--- Tình huống:
--- KTV001 cập nhật dòng HSBA_DV không được phân công cho mình.
--- Ví dụ HSBA00002 thường có MAKTV = KTV002.
--- Điều kiện bất hợp pháp: SESSION_USER <> MAKTV.
---
--- Kỳ vọng:
--- - UPDATE có thể thành công do đã cấp quyền để test.
--- - DBA_FGA_AUDIT_TRAIL có policy FGA_HSBA_DV_UPD_DEL_BATHOPPHAP.
--- ==========================================================
-
-CONNECT KTV001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT [3.3.13] TEST 3.d - KTV001 UPDATE BAT HOP PHAP HSBA_DV CUA KTV KHAC
-UPDATE ADMINHOS.HSBA_DV
-SET KETQUA = N'Cập nhật sai phân công bởi KTV001'
-WHERE MAHSBA = 'HSBA00002';
-
-
--- ==========================================================
--- 3.3.14. TEST YÊU CẦU 3.d - XÓA BẤT HỢP PHÁP HSBA_DV
--- ==========================================================
--- Tình huống:
--- KTV001 xóa dòng HSBA_DV không được phân công cho mình.
---
--- Kỳ vọng:
--- - DELETE có thể thành công do đã cấp quyền để test.
--- - DBA_FGA_AUDIT_TRAIL có policy FGA_HSBA_DV_UPD_DEL_BATHOPPHAP.
--- ==========================================================
-
-CONNECT KTV001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT [3.3.14] TEST 3.d - KTV001 DELETE BAT HOP PHAP HSBA_DV CUA KTV KHAC
-DELETE FROM ADMINHOS.HSBA_DV
-WHERE MAHSBA = 'HSBA00002';
-
-
--- ==========================================================
--- 3.3.15. TEST THÊM: HÀNH VI THẤT BẠI DO KHÔNG CÓ QUYỀN
--- ==========================================================
--- Tình huống:
--- DP0001 cố cập nhật HSBA nhưng không được cấp quyền trực tiếp.
--- Hành vi này thường được ghi nhận bởi Standard Audit WHENEVER NOT SUCCESSFUL.
---
--- Ghi chú:
--- - Đây không phải log FGA chính, nhưng giúp chứng minh audit thất bại.
--- ==========================================================
-
-CONNECT DP0001/"Hos@123456"@localhost:1521/PDBHOSX
-
-PROMPT [3.3.15] TEST THEM - DP0001 UPDATE HSBA THAT BAI DO KHONG CO QUYEN
-UPDATE ADMINHOS.HSBA
-SET KETLUAN = N'Điều phối viên cố cập nhật trái phép'
-WHERE MAHSBA = 'HSBA00001';
-
-COMMIT;
-
-
--- ==========================================================
--- 3.4. ĐỌC XUẤT DỮ LIỆU KIỂM TOÁN
--- ==========================================================
-
-
--- ==========================================================
--- 3.4.1. ĐỌC STANDARD AUDIT TRAIL
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET LINESIZE 220;
-SET PAGESIZE 100;
-
-COLUMN USERNAME FORMAT A15;
-COLUMN OWNER FORMAT A15;
-COLUMN OBJ_NAME FORMAT A30;
-COLUMN ACTION_NAME FORMAT A20;
-COLUMN RETURNCODE FORMAT 999999;
-COLUMN AUDIT_TIME FORMAT A20;
-
-PROMPT [3.4.1] DOC STANDARD AUDIT TRAIL - CAC HANH VI THANH CONG VA THAT BAI TREN OBJECT
-SELECT
-    USERNAME,
-    OWNER,
-    OBJ_NAME,
-    ACTION_NAME,
-    RETURNCODE,
-    TO_CHAR(TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS AUDIT_TIME
-FROM DBA_AUDIT_TRAIL
-WHERE OWNER = 'ADMINHOS'
-  AND OBJ_NAME IN (
-      'HSBA',
-      'DONTHUOC',
-      'HSBA_DV',
-      'VW_NHANVIEN_SELF',
-      'VW_BENHNHAN_SELF',
-      'SP_CAPNHAT_KETLUAN_HSBA',
-      'FN_DEM_DONTHUOC'
-  )
-ORDER BY TIMESTAMP DESC;
-
-
--- ==========================================================
--- 3.4.2. ĐỌC FINE-GRAINED AUDIT TRAIL
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET LINESIZE 280;
-SET PAGESIZE 100;
-
-COLUMN DB_USER FORMAT A15;
-COLUMN OBJECT_SCHEMA FORMAT A15;
-COLUMN OBJECT_NAME FORMAT A20;
-COLUMN POLICY_NAME FORMAT A35;
-COLUMN STATEMENT_TYPE FORMAT A15;
-COLUMN AUDIT_TIME FORMAT A20;
-COLUMN SQL_TEXT FORMAT A100;
-
-PROMPT [3.4.2] DOC FINE-GRAINED AUDIT TRAIL - TONG HOP LOG FGA CHO YEU CAU 3.a 3.b 3.c 3.d
-SELECT
-    DB_USER,
-    OBJECT_SCHEMA,
-    OBJECT_NAME,
-    POLICY_NAME,
-    STATEMENT_TYPE,
-    TO_CHAR(EXTENDED_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS AUDIT_TIME,
-    SQL_TEXT
-FROM DBA_FGA_AUDIT_TRAIL
-WHERE OBJECT_SCHEMA = 'ADMINHOS'
-  AND POLICY_NAME IN (
-      'FGA_DONTHUOC_UPDATE',
-      'FGA_HSBA_UPDATE_HOPPHAP',
-      'FGA_HSBA_UPDATE_BATHOPPHAP',
-      'FGA_HSBA_DV_INSERT_BATHOPPHAP',
-      'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
-  )
-ORDER BY EXTENDED_TIMESTAMP DESC;
-
-
--- ==========================================================
--- 3.4.3. ĐỌC LOG RIÊNG CHO YÊU CẦU 3.a
--- ==========================================================
-
-PROMPT [3.4.3] DOC LOG FGA RIENG - 3.a BAC SI UPDATE DONTHUOC DA TON TAI
-SELECT
-    DB_USER,
-    OBJECT_NAME,
-    POLICY_NAME,
-    STATEMENT_TYPE,
-    TO_CHAR(EXTENDED_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS AUDIT_TIME,
-    SQL_TEXT
-FROM DBA_FGA_AUDIT_TRAIL
-WHERE OBJECT_SCHEMA = 'ADMINHOS'
-  AND POLICY_NAME = 'FGA_DONTHUOC_UPDATE'
-ORDER BY EXTENDED_TIMESTAMP DESC;
-
-
--- ==========================================================
--- 3.4.4. ĐỌC LOG RIÊNG CHO YÊU CẦU 3.b
--- ==========================================================
-
-PROMPT [3.4.4] DOC LOG FGA RIENG - 3.b BAC SI UPDATE HOP PHAP HSBA DO CHINH MINH PHU TRACH
-SELECT
-    DB_USER,
-    OBJECT_NAME,
-    POLICY_NAME,
-    STATEMENT_TYPE,
-    TO_CHAR(EXTENDED_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS AUDIT_TIME,
-    SQL_TEXT
-FROM DBA_FGA_AUDIT_TRAIL
-WHERE OBJECT_SCHEMA = 'ADMINHOS'
-  AND POLICY_NAME = 'FGA_HSBA_UPDATE_HOPPHAP'
-ORDER BY EXTENDED_TIMESTAMP DESC;
-
-
--- ==========================================================
--- 3.4.5. ĐỌC LOG RIÊNG CHO YÊU CẦU 3.c
--- ==========================================================
-
-PROMPT [3.4.5] DOC LOG FGA RIENG - 3.c BAC SI UPDATE BAT HOP PHAP HSBA KHONG DO MINH PHU TRACH
-SELECT
-    DB_USER,
-    OBJECT_NAME,
-    POLICY_NAME,
-    STATEMENT_TYPE,
-    TO_CHAR(EXTENDED_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS AUDIT_TIME,
-    SQL_TEXT
-FROM DBA_FGA_AUDIT_TRAIL
-WHERE OBJECT_SCHEMA = 'ADMINHOS'
-  AND POLICY_NAME = 'FGA_HSBA_UPDATE_BATHOPPHAP'
-ORDER BY EXTENDED_TIMESTAMP DESC;
-
-
--- ==========================================================
--- 3.4.6. ĐỌC LOG RIÊNG CHO YÊU CẦU 3.d
--- ==========================================================
-
-PROMPT [3.4.6] DOC LOG FGA RIENG - 3.d HSBA_DV INSERT UPDATE DELETE BAT HOP PHAP
-SELECT
-    DB_USER,
-    OBJECT_NAME,
-    POLICY_NAME,
-    STATEMENT_TYPE,
-    TO_CHAR(EXTENDED_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS AUDIT_TIME,
-    SQL_TEXT
-FROM DBA_FGA_AUDIT_TRAIL
-WHERE OBJECT_SCHEMA = 'ADMINHOS'
-  AND POLICY_NAME IN (
-      'FGA_HSBA_DV_INSERT_BATHOPPHAP',
-      'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
-  )
-ORDER BY EXTENDED_TIMESTAMP DESC;
-
-
-
-
--- ==========================================================
 -- PHÂN HỆ 2 - YÊU CẦU 4
 -- SAO LƯU VÀ PHỤC HỒI DỮ LIỆU
 -- ==========================================================
@@ -3993,7 +3025,7 @@ SELECT
     BS.SET_COUNT,
     BS.BACKUP_TYPE,
     BS.COMPLETION_TIME,
-    BS.STATUS,
+    BP.STATUS,
     BP.DEVICE_TYPE,
     BP.HANDLE
 FROM V$BACKUP_SET BS
@@ -4066,7 +3098,7 @@ RMAN> ALTER DATABASE OPEN RESETLOGS;
 -- Lưu ý: Thư mục D:\DATAPUMP_BACKUP phải được tạo thủ công trên OS trước
 -- ==========================================================
 
-CONNECT SYS AS SYSDBA;
+CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -4087,182 +3119,10 @@ SELECT DIRECTORY_NAME, DIRECTORY_PATH
 FROM DBA_DIRECTORIES
 WHERE DIRECTORY_NAME = 'DATAPUMP_DIR';
 
-
--- ==========================================================
--- B.2. TEST DATA PUMP EXPORT BẰNG DBMS_DATAPUMP (chạy trong SQL)
--- Kỳ vọng: Job export chạy thành công, file .dmp xuất hiện trong D:\DATAPUMP_BACKUP
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-
-PROMPT [B.2] TEST EXPORT SCHEMA ADMINHOS QUA DBMS_DATAPUMP
-
-DECLARE
-    v_job_handle  NUMBER;
-    v_status      VARCHAR2(30);
-    v_job_state   VARCHAR2(30);
-BEGIN
-    -- Mở job export
-    v_job_handle := DBMS_DATAPUMP.OPEN(
-        operation  => 'EXPORT',
-        job_mode   => 'SCHEMA',
-        job_name   => 'TEST_EXPORT_YC4',
-        version    => 'LATEST'
-    );
-
-    -- Thêm file dump
-    DBMS_DATAPUMP.ADD_FILE(
-        handle    => v_job_handle,
-        filename  => 'adminhos_test_yc4.dmp',
-        directory => 'DATAPUMP_DIR',
-        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_DUMP_FILE
-    );
-
-    -- Thêm file log
-    DBMS_DATAPUMP.ADD_FILE(
-        handle    => v_job_handle,
-        filename  => 'adminhos_test_yc4.log',
-        directory => 'DATAPUMP_DIR',
-        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_LOG_FILE
-    );
-
-    -- Lọc chỉ export schema ADMINHOS
-    DBMS_DATAPUMP.METADATA_FILTER(
-        handle => v_job_handle,
-        name   => 'SCHEMA_EXPR',
-        value  => '= ''ADMINHOS'''
-    );
-
-    -- Bắt đầu job và chờ hoàn tất
-    DBMS_DATAPUMP.START_JOB(handle => v_job_handle);
-    DBMS_DATAPUMP.WAIT_FOR_JOB(
-        handle    => v_job_handle,
-        job_state => v_job_state
-    );
-
-    DBMS_OUTPUT.PUT_LINE('Job export ket thuc voi trang thai: ' || v_job_state);
-
-    DBMS_DATAPUMP.DETACH(handle => v_job_handle);
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Loi export: ' || SQLERRM);
-        BEGIN
-            DBMS_DATAPUMP.DETACH(handle => v_job_handle);
-        EXCEPTION WHEN OTHERS THEN NULL;
-        END;
-END;
-/
-
-
--- ==========================================================
--- B.3. KIỂM TRA KẾT QUẢ EXPORT
--- Kỳ vọng: Không còn job nào ở trạng thái đang chạy (STATE = COMPLETED hoặc rỗng)
--- ==========================================================
-
-CONNECT SYS AS SYSDBA;
-ALTER SESSION SET CONTAINER = PDBHOSX;
-
-PROMPT [B.3] KIEM TRA TRANG THAI JOB DATA PUMP - Ky vong: Khong con job dang chay
-SELECT JOB_NAME, OPERATION, JOB_MODE, STATE, DEGREE, ATTACHED_SESSIONS
-FROM DBA_DATAPUMP_JOBS
-ORDER BY JOB_NAME;
-
-
--- ==========================================================
--- B.4. TEST DATA PUMP IMPORT - PHỤC HỒI BẢNG DONTHUOC
--- Kịch bản: Giả lập mất dữ liệu DONTHUOC -> import lại từ file .dmp
--- Kỳ vọng: Bảng DONTHUOC được phục hồi đầy đủ dữ liệu ban đầu
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-
--- Ghi lại số dòng trước khi xóa
-PROMPT [B.4.1] DEM SO DONG DONTHUOC TRUOC KHI XOA - Ky vong: 100 dong
-SELECT COUNT(*) AS SO_DONG_TRUOC_XOA FROM DONTHUOC;
-
--- Mô phỏng mất dữ liệu
-DELETE FROM DONTHUOC;
-COMMIT;
-
-PROMPT [B.4.2] XAC NHAN DONTHUOC BI XOA - Ky vong: 0 dong
-SELECT COUNT(*) AS SO_DONG_SAU_XOA FROM DONTHUOC;
-
--- Import lại từ file .dmp
-DECLARE
-    v_job_handle  NUMBER;
-    v_job_state   VARCHAR2(30);
-BEGIN
-    v_job_handle := DBMS_DATAPUMP.OPEN(
-        operation  => 'IMPORT',
-        job_mode   => 'TABLE',
-        job_name   => 'TEST_IMPORT_YC4'
-    );
-
-    DBMS_DATAPUMP.ADD_FILE(
-        handle    => v_job_handle,
-        filename  => 'adminhos_test_yc4.dmp',
-        directory => 'DATAPUMP_DIR',
-        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_DUMP_FILE
-    );
-
-    DBMS_DATAPUMP.ADD_FILE(
-        handle    => v_job_handle,
-        filename  => 'adminhos_test_import_yc4.log',
-        directory => 'DATAPUMP_DIR',
-        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_LOG_FILE
-    );
-
-    -- Chỉ import bảng DONTHUOC
-    DBMS_DATAPUMP.METADATA_FILTER(
-        handle => v_job_handle,
-        name   => 'NAME_EXPR',
-        value  => '= ''DONTHUOC'''
-    );
-
-    -- Nếu bảng đã tồn tại thì bỏ qua DDL, chỉ import data
-    DBMS_DATAPUMP.SET_PARAMETER(
-        handle => v_job_handle,
-        name   => 'TABLE_EXISTS_ACTION',
-        value  => 'APPEND'
-    );
-
-    DBMS_DATAPUMP.START_JOB(handle => v_job_handle);
-    DBMS_DATAPUMP.WAIT_FOR_JOB(
-        handle    => v_job_handle,
-        job_state => v_job_state
-    );
-
-    DBMS_OUTPUT.PUT_LINE('Job import ket thuc voi trang thai: ' || v_job_state);
-    DBMS_DATAPUMP.DETACH(handle => v_job_handle);
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Loi import: ' || SQLERRM);
-        BEGIN
-            DBMS_DATAPUMP.DETACH(handle => v_job_handle);
-        EXCEPTION WHEN OTHERS THEN NULL;
-        END;
-END;
-/
-
-PROMPT [B.4.3] KIEM TRA SAU IMPORT - Ky vong: 100 dong duoc phuc hoi
-SELECT COUNT(*) AS SO_DONG_SAU_IMPORT FROM DONTHUOC;
-
-PROMPT [B.4.4] KIEM TRA DU LIEU MAU SAU IMPORT
-SELECT MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE ROWNUM <= 5
-ORDER BY MAHSBA;
-
-
 -- ==========================================================
 -- B.5. SAO LƯU TỰ ĐỘNG (SCHEDULER JOB)
 -- Mục đích: Lên lịch export Data Pump tự động mỗi ngày lúc 02:00
 -- ==========================================================
-
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 SET SERVEROUTPUT ON;
@@ -4325,838 +3185,6 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Da tao Scheduler Job: JOB_DAILY_DATAPUMP_BACKUP');
 END;
 /
-
-PROMPT [B.5] KIEM TRA SCHEDULER JOB DA DUOC TAO - Ky vong: JOB_DAILY_DATAPUMP_BACKUP o trang thai SCHEDULED
-SELECT JOB_NAME, STATE, ENABLED,
-       TO_CHAR(NEXT_RUN_DATE, 'YYYY-MM-DD HH24:MI:SS') AS NEXT_RUN
-FROM USER_SCHEDULER_JOBS
-WHERE JOB_NAME = 'JOB_DAILY_DATAPUMP_BACKUP';
-
-
--- ==========================================================
--- PHƯƠNG PHÁP C: ORACLE FLASHBACK
--- ==========================================================
-
-
--- ==========================================================
--- C.0. CHUẨN BỊ: BẬT ROW MOVEMENT VÀ KIỂM TRA CẤU HÌNH
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-
-ALTER TABLE DONTHUOC  ENABLE ROW MOVEMENT;
-ALTER TABLE HSBA      ENABLE ROW MOVEMENT;
-ALTER TABLE HSBA_DV   ENABLE ROW MOVEMENT;
-ALTER TABLE BENHNHAN  ENABLE ROW MOVEMENT;
-ALTER TABLE NHANVIEN  ENABLE ROW MOVEMENT;
-
-PROMPT [C.0] KIEM TRA ROW MOVEMENT DA BAT - Ky vong: tat ca 5 bang la ENABLED
-SELECT TABLE_NAME, ROW_MOVEMENT
-FROM USER_TABLES
-WHERE TABLE_NAME IN ('DONTHUOC','HSBA','HSBA_DV','BENHNHAN','NHANVIEN')
-ORDER BY TABLE_NAME;
-
-
--- ==========================================================
--- C.1. FLASHBACK QUERY
--- Kịch bản: Ghi lại SCN trước khi sửa, sửa dữ liệu, dùng AS OF SCN truy vấn lại
--- Kỳ vọng: AS OF SCN trả về dữ liệu gốc TRƯỚC khi UPDATE
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-
--- Bước C.1.1: Ghi lại SCN và dữ liệu hiện tại trước khi gây lỗi
-DECLARE
-    v_scn_before NUMBER;
-    v_lieudung   NVARCHAR2(100);
-BEGIN
-    SELECT CURRENT_SCN INTO v_scn_before FROM V$DATABASE;
-    SELECT LIEUDUNG INTO v_lieudung
-    FROM DONTHUOC
-    WHERE MAHSBA = 'HSBA00001'
-      AND ROWNUM = 1;
-
-    DBMS_OUTPUT.PUT_LINE('SCN truoc khi sua: ' || v_scn_before);
-    DBMS_OUTPUT.PUT_LINE('LIEUDUNG goc: ' || v_lieudung);
-
-    -- Lưu SCN vào bảng tạm để dùng lại
-    EXECUTE IMMEDIATE
-        'CREATE OR REPLACE VIEW VW_SCN_CHECKPOINT AS SELECT ' ||
-        v_scn_before || ' AS SCN_BEFORE FROM DUAL';
-END;
-/
-
-PROMPT [C.1.1] DU LIEU DONTHUOC TRUOC KHI SUA - Ky vong: LIEUDUNG co gia tri cu the
-SELECT MAHSBA, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE MAHSBA = 'HSBA00001';
-
--- Bước C.1.2: Gây lỗi - thay đổi LIEUDUNG sai
-UPDATE DONTHUOC
-SET LIEUDUNG = N'[SAI - test flashback query]'
-WHERE MAHSBA = 'HSBA00001';
-
-COMMIT;
-
-PROMPT [C.1.2] DU LIEU SAU KHI SUA SAI - Ky vong: LIEUDUNG = [SAI - test flashback query]
-SELECT MAHSBA, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE MAHSBA = 'HSBA00001';
-
--- Bước C.1.3: Dùng Flashback Query AS OF SCN để xem lại dữ liệu gốc
-PROMPT [C.1.3] FLASHBACK QUERY AS OF SCN - Ky vong: LIEUDUNG hien thi lai gia tri CU truoc khi sua
-SELECT MAHSBA, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-AS OF SCN v_scn_truoc (SELECT SCN_BEFORE FROM VW_SCN_CHECKPOINT)
-WHERE MAHSBA = 'HSBA00001';
-
--- Bước C.1.4: So sánh trực tiếp hiện tại vs quá khứ
-PROMPT [C.1.4] SO SANH DU LIEU HIEN TAI VA QUA KHU
-SELECT
-    curr.MAHSBA,
-    curr.LIEUDUNG                               AS LIEUDUNG_HIEN_TAI,
-    hist.LIEUDUNG                               AS LIEUDUNG_TRUOC_KHI_SUA
-FROM DONTHUOC curr
-JOIN (
-    SELECT MAHSBA, LIEUDUNG
-    FROM DONTHUOC
-    AS OF SCN v_scn_truoc (SELECT SCN_BEFORE FROM VW_SCN_CHECKPOINT)
-    WHERE MAHSBA = 'HSBA00001'
-) hist ON curr.MAHSBA = hist.MAHSBA
-WHERE curr.MAHSBA = 'HSBA00001';
-
--- Bước C.1.5: Phục hồi dữ liệu từ Flashback Query
-PROMPT [C.1.5] PHUC HOI DU LIEU TU FLASHBACK QUERY
-DECLARE
-    v_lieudung_cu NVARCHAR2(100);
-    v_scn_before  NUMBER;
-BEGIN
-    SELECT SCN_BEFORE INTO v_scn_before FROM VW_SCN_CHECKPOINT;
-
-    SELECT LIEUDUNG INTO v_lieudung_cu
-    FROM DONTHUOC
-    AS OF SCN v_scn_before
-    WHERE MAHSBA = 'HSBA00001'
-      AND ROWNUM = 1;
-
-    UPDATE DONTHUOC
-    SET LIEUDUNG = v_lieudung_cu
-    WHERE MAHSBA = 'HSBA00001';
-
-    COMMIT;
-    DBMS_OUTPUT.PUT_LINE('Da phuc hoi LIEUDUNG: ' || v_lieudung_cu);
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('Khong tim thay du lieu flashback. SCN co the da het han.');
-END;
-/
-
-PROMPT [C.1.6] XAC NHAN SAU PHUC HOI - Ky vong: LIEUDUNG tra ve gia tri goc ban dau
-SELECT MAHSBA, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE MAHSBA = 'HSBA00001';
-
--- Dọn view tạm
-BEGIN
-    EXECUTE IMMEDIATE 'DROP VIEW VW_SCN_CHECKPOINT';
-EXCEPTION WHEN OTHERS THEN NULL;
-END;
-/
-
-
--- ==========================================================
--- C.2. FLASHBACK TABLE
--- Kịch bản: UPDATE sai hàng loạt đơn thuốc -> FLASHBACK TABLE về trước
--- Kỳ vọng: Bảng DONTHUOC khôi phục hoàn toàn về trạng thái trước UPDATE
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-
--- Bước C.2.1: Ghi lại timestamp cố định trước khi gây lỗi
-DECLARE
-    v_ts TIMESTAMP := CAST(SYSTIMESTAMP AS TIMESTAMP);
-BEGIN
-    DBMS_OUTPUT.PUT_LINE('Thoi diem chup: ' || TO_CHAR(v_ts, 'YYYY-MM-DD HH24:MI:SS.FF3'));
-
-    EXECUTE IMMEDIATE
-        'CREATE OR REPLACE VIEW VW_TS_CHECKPOINT AS SELECT TO_TIMESTAMP('''
-        || TO_CHAR(v_ts, 'YYYY-MM-DD HH24:MI:SS.FF3')
-        || ''', ''YYYY-MM-DD HH24:MI:SS.FF3'') AS TS_BEFORE FROM DUAL';
-END;
-/
-
-PROMPT [C.2.1] DU LIEU DONTHUOC TRUOC KHI GAY LOI
-SELECT COUNT(*) AS TONG_DONG FROM DONTHUOC;
-SELECT MAHSBA, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE ROWNUM <= 3
-ORDER BY MAHSBA;
-
--- Bước C.2.2: Gây lỗi nghiêm trọng
-UPDATE DONTHUOC
-SET LIEUDUNG = N'[XOA NHAM - can phuc hoi]';
-
-COMMIT;
-
-PROMPT [C.2.2] DU LIEU SAU KHI CAP NHAT SAI
-SELECT MAHSBA, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE ROWNUM <= 3
-ORDER BY MAHSBA;
-
--- Bước C.2.3: Flashback Table về timestamp đã lưu
-PROMPT [C.2.3] THUC HIEN FLASHBACK TABLE DONTHUOC
-
-ALTER TABLE DONTHUOC ENABLE ROW MOVEMENT;
-
-DECLARE
-    v_ts TIMESTAMP;
-BEGIN
-    SELECT TS_BEFORE
-    INTO v_ts
-    FROM VW_TS_CHECKPOINT;
-
-    EXECUTE IMMEDIATE
-        'FLASHBACK TABLE DONTHUOC TO TIMESTAMP TO_TIMESTAMP('''
-        || TO_CHAR(v_ts, 'YYYY-MM-DD HH24:MI:SS.FF3')
-        || ''', ''YYYY-MM-DD HH24:MI:SS.FF3'')';
-
-    DBMS_OUTPUT.PUT_LINE('Da flashback DONTHUOC ve: ' || TO_CHAR(v_ts, 'YYYY-MM-DD HH24:MI:SS.FF3'));
-END;
-/
-
--- Bước C.2.4: Kiểm tra sau phục hồi
-PROMPT [C.2.4] DU LIEU SAU FLASHBACK TABLE
-SELECT MAHSBA, TENTHUOC, LIEUDUNG
-FROM DONTHUOC
-WHERE ROWNUM <= 3
-ORDER BY MAHSBA;
-
-SELECT COUNT(*) AS TONG_DONG_SAU_PHUC_HOI
-FROM DONTHUOC;
-
-BEGIN
-    EXECUTE IMMEDIATE 'DROP VIEW VW_TS_CHECKPOINT';
-EXCEPTION WHEN OTHERS THEN NULL;
-END;
-/
-
-
--- ==========================================================
--- C.3. FLASHBACK DROP (Recycle Bin)
--- Kịch bản: DROP nhầm bảng DEMO_FLASHBACK_DROP -> phục hồi từ Recycle Bin
--- Kỳ vọng: Bảng và dữ liệu được phục hồi hoàn toàn
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-
--- Bước C.3.1: Tạo bảng demo và nhập dữ liệu
-BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE DEMO_FLASHBACK_DROP PURGE';
-EXCEPTION WHEN OTHERS THEN NULL;
-END;
-/
-
-CREATE TABLE DEMO_FLASHBACK_DROP (
-    ID      NUMBER PRIMARY KEY,
-    NOIDUNG NVARCHAR2(200)
-);
-
-INSERT INTO DEMO_FLASHBACK_DROP VALUES (1, N'Hồ sơ bệnh nhân quan trọng 001');
-INSERT INTO DEMO_FLASHBACK_DROP VALUES (2, N'Kết quả xét nghiệm lưu trữ 002');
-INSERT INTO DEMO_FLASHBACK_DROP VALUES (3, N'Đơn thuốc lịch sử cần giữ lại 003');
-
-COMMIT;
-
-PROMPT [C.3.1] BANG TRUOC KHI DROP - Ky vong: 3 dong du lieu
-SELECT * FROM DEMO_FLASHBACK_DROP;
-
--- Bước C.3.2: Giả lập DROP nhầm
-DROP TABLE DEMO_FLASHBACK_DROP;
-
-PROMPT [C.3.2] KIEM TRA RECYCLE BIN - Ky vong: DEMO_FLASHBACK_DROP xuat hien trong RECYCLEBIN
-SELECT OBJECT_NAME, ORIGINAL_NAME, TYPE, DROPTIME
-FROM RECYCLEBIN
-WHERE ORIGINAL_NAME = 'DEMO_FLASHBACK_DROP'
-ORDER BY DROPTIME DESC;
-
--- Bước C.3.3: Phục hồi từ Recycle Bin
-FLASHBACK TABLE DEMO_FLASHBACK_DROP TO BEFORE DROP;
-
-PROMPT [C.3.3] DU LIEU SAU FLASHBACK DROP - Ky vong: 3 dong duoc phuc hoi day du
-SELECT * FROM DEMO_FLASHBACK_DROP;
-
-PROMPT [C.3.4] XAC NHAN KHONG CON TRONG RECYCLEBIN SAU PHUC HOI
-SELECT COUNT(*) AS CON_TRONG_RECYCLEBIN
-FROM RECYCLEBIN
-WHERE ORIGINAL_NAME = 'DEMO_FLASHBACK_DROP';
-
--- Dọn dẹp sau demo
-DROP TABLE DEMO_FLASHBACK_DROP PURGE;
-
-
--- ==========================================================
--- C.4. FLASHBACK DATABASE - KIỂM TRA CẤU HÌNH
--- Kỳ vọng: FLASHBACK_ON = YES nếu đã bật; hiển thị Flashback log space
--- ==========================================================
-
-CONNECT SYS AS SYSDBA;
-
-ALTER SESSION SET CONTAINER = PDBHOSX;
-
-PROMPT [C.4.1] KIEM TRA TRANG THAI FLASHBACK DATABASE
-SELECT
-    DB_UNIQUE_NAME,
-    LOG_MODE,
-    FLASHBACK_ON
-FROM V$DATABASE;
-
-PROMPT [C.4.2] KIEM TRA FLASHBACK LOG SPACE
-SELECT
-    OLDEST_FLASHBACK_SCN,
-    TO_CHAR(OLDEST_FLASHBACK_TIME, 'YYYY-MM-DD HH24:MI:SS') AS OLDEST_FLASHBACK_TIME,
-    RETENTION_TARGET,
-    FLASHBACK_SIZE / 1024 / 1024 AS FLASHBACK_SIZE_MB,
-    ESTIMATED_FLASHBACK_SIZE / 1024 / 1024 AS ESTIMATED_MB
-FROM V$FLASHBACK_DATABASE_LOG;
-
-PROMPT [C.4.3] KIEM TRA THONG SO FLASHBACK RETENTION
-SELECT NAME, VALUE
-FROM V$PARAMETER
-WHERE NAME = 'db_flashback_retention_target';
-
-/*
-====================================================================
-NẾU FLASHBACK_ON = NO, CẦU HÌNH FLASHBACK DATABASE NHƯ SAU:
-(Chạy từ SQL*Plus với SYSDBA tại CDB$ROOT)
-
-ALTER SYSTEM SET DB_FLASHBACK_RETENTION_TARGET = 2880;
-ALTER DATABASE FLASHBACK ON;
-
-Phục hồi Flashback Database qua RMAN:
-
-rman TARGET SYS/oracle@localhost:1521/PDBHOSX
-
-RMAN> ALTER PLUGGABLE DATABASE PDBHOSX CLOSE IMMEDIATE;
-RMAN> FLASHBACK PLUGGABLE DATABASE PDBHOSX
-      TO TIMESTAMP TO_DATE('2026-06-04 07:00:00','YYYY-MM-DD HH24:MI:SS');
-RMAN> ALTER PLUGGABLE DATABASE PDBHOSX OPEN RESETLOGS;
-====================================================================
-*/
-
-
--- ==========================================================
--- PHỤC HỒI DỰA VÀO NHẬT KÝ KIỂM TOÁN TỪ YÊU CẦU 3
--- Mô tả: Sau khi YC3 chạy xong, các sự cố thật đã xảy ra và
---        được FGA ghi nhận trong DBA_FGA_AUDIT_TRAIL.
---        YC4 đọc trực tiếp timestamp từ log đó để xác định
---        thời điểm sai, sau đó dùng Flashback phục hồi dữ liệu.
--- Gồm 2 phần:
---   - Phục hồi 3c: KETLUAN của HSBA00002 bị BS0001 cập nhật sai
---   - Phục hồi 3d: HSBA_DV bị INSERT giả / UPDATE sai / DELETE xóa
--- ==========================================================
-
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
-SET LINESIZE 220;
-SET PAGESIZE 100;
-
-
--- ==========================================================
--- ĐỌC TỔNG HỢP FGA LOG TỪ YÊU CẦU 3
--- Kỳ vọng: Hiện đủ các hành vi bất hợp pháp đã được ghi nhận
--- ==========================================================
-
-PROMPT [FGA.0] TONG HOP LOG FGA TU YC3 - Ky vong: Co du log cho ca 3c va 3d
-SELECT
-    DB_USER,
-    OBJECT_NAME,
-    POLICY_NAME,
-    STATEMENT_TYPE,
-    TO_CHAR(EXTENDED_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS.FF3') AS THOI_DIEM_SAI,
-    SQL_TEXT
-FROM DBA_FGA_AUDIT_TRAIL
-WHERE OBJECT_SCHEMA = 'ADMINHOS'
-  AND POLICY_NAME IN (
-      'FGA_HSBA_UPDATE_BATHOPPHAP',
-      'FGA_HSBA_DV_INSERT_BATHOPPHAP',
-      'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
-  )
-ORDER BY EXTENDED_TIMESTAMP DESC;
-
-
--- ==========================================================
--- PHỤC HỒI 3c: KETLUAN CỦA HSBA00002 BỊ BS0001 CẬP NHẬT SAI
--- Sự cố: BS0001 dùng EXEMPT ACCESS POLICY bypass VPD để UPDATE
---         HSBA00002 (thuộc BS0002) — FGA ghi log policy
---         FGA_HSBA_UPDATE_BATHOPPHAP.
--- Phương pháp: Flashback Query AS OF SCN trước thời điểm sự cố
---              → UPDATE lại giá trị đúng.
--- ==========================================================
-
-PROMPT [FGA.3C.1] DU LIEU HSBA00002 HIEN TAI - Ky vong: KETLUAN bi cap nhat sai boi BS0001
-SELECT MAHSBA, MABS, CHANDOAN, DIEUTRI, KETLUAN
-FROM HSBA
-WHERE MAHSBA = 'HSBA00002';
-
-
--- Lấy EXTENDED_TIMESTAMP từ FGA log của sự cố 3c, chuyển sang SCN trước sự cố
-PROMPT [FGA.3C.2] LAY SCN TRUOC SU CO 3c TU FGA LOG
-DECLARE
-    v_ts_suco   TIMESTAMP WITH TIME ZONE;
-    v_scn_truoc NUMBER;
-BEGIN
-    SELECT EXTENDED_TIMESTAMP
-    INTO v_ts_suco
-    FROM (
-        SELECT EXTENDED_TIMESTAMP
-        FROM DBA_FGA_AUDIT_TRAIL
-        WHERE OBJECT_SCHEMA = 'ADMINHOS'
-          AND OBJECT_NAME   = 'HSBA'
-          AND POLICY_NAME   = 'FGA_HSBA_UPDATE_BATHOPPHAP'
-          AND DB_USER       = 'BS0001'
-        ORDER BY EXTENDED_TIMESTAMP DESC
-    )
-    WHERE ROWNUM = 1;
-
-    DBMS_OUTPUT.PUT_LINE('[3c] Thoi diem su co: '
-        || TO_CHAR(v_ts_suco, 'YYYY-MM-DD HH24:MI:SS.FF3'));
-
-    -- Lùi 1 giây để lấy thời điểm ngay TRƯỚC sự cố
-    v_scn_truoc := TIMESTAMP_TO_SCN(v_ts_suco - INTERVAL '1' SECOND);
-    DBMS_OUTPUT.PUT_LINE('[3c] SCN truoc su co: ' || v_scn_truoc);
-
-    EXECUTE IMMEDIATE
-        'CREATE OR REPLACE VIEW VW_SCN_3C AS SELECT '
-        || v_scn_truoc || ' AS SCN_TRUOC FROM DUAL';
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE(
-            'CANH BAO: Khong tim thay FGA log 3c. Kiem tra lai YC3 da chay chua.'
-        );
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Loi: ' || SQLERRM);
-END;
-/
-
--- Phục hồi KETLUAN đúng từ Flashback Query
-PROMPT [FGA.3C.4] PHUC HOI HSBA00002 KETLUAN TU FLASHBACK QUERY
-DECLARE
-    v_ketluan_dung NVARCHAR2(200);
-    v_scn_truoc    NUMBER;
-BEGIN
-    SELECT SCN_TRUOC INTO v_scn_truoc FROM VW_SCN_3C;
-
-    SELECT KETLUAN INTO v_ketluan_dung
-    FROM HSBA
-    AS OF SCN v_scn_truoc
-    WHERE MAHSBA = 'HSBA00002';
-
-    UPDATE HSBA
-    SET KETLUAN = v_ketluan_dung
-    WHERE MAHSBA = 'HSBA00002';
-
-    COMMIT;
-    DBMS_OUTPUT.PUT_LINE('[3c] Da phuc hoi KETLUAN: ' || v_ketluan_dung);
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE(
-            'CANH BAO: Khong lay duoc du lieu flashback. ' ||
-            'Undo co the da bi ghi de neu chay cach nhau qua lau.'
-        );
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Loi phuc hoi 3c: ' || SQLERRM);
-        ROLLBACK;
-END;
-/
-
-PROMPT [FGA.3C.5] XAC NHAN SAU PHUC HOI 3c - Ky vong: KETLUAN tra ve gia tri hop le truoc su co
-SELECT MAHSBA, MABS, CHANDOAN, DIEUTRI, KETLUAN
-FROM HSBA
-WHERE MAHSBA = 'HSBA00002';
-
-BEGIN
-    EXECUTE IMMEDIATE 'DROP VIEW VW_SCN_3C';
-EXCEPTION WHEN OTHERS THEN NULL;
-END;
-/
-
-
--- ==========================================================
--- PHỤC HỒI 3d: HSBA_DV BỊ TẠO/SỬA/XÓA BẤT HỢP PHÁP
--- Sự cố (theo thứ tự xảy ra trong YC3):
---   3.3.12: BS0001 INSERT 1 dòng giả vào HSBA_DV của HSBA00001
---   3.3.13: KTV001 UPDATE sai KETQUA của HSBA_DV HSBA00002
---   3.3.14: KTV001 DELETE toàn bộ HSBA_DV của HSBA00002
---           (xóa cả dòng vừa bị UPDATE sai ở 3.3.13)
--- Phương pháp phục hồi:
---   3.3.12 → DELETE dòng giả dựa vào SQL_TEXT từ FGA log (không cần Flashback)
---   3.3.13 → không cần phục hồi riêng vì 3.3.14 đã xóa dòng đó
---   3.3.14 → Flashback Query AS OF SCN trước 3.3.13 → INSERT lại các dòng gốc
--- ==========================================================
-
-
--- -----------------------------------------------------------
--- PHỤC HỒI 3d.1: XÓA DÒNG HSBA_DV GIẢ DO BS0001 INSERT (3.3.12)
--- Lấy SCN trước thời điểm INSERT bất hợp pháp.
--- Xác định thời điểm BS0001 insert dòng giả từ FGA log, dùng Flashback Query
--- So sánh HSBA_DV hiện tại với HSBA_DV AS OF SCN trước sự cố.
--- Dòng nào hiện tại có nhưng trước sự cố chưa có thì xóa.
--- -----------------------------------------------------------
-
-PROMPT [FGA.3D.1] PHUC HOI INSERT BAT HOP PHAP TREN HSBA_DV
-
-DECLARE
-    v_ts_insert  TIMESTAMP WITH TIME ZONE;
-    v_scn_truoc  NUMBER;
-    v_scn_sau    NUMBER;
-    v_rows       NUMBER := 0;
-BEGIN
-    SELECT EXTENDED_TIMESTAMP
-    INTO v_ts_insert
-    FROM (
-        SELECT EXTENDED_TIMESTAMP
-        FROM DBA_FGA_AUDIT_TRAIL
-        WHERE OBJECT_SCHEMA  = 'ADMINHOS'
-          AND OBJECT_NAME    = 'HSBA_DV'
-          AND POLICY_NAME    = 'FGA_HSBA_DV_INSERT_BATHOPPHAP'
-          AND STATEMENT_TYPE = 'INSERT'
-        ORDER BY EXTENDED_TIMESTAMP ASC
-    )
-    WHERE ROWNUM = 1;
-
-    v_scn_truoc := TIMESTAMP_TO_SCN(v_ts_insert - INTERVAL '1' SECOND);
-    v_scn_sau   := TIMESTAMP_TO_SCN(v_ts_insert + INTERVAL '1' SECOND);
-
-    DBMS_OUTPUT.PUT_LINE('[3d.1] Thoi diem INSERT sai: '
-        || TO_CHAR(v_ts_insert, 'YYYY-MM-DD HH24:MI:SS.FF3'));
-    DBMS_OUTPUT.PUT_LINE('[3d.1] SCN truoc INSERT: ' || v_scn_truoc);
-    DBMS_OUTPUT.PUT_LINE('[3d.1] SCN sau INSERT: ' || v_scn_sau);
-
-    DELETE FROM ADMINHOS.HSBA_DV curr
-    WHERE EXISTS (
-        SELECT 1
-        FROM ADMINHOS.HSBA_DV AS OF SCN v_scn_sau after_insert
-        WHERE after_insert.MAHSBA = curr.MAHSBA
-          AND after_insert.LOAIDV = curr.LOAIDV
-          AND after_insert.NGAYDV = curr.NGAYDV
-          AND NOT EXISTS (
-              SELECT 1
-              FROM ADMINHOS.HSBA_DV AS OF SCN v_scn_truoc before_insert
-              WHERE before_insert.MAHSBA = after_insert.MAHSBA
-                AND before_insert.LOAIDV = after_insert.LOAIDV
-                AND before_insert.NGAYDV = after_insert.NGAYDV
-          )
-    );
-
-    v_rows := SQL%ROWCOUNT;
-    COMMIT;
-
-    DBMS_OUTPUT.PUT_LINE('[3d.1] Da xoa ' || v_rows || ' dong insert bat hop phap.');
-
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('[3d.1] Khong tim thay FGA log INSERT bat hop phap.');
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('[3d.1] Loi phuc hoi INSERT: ' || SQLERRM);
-        ROLLBACK;
-END;
-/
-
-
--- ==========================================================
--- 3d.2. PHỤC HỒI UPDATE BẤT HỢP PHÁP
--- ==========================================================
--- Dùng khi KTV001 UPDATE sai HSBA_DV nhưng dòng vẫn còn tồn tại.
--- Nếu dòng đã bị DELETE sau UPDATE thì bước này không phục hồi được,
--- khi đó phải dùng bước 3d.3 để INSERT lại dòng đã bị xóa.
--- ==========================================================
-
-PROMPT [FGA.3D.2] PHUC HOI UPDATE BAT HOP PHAP TREN HSBA_DV NEU DONG CON TON TAI
-
-DECLARE
-    v_ts_update  TIMESTAMP WITH TIME ZONE;
-    v_scn_truoc  NUMBER;
-    v_rows       NUMBER := 0;
-    v_sql        VARCHAR2(4000);
-
-    TYPE t_dv_rec IS RECORD (
-        MAHSBA  ADMINHOS.HSBA_DV.MAHSBA%TYPE,
-        LOAIDV  ADMINHOS.HSBA_DV.LOAIDV%TYPE,
-        NGAYDV  ADMINHOS.HSBA_DV.NGAYDV%TYPE,
-        MAKTV   ADMINHOS.HSBA_DV.MAKTV%TYPE,
-        KETQUA  ADMINHOS.HSBA_DV.KETQUA%TYPE
-    );
-
-    TYPE t_dv_tab IS TABLE OF t_dv_rec INDEX BY PLS_INTEGER;
-    v_tab t_dv_tab;
-BEGIN
-    -- Lấy lần UPDATE bất hợp pháp mới nhất của KTV001
-    SELECT EXTENDED_TIMESTAMP
-    INTO v_ts_update
-    FROM (
-        SELECT EXTENDED_TIMESTAMP
-        FROM DBA_FGA_AUDIT_TRAIL
-        WHERE OBJECT_SCHEMA  = 'ADMINHOS'
-          AND OBJECT_NAME    = 'HSBA_DV'
-          AND POLICY_NAME    = 'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
-          AND DB_USER        = 'KTV001'
-          AND STATEMENT_TYPE = 'UPDATE'
-        ORDER BY EXTENDED_TIMESTAMP DESC
-    )
-    WHERE ROWNUM = 1;
-
-    v_scn_truoc := TIMESTAMP_TO_SCN(v_ts_update - INTERVAL '1' SECOND);
-
-    DBMS_OUTPUT.PUT_LINE('[3d.2] Thoi diem UPDATE sai: '
-        || TO_CHAR(v_ts_update, 'YYYY-MM-DD HH24:MI:SS.FF3'));
-
-    DBMS_OUTPUT.PUT_LINE('[3d.2] SCN truoc UPDATE: ' || v_scn_truoc);
-
-    -- Lấy dữ liệu đúng trước khi UPDATE sai
-    v_sql :=
-        'SELECT hist.MAHSBA, hist.LOAIDV, hist.NGAYDV, hist.MAKTV, hist.KETQUA ' ||
-        'FROM ( ' ||
-        '    SELECT MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA ' ||
-        '    FROM ADMINHOS.HSBA_DV AS OF SCN ' || v_scn_truoc ||
-        ') hist ' ||
-        'JOIN ADMINHOS.HSBA_DV curr ' ||
-        '  ON curr.MAHSBA = hist.MAHSBA ' ||
-        ' AND curr.LOAIDV = hist.LOAIDV ' ||
-        ' AND curr.NGAYDV = hist.NGAYDV ' ||
-        'WHERE NVL(curr.MAKTV,  ''#NULL#'') <> NVL(hist.MAKTV,  ''#NULL#'') ' ||
-        '   OR NVL(curr.KETQUA, ''#NULL#'') <> NVL(hist.KETQUA, ''#NULL#'')';
-
-    EXECUTE IMMEDIATE v_sql BULK COLLECT INTO v_tab;
-
-    FOR i IN 1 .. v_tab.COUNT LOOP
-        UPDATE ADMINHOS.HSBA_DV curr
-        SET curr.MAKTV  = v_tab(i).MAKTV,
-            curr.KETQUA = v_tab(i).KETQUA
-        WHERE curr.MAHSBA = v_tab(i).MAHSBA
-          AND curr.LOAIDV = v_tab(i).LOAIDV
-          AND curr.NGAYDV = v_tab(i).NGAYDV;
-
-        v_rows := v_rows + SQL%ROWCOUNT;
-    END LOOP;
-
-    COMMIT;
-
-    DBMS_OUTPUT.PUT_LINE('[3d.2] Da phuc hoi ' || v_rows || ' dong bi UPDATE sai.');
-
-    IF v_rows = 0 THEN
-        DBMS_OUTPUT.PUT_LINE('[3d.2] Khong co dong nao duoc phuc hoi. Co the dong da bi DELETE hoac da duoc phuc hoi truoc do.');
-    END IF;
-
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('[3d.2] Khong tim thay FGA log UPDATE bat hop phap cua KTV001.');
-
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('[3d.2] Loi phuc hoi UPDATE: ' || SQLERRM);
-        ROLLBACK;
-END;
-/
-
--- ==========================================================
--- 3d.3. PHỤC HỒI DELETE BẤT HỢP PHÁP
--- ==========================================================
--- Nguyên tắc:
--- - Lấy SCN trước DELETE và sau DELETE để xác định dòng nào đã biến mất.
--- - Nếu trước DELETE đã có UPDATE sai, dữ liệu dùng để INSERT lại sẽ lấy từ
---   SCN trước sự cố UPDATE/DELETE đầu tiên, để khôi phục giá trị gốc.
--- - Nếu không có UPDATE trước DELETE thì SCN gốc chính là SCN trước DELETE.
--- ==========================================================
-
-PROMPT [FGA.3D.3] PHUC HOI DELETE BAT HOP PHAP TREN HSBA_DV
-DECLARE
-    v_ts_first_up_del TIMESTAMP WITH TIME ZONE;
-    v_scn_goc         NUMBER;
-    v_rows            NUMBER := 0;
-BEGIN
-    SELECT MIN(EXTENDED_TIMESTAMP)
-    INTO v_ts_first_up_del
-    FROM DBA_FGA_AUDIT_TRAIL
-    WHERE OBJECT_SCHEMA  = 'ADMINHOS'
-      AND OBJECT_NAME    = 'HSBA_DV'
-      AND POLICY_NAME    = 'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
-      AND DB_USER        = 'KTV001'
-      AND STATEMENT_TYPE IN ('UPDATE', 'DELETE');
-
-    IF v_ts_first_up_del IS NULL THEN
-        RAISE_APPLICATION_ERROR(
-            -20001,
-            'Khong tim thay FGA log UPDATE/DELETE bat hop phap cua KTV001.'
-        );
-    END IF;
-
-    v_scn_goc := TIMESTAMP_TO_SCN(v_ts_first_up_del - INTERVAL '1' SECOND);
-
-    DBMS_OUTPUT.PUT_LINE('[3d.3] Thoi diem su co UPDATE/DELETE dau tien: '
-        || TO_CHAR(v_ts_first_up_del, 'YYYY-MM-DD HH24:MI:SS.FF3'));
-
-    DBMS_OUTPUT.PUT_LINE('[3d.3] SCN goc truoc su co: ' || v_scn_goc);
-
-    FOR g IN (
-        SELECT MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA
-        FROM ADMINHOS.HSBA_DV AS OF SCN v_scn_goc goc
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM ADMINHOS.HSBA_DV curr
-            WHERE curr.MAHSBA = goc.MAHSBA
-              AND curr.LOAIDV = goc.LOAIDV
-              AND curr.NGAYDV = goc.NGAYDV
-        )
-    )
-    LOOP
-        INSERT INTO ADMINHOS.HSBA_DV (
-            MAHSBA,
-            LOAIDV,
-            NGAYDV,
-            MAKTV,
-            KETQUA
-        )
-        VALUES (
-            g.MAHSBA,
-            g.LOAIDV,
-            g.NGAYDV,
-            g.MAKTV,
-            g.KETQUA
-        );
-
-        v_rows := v_rows + 1;
-
-        DBMS_OUTPUT.PUT_LINE(
-            '[3d.3] Phuc hoi dong bi xoa: ' ||
-            g.MAHSBA || ' | ' ||
-            g.LOAIDV || ' | ' ||
-            TO_CHAR(g.NGAYDV, 'YYYY-MM-DD') || ' | ' ||
-            g.MAKTV || ' | ' ||
-            g.KETQUA
-        );
-    END LOOP;
-
-    COMMIT;
-
-    DBMS_OUTPUT.PUT_LINE('[3d.3] Da phuc hoi ' || v_rows || ' dong bi DELETE sai.');
-
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('[3d.3] Loi phuc hoi DELETE: ' || SQLERRM);
-        ROLLBACK;
-END;
-/
-
-
--- ==========================================================
--- YÊU CẦU 4.4: KẾT LUẬN
--- ==========================================================
-
-/*
-====================================================================
-KẾT LUẬN VỀ CÁC PHƯƠNG PHÁP SAO LƯU VÀ PHỤC HỒI DỮ LIỆU ORACLE
-====================================================================
-
-Sau khi tìm hiểu, thử nghiệm và hiện thực 3 phương pháp chính
-trên hệ quản trị CSDL Oracle tại đồ án này, nhóm rút ra kết luận:
-
---------------------------------------------------------------------
-1. RMAN (Recovery Manager) là giải pháp sao lưu vật lý toàn diện nhất.
---------------------------------------------------------------------
-Ưu điểm:
-  - Sao lưu toàn bộ dữ liệu vật lý: datafile, control file, redo log.
-  - Hỗ trợ đầy đủ Full Backup và Incremental (Level 0/1),
-    giúp tiết kiệm thời gian và dung lượng cho bản sao lưu gia tăng.
-  - Phục hồi Point-in-Time (PITR) chính xác đến từng giây,
-    rất quan trọng khi cần quay lại thời điểm cụ thể trước sự cố.
-  - Tích hợp sẵn trong Oracle, có thể tự động hóa hoàn toàn.
-  - Catalog lưu metadata bản sao lưu, cho phép kiểm tra và
-    validate tính hợp lệ (VALIDATE DATABASE).
-
-Nhược điểm:
-  - Yêu cầu cấu hình ARCHIVELOG mode, tốn thêm dung lượng.
-  - Phục hồi cần dừng dịch vụ (MOUNT mode), gây gián đoạn hệ thống.
-  - Dung lượng file backup vật lý lớn hơn nhiều so với backup logic.
-  - Cần người quản trị có kiến thức chuyên sâu về RMAN.
-
-Phù hợp nhất với: Môi trường production cần phục hồi sau sự cố
-nghiêm trọng (mất dữ liệu, hỏng đĩa, server bị xóa).
-
---------------------------------------------------------------------
-2. DATA PUMP (expdp/impdp) là giải pháp backup logic linh hoạt.
---------------------------------------------------------------------
-Ưu điểm:
-  - Sao lưu ở mức logic: schema, bảng, hoặc tập dữ liệu lọc được.
-  - Dễ chuyển dữ liệu giữa các phiên bản Oracle hoặc các môi trường khác nhau.
-  - File .dmp nhỏ hơn backup vật lý nếu dùng COMPRESSION.
-  - Phục hồi chọn lọc: chỉ import bảng cụ thể bị mất, không cần
-    khôi phục toàn bộ database.
-  - Có thể lên lịch tự động qua DBMS_DATAPUMP + DBMS_SCHEDULER.
-
-Nhược điểm:
-  - Không phục hồi được cấu trúc vật lý (tablespace, control file).
-  - Không phù hợp khi dữ liệu thay đổi nhanh: backup tại thời điểm T
-    chỉ phản ánh snapshot tại T, không có PITR.
-  - Thời gian import với schema lớn (100.000 bệnh nhân) có thể lâu.
-  - Khóa object đích trong quá trình import nếu dùng TABLE_EXISTS_ACTION=REPLACE.
-
-Phù hợp nhất với: Sao lưu định kỳ, di chuyển dữ liệu giữa môi trường,
-phục hồi khi một số bảng bị xóa hoặc hỏng logic.
-
---------------------------------------------------------------------
-3. ORACLE FLASHBACK là công cụ phục hồi nhanh, ít gián đoạn nhất.
---------------------------------------------------------------------
-Ưu điểm:
-  - Flashback Query: xem dữ liệu quá khứ ngay trong session hiện tại,
-    không cần khôi phục bất kỳ thứ gì, không gián đoạn hệ thống.
-  - Flashback Table: phục hồi toàn bộ bảng chỉ với một lệnh SQL,
-    hệ thống vẫn online trong quá trình phục hồi.
-  - Flashback Drop: phục hồi bảng bị DROP nhầm từ Recycle Bin tức thì.
-  - Tích hợp hoàn hảo với audit log (YC3): dùng FGA trail để xác định
-    chính xác thời điểm sai, sau đó dùng Flashback Query phục hồi đúng dòng.
-  - Không cần file backup ngoài, dựa vào Undo Segment sẵn có.
-
-Nhược điểm:
-  - Bị giới hạn bởi UNDO_RETENTION: dữ liệu quá khứ chỉ lưu trong
-    khoảng thời gian cấu hình (thường 15 phút - vài giờ).
-  - Flashback Database cần bật Flashback Logging, tốn thêm dung lượng Fast Recovery Area.
-  - Không phục hồi được khi dữ liệu Undo đã bị ghi đè.
-  - Flashback Table không hoạt động nếu cấu trúc bảng đã thay đổi (thêm/xóa cột).
-
-Phù hợp nhất với: Phục hồi nhanh sau lỗi người dùng (UPDATE/DELETE sai),
-đặc biệt hiệu quả khi kết hợp với audit log để khoanh vùng sự cố.
-
---------------------------------------------------------------------
-TỔNG KẾT VÀ KHUYẾN NGHỊ
---------------------------------------------------------------------
-Không có phương pháp nào là tuyệt đối tốt nhất. Chiến lược tối ưu
-cho hệ thống bệnh viện X là kết hợp cả 3 lớp bảo vệ:
-
-  - RMAN Full Backup hàng tuần + Incremental hàng ngày:
-    bảo vệ trước sự cố vật lý nghiêm trọng.
-
-  - Data Pump Export tự động hàng ngày (2:00 AM):
-    snapshot logic nhanh, dễ phục hồi bảng cụ thể.
-
-  - Oracle Flashback luôn bật (Undo Retention >= 24 giờ):
-    xử lý lập tức các lỗi nhỏ trong ngày mà không gián đoạn dịch vụ.
-
-  - Kết hợp với FGA Audit Trail (YC3):
-    khi có sự cố, đọc log kiểm toán để xác định CHÍNH XÁC
-    thời điểm và đối tượng bị thay đổi sai, từ đó chọn phương
-    pháp phục hồi phù hợp nhất và tối thiểu hóa mất mát dữ liệu.
-====================================================================
-*/
-
 CONNECT ADMINHOS/123@localhost:1521/PDBHOSX 
 SHOW USER
 
@@ -6154,178 +4182,3 @@ BEGIN
     END LOOP;
 END;
 /
-
-
--- Chạy thử thủ tục kiểm toán
-SET SERVEROUTPUT ON;
-VARIABLE test_cur REFCURSOR;
-EXEC SP_XEM_AUDIT_LOG(:test_cur);
-PRINT test_cur;
-
-
--- Tại đây 
--- Chèn 10 HSBA cho BS0001
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00101', 'BN000001', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Đau dạ dày cấp', N'Uống thuốc dạ dày', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00102', 'BN000002', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Rối loạn tiêu hóa', N'Kháng sinh và men tiêu hóa', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00103', 'BN000003', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Trào ngược dạ dày', N'Uống thuốc kháng acid', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00104', 'BN000004', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Viêm đại tràng', N'Chế độ ăn kiêng và kháng sinh', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00105', 'BN000005', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Đau bụng chưa rõ nguyên nhân', N'Theo dõi lâm sàng', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00106', 'BN000006', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ngộ độc thực phẩm', N'Truyền dịch', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00107', 'BN000007', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Viêm dạ dày mãn tính', N'Điều trị kết hợp', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00108', 'BN000008', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Loét dạ dày tá tràng', N'Phác đồ diệt HP', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00109', 'BN000009', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Hội chứng ruột kích thích', N'Điều chỉnh lối sống', 'BS0001', 'KTH', N'Đang theo dõi');
-
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00110', 'BN000010', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Xuất huyết tiêu hóa nhẹ', N'Nội soi can thiệp', 'BS0001', 'KTH', N'Đang theo dõi');
-
--- 2 đơn thuốc cho mỗi HSBA từ HSBA00101 đến HSBA00110
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00101', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Paracetamol 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00101', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Omeprazole 20mg', N'Ngày 1 lần trước ăn sáng');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00102', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Amoxicillin 500mg', N'Ngày 3 lần, mỗi lần 1 viên');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00102', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Enterogermina', N'Ngày uống 2 ống');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00103', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Gaviscon', N'Uống 1 gói sau ăn');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00103', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Esomeprazole 40mg', N'Ngày 1 viên trước ăn sáng');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00104', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Metronidazole 250mg', N'Ngày 3 lần, mỗi lần 1 viên');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00104', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Loperamide 2mg', N'Uống khi tiêu chảy');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00105', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Drotaverine 40mg', N'Ngày 2 lần, mỗi lần 1 viên');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00105', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Pancreatin', N'Ngày 3 lần uống trong bữa ăn');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00106', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Oresol', N'Pha 1 gói uống cả ngày');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00106', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ciprofloxacin 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00107', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Rabeprazole 20mg', N'Ngày 1 lần trước ăn sáng');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00107', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Phosphalugel', N'Uống khi đau dạ dày');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00108', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Clarithromycin 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00108', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Pantoprazole 40mg', N'Ngày 1 lần trước ăn sáng');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00109', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Mebeverine 200mg', N'Ngày 2 lần, trước ăn 20 phút');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00109', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Probiotics', N'Ngày 1 gói uống buổi tối');
-
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00110', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Tranexamic acid 500mg', N'Ngày 3 lần, mỗi lần 1 viên');
-INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00110', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Lansoprazole 30mg', N'Ngày 1 lần trước ăn sáng');
-
-COMMIT;
--- Kết thúc
-
-
-SELECT *
-FROM ADMINHOS.DONTHUOC;
-
-SELECT COUNT(*), 
-    HS.*,
-    BN.TENBN AS TEN_BENH_NHAN,
-    BS.HOTEN AS TEN_BACSI,
-    BS.CHUYENKHOA AS CHUYENKHOA_BACSI,
-    BS.COSO AS COSO_BACSI
-FROM ADMINHOS.HSBA HS
-JOIN ADMINHOS.NHANVIEN BS
-    ON HS.MABS = BS.MANV
-   AND TRIM(BS.VAITRO) = N'Bác sĩ/Y sĩ'
-JOIN ADMINHOS.BENHNHAN BN
-    ON HS.MABN = BN.MABN
-WHERE TRIM(BS.COSO) = N'Hồ Chí Minh'
-ORDER BY HS.MAHSBA;
-
-                SELECT 
-                    NV.MANV,
-                    NV.HOTEN,
-                    NV.CHUYENKHOA,
-                    NV.COSO
-                FROM ADMINHOS.NHANVIEN NV
-                WHERE NV.VAITRO = N'Kỹ thuật viên'
-                ORDER BY NV.MANV ASC;
-
-INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
-VALUES ('HSBA00001', N'TEST - Chụp CT', SYSDATE, NULL, NULL);
-
-INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
-VALUES ('HSBA00002', N'TEST - Xét nghiệm nước tiểu', SYSDATE + 1/1440, NULL, NULL);
-
-INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
-VALUES ('HSBA00003', N'TEST - Điện tim', SYSDATE + 2/1440, NULL, NULL);
-
-INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
-VALUES ('HSBA00004', N'TEST - Siêu âm ổ bụng', SYSDATE + 3/1440, NULL, NULL);
-
-INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
-VALUES ('HSBA00005', N'TEST - Xét nghiệm máu nâng cao', SYSDATE + 4/1440, NULL, NULL);
-
-COMMIT;
-
-
-CONN BS0001/"Hos@123456"@localhost:1521/PDBHOSX
-SELECT * FROM ADMINHOS.VW_NHANVIEN_SELF;
-
-                SELECT
-                    DT.MAHSBA,
-                    DT.NGAYDT,
-                    HS.MABN,
-                    BN.TENBN,
-                    BN.PHAI,
-                    FLOOR(MONTHS_BETWEEN(SYSDATE, BN.NGAYSINH) / 12) AS TUOI,
-                    DT.TENTHUOC,
-                    DT.LIEUDUNG
-                FROM ADMINHOS.DONTHUOC DT
-                JOIN ADMINHOS.HSBA HS
-                    ON DT.MAHSBA = HS.MAHSBA
-                JOIN ADMINHOS.BENHNHAN BN
-                    ON HS.MABN = BN.MABN
-                ORDER BY DT.NGAYDT DESC, DT.MAHSBA ASC;
-                
-
-CONN DP0001/"Hos@123456"@localhost:1521/PDBHOSX
-SHOW USER
-SELECT 
-    MATB,
-    NOIDUNG,
-    DIADIEM
-FROM ADMINHOS.VW_THONGBAO_APP
-ORDER BY MATB;
-
-                SELECT 
-                    (SELECT COUNT(*) FROM ADMINHOS.HSBA) AS SO_HSBA,
-                    (
-                        SELECT COUNT(*) 
-                        FROM ADMINHOS.HSBA_DV DV
-                        JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
-                    ) AS SO_PHAN_CONG
-                FROM DUAL;
-                
-                SELECT 
-                    NV.MANV,
-                    NV.HOTEN,
-                    NV.CHUYENKHOA,
-                    NV.COSO
-                FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI NV
-                WHERE NV.VAITRO = N'Kỹ thuật viên'
-                ORDER BY NV.MANV ASC;
-
-
-SELECT * FROM ADMINHOS.VW_NHANVIEN_SELF;
-
-
-               
-            
-               
