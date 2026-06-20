@@ -1,4 +1,4 @@
-﻿namespace HospitalX.GUI
+namespace HospitalX.GUI
 {
     partial class Splash
     {
@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Splash));
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlLogo = new Guna.UI2.WinForms.Guna2Panel();
-            this.ptbChuThap = new Guna.UI2.WinForms.Guna2PictureBox();
             this.lblQTCSDL = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblVer = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.lblCSC = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -42,6 +41,7 @@
             this.lblPercent = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.lblHospital = new System.Windows.Forms.Label();
+            this.ptbChuThap = new Guna.UI2.WinForms.Guna2PictureBox();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbChuThap)).BeginInit();
             this.SuspendLayout();
@@ -57,38 +57,21 @@
             // pnlLogo
             // 
             this.pnlLogo.BackColor = System.Drawing.Color.Transparent;
-            this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.pnlLogo.BorderRadius = 64;
+            this.pnlLogo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(116)))), ((int)(((byte)(91)))));
+            this.pnlLogo.BorderRadius = 65;
             this.pnlLogo.BorderThickness = 1;
             this.pnlLogo.Controls.Add(this.ptbChuThap);
             this.pnlLogo.FillColor = System.Drawing.Color.White;
-            this.pnlLogo.Location = new System.Drawing.Point(400, 74);
+            this.pnlLogo.Location = new System.Drawing.Point(401, 74);
             this.pnlLogo.Margin = new System.Windows.Forms.Padding(4);
             this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.ShadowDecoration.BorderRadius = 50;
-            this.pnlLogo.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
+            this.pnlLogo.ShadowDecoration.BorderRadius = 65;
+            this.pnlLogo.ShadowDecoration.Color = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
             this.pnlLogo.ShadowDecoration.Depth = 8;
             this.pnlLogo.ShadowDecoration.Enabled = true;
-            this.pnlLogo.Size = new System.Drawing.Size(133, 123);
+            this.pnlLogo.Size = new System.Drawing.Size(130, 130);
             this.pnlLogo.TabIndex = 0;
             this.pnlLogo.UseTransparentBackground = true;
-            // 
-            // ptbChuThap
-            // 
-            this.ptbChuThap.BackColor = System.Drawing.Color.Transparent;
-            this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
-            this.ptbChuThap.Image = ((System.Drawing.Image)(resources.GetObject("ptbChuThap.Image")));
-            this.ptbChuThap.ImageRotate = 0F;
-            this.ptbChuThap.Location = new System.Drawing.Point(33, 34);
-            this.ptbChuThap.Margin = new System.Windows.Forms.Padding(4);
-            this.ptbChuThap.MinimumSize = new System.Drawing.Size(48, 44);
-            this.ptbChuThap.Name = "ptbChuThap";
-            this.ptbChuThap.Size = new System.Drawing.Size(71, 59);
-            this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.ptbChuThap.TabIndex = 1;
-            this.ptbChuThap.TabStop = false;
-            this.ptbChuThap.UseTransparentBackground = true;
-            this.ptbChuThap.Click += new System.EventHandler(this.ptbChuThap_Click);
             // 
             // lblQTCSDL
             // 
@@ -96,7 +79,7 @@
             this.lblQTCSDL.BackColor = System.Drawing.Color.Transparent;
             this.lblQTCSDL.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblQTCSDL.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblQTCSDL.Location = new System.Drawing.Point(278, 241);
+            this.lblQTCSDL.Location = new System.Drawing.Point(280, 266);
             this.lblQTCSDL.Margin = new System.Windows.Forms.Padding(4);
             this.lblQTCSDL.Name = "lblQTCSDL";
             this.lblQTCSDL.Size = new System.Drawing.Size(374, 43);
@@ -132,14 +115,14 @@
             // 
             // progressBar
             // 
-            this.progressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
+            this.progressBar.BackColor = System.Drawing.Color.Transparent;
             this.progressBar.BorderRadius = 3;
-            this.progressBar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.progressBar.Location = new System.Drawing.Point(263, 369);
+            this.progressBar.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(232)))), ((int)(((byte)(240)))));
+            this.progressBar.Location = new System.Drawing.Point(266, 395);
             this.progressBar.Margin = new System.Windows.Forms.Padding(4);
             this.progressBar.Name = "progressBar";
-            this.progressBar.ProgressColor = System.Drawing.Color.SkyBlue;
-            this.progressBar.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
+            this.progressBar.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(116)))), ((int)(((byte)(91)))));
+            this.progressBar.ProgressColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
             this.progressBar.Size = new System.Drawing.Size(400, 7);
             this.progressBar.TabIndex = 10;
             this.progressBar.Text = "guna2ProgressBar1";
@@ -156,7 +139,7 @@
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(168)))), ((int)(((byte)(190)))));
-            this.lblStatus.Location = new System.Drawing.Point(330, 385);
+            this.lblStatus.Location = new System.Drawing.Point(333, 411);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(4);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(267, 21);
@@ -168,8 +151,8 @@
             // 
             this.lblPercent.BackColor = System.Drawing.Color.Transparent;
             this.lblPercent.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.lblPercent.Location = new System.Drawing.Point(637, 341);
+            this.lblPercent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(116)))), ((int)(((byte)(91)))));
+            this.lblPercent.Location = new System.Drawing.Point(640, 367);
             this.lblPercent.Margin = new System.Windows.Forms.Padding(4);
             this.lblPercent.Name = "lblPercent";
             this.lblPercent.Size = new System.Drawing.Size(25, 22);
@@ -184,7 +167,7 @@
             this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
             this.guna2ControlBox1.ForeColor = System.Drawing.Color.Black;
             this.guna2ControlBox1.HoverState.FillColor = System.Drawing.Color.LightBlue;
-            this.guna2ControlBox1.IconColor = System.Drawing.Color.CornflowerBlue;
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(116)))), ((int)(((byte)(91)))));
             this.guna2ControlBox1.Location = new System.Drawing.Point(875, 17);
             this.guna2ControlBox1.Margin = new System.Windows.Forms.Padding(4);
             this.guna2ControlBox1.Name = "guna2ControlBox1";
@@ -193,15 +176,33 @@
             // 
             // lblHospital
             // 
-            this.lblHospital.AutoSize = true;
+            this.lblHospital.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblHospital.BackColor = System.Drawing.Color.Transparent;
             this.lblHospital.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblHospital.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(180)))));
-            this.lblHospital.Location = new System.Drawing.Point(326, 214);
+            this.lblHospital.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(130)))), ((int)(((byte)(246)))));
+            this.lblHospital.Location = new System.Drawing.Point(276, 239);
             this.lblHospital.Name = "lblHospital";
-            this.lblHospital.Size = new System.Drawing.Size(288, 23);
+            this.lblHospital.Size = new System.Drawing.Size(400, 23);
             this.lblHospital.TabIndex = 14;
             this.lblHospital.Text = "HOSPITAL MANAGEMENT SYSTEM";
+            this.lblHospital.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ptbChuThap
+            // 
+            this.ptbChuThap.BackColor = System.Drawing.Color.Transparent;
+            this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
+            this.ptbChuThap.Image = ((System.Drawing.Image)(resources.GetObject("ptbChuThap.Image")));
+            this.ptbChuThap.ImageRotate = 0F;
+            this.ptbChuThap.Location = new System.Drawing.Point(20, 20);
+            this.ptbChuThap.Margin = new System.Windows.Forms.Padding(4);
+            this.ptbChuThap.MinimumSize = new System.Drawing.Size(48, 44);
+            this.ptbChuThap.Name = "ptbChuThap";
+            this.ptbChuThap.Size = new System.Drawing.Size(90, 90);
+            this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbChuThap.TabIndex = 1;
+            this.ptbChuThap.TabStop = false;
+            this.ptbChuThap.UseTransparentBackground = true;
+            this.ptbChuThap.Click += new System.EventHandler(this.ptbChuThap_Click);
             // 
             // Splash
             // 
@@ -236,7 +237,6 @@
 
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private Guna.UI2.WinForms.Guna2Panel pnlLogo;
-        private Guna.UI2.WinForms.Guna2PictureBox ptbChuThap;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblVer;
         private Guna.UI2.WinForms.Guna2HtmlLabel lblQTCSDL;
         private Guna.UI2.WinForms.Guna2ProgressBar progressBar;
@@ -246,5 +246,6 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblStatus;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
         private System.Windows.Forms.Label lblHospital;
+        private Guna.UI2.WinForms.Guna2PictureBox ptbChuThap;
     }
 }

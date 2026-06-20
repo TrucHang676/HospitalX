@@ -115,7 +115,6 @@ namespace HospitalX.GUI
             this.pnlShell.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(229)))), ((int)(((byte)(224)))));
             this.pnlShell.BorderRadius = 18;
             this.pnlShell.BorderThickness = 1;
-            this.pnlShell.Controls.Add(this.btnExit);
             this.pnlShell.Controls.Add(this.pnlLeft);
             this.pnlShell.Controls.Add(this.pnlRight);
             this.pnlShell.FillColor = System.Drawing.Color.White;
@@ -135,7 +134,7 @@ namespace HospitalX.GUI
             this.btnExit.FillColor = System.Drawing.Color.Transparent;
             this.btnExit.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(68)))), ((int)(((byte)(68)))));
             this.btnExit.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(94)))), ((int)(((byte)(89)))));
-            this.btnExit.Location = new System.Drawing.Point(1118, 16);
+            this.btnExit.Location = new System.Drawing.Point(738, 16);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(30, 28);
             this.btnExit.TabIndex = 2;
@@ -232,6 +231,7 @@ namespace HospitalX.GUI
             // 
             // pnlRight
             // 
+            this.pnlRight.Controls.Add(this.btnExit);
             this.pnlRight.Controls.Add(this.pnlDots);
             this.pnlRight.Controls.Add(this.btnPh2Patient);
             this.pnlRight.Controls.Add(this.btnPh2Technician);

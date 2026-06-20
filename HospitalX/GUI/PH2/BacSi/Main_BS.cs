@@ -10,9 +10,12 @@ namespace HospitalX.GUI.PH2
 {
     public partial class Main_BS : Form
     {
+        private bool _isLoggingOut = false;
+
         public Main_BS()
         {
             InitializeComponent();
+            this.FormClosed += Main_BS_FormClosed;
             LoadUserData();
             WireNavigationEvents();
             LoadPage(CreateTongQuanPage(), "Bảng điều khiển");
@@ -66,6 +69,7 @@ namespace HospitalX.GUI.PH2
             using (var confirmDialog = new Guna2MessageDialog())
             {
                 confirmDialog.Parent = this;
+                confirmDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
                 confirmDialog.Icon = MessageDialogIcon.Question;
                 confirmDialog.Buttons = MessageDialogButtons.YesNo;
                 confirmDialog.Caption = "Xác nhận đăng xuất";
@@ -73,6 +77,7 @@ namespace HospitalX.GUI.PH2
 
                 if (confirmDialog.Show() == DialogResult.Yes)
                 {
+                    _isLoggingOut = true;
                     Close();
                 }
             }
@@ -135,6 +140,15 @@ namespace HospitalX.GUI.PH2
             catch
             {
                 // Fallback to design defaults
+            }
+        }
+
+        private void Main_BS_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!_isLoggingOut)
+            {
+                Application.Exit();
+                Environment.Exit(0);
             }
         }
     }

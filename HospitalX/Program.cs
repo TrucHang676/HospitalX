@@ -17,7 +17,8 @@ namespace HospitalX
             Application.SetCompatibleTextRenderingDefault(false);
 
             //Application.Run(new GUI.PH2.Main_KTV());
-            Application.Run(new GUI.RoleSelection());
+            //Application.Run(new GUI.RoleSelection());
+            Application.Run(new GUI.Splash());
             //Application.Run(new GUI.PH2.Main_DPV());
             //Application.Run(new GUI.PH2.Main_BS());
             //Application.Run(new GUI.PH2.Main_BN());

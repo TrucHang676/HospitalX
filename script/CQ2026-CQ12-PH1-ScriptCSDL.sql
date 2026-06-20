@@ -25,6 +25,36 @@ ALTER SESSION SET CONTAINER = PDBHOSX;
 -- Kiểm tra (phải hiện PDBHOSX)
 SHOW CON_NAME;
 
+-- XÓA SẠCH CÁC USER/ROLE CŨ NẾU CÓ ĐỂ TRÁNH XUNG ĐỘT KHI CHẠY LẠI SCRIPT
+DECLARE
+    PROCEDURE drop_user_if_exists(p_username IN VARCHAR2) IS
+        v_count NUMBER;
+    BEGIN
+        SELECT COUNT(*) INTO v_count FROM dba_users WHERE username = UPPER(p_username);
+        IF v_count > 0 THEN
+            EXECUTE IMMEDIATE 'DROP USER ' || UPPER(p_username) || ' CASCADE';
+        END IF;
+    END;
+    
+    PROCEDURE drop_role_if_exists(p_rolename IN VARCHAR2) IS
+        v_count NUMBER;
+    BEGIN
+        SELECT COUNT(*) INTO v_count FROM dba_roles WHERE role = UPPER(p_rolename);
+        IF v_count > 0 THEN
+            EXECUTE IMMEDIATE 'DROP ROLE ' || UPPER(p_rolename);
+        END IF;
+    END;
+BEGIN
+    drop_user_if_exists('ADMINHOS');
+    drop_user_if_exists('BS_AN');
+    drop_user_if_exists('YT_BINH');
+    drop_user_if_exists('TEST_USER_1');
+    drop_user_if_exists('TEST_USER_2');
+    drop_user_if_exists('TEST_USER_3');
+    drop_role_if_exists('ROLE_KETOAN');
+END;
+/
+
 -- 2. Tạo User quản trị (APP DÙNG ACCOUNT NÀY ĐĂNG NHẬP)
 CREATE USER adminHos IDENTIFIED BY 123;
 

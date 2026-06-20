@@ -648,23 +648,37 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 AddTaskRow(mockSvc[i].Service, info, mockSvc[i].Status);
             }
 
-            // 4. Hoạt động gần đây — không có audit log trong DB, giữ mock phù hợp nghiệp vụ
-            AddActivityRow($"Đã lưu KQ: {mockSvc[4].Service} — {mockSvc[4].Patient}",
-                "Vừa xong", "✅", Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
-            AddActivityRow($"Nhận phân công mới: {mockSvc[0].Service} — {mockSvc[0].Patient}",
-                "30 phút trước", "📋", Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            AddActivityRow($"Nhận phân công mới: {mockSvc[1].Service} — {mockSvc[1].Patient}",
-                "1 giờ trước", "📋", Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
-            AddActivityRow($"Đã lưu KQ: {mockSvc[6].Service} — {mockSvc[6].Patient}",
-                "2 giờ trước", "✅", Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
+            // 4. Hoạt động gần đây — kiểm tra độ dài tránh lỗi văng index
+            if (mockSvc.Count > 4)
+                AddActivityRow($"Đã lưu KQ: {mockSvc[4].Service} — {mockSvc[4].Patient}",
+                    "Vừa xong", "✅", Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
+            if (mockSvc.Count > 0)
+                AddActivityRow($"Nhận phân công mới: {mockSvc[0].Service} — {mockSvc[0].Patient}",
+                    "30 phút trước", "📋", Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            if (mockSvc.Count > 1)
+                AddActivityRow($"Nhận phân công mới: {mockSvc[1].Service} — {mockSvc[1].Patient}",
+                    "1 giờ trước", "📋", Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
+            if (mockSvc.Count > 6)
+                AddActivityRow($"Đã lưu KQ: {mockSvc[6].Service} — {mockSvc[6].Patient}",
+                    "2 giờ trước", "✅", Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
 
-            // 5. Lịch thực hiện hôm nay — dùng LOAIDV + TENBN + Time từ mock HSBA_DV
+            if (mockSvc.Count == 0)
+            {
+                AddActivityRow("Không có hoạt động gần đây", "", "ℹ️", Color.FromArgb(120, 130, 140), Color.FromArgb(245, 246, 248));
+            }
+
+            // 5. Lịch thực hiện hôm nay — kiểm tra độ dài tránh lỗi văng index
             scheduleControls.Clear();
-            AddScheduleItem(mockSvc[0].Time, mockSvc[0].Service, mockSvc[0].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            AddScheduleItem(mockSvc[1].Time, mockSvc[1].Service, mockSvc[1].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            AddScheduleItem(mockSvc[2].Time, mockSvc[2].Service, mockSvc[2].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            AddScheduleItem(mockSvc[4].Time, mockSvc[4].Service, mockSvc[4].Patient, Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
-            AddScheduleItem(mockSvc[5].Time, mockSvc[5].Service, mockSvc[5].Patient, Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
+            if (mockSvc.Count > 0) AddScheduleItem(mockSvc[0].Time, mockSvc[0].Service, mockSvc[0].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            if (mockSvc.Count > 1) AddScheduleItem(mockSvc[1].Time, mockSvc[1].Service, mockSvc[1].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            if (mockSvc.Count > 2) AddScheduleItem(mockSvc[2].Time, mockSvc[2].Service, mockSvc[2].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
+            if (mockSvc.Count > 4) AddScheduleItem(mockSvc[4].Time, mockSvc[4].Service, mockSvc[4].Patient, Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
+            if (mockSvc.Count > 5) AddScheduleItem(mockSvc[5].Time, mockSvc[5].Service, mockSvc[5].Patient, Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
+
+            if (mockSvc.Count == 0)
+            {
+                AddScheduleItem("--:--", "Không có lịch thực hiện hôm nay", "", Color.FromArgb(120, 130, 140), Color.FromArgb(245, 246, 248));
+            }
 
             // Cập nhật lại giao diện sau khi tải dữ liệu
             LayoutControls();

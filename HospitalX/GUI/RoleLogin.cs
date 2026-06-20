@@ -13,6 +13,7 @@ namespace HospitalX.GUI
     public partial class RoleLogin : Form
     {
         private LoginRoleOption _role;
+        private bool _isGoingBack = false;
 
         public RoleLogin()
             : this(CreateDesignerRole())
@@ -23,6 +24,7 @@ namespace HospitalX.GUI
         {
             _role = role ?? CreateDesignerRole();
             InitializeComponent();
+            this.FormClosed += RoleLogin_FormClosed;
             SetupBrandingAndIcons();
             ApplyRoleTheme();
             ApplyTestCredential();
@@ -370,6 +372,7 @@ namespace HospitalX.GUI
 
         private void btnBack_Click(object sender, EventArgs e)
         {
+            _isGoingBack = true;
             Close();
         }
 
@@ -402,7 +405,7 @@ namespace HospitalX.GUI
                 return false;
             }
 
-            if (key == "PH1_DBA") username = "admin_ph1";
+            if (key == "PH1_DBA") username = "adminhos";
             else if (key == "PH2_DBA") username = "admin_ph2";
             else if (key == "PH2_COORDINATOR") username = "DP0001";
             else if (key == "PH2_DOCTOR") username = "BS0001";
@@ -704,7 +707,17 @@ END;";
             {
                 mainForm.ShowDialog();
             }
+            _isGoingBack = true;
             Close();
+        }
+
+        private void RoleLogin_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!_isGoingBack)
+            {
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         private void ShowMessage(string message, string caption, MessageDialogIcon icon)
