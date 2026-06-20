@@ -57,16 +57,15 @@ namespace HospitalX.DAO
 
         public static int GetPrescriptionCount(string maHsba)
         {
+            // Gọi hàm Oracle trực tiếp qua SQL (hàm đã có sẵn trong schema ADMINHOS)
             string sql = "SELECT ADMINHOS.FN_DEM_DONTHUOC(:maHsba) FROM DUAL";
             OracleParameter[] parameters = new OracleParameter[]
             {
-                new OracleParameter(":maHsba", OracleDbType.Varchar2) { Value = maHsba.Trim() }
+                new OracleParameter("maHsba", OracleDbType.Varchar2) { Value = maHsba.Trim() }
             };
             DataTable dt = DataProvider.Instance.ExecuteQuery(sql, parameters, false);
-            if (dt != null && dt.Rows.Count > 0)
-            {
+            if (dt != null && dt.Rows.Count > 0 && dt.Rows[0][0] != DBNull.Value)
                 return Convert.ToInt32(dt.Rows[0][0]);
-            }
             return 0;
         }
     }

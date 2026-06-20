@@ -10,9 +10,12 @@ namespace HospitalX.DAO
     {
         public static string GetNextHsbaId()
         {
+            // Gọi hàm Oracle trực tiếp qua SQL (hàm đã có sẵn trong schema ADMINHOS)
             string sql = "SELECT ADMINHOS.PKG_VPD_YC1C3.FN_GET_NEXT_HSBA_ID() FROM DUAL";
             DataTable dt = DataProvider.Instance.ExecuteQuery(sql, null, false);
-            return dt.Rows[0][0].ToString().Trim();
+            if (dt != null && dt.Rows.Count > 0)
+                return dt.Rows[0][0]?.ToString()?.Trim() ?? "";
+            return "";
         }
 
         public static bool InsertHsba(

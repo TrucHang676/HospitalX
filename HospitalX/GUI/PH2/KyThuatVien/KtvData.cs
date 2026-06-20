@@ -109,26 +109,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             var list = new List<KtvService>();
             try
             {
-                string sql = @"
-SELECT 
-    v.MAHSBA, 
-    v.LOAIDV, 
-    v.NGAYDV, 
-    v.KETQUA,
-    b.MABN,
-    b.TENBN,
-    b.PHAI,
-    b.NGAYSINH,
-    b.CCCD,
-    b.SONHA,
-    b.TENDUONG,
-    b.QUANHUYEN,
-    b.TINHTP
-FROM ADMINHOS.VW_HSBA_DV_KTV v
-LEFT JOIN ADMINHOS.HSBA h ON v.MAHSBA = h.MAHSBA
-LEFT JOIN ADMINHOS.BENHNHAN b ON h.MABN = b.MABN
-ORDER BY v.NGAYDV DESC";
-                System.Data.DataTable dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(sql, null, false);
+                // Gọi stored procedure thay vì raw SQL JOIN 3 bảng (đẩy nghiệp vụ xuống Oracle)
+                Oracle.ManagedDataAccess.Client.OracleParameter[] parameters = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                {
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = System.Data.ParameterDirection.Output }
+                };
+                System.Data.DataTable dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery("ADMINHOS.SP_GET_SERVICES_FOR_KTV", parameters, true);
                 if (dt != null)
                 {
                     foreach (System.Data.DataRow row in dt.Rows)
@@ -150,13 +136,9 @@ ORDER BY v.NGAYDV DESC";
                         svc.BnGender = row["PHAI"]?.ToString() ?? "";
                         
                         if (row["NGAYSINH"] != DBNull.Value)
-                        {
                             svc.BnDob = Convert.ToDateTime(row["NGAYSINH"]).ToString("dd/MM/yyyy");
-                        }
                         else
-                        {
                             svc.BnDob = "";
-                        }
                         
                         svc.BnCccd = row["CCCD"]?.ToString() ?? "";
                         
@@ -183,23 +165,21 @@ ORDER BY v.NGAYDV DESC";
             return list;
         }
 
+
         public static bool UpdateServiceResult(string mahsba, string loaidv, string ngaydv, string ketqua)
         {
             try
             {
-                string sql = @"
-UPDATE ADMINHOS.VW_HSBA_DV_KTV 
-SET KETQUA = :ketqua
-WHERE MAHSBA = :mahsba AND LOAIDV = :loaidv AND TO_CHAR(NGAYDV, 'DD/MM/YYYY') = :ngaydv";
+                // Gọi stored procedure thay vì raw SQL UPDATE (đẩy nghiệp vụ xuống Oracle)
                 Oracle.ManagedDataAccess.Client.OracleParameter[] parameters = new Oracle.ManagedDataAccess.Client.OracleParameter[]
                 {
-                    new Oracle.ManagedDataAccess.Client.OracleParameter("ketqua", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(ketqua) ? (object)DBNull.Value : ketqua.Trim() },
-                    new Oracle.ManagedDataAccess.Client.OracleParameter("mahsba", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = mahsba.Trim() },
-                    new Oracle.ManagedDataAccess.Client.OracleParameter("loaidv", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = loaidv.Trim() },
-                    new Oracle.ManagedDataAccess.Client.OracleParameter("ngaydv", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = ngaydv.Trim() }
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_mahsba", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = mahsba.Trim() },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_loaidv", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = loaidv.Trim() },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_ngaydv", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = ngaydv.Trim() },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_ketqua", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(ketqua) ? (object)DBNull.Value : ketqua.Trim() }
                 };
-                int rows = HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
-                return rows > 0;
+                int rows = HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery("ADMINHOS.SP_UPDATE_SERVICE_RESULT", parameters, true);
+                return rows >= 0; // stored proc raises exception on failure, so any non-exception = success
             }
             catch (Exception ex)
             {

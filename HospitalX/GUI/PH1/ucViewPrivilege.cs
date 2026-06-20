@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 // ucViewPrivilege.cs
 // Giao diện "Xem quyền" — cho phép DBA xem toàn bộ quyền
 // của một User hoặc Role trong hệ thống Oracle.
@@ -354,18 +354,13 @@ namespace HospitalX.GUI.PH1
         {
             try
             {
-                // Query DBA_SYS_PRIVS để lấy system privilege
-                string query = @"
-                    SELECT PRIVILEGE, ADMIN_OPTION
-                    FROM DBA_SYS_PRIVS
-                    WHERE GRANTEE = :grantee
-                    ORDER BY PRIVILEGE";
-
+                // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
                 var parameters = new OracleParameter[] {
-                    new OracleParameter("grantee", OracleDbType.Varchar2) { Value = grantee }
+                    new OracleParameter("p_grantee", OracleDbType.Varchar2) { Value = grantee },
+                    new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
                 };
 
-                DataTable dt = DataProvider.Instance.ExecuteQuery(query, parameters, isStoredProc: false);
+                DataTable dt = DataProvider.Instance.ExecuteQuery("USP_GET_SYS_PRIVS", parameters, isStoredProc: true);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -476,16 +471,16 @@ namespace HospitalX.GUI.PH1
                 DataTable dtObjPriv = DataProvider.Instance.ExecuteQuery("USP_GET_OBJ_PRIVS", paramObjPriv);
                 int objPrivCount = dtObjPriv?.Rows.Count ?? 0;
 
-                // 2. Count System Privileges
-                string querySysPriv = "SELECT COUNT(*) FROM DBA_SYS_PRIVS WHERE GRANTEE = :grantee";
-                var paramSysPriv = new OracleParameter[] {
-                    new OracleParameter("grantee", OracleDbType.Varchar2) { Value = grantee }
+                // 2. Count System Privileges (gọi stored procedure thay vì raw SQL)
+                var paramSysPrivCount = new OracleParameter[] {
+                    new OracleParameter("p_grantee", OracleDbType.Varchar2) { Value = grantee },
+                    new OracleParameter("p_count", OracleDbType.Decimal) { Direction = ParameterDirection.Output }
                 };
-                DataTable dtSysPriv = DataProvider.Instance.ExecuteQuery(querySysPriv, paramSysPriv, isStoredProc: false);
+                DataProvider.Instance.ExecuteNonQuery("USP_COUNT_SYS_PRIVS", paramSysPrivCount, true);
                 int sysPrivCount = 0;
-                if (dtSysPriv != null && dtSysPriv.Rows.Count > 0)
+                if (paramSysPrivCount[1].Value != null && paramSysPrivCount[1].Value != DBNull.Value)
                 {
-                    if (int.TryParse(dtSysPriv.Rows[0][0].ToString(), out int cnt2))
+                    if (int.TryParse(paramSysPrivCount[1].Value.ToString(), out int cnt2))
                         sysPrivCount = cnt2;
                 }
 

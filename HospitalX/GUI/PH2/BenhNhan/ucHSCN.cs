@@ -62,9 +62,12 @@ namespace HospitalX.GUI.PH2.BenhNhan
         {
             try
             {
-                // Load thông tin cá nhân từ VW_BENHNHAN_SELF
-                string sql = "SELECT MABN, TENBN, PHAI, NGAYSINH, CCCD, SONHA, TENDUONG, QUANHUYEN, TINHTP, TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC FROM ADMINHOS.VW_BENHNHAN_SELF";
-                DataTable dt = DataProvider.Instance.ExecuteQuery(sql, null, false);
+                // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
+                Oracle.ManagedDataAccess.Client.OracleParameter[] selfParams = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                {
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                };
+                DataTable dt = DataProvider.Instance.ExecuteQuery("ADMINHOS.SP_GET_PATIENT_SELF", selfParams, true);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     DataRow row = dt.Rows[0];
@@ -250,14 +253,14 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
             try
             {
-                string sql = "UPDATE ADMINHOS.VW_BENHNHAN_SELF SET TIENSUBENH = :medHist, TIENSUBENHGD = :famHist, DIUNGTHUOC = :allergy";
+                // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
                 Oracle.ManagedDataAccess.Client.OracleParameter[] parameters = new Oracle.ManagedDataAccess.Client.OracleParameter[]
                 {
-                    new Oracle.ManagedDataAccess.Client.OracleParameter("medHist", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = medHist },
-                    new Oracle.ManagedDataAccess.Client.OracleParameter("famHist", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = famHist },
-                    new Oracle.ManagedDataAccess.Client.OracleParameter("allergy", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = allergy }
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_tiensubenh",   Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = medHist },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_tiensubenhgd", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = famHist },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_diungthuoc",   Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = allergy }
                 };
-                DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
+                DataProvider.Instance.ExecuteNonQuery("ADMINHOS.SP_UPDATE_PATIENT_HISTORY_SELF", parameters, true);
 
                 currentPatient.Allergy = allergy;
                 currentPatient.MedicalHistory = medHist;
@@ -290,15 +293,15 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
                 try
                 {
-                    string sql = "UPDATE ADMINHOS.VW_BENHNHAN_SELF SET SONHA = :sonha, TENDUONG = :tenduong, QUANHUYEN = :quanhuyen, TINHTP = :tinhtp";
+                    // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
                     Oracle.ManagedDataAccess.Client.OracleParameter[] parameters = new Oracle.ManagedDataAccess.Client.OracleParameter[]
                     {
-                        new Oracle.ManagedDataAccess.Client.OracleParameter("sonha", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.HouseNumber.Trim() },
-                        new Oracle.ManagedDataAccess.Client.OracleParameter("tenduong", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.StreetName.Trim() },
-                        new Oracle.ManagedDataAccess.Client.OracleParameter("quanhuyen", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.District.Trim() },
-                        new Oracle.ManagedDataAccess.Client.OracleParameter("tinhtp", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.City.Trim() }
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_sonha",     Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.HouseNumber.Trim() },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_tenduong",  Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.StreetName.Trim() },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_quanhuyen", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.District.Trim() },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_tinhtp",    Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.City.Trim() }
                     };
-                    DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
+                    DataProvider.Instance.ExecuteNonQuery("ADMINHOS.SP_UPDATE_PATIENT_ADDRESS_SELF", parameters, true);
 
                     currentPatient.Address = dialog.FullAddress;
                     lblAddressValue.Text = currentPatient.Address;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Data;
@@ -48,20 +48,13 @@ namespace HospitalX.GUI.PH1
         {
             try
             {
-                // Query ALL_TAB_COLUMNS để lấy danh sách cột từ Oracle
-                string query = @"
-                    SELECT COLUMN_NAME
-                    FROM ALL_TAB_COLUMNS
-                    WHERE OWNER = SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA')
-                    AND TABLE_NAME = :tableName
-                    ORDER BY COLUMN_ID";
-
+                // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
                 var parameters = new OracleParameter[] {
-                    new OracleParameter(":tableName", OracleDbType.Varchar2) 
-                    { Value = _objectName.ToUpper() }
+                    new OracleParameter("p_table_name", OracleDbType.Varchar2) { Value = _objectName.ToUpper() },
+                    new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
                 };
 
-                var dtColumns = DataProvider.Instance.ExecuteQuery(query, parameters, isStoredProc: false);
+                var dtColumns = DataProvider.Instance.ExecuteQuery("USP_GET_TABLE_COLUMNS", parameters, isStoredProc: true);
 
                 clbColumns.Items.Clear();
                 if (dtColumns != null && dtColumns.Rows.Count > 0)
