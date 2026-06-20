@@ -26,6 +26,11 @@ namespace HospitalX.GUI.PH2.BenhNhan
             UpdateSaveButtonState();
         }
 
+        public string HouseNumber => txtHouseNumber.Text.Trim();
+        public string StreetName => txtStreetName.Text.Trim();
+        public string District => txtDistrict.Text.Trim();
+        public string City => txtCity.Text.Trim();
+
         public string FullAddress
         {
             get

@@ -16,7 +16,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
         public ucDonThuocBN()
         {
             InitializeComponent();
-            prescriptions = PatientMedicalRecord.CreateSampleData()
+            prescriptions = PatientMedicalRecord.LoadFromDB()
                 .Where(record => record.Prescriptions.Any())
                 .ToList();
             WireEvents();

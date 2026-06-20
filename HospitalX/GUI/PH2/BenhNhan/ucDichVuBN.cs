@@ -16,7 +16,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
         public ucDichVuBN()
         {
             InitializeComponent();
-            services = PatientMedicalRecord.CreateSampleData()
+            services = PatientMedicalRecord.LoadFromDB()
                 .SelectMany(record => record.Services.Select(service => new ServiceItem(record, service)))
                 .ToList();
             WireEvents();
