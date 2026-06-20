@@ -466,6 +466,44 @@ namespace HospitalX.GUI
                         ShowMessage("Tài khoản này không có quyền DBA để đăng nhập Phân hệ 1.", "Từ chối truy cập", MessageDialogIcon.Error);
                         return;
                     }
+
+                    if (_role.Key == "PH2_DBA" && !CurrentUserIsDba(conn))
+                    {
+                        ShowMessage("Tài khoản này không có quyền DBA để đăng nhập Phân hệ 2.", "Từ chối truy cập", MessageDialogIcon.Error);
+                        return;
+                    }
+
+                    if (_role.Key == "PH2_PATIENT" && !CurrentUserHasRole(conn, "ROLE_BENHNHAN"))
+                    {
+                        ShowMessage("Tài khoản này không có vai trò Bệnh nhân trong hệ thống.", "Từ chối truy cập", MessageDialogIcon.Error);
+                        return;
+                    }
+
+                    if (_role.Key == "PH2_TECHNICIAN" && !CurrentUserHasRole(conn, "ROLE_KYTHUATVIEN"))
+                    {
+                        ShowMessage("Tài khoản này không có vai trò Kỹ thuật viên trong hệ thống.", "Từ chối truy cập", MessageDialogIcon.Error);
+                        return;
+                    }
+
+                    if (_role.Key == "PH2_DOCTOR")
+                    {
+                        string staffRole = GetCurrentUserStaffRole(conn);
+                        if (staffRole != "Bác sĩ/Y sĩ")
+                        {
+                            ShowMessage("Tài khoản này không có vai trò Bác sĩ/Y sĩ trong hệ thống (Vai trò thực tế: " + (string.IsNullOrEmpty(staffRole) ? "Không xác định" : staffRole) + ").", "Từ chối truy cập", MessageDialogIcon.Error);
+                            return;
+                        }
+                    }
+
+                    if (_role.Key == "PH2_COORDINATOR")
+                    {
+                        string staffRole = GetCurrentUserStaffRole(conn);
+                        if (staffRole != "Điều phối viên")
+                        {
+                            ShowMessage("Tài khoản này không có vai trò Điều phối viên trong hệ thống (Vai trò thực tế: " + (string.IsNullOrEmpty(staffRole) ? "Không xác định" : staffRole) + ").", "Từ chối truy cập", MessageDialogIcon.Error);
+                            return;
+                        }
+                    }
                 }
 
                 DataProvider.Instance.SetConnectionString(connStr);
@@ -482,6 +520,95 @@ namespace HospitalX.GUI
             }
         }
 
+        private void UpdateDatabaseProcedures(OracleConnection conn)
+        {
+            try
+            {
+                string sql = @"
+CREATE OR REPLACE PROCEDURE SP_INSERT_PATIENT (
+    p_mabn IN VARCHAR2,
+    p_tenbn IN NVARCHAR2,
+    p_phai IN NVARCHAR2,
+    p_ngaysinh IN DATE,
+    p_cccd IN VARCHAR2,
+    p_sonha IN NVARCHAR2,
+    p_tenduong IN NVARCHAR2,
+    p_quanhuyen IN NVARCHAR2,
+    p_tinhtp IN NVARCHAR2,
+    p_tiensubenh IN NVARCHAR2,
+    p_tiensubenhgd IN NVARCHAR2,
+    p_diungthuoc IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+    v_count NUMBER;
+    v_sql   VARCHAR2(1000);
+BEGIN
+    INSERT INTO ADMINHOS.BENHNHAN (
+        MABN, TENBN, PHAI, NGAYSINH, CCCD, 
+        SONHA, TENDUONG, QUANHUYEN, TINHTP, 
+        TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC
+    ) VALUES (
+        p_mabn, p_tenbn, p_phai, p_ngaysinh, p_cccd, 
+        p_sonha, p_tenduong, p_quanhuyen, p_tinhtp, 
+        p_tiensubenh, p_tiensubenhgd, p_diungthuoc
+    );
+
+    SELECT COUNT(*)
+    INTO v_count
+    FROM DBA_USERS
+    WHERE USERNAME = UPPER(TRIM(p_mabn));
+
+    IF v_count = 0 THEN
+        v_sql := 'CREATE USER ' || UPPER(TRIM(p_mabn)) || ' IDENTIFIED BY ""123"" ACCOUNT UNLOCK';
+        EXECUTE IMMEDIATE v_sql;
+        v_sql := 'GRANT CREATE SESSION TO ' || UPPER(TRIM(p_mabn));
+        EXECUTE IMMEDIATE v_sql;
+        v_sql := 'GRANT ROLE_BENHNHAN TO ' || UPPER(TRIM(p_mabn));
+        EXECUTE IMMEDIATE v_sql;
+    END IF;
+
+    COMMIT;
+END;";
+                using (var cmd = new OracleCommand(sql, conn))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Cấp quyền thực thi stored procedure cho Bệnh nhân và Kỹ thuật viên
+                string[] grantSqls = new string[]
+                {
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_HSBA_FOR_PATIENT TO ROLE_BENHNHAN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_HSBA_DETAILS_BY_ID TO ROLE_BENHNHAN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_SERVICES_FOR_HSBA TO ROLE_BENHNHAN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_PRESCRIPTIONS_FOR_HSBA TO ROLE_BENHNHAN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_NOTIFICATIONS TO ROLE_BENHNHAN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_NOTIFICATIONS TO ROLE_KYTHUATVIEN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_PROFILE TO ROLE_KYTHUATVIEN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_GET_PROFILE_STATS TO ROLE_KYTHUATVIEN",
+                    "GRANT EXECUTE ON ADMINHOS.SP_UPDATE_PROFILE TO ROLE_KYTHUATVIEN"
+                };
+                foreach (var gSql in grantSqls)
+                {
+                    try
+                    {
+                        using (var cmd = new OracleCommand(gSql, conn))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Warning: Cannot execute grant: " + gSql + " - " + ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error updating database procedures and grants: " + ex.Message);
+            }
+        }
+
         private string BuildConnectionString(string username, string password)
         {
             return "User Id=" + username + ";Password=" + password + ";Data Source=localhost:1521/PDBHOSX;";
@@ -492,6 +619,49 @@ namespace HospitalX.GUI
             using (var cmd = new OracleCommand("SELECT COUNT(*) FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE = 'DBA'", conn))
             {
                 return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+
+        private bool CurrentUserHasRole(OracleConnection conn, string roleName)
+        {
+            try
+            {
+                using (var cmd = new OracleCommand("SELECT COUNT(*) FROM USER_ROLE_PRIVS WHERE GRANTED_ROLE = :role", conn))
+                {
+                    cmd.Parameters.Add("role", OracleDbType.Varchar2).Value = roleName.ToUpper();
+                    return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private string GetCurrentUserStaffRole(OracleConnection conn)
+        {
+            try
+            {
+                using (var cmd = new OracleCommand("SELECT VAITRO FROM ADMINHOS.VW_NHANVIEN_SELF", conn))
+                {
+                    object val = cmd.ExecuteScalar();
+                    return val != null ? val.ToString().Trim() : "";
+                }
+            }
+            catch
+            {
+                try
+                {
+                    using (var cmd = new OracleCommand("SELECT VAITRO FROM ADMINHOS.NHANVIEN WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')", conn))
+                    {
+                        object val = cmd.ExecuteScalar();
+                        return val != null ? val.ToString().Trim() : "";
+                    }
+                }
+                catch
+                {
+                    return "";
+                }
             }
         }
 
