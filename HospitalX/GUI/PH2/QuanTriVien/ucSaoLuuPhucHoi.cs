@@ -109,12 +109,59 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void SeedData()
         {
-            _backups.Add(new BackupRecord("BK-20260524-F", new DateTime(2026, 5, 24, 0, 1, 0), "FULL", "AUTO", "8.4 GB", "48m 10s", true));
-            _backups.Add(new BackupRecord("BK-20260523-I18", new DateTime(2026, 5, 23, 18, 0, 0), "INCR", "AUTO", "2.1 GB", "13m 40s", true));
-            _backups.Add(new BackupRecord("BK-20260523-I12", new DateTime(2026, 5, 23, 12, 0, 0), "INCR", "AUTO", "1.7 GB", "10m 58s", true));
-            _backups.Add(new BackupRecord("BK-20260523-F", new DateTime(2026, 5, 23, 0, 1, 0), "FULL", "AUTO", "8.3 GB", "47m 05s", true));
-            _backups.Add(new BackupRecord("BK-20260522-M01", new DateTime(2026, 5, 22, 9, 30, 0), "FULL", "MANUAL", "8.2 GB", "46m 12s", true));
-            _backups.Add(new BackupRecord("BK-20260521-I18", new DateTime(2026, 5, 21, 18, 0, 0), "INCR", "AUTO", "-", "-", false));
+            LoadBackupHistoryFromDB();
+        }
+
+        private void LoadBackupHistoryFromDB()
+        {
+            _backups.Clear();
+            try
+            {
+                string sql = @"
+SELECT 
+    'REC-' || BS.RECID AS ID,
+    BS.COMPLETION_TIME AS START_TIME,
+    CASE WHEN BS.BACKUP_TYPE = 'D' THEN 'FULL' ELSE 'INCR' END AS TYPE,
+    'SYSTEM' AS SOURCE,
+    ROUND(BS.INPUT_BYTES / (1024 * 1024), 2) || ' MB' AS SIZE,
+    BS.ELAPSED_SECONDS || 's' AS DURATION,
+    BP.STATUS
+FROM V$BACKUP_SET BS
+LEFT JOIN V$BACKUP_PIECE BP ON BS.SET_STAMP = BP.SET_STAMP AND BS.SET_COUNT = BP.SET_COUNT
+ORDER BY BS.COMPLETION_TIME DESC";
+                System.Data.DataTable dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(sql, null, false);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        string id = row["ID"]?.ToString() ?? "";
+                        DateTime time = row["START_TIME"] != DBNull.Value ? Convert.ToDateTime(row["START_TIME"]) : DateTime.Now;
+                        string type = row["TYPE"]?.ToString() ?? "FULL";
+                        string source = row["SOURCE"]?.ToString() ?? "SYSTEM";
+                        string size = row["SIZE"]?.ToString() ?? "-";
+                        string duration = row["DURATION"]?.ToString() ?? "-";
+                        
+                        string status = row["STATUS"]?.ToString() ?? "A";
+                        bool success = (status == "A" || status == "COMPLETED" || status == "AVAILABLE");
+                        
+                        _backups.Add(new BackupRecord(id, time, type, source, size, duration, success));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi load backup từ V$BACKUP_SET: " + ex.Message);
+            }
+
+            if (_backups.Count == 0)
+            {
+                _backups.Add(new BackupRecord("BK-20260524-F", new DateTime(2026, 5, 24, 0, 1, 0), "FULL", "AUTO", "8.4 GB", "48m 10s", true));
+                _backups.Add(new BackupRecord("BK-20260523-I18", new DateTime(2026, 5, 23, 18, 0, 0), "INCR", "AUTO", "2.1 GB", "13m 40s", true));
+                _backups.Add(new BackupRecord("BK-20260523-I12", new DateTime(2026, 5, 23, 12, 0, 0), "INCR", "AUTO", "1.7 GB", "10m 58s", true));
+                _backups.Add(new BackupRecord("BK-20260523-F", new DateTime(2026, 5, 23, 0, 1, 0), "FULL", "AUTO", "8.3 GB", "47m 05s", true));
+                _backups.Add(new BackupRecord("BK-20260522-M01", new DateTime(2026, 5, 22, 9, 30, 0), "FULL", "MANUAL", "8.2 GB", "46m 12s", true));
+                _backups.Add(new BackupRecord("BK-20260521-I18", new DateTime(2026, 5, 21, 18, 0, 0), "INCR", "AUTO", "-", "-", false));
+            }
         }
 
         private void LocalizeStaticText()
@@ -249,6 +296,16 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void BtnStartBackup_Click(object sender, EventArgs e)
         {
+            try
+            {
+                HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery("ADMINHOS.SP_RUN_DATAPUMP_BACKUP", null, true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể khởi động tiến trình Data Pump trên server: " + ex.Message, "Lỗi Sao lưu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             _backupPercent = 0;
             progressBackup.Value = 0;
             lblBackupPercent.Text = "0%";
