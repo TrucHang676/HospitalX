@@ -239,7 +239,7 @@ namespace HospitalX.GUI.PH2
             guna2MessageDialog1.Text = "Bạn có chắc chắn muốn đăng xuất không?";
             if (guna2MessageDialog1.Show() == DialogResult.Yes)
             {
-                Application.Restart();
+                Close();
             }
         }
 

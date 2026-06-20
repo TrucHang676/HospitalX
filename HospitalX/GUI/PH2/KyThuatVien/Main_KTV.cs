@@ -52,6 +52,7 @@ namespace HospitalX.GUI.PH2
             using (var confirmDialog = new Guna2MessageDialog())
             {
                 confirmDialog.Parent = this;
+                confirmDialog.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
                 confirmDialog.Icon = MessageDialogIcon.Question;
                 confirmDialog.Buttons = MessageDialogButtons.YesNo;
                 confirmDialog.Caption = "Xác nhận đăng xuất";
