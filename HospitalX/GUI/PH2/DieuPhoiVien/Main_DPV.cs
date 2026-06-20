@@ -12,9 +12,12 @@ namespace HospitalX.GUI.PH2
 {
     public partial class Main_DPV : Form
     {
+        private bool _isLoggingOut = false;
+
         public Main_DPV()
         {
             InitializeComponent();
+            this.FormClosed += Main_DPV_FormClosed;
             ApplySharedBranding();
             ApplyBacSiStyle();
             ApplySidebarIcons();
@@ -50,13 +53,13 @@ namespace HospitalX.GUI.PH2
             lblRole.ForeColor = Color.WhiteSmoke;
 
             btnExit.BackColor = Color.Transparent;
-            btnExit.BorderRadius = 6;
-            btnExit.CustomIconSize = 20F;
+            btnExit.BorderRadius = 15;
+            btnExit.CustomIconSize = 16F;
             btnExit.FillColor = Color.Transparent;
             btnExit.ForeColor = Color.Black;
             btnExit.HoverState.FillColor = Color.DarkSeaGreen;
             btnExit.IconColor = Color.DarkGreen;
-            btnExit.Size = new Size(33, 32);
+            btnExit.Size = new Size(33, 33);
 
             pnlTopbar.Height = 65;
             pnlContent.Top = 65;
@@ -239,6 +242,7 @@ namespace HospitalX.GUI.PH2
             guna2MessageDialog1.Text = "Bạn có chắc chắn muốn đăng xuất không?";
             if (guna2MessageDialog1.Show() == DialogResult.Yes)
             {
+                _isLoggingOut = true;
                 Close();
             }
         }
@@ -381,6 +385,15 @@ namespace HospitalX.GUI.PH2
         private void lblRole_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Main_DPV_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!_isLoggingOut)
+            {
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
     }
 }

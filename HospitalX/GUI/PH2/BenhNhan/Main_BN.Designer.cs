@@ -1,4 +1,4 @@
-﻿namespace HospitalX.GUI.PH2
+namespace HospitalX.GUI.PH2
 {
     partial class Main_BN
     {
@@ -401,14 +401,14 @@
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.BorderRadius = 15;
-            this.btnExit.CustomIconSize = 20F;
+            this.btnExit.CustomIconSize = 16F;
             this.btnExit.FillColor = System.Drawing.Color.Transparent;
             this.btnExit.ForeColor = System.Drawing.Color.Black;
             this.btnExit.HoverState.FillColor = System.Drawing.Color.DarkSeaGreen;
             this.btnExit.IconColor = System.Drawing.Color.DarkGreen;
             this.btnExit.Location = new System.Drawing.Point(1080, 17);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(33, 32);
+            this.btnExit.Size = new System.Drawing.Size(30, 30);
             this.btnExit.TabIndex = 14;
             // 
             // lblPageTitle

@@ -1,4 +1,4 @@
-﻿namespace HospitalX.GUI.PH2
+namespace HospitalX.GUI.PH2
 {
     partial class Main_BS
     {
@@ -363,7 +363,6 @@
             this.btnLogout.Size = new System.Drawing.Size(267, 47);
             this.btnLogout.TabIndex = 1;
             this.btnLogout.Text = "Đăng xuất";
-            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click_1);
             // 
             // btnTongQuan
             // 
@@ -505,7 +504,7 @@
             this.btnExit.Location = new System.Drawing.Point(1440, 21);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(44, 39);
+            this.btnExit.Size = new System.Drawing.Size(37, 37);
             this.btnExit.TabIndex = 14;
             // 
             // lblPageTitle

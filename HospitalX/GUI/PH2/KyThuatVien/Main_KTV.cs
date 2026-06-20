@@ -9,6 +9,7 @@ namespace HospitalX.GUI.PH2
     public partial class Main_KTV : Form
     {
         public static Main_KTV Instance { get; private set; }
+        private bool _isLoggingOut = false;
 
         public Main_KTV()
         {
@@ -35,6 +36,11 @@ namespace HospitalX.GUI.PH2
             {
                 Instance = null;
             }
+            if (!_isLoggingOut)
+            {
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
 
         private void WireNavigation()
@@ -60,6 +66,7 @@ namespace HospitalX.GUI.PH2
 
                 if (confirmDialog.Show() == DialogResult.Yes)
                 {
+                    _isLoggingOut = true;
                     this.Close();
                 }
             }
@@ -114,8 +121,9 @@ namespace HospitalX.GUI.PH2
             lblPageTitle.Location = new Point(18, 20);
             lblPageTitle.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
 
-            btnExit.Size = new Size(33, 32);
-            btnExit.Location = new Point(pnlTopbar.Width - 50, 20);
+            btnExit.Size = new Size(33, 33);
+            btnExit.Location = new Point(pnlTopbar.Width - 50, 19);
+            btnExit.CustomIconSize = 18F;
 
             pnlLogo.Size = new Size(46, 46);
             pnlLogo.BorderRadius = 8;
@@ -173,8 +181,12 @@ namespace HospitalX.GUI.PH2
             btnLogout.HoverState.ForeColor = Color.White;
             btnLogout.Image = HospitalX.GUI.PH2.DieuPhoiVien.DpvAssets.Load("logout.png");
             btnLogout.ImageSize = new Size(24, 24);
-            btnLogout.Size = new Size(200, 38);
-            btnLogout.Location = new Point((pnlSidebar.Width - btnLogout.Width) / 2, ClientSize.Height - 62);
+            btnLogout.Size = new Size(260, 45);
+            btnLogout.Location = new Point(13, ClientSize.Height - 65);
+            btnLogout.ImageAlign = HorizontalAlignment.Center;
+            btnLogout.ImageOffset = new Point(0, 0);
+            btnLogout.TextAlign = HorizontalAlignment.Center;
+            btnLogout.TextOffset = new Point(0, 0);
         }
 
         private void ConfigureSidebarButton(Guna2Button button, string text, int top)

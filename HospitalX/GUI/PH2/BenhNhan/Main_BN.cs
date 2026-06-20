@@ -7,9 +7,12 @@ namespace HospitalX.GUI.PH2
 {
     public partial class Main_BN : Form
     {
+        private bool _isLoggingOut = false;
+
         public Main_BN()
         {
             InitializeComponent();
+            this.FormClosed += Main_BN_FormClosed;
             WireNavigationEvents();
             LoadPage(new ucHSCN(), "Trang chủ");
             btnHSCN.Checked = true;
@@ -58,6 +61,7 @@ namespace HospitalX.GUI.PH2
 
                 if (confirmDialog.Show() == DialogResult.Yes)
                 {
+                    _isLoggingOut = true;
                     Close();
                 }
             }
@@ -75,6 +79,15 @@ namespace HospitalX.GUI.PH2
         private void SetPageTitle(string title)
         {
             lblPageTitle.Text = title;
+        }
+
+        private void Main_BN_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (!_isLoggingOut)
+            {
+                Application.Exit();
+                Environment.Exit(0);
+            }
         }
     }
 }

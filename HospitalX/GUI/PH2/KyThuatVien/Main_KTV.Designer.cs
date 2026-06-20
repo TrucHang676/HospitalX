@@ -378,12 +378,12 @@ namespace HospitalX.GUI.PH2
             this.btnLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btnLogout.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.btnLogout.HoverState.FillColor = System.Drawing.Color.Maroon;
-            this.btnLogout.HoverState.ForeColor = System.Drawing.Color.White;
-            this.btnLogout.Location = new System.Drawing.Point(10, 776);
+            this.btnLogout.Location = new System.Drawing.Point(12, 796);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(200, 38);
+            this.btnLogout.Size = new System.Drawing.Size(195, 37);
             this.btnLogout.TabIndex = 11;
             this.btnLogout.Text = "Đăng xuất";
+
             // 
             // pnlTopbar
             // 
@@ -401,14 +401,14 @@ namespace HospitalX.GUI.PH2
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.BackColor = System.Drawing.Color.Transparent;
             this.btnExit.BorderRadius = 15;
-            this.btnExit.CustomIconSize = 20F;
+            this.btnExit.CustomIconSize = 18F;
             this.btnExit.FillColor = System.Drawing.Color.Transparent;
             this.btnExit.ForeColor = System.Drawing.Color.Black;
             this.btnExit.HoverState.FillColor = System.Drawing.Color.DarkSeaGreen;
             this.btnExit.IconColor = System.Drawing.Color.DarkGreen;
             this.btnExit.Location = new System.Drawing.Point(1023, 20);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(33, 32);
+            this.btnExit.Size = new System.Drawing.Size(33, 33);
             this.btnExit.TabIndex = 15;
             // 
             // lblPageTitle
