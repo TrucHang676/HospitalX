@@ -117,19 +117,12 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             _backups.Clear();
             try
             {
-                string sql = @"
-SELECT 
-    'REC-' || BS.RECID AS ID,
-    BS.COMPLETION_TIME AS START_TIME,
-    CASE WHEN BS.BACKUP_TYPE = 'D' THEN 'FULL' ELSE 'INCR' END AS TYPE,
-    'SYSTEM' AS SOURCE,
-    ROUND(BS.INPUT_BYTES / (1024 * 1024), 2) || ' MB' AS SIZE,
-    BS.ELAPSED_SECONDS || 's' AS DURATION,
-    BP.STATUS
-FROM V$BACKUP_SET BS
-LEFT JOIN V$BACKUP_PIECE BP ON BS.SET_STAMP = BP.SET_STAMP AND BS.SET_COUNT = BP.SET_COUNT
-ORDER BY BS.COMPLETION_TIME DESC";
-                System.Data.DataTable dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(sql, null, false);
+                // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
+                System.Data.DataTable dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(
+                    "ADMINHOS.SP_GET_BACKUP_HISTORY",
+                    new Oracle.ManagedDataAccess.Client.OracleParameter[] {
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = System.Data.ParameterDirection.Output }
+                    }, true);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     foreach (System.Data.DataRow row in dt.Rows)

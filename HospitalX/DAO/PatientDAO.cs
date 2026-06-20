@@ -29,9 +29,12 @@ namespace HospitalX.DAO
 
         public static string GetNextPatientId()
         {
+            // Gọi hàm Oracle trực tiếp qua SQL (hàm đã có sẵn trong schema ADMINHOS)
             string sql = "SELECT ADMINHOS.FN_GET_NEXT_PATIENT_ID() FROM DUAL";
             DataTable dt = DataProvider.Instance.ExecuteQuery(sql, null, false);
-            return dt.Rows[0][0].ToString().Trim();
+            if (dt != null && dt.Rows.Count > 0)
+                return dt.Rows[0][0]?.ToString()?.Trim() ?? "";
+            return "";
         }
 
         public static bool InsertPatient(

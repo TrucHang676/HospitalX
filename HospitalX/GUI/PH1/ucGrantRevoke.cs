@@ -314,17 +314,11 @@ namespace HospitalX.GUI.PH1
                 _allObjects.Clear();
                 lstObjects.Items.Clear();
 
-                // Query từ DBA_OBJECTS để lấy các object do user không phải Oracle duy trì
-                string query = @"
-                    SELECT OBJECT_NAME, OBJECT_TYPE
-                    FROM DBA_OBJECTS
-                    WHERE OBJECT_TYPE IN ('TABLE', 'VIEW', 'PROCEDURE', 'FUNCTION')
-                    AND ORACLE_MAINTAINED = 'N'
-                    AND OWNER = SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA')
-                    ORDER BY OBJECT_TYPE, OBJECT_NAME";
-
-                var parameters = new OracleParameter[0];
-                var dtObjects = DataProvider.Instance.ExecuteQuery(query, parameters, isStoredProc: false);
+                // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
+                var parameters = new OracleParameter[] {
+                    new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                };
+                var dtObjects = DataProvider.Instance.ExecuteQuery("USP_GET_SCHEMA_OBJECTS", parameters, isStoredProc: true);
 
                 if (dtObjects != null && dtObjects.Rows.Count > 0)
                 {

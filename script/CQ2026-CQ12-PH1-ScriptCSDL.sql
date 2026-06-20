@@ -27,9 +27,23 @@ SHOW CON_NAME;
 
 -- XÓA SẠCH CÁC USER/ROLE CŨ NẾU CÓ ĐỂ TRÁNH XUNG ĐỘT KHI CHẠY LẠI SCRIPT
 DECLARE
+    PROCEDURE kill_user_sessions(p_username IN VARCHAR2) IS
+    BEGIN
+        FOR s IN (
+            SELECT sid, serial# FROM v$session WHERE username = UPPER(p_username)
+        ) LOOP
+            BEGIN
+                EXECUTE IMMEDIATE 'ALTER SYSTEM KILL SESSION ''' || s.sid || ',' || s.serial# || ''' IMMEDIATE';
+            EXCEPTION
+                WHEN OTHERS THEN NULL;
+            END;
+        END LOOP;
+    END;
+
     PROCEDURE drop_user_if_exists(p_username IN VARCHAR2) IS
         v_count NUMBER;
     BEGIN
+        kill_user_sessions(p_username);
         SELECT COUNT(*) INTO v_count FROM dba_users WHERE username = UPPER(p_username);
         IF v_count > 0 THEN
             EXECUTE IMMEDIATE 'DROP USER ' || UPPER(p_username) || ' CASCADE';
@@ -54,7 +68,6 @@ BEGIN
     drop_role_if_exists('ROLE_KETOAN');
 END;
 /
-
 -- 2. Tạo User quản trị (APP DÙNG ACCOUNT NÀY ĐĂNG NHẬP)
 CREATE USER adminHos IDENTIFIED BY 123;
 
@@ -100,7 +113,7 @@ SET SQLBLANKLINES ON;
 -- DEMO DATA - PHÂN HỆ 1: QUẢN TRỊ NGƯỜI DÙNG & BẢO MẬT
 -- ==========================================================
 -- Vì app có thiết kế thông tin user để tạo và chỉnh sửa thông tin
--- nên bắt buộc cần bảng THONGTIN_NHANVIEN (PHÂN HỆ 2 SẼ THIẾT KẾ CSDL CHUẨN THAY VÀO)
+-- nên bắt buộc cần bảng THONGTIN_NHANVIEN
 
 -- Xóa bảng cũ nếu tồn tại (LUONG trước vì có FK phụ thuộc THONGTIN)
 BEGIN EXECUTE IMMEDIATE 'DROP TABLE LUONG_NHANVIEN CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
@@ -1228,6 +1241,67 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, 'Loi cap nhat thong tin User: ' || SQLERRM);
 END sp_UpdateUserInfo;
 
+-- ==========================================================
+-- STORED PROCEDURES BO SUNG (CHUYEN NGHIEP VU TU C# XUONG ORACLE)
+-- Chay voi quyen SYSDBA / DBA (truy cap DBA_OBJECTS, DBA_SYS_PRIVS, ALL_TAB_COLUMNS)
+-- ==========================================================
+
+-- USP_GET_SCHEMA_OBJECTS: Lay danh sach object trong schema ADMINHOS
+-- (dung cho chuc nang Grant/Revoke chon doi tuong tren giao dien PH1)
+CREATE OR REPLACE PROCEDURE USP_GET_SCHEMA_OBJECTS(
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT OBJECT_NAME, OBJECT_TYPE
+        FROM DBA_OBJECTS
+        WHERE OWNER = 'ADMINHOS'
+          AND OBJECT_TYPE IN ('TABLE', 'VIEW', 'PROCEDURE', 'FUNCTION')
+          AND ORACLE_MAINTAINED = 'N'
+        ORDER BY OBJECT_TYPE, OBJECT_NAME;
+END;
+/
+
+-- USP_GET_TABLE_COLUMNS: Lay danh sach cot cua mot bang (dung cho ColPicker chon cot)
+CREATE OR REPLACE PROCEDURE USP_GET_TABLE_COLUMNS(
+    p_table_name IN  VARCHAR2,
+    p_cursor     OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT COLUMN_NAME, DATA_TYPE, NULLABLE
+        FROM ALL_TAB_COLUMNS
+        WHERE TABLE_NAME = UPPER(p_table_name)
+        ORDER BY COLUMN_ID;
+END;
+/
+
+-- USP_GET_SYS_PRIVS: Lay danh sach system privilege cua mot user/role
+CREATE OR REPLACE PROCEDURE USP_GET_SYS_PRIVS(
+    p_grantee IN  VARCHAR2,
+    p_cursor  OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT GRANTEE, PRIVILEGE, ADMIN_OPTION
+        FROM DBA_SYS_PRIVS
+        WHERE GRANTEE = UPPER(p_grantee)
+        ORDER BY PRIVILEGE;
+END;
+/
+
+-- USP_COUNT_SYS_PRIVS: Dem so system privilege cua mot user/role
+CREATE OR REPLACE PROCEDURE USP_COUNT_SYS_PRIVS(
+    p_grantee IN  VARCHAR2,
+    p_count   OUT NUMBER
+) AS
+BEGIN
+    SELECT COUNT(*)
+    INTO   p_count
+    FROM   DBA_SYS_PRIVS
+    WHERE  GRANTEE = UPPER(p_grantee);
+END;
+/
 
 -- ==========================================================
 -- DEMO DATA - PHÂN HỆ 1: QUẢN TRỊ NGƯỜI DÙNG & BẢO MẬT

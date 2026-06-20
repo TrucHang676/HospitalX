@@ -3211,7 +3211,7 @@ BEGIN
 END;
 /
 
--- Tạo các sp
+-- CÁC STORED PROCEDURE BỔ SUNG PHỤC VỤ APP
 
 -- 1. Xem nhật ký kiểm toán
 CREATE OR REPLACE PROCEDURE SP_XEM_AUDIT_LOG (
@@ -4182,3 +4182,125 @@ BEGIN
     END LOOP;
 END;
 /
+
+-- 39. SP_GET_SERVICES_FOR_KTV: Lay danh sach dich vu cua KTV (VPD tu loc theo user dang nhap)
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_SERVICES_FOR_KTV(
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT
+            v.MAHSBA,
+            v.LOAIDV,
+            v.NGAYDV,
+            v.KETQUA,
+            b.MABN,
+            b.TENBN,
+            b.PHAI,
+            b.NGAYSINH,
+            b.CCCD,
+            b.SONHA,
+            b.TENDUONG,
+            b.QUANHUYEN,
+            b.TINHTP
+        FROM ADMINHOS.VW_HSBA_DV_KTV v
+        LEFT JOIN ADMINHOS.HSBA h ON v.MAHSBA = h.MAHSBA
+        LEFT JOIN ADMINHOS.BENHNHAN b ON h.MABN = b.MABN
+        ORDER BY v.NGAYDV DESC;
+END;
+/
+
+-- 40. SP_UPDATE_SERVICE_RESULT: Cap nhat ket qua dich vu cua KTV
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_UPDATE_SERVICE_RESULT(
+    p_mahsba IN VARCHAR2,
+    p_loaidv IN NVARCHAR2,
+    p_ngaydv IN VARCHAR2,
+    p_ketqua IN NVARCHAR2
+) AS
+BEGIN
+    UPDATE ADMINHOS.VW_HSBA_DV_KTV
+    SET KETQUA = p_ketqua
+    WHERE MAHSBA = p_mahsba
+      AND LOAIDV = p_loaidv
+      AND TO_CHAR(NGAYDV, 'DD/MM/YYYY') = p_ngaydv;
+    COMMIT;
+END;
+/
+
+-- Cap quyen cho ROLE_KYTHUATVIEN (dung pattern cua script goc)
+GRANT EXECUTE ON ADMINHOS.SP_GET_SERVICES_FOR_KTV  TO ROLE_KYTHUATVIEN;
+GRANT EXECUTE ON ADMINHOS.SP_UPDATE_SERVICE_RESULT TO ROLE_KYTHUATVIEN;
+
+-- 41. SP_GET_PATIENT_SELF: Lay thong tin ca nhan benh nhan (VPD tu loc theo user dang nhap)
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_PATIENT_SELF(
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT *
+        FROM ADMINHOS.VW_BENHNHAN_SELF;
+END;
+/
+
+-- 42. SP_UPDATE_PATIENT_HISTORY_SELF: Cap nhat tien su benh cua benh nhan (VPD tu loc)
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_UPDATE_PATIENT_HISTORY_SELF(
+    p_tiensubenh   IN NVARCHAR2,
+    p_tiensubenhgd IN NVARCHAR2,
+    p_diungthuoc   IN NVARCHAR2
+) AS
+BEGIN
+    UPDATE ADMINHOS.VW_BENHNHAN_SELF
+    SET TIENSUBENH   = p_tiensubenh,
+        TIENSUBENHGD = p_tiensubenhgd,
+        DIUNGTHUOC   = p_diungthuoc;
+    COMMIT;
+END;
+/
+
+-- 43. SP_UPDATE_PATIENT_ADDRESS_SELF: Cap nhat dia chi benh nhan (VPD tu loc)
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_UPDATE_PATIENT_ADDRESS_SELF(
+    p_sonha     IN NVARCHAR2,
+    p_tenduong  IN NVARCHAR2,
+    p_quanhuyen IN NVARCHAR2,
+    p_tinhtp    IN NVARCHAR2
+) AS
+BEGIN
+    UPDATE ADMINHOS.VW_BENHNHAN_SELF
+    SET SONHA     = p_sonha,
+        TENDUONG  = p_tenduong,
+        QUANHUYEN = p_quanhuyen,
+        TINHTP    = p_tinhtp;
+    COMMIT;
+END;
+/
+
+-- Cap quyen cho ROLE_BENHNHAN (dung pattern cua script goc)
+GRANT EXECUTE ON ADMINHOS.SP_GET_PATIENT_SELF            TO ROLE_BENHNHAN;
+GRANT EXECUTE ON ADMINHOS.SP_UPDATE_PATIENT_HISTORY_SELF TO ROLE_BENHNHAN;
+GRANT EXECUTE ON ADMINHOS.SP_UPDATE_PATIENT_ADDRESS_SELF TO ROLE_BENHNHAN;
+
+-- 44. SP_GET_BACKUP_HISTORY: Lay lich su backup tu V$BACKUP_SET (can quyen DBA/SELECT_CATALOG_ROLE)
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_BACKUP_HISTORY(
+    p_cursor OUT SYS_REFCURSOR
+) AUTHID CURRENT_USER AS
+BEGIN
+    OPEN p_cursor FOR
+        'SELECT
+            ''REC-'' || BS.RECID                                          AS ID,
+            BS.COMPLETION_TIME                                            AS START_TIME,
+            CASE WHEN BS.BACKUP_TYPE = ''D'' THEN ''FULL'' ELSE ''INCR'' END AS TYPE,
+            ''SYSTEM''                                                     AS SOURCE,
+            ROUND(BS.INPUT_BYTES / (1024 * 1024), 2) || '' MB''          AS SIZE,
+            BS.ELAPSED_SECONDS || ''s''                                   AS DURATION,
+            BP.STATUS
+        FROM V$BACKUP_SET BS
+        LEFT JOIN V$BACKUP_PIECE BP
+               ON BS.SET_STAMP = BP.SET_STAMP
+              AND BS.SET_COUNT = BP.SET_COUNT
+        ORDER BY BS.COMPLETION_TIME DESC';
+END;
+/
+
+-- Cap quyen cho admin_ph2 va DBA 
+GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY TO DBA;
