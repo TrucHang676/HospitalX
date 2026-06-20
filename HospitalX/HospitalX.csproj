@@ -784,7 +784,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\add.png" />
-    <Content Include="SQL\HospitalX_PH1.sql" />
     <Content Include="svg.ico" />
     <Content Include="..\image\medical-team.ico" />
   </ItemGroup>
