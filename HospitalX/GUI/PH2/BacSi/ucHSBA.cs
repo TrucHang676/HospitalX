@@ -1,9 +1,11 @@
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2.BacSi
 {
@@ -47,134 +49,111 @@ namespace HospitalX.GUI.PH2.BacSi
             flpHsbaList.Resize += (s, e) => ResizeCards();
         }
 
-        // Dữ liệu demo để giao diện có thể chạy và test chức năng ngay.
+        // Tải dữ liệu bệnh án thực tế từ CSDL.
         private void SeedData()
         {
-            if (_records.Count > 0)
-            {
-                return;
-            }
+            _records.Clear();
 
-            _records.Add(new HsbaRecord
+            try
             {
-                Id = "HSBA-0821",
-                PatientCode = "BN-00341",
-                PatientName = "Nguyễn Văn An",
-                Gender = "Nam",
-                Age = 52,
-                Department = "Khoa Tim Mạch",
-                CreatedDate = new DateTime(2026, 5, 21),
-                BirthDate = "15/03/1974",
-                CitizenId = "079074012345",
-                Address = "Q.1, TP.HCM",
-                Allergy = "Không có dị ứng thuốc ghi nhận",
-                MedicalHistory = "Tăng huyết áp từ năm 2018. Không hút thuốc lá.",
-                Diagnosis = "Tăng huyết áp độ II, rối loạn nhịp tim kèm khó thở khi gắng sức.",
-                Treatment = "Amlodipine 5mg, Bisoprolol 2.5mg. Theo dõi huyết áp tại nhà.",
-                Conclusion = "(Chưa có kết luận - bệnh nhân đang điều trị)",
-                Services = new List<string> { "Siêu âm tim - Chờ kết quả", "Xét nghiệm máu tổng quát - Có kết quả" },
-                Prescriptions = new List<string> { "Amlodipine 5mg - 1 viên/ngày, sáng sau ăn", "Bisoprolol 2.5mg - 1 viên/ngày, sáng trước ăn" }
-            });
-            _records.Add(new HsbaRecord
+                DataTable dt = HsbaDAO.GetHsbaForDoctor();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string maHsba = row["MAHSBA"]?.ToString() ?? string.Empty;
+                        string maBn = row["MABN"]?.ToString() ?? string.Empty;
+                        string tenBn = row["TEN_BENH_NHAN"]?.ToString() ?? string.Empty;
+                        string phai = row["GIOI_TINH"]?.ToString() ?? string.Empty;
+                        
+                        DateTime ngaySinh = DateTime.Today;
+                        if (row["NGAYSINH"] != DBNull.Value)
+                        {
+                            ngaySinh = Convert.ToDateTime(row["NGAYSINH"]);
+                        }
+                        int age = DateTime.Today.Year - ngaySinh.Year;
+                        string birthDate = ngaySinh.ToString("dd/MM/yyyy");
+
+                        string cccd = row["CCCD"]?.ToString() ?? string.Empty;
+                        
+                        string sonha = row["SONHA"]?.ToString() ?? string.Empty;
+                        string tenduong = row["TENDUONG"]?.ToString() ?? string.Empty;
+                        string quanhuyen = row["QUANHUYEN"]?.ToString() ?? string.Empty;
+                        string tinhtp = row["TINHTP"]?.ToString() ?? string.Empty;
+                        
+                        string addressList = "";
+                        if (!string.IsNullOrEmpty(sonha)) addressList += sonha + " ";
+                        if (!string.IsNullOrEmpty(tenduong)) addressList += tenduong + ", ";
+                        if (!string.IsNullOrEmpty(quanhuyen)) addressList += quanhuyen + ", ";
+                        if (!string.IsNullOrEmpty(tinhtp)) addressList += tinhtp;
+                        string address = addressList.Trim().TrimEnd(',');
+
+                        string diungthuoc = row["DIUNGTHUOC"]?.ToString() ?? "Chưa ghi nhận";
+                        string tiensubenh = row["TIENSUBENH"]?.ToString() ?? "Không có";
+
+                        DateTime ngay = DateTime.Today;
+                        if (row["NGAY"] != DBNull.Value)
+                        {
+                            ngay = Convert.ToDateTime(row["NGAY"]);
+                        }
+
+                        string chanDoan = row["CHANDOAN"]?.ToString() ?? string.Empty;
+                        string dieuTri = row["DIEUTRI"]?.ToString() ?? string.Empty;
+                        string ketLuan = row["KETLUAN"]?.ToString() ?? string.Empty;
+                        string khoa = row["MAKHOA"]?.ToString() ?? string.Empty;
+
+                        // Fetch services and prescriptions
+                        List<string> services = new List<string>();
+                        DataTable dtServices = HsbaDAO.GetServicesForHsba(maHsba);
+                        if (dtServices != null)
+                        {
+                            foreach (DataRow sRow in dtServices.Rows)
+                            {
+                                string loai = sRow["LOAIDV"]?.ToString() ?? string.Empty;
+                                string kq = sRow["KETQUA"]?.ToString() ?? string.Empty;
+                                services.Add(loai + (!string.IsNullOrEmpty(kq) ? " - " + kq : ""));
+                            }
+                        }
+
+                        List<string> prescriptions = new List<string>();
+                        DataTable dtPrescriptions = HsbaDAO.GetPrescriptionsForHsba(maHsba);
+                        if (dtPrescriptions != null)
+                        {
+                            foreach (DataRow pRow in dtPrescriptions.Rows)
+                            {
+                                string thuoc = pRow["TENTHUOC"]?.ToString() ?? string.Empty;
+                                string lieu = pRow["LIEUDUNG"]?.ToString() ?? string.Empty;
+                                prescriptions.Add(thuoc + (!string.IsNullOrEmpty(lieu) ? " - " + lieu : ""));
+                            }
+                        }
+
+                        _records.Add(new HsbaRecord
+                        {
+                            Id = maHsba,
+                            PatientCode = maBn,
+                            PatientName = tenBn,
+                            Gender = phai,
+                            Age = age,
+                            Department = khoa,
+                            CreatedDate = ngay,
+                            BirthDate = birthDate,
+                            CitizenId = cccd,
+                            Address = address,
+                            Allergy = diungthuoc,
+                            MedicalHistory = tiensubenh,
+                            Diagnosis = chanDoan,
+                            Treatment = dieuTri,
+                            Conclusion = ketLuan,
+                            Services = services,
+                            Prescriptions = prescriptions
+                        });
+                    }
+                }
+            }
+            catch (Exception)
             {
-                Id = "HSBA-0819",
-                PatientCode = "BN-00298",
-                PatientName = "Lê Thị Bích",
-                Gender = "Nữ",
-                Age = 38,
-                Department = "Khoa Tim Mạch",
-                CreatedDate = new DateTime(2026, 5, 20),
-                BirthDate = "09/10/1988",
-                CitizenId = "079088004512",
-                Address = "Q.7, TP.HCM",
-                Allergy = "Chưa ghi nhận",
-                MedicalHistory = "Đã từng hồi hộp đánh trống ngực khi gắng sức.",
-                Diagnosis = "Rối loạn nhịp tim kịch phát trên thất, cần theo dõi Holter 24h.",
-                Treatment = "Theo dõi nhịp tim, hạn chế caffeine, tái khám khi có kết quả Holter.",
-                Conclusion = "(Chờ kết quả xét nghiệm hỗ trợ)",
-                Services = new List<string> { "Holter điện tim 24h - Chờ kết quả" },
-                Prescriptions = new List<string> { "Magnesium B6 - 2 viên/ngày" }
-            });
-            _records.Add(new HsbaRecord
-            {
-                Id = "HSBA-0815",
-                PatientCode = "BN-00215",
-                PatientName = "Phạm Quốc Hùng",
-                Gender = "Nam",
-                Age = 67,
-                Department = "Khoa Tim Mạch",
-                CreatedDate = new DateTime(2026, 5, 18),
-                BirthDate = "22/04/1959",
-                CitizenId = "079059002151",
-                Address = "TP. Thủ Đức, TP.HCM",
-                Allergy = "Dị ứng Penicillin",
-                MedicalHistory = "Đái tháo đường type 2, tăng huyết áp lâu năm.",
-                Diagnosis = "Suy tim độ II - NYHA, có tiền sử đái tháo đường type 2.",
-                Treatment = "Điều chỉnh lợi tiểu, kiểm soát đường huyết và theo dõi CT tim.",
-                Conclusion = "(Chờ kết quả CT tim)",
-                Services = new List<string> { "CT tim - Chờ kết quả", "Xét nghiệm HbA1c - Có kết quả" },
-                Prescriptions = new List<string> { "Furosemide 40mg - 1 viên buổi sáng", "Metformin 500mg - 2 viên/ngày" }
-            });
-            _records.Add(new HsbaRecord
-            {
-                Id = "HSBA-0814",
-                PatientCode = "BN-00304",
-                PatientName = "Hoàng Thị Xuân",
-                Gender = "Nữ",
-                Age = 61,
-                Department = "Khoa Tim Mạch",
-                CreatedDate = new DateTime(2026, 5, 17),
-                BirthDate = "11/08/1965",
-                CitizenId = "079065003041",
-                Address = "Q. Bình Thạnh, TP.HCM",
-                Allergy = "Không ghi nhận",
-                MedicalHistory = "Nhồi máu cơ tim cũ, đang dùng thuốc chống đông.",
-                Diagnosis = "Nhồi máu cơ tim cũ, đang điều trị ổn định bằng thuốc chống đông.",
-                Treatment = "Duy trì thuốc chống đông, theo dõi INR và lipid máu.",
-                Conclusion = "(Đang theo dõi)",
-                Services = new List<string> { "Điện tim - Có kết quả" },
-                Prescriptions = new List<string> { "Warfarin 2mg - theo chỉ định", "Atorvastatin 20mg - 1 viên buổi tối" }
-            });
-            _records.Add(new HsbaRecord
-            {
-                Id = "HSBA-0801",
-                PatientCode = "BN-00189",
-                PatientName = "Trần Thị Mai",
-                Gender = "Nữ",
-                Age = 45,
-                Department = "Khoa Tim Mạch",
-                CreatedDate = new DateTime(2026, 5, 12),
-                BirthDate = "03/12/1981",
-                CitizenId = "079081001891",
-                Address = "Q.3, TP.HCM",
-                Allergy = "Không ghi nhận",
-                MedicalHistory = "Tăng huyết áp nhẹ.",
-                Diagnosis = "Tăng huyết áp kiểm soát tốt.",
-                Treatment = "Tiếp tục thuốc duy trì, ăn nhạt, vận động đều.",
-                Conclusion = "Tăng huyết áp kiểm soát tốt, tái khám sau 1 tháng.",
-                Services = new List<string> { "Xét nghiệm máu - Có kết quả" },
-                Prescriptions = new List<string> { "Losartan 50mg - 1 viên/ngày" }
-            });
-            _records.Add(new HsbaRecord
-            {
-                Id = "HSBA-0799",
-                PatientCode = "BN-00174",
-                PatientName = "Võ Minh Tuấn",
-                Gender = "Nam",
-                Age = 29,
-                Department = "Khoa Tim Mạch",
-                CreatedDate = new DateTime(2026, 5, 10),
-                BirthDate = "19/01/1997",
-                CitizenId = "079097001741",
-                Address = "Q. Tân Bình, TP.HCM",
-                Allergy = "Không ghi nhận",
-                MedicalHistory = "Không có bệnh nền đáng kể.",
-                Diagnosis = "Rối loạn nhịp ngoại tâm thu lành tính.",
-                Treatment = "Trấn an, giảm chất kích thích, theo dõi triệu chứng.",
-                Conclusion = "Không cần can thiệp thêm.",
-                Services = new List<string> { "Điện tim - Có kết quả" },
-                Prescriptions = new List<string> { "Không kê thuốc" }
-            });
+                // Graceful fallback
+            }
         }
 
         private void ApplyFilters()
@@ -466,7 +445,10 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             using (frmHSBADetail form = new frmHSBADetail(record))
             {
-                form.ShowDialog(this);
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    SeedData();
+                }
             }
             ApplyFilters();
         }
@@ -477,6 +459,7 @@ namespace HospitalX.GUI.PH2.BacSi
             {
                 form.ShowDialog(this);
             }
+            SeedData();
             ApplyFilters();
         }
 
@@ -486,6 +469,7 @@ namespace HospitalX.GUI.PH2.BacSi
             {
                 form.ShowDialog(this);
             }
+            SeedData();
             ApplyFilters();
         }
 

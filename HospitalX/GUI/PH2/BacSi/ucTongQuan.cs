@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -19,10 +20,84 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void ucTongQuan_Load(object sender, EventArgs e)
         {
+            LoadDoctorWelcome();
+            LoadDashboardStats();
             SetupRecentHsbaGrid();
         }
 
-        // Thiết lập dữ liệu mẫu và style cho bảng HSBA gần đây.
+        private void LoadDoctorWelcome()
+        {
+            try
+            {
+                DataTable dt = HospitalX.DAO.ProfileDAO.Instance.GetProfile();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    string hoTen = row["HOTEN"].ToString().Trim();
+                    lblWelcomeTitle.Text = $"Chào buổi sáng, Bác sĩ {hoTen}";
+
+                    if (!string.IsNullOrEmpty(hoTen))
+                    {
+                        string[] parts = hoTen.Split(' ');
+                        string lastWord = parts[parts.Length - 1];
+                        lblWelcomeAvatar.Text = lastWord.Substring(0, 1).ToUpperInvariant();
+                    }
+                    else
+                    {
+                        lblWelcomeAvatar.Text = "BS";
+                    }
+                }
+            }
+            catch
+            {
+                lblWelcomeTitle.Text = "Chào buổi sáng, Bác sĩ";
+                lblWelcomeAvatar.Text = "BS";
+            }
+        }
+
+        private void LoadDashboardStats()
+        {
+            try
+            {
+                DataTable dt = HospitalX.DAO.DashboardDAO.GetDashboardBS();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    lblKpiHsbaValue.Text = row["MANAGED_HSBAS"].ToString();
+                    lblKpiPendingValue.Text = row["PENDING_KTV"].ToString();
+                    lblKpiDoneValue.Text = row["PENDING_RESULTS"].ToString();
+                    lblKpiAlertValue.Text = row["TODAY_NOTICES"].ToString();
+
+                    lblWelcomeSubtitle.Text = $"Hôm nay hệ thống có {row["TODAY_NOTICES"]} thông báo mới và {row["PENDING_RESULTS"]} hồ sơ bệnh án đang chờ kết quả xét nghiệm.";
+                }
+
+                // Cập nhật nhãn và trạng thái cho 4 ô KPI
+                // Card 1: Hồ sơ bệnh án đang phụ trách
+                lblKpiHsbaCaption.Text = "Hồ sơ bệnh án đang phụ trách";
+                lblKpiHsbaIcon.Text = "HS";
+                lblKpiHsbaTrend.Text = "Tổng số";
+
+                // Card 2: Đang đợi phân KTV
+                lblKpiPendingCaption.Text = "Đang đợi phân KTV";
+                lblKpiPendingIcon.Text = "DK";
+                lblKpiPendingTrend.Text = "Chưa giao";
+
+                // Card 3: Đang chờ kết quả xét nghiệm
+                lblKpiDoneCaption.Text = "Đang chờ kết quả xét nghiệm";
+                lblKpiDoneIcon.Text = "CX";
+                lblKpiDoneTrend.Text = "Chờ XN";
+
+                // Card 4: Số thông báo hôm nay
+                lblKpiAlertCaption.Text = "Số thông báo hôm nay";
+                lblKpiAlertIcon.Text = "TB";
+                lblKpiAlertTrend.Text = "Hôm nay";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải thông tin thống kê: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void SetupRecentHsbaGrid()
         {
             dgvRecentHsba.EnableHeadersVisualStyles = false;
@@ -41,16 +116,36 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvRecentHsba.RowsDefaultCellStyle.BackColor = Color.White;
             dgvRecentHsba.RowTemplate.Height = 75;
 
-            if (dgvRecentHsba.Rows.Count > 0)
+            dgvRecentHsba.Rows.Clear();
+
+            try
             {
-                return;
+                DataTable dt = HospitalX.DAO.DashboardDAO.GetRecentHsbaThisMonth();
+                if (dt != null)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string hsbaId = row["MAHSBA"].ToString().Trim();
+                        string patientName = row["TENBN"].ToString().Trim();
+                        string patientCode = row["MABN"].ToString().Trim();
+                        string gender = row["PHAI"].ToString().Trim();
+                        int age = row["TUOI"] != DBNull.Value ? Convert.ToInt32(row["TUOI"]) : 0;
+                        DateTime date = Convert.ToDateTime(row["NGAY"]);
+
+                        string patientText = $"{patientName}\n{patientCode} · {gender}, {age} tuổi";
+                        string dateText = date.ToString("dd/MM/yyyy") + "\n" + GetDateText(date);
+
+                        dgvRecentHsba.Rows.Add(hsbaId, patientText, dateText, "Xem");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tải danh sách hồ sơ gần đây: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            dgvRecentHsba.Rows.Add("HSBA-0821", "Trà Văn Sỹ\nBN-00341 · Nam, 21 tuổi", "23/05/2026\nHôm nay", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0819", "Lê Thị Bích\nBN-00298 · Nữ, 38 tuổi", "20/05/2026\nHôm qua", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0815", "Phạm Quốc Hùng\nBN-00215 · Nam, 67 tuổi", "18/05/2026\n3 ngày trước", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0801", "Trần Thị Mai\nBN-00189 · Nữ, 45 tuổi", "12/05/2026\n9 ngày trước", "Xem");
-            dgvRecentHsba.Rows.Add("HSBA-0799", "Võ Minh Tuấn\nBN-00174 · Nam, 29 tuổi", "10/05/2026\n11 ngày trước", "Xem");
+            lblRecentSub.Text = $"Có {dgvRecentHsba.Rows.Count} hồ sơ bệnh án được lập trong tháng này.";
+
             dgvRecentHsba.ClearSelection();
             dgvRecentHsba.CurrentCell = null;
             dgvRecentHsba.MouseMove -= dgvRecentHsba_MouseMove;
@@ -61,7 +156,15 @@ namespace HospitalX.GUI.PH2.BacSi
             dgvRecentHsba.CellClick += dgvRecentHsba_CellClick;
         }
 
-        // Vẽ badge, text 2 dòng và nút hành động để bảng mềm hơn.
+        private string GetDateText(DateTime dt)
+        {
+            int days = (DateTime.Today - dt.Date).Days;
+            if (days == 0) return "Hôm nay";
+            if (days == 1) return "Hôm qua";
+            if (days > 1 && days <= 7) return $"{days} ngày trước";
+            return "";
+        }
+
         private void dgvRecentHsba_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -106,7 +209,6 @@ namespace HospitalX.GUI.PH2.BacSi
             }
         }
 
-        // Hover cho nút Xem trong DataGridView.
         private void dgvRecentHsba_MouseMove(object sender, MouseEventArgs e)
         {
             DataGridView.HitTestInfo hit = dgvRecentHsba.HitTest(e.X, e.Y);
@@ -138,181 +240,18 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            ucHSBA.HsbaRecord record = CreateHsbaRecordFromRecentRow(e.RowIndex);
-            using (frmHSBADetail form = new frmHSBADetail(record))
+            string hsbaId = Convert.ToString(dgvRecentHsba.Rows[e.RowIndex].Cells["colHsbaId"].Value);
+            ucHSBA.HsbaRecord record = HospitalX.DAO.HsbaDAO.GetHsbaDetailsById(hsbaId);
+            if (record != null)
             {
-                form.ShowDialog(this);
-            }
-        }
-
-        // Tạo dữ liệu HSBA mẫu cho popup chi tiết khi bấm nút Xem ở bảng Tổng quan.
-        private ucHSBA.HsbaRecord CreateHsbaRecordFromRecentRow(int rowIndex)
-        {
-            DataGridViewRow row = dgvRecentHsba.Rows[rowIndex];
-            string hsbaId = Convert.ToString(row.Cells["colHsbaId"].Value);
-            string patientText = Convert.ToString(row.Cells["colPatient"].Value);
-            string dateText = Convert.ToString(row.Cells["colDate"].Value);
-
-            string[] patientLines = patientText.Split('\n');
-            string patientName = patientLines.Length > 0 ? patientLines[0] : "";
-            string patientMeta = patientLines.Length > 1 ? patientLines[1] : "";
-            string[] metaParts = patientMeta.Split('·');
-
-            string patientCode = metaParts.Length > 0 ? metaParts[0].Trim() : "";
-            string gender = metaParts.Length > 1 ? metaParts[1].Trim() : "";
-            int age = 0;
-            if (metaParts.Length > 2)
-            {
-                int.TryParse(metaParts[2].Replace("tuổi", "").Trim(), out age);
-            }
-
-            DateTime createdDate;
-            string createdText = dateText.Split('\n')[0];
-            if (!DateTime.TryParseExact(createdText, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out createdDate))
-            {
-                createdDate = DateTime.Today;
-            }
-
-            return new ucHSBA.HsbaRecord
-            {
-                Id = hsbaId,
-                PatientCode = patientCode,
-                PatientName = patientName,
-                Gender = gender,
-                Age = age,
-                Department = "Khoa Tim Mạch",
-                CreatedDate = createdDate,
-                BirthDate = GetBirthDate(hsbaId),
-                CitizenId = GetCitizenId(hsbaId),
-                Address = GetAddress(hsbaId),
-                Allergy = GetAllergy(hsbaId),
-                MedicalHistory = GetMedicalHistory(hsbaId),
-                Diagnosis = GetDiagnosis(hsbaId),
-                Treatment = GetTreatment(hsbaId),
-                Conclusion = GetConclusion(hsbaId),
-                Services = GetServices(hsbaId),
-                Prescriptions = GetPrescriptions(hsbaId)
-            };
-        }
-
-        private static string GetBirthDate(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0821": return "15/03/1974";
-                case "HSBA-0819": return "09/10/1988";
-                case "HSBA-0815": return "22/04/1959";
-                case "HSBA-0801": return "03/12/1981";
-                case "HSBA-0799": return "19/01/1997";
-                default: return "";
-            }
-        }
-
-        private static string GetCitizenId(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0821": return "079074012345";
-                case "HSBA-0819": return "079088004512";
-                case "HSBA-0815": return "079059002151";
-                case "HSBA-0801": return "079081001891";
-                case "HSBA-0799": return "079097001741";
-                default: return "";
-            }
-        }
-
-        private static string GetAddress(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0821": return "Q.1, TP.HCM";
-                case "HSBA-0819": return "Q.7, TP.HCM";
-                case "HSBA-0815": return "TP. Thủ Đức, TP.HCM";
-                case "HSBA-0801": return "Q.3, TP.HCM";
-                case "HSBA-0799": return "Q. Tân Bình, TP.HCM";
-                default: return "";
-            }
-        }
-
-        private static string GetAllergy(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0815": return "Dị ứng Penicillin";
-                default: return "Không ghi nhận";
-            }
-        }
-
-        private static string GetMedicalHistory(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0821": return "Tăng huyết áp từ năm 2018. Không hút thuốc lá.";
-                case "HSBA-0819": return "Đã từng hồi hộp đánh trống ngực khi gắng sức.";
-                case "HSBA-0815": return "Đái tháo đường type 2, tăng huyết áp lâu năm.";
-                case "HSBA-0801": return "Tăng huyết áp nhẹ.";
-                case "HSBA-0799": return "Không có bệnh nền đáng kể.";
-                default: return "";
-            }
-        }
-
-        private static string GetDiagnosis(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0821": return "Tăng huyết áp độ II, rối loạn nhịp tim kèm khó thở khi gắng sức.";
-                case "HSBA-0819": return "Rối loạn nhịp tim kịch phát trên thất, cần theo dõi Holter 24h.";
-                case "HSBA-0815": return "Suy tim độ II - NYHA, có tiền sử đái tháo đường type 2.";
-                case "HSBA-0801": return "Tăng huyết áp kiểm soát tốt.";
-                case "HSBA-0799": return "Rối loạn nhịp ngoại tâm thu lành tính.";
-                default: return "";
-            }
-        }
-
-        private static string GetTreatment(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0821": return "Amlodipine 5mg, Bisoprolol 2.5mg. Theo dõi huyết áp tại nhà.";
-                case "HSBA-0819": return "Theo dõi nhịp tim, hạn chế caffeine, tái khám khi có kết quả Holter.";
-                case "HSBA-0815": return "Điều chỉnh lợi tiểu, kiểm soát đường huyết và theo dõi CT tim.";
-                case "HSBA-0801": return "Tiếp tục thuốc duy trì, ăn nhạt, vận động đều.";
-                case "HSBA-0799": return "Trấn an, giảm chất kích thích, theo dõi triệu chứng.";
-                default: return "";
-            }
-        }
-
-        private static string GetConclusion(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0801": return "Tăng huyết áp kiểm soát tốt, tái khám sau 1 tháng.";
-                case "HSBA-0799": return "Không cần can thiệp thêm.";
-                default: return "(Chưa có kết luận - bệnh nhân đang điều trị)";
-            }
-        }
-
-        private static List<string> GetServices(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0819": return new List<string> { "Holter điện tim 24h - Chờ kết quả" };
-                case "HSBA-0815": return new List<string> { "CT tim - Chờ kết quả", "Xét nghiệm HbA1c - Có kết quả" };
-                case "HSBA-0801": return new List<string> { "Xét nghiệm máu - Có kết quả" };
-                case "HSBA-0799": return new List<string> { "Điện tim - Có kết quả" };
-                default: return new List<string> { "Siêu âm tim - Chờ kết quả", "Xét nghiệm máu tổng quát - Có kết quả" };
-            }
-        }
-
-        private static List<string> GetPrescriptions(string hsbaId)
-        {
-            switch (hsbaId)
-            {
-                case "HSBA-0819": return new List<string> { "Magnesium B6 - 2 viên/ngày" };
-                case "HSBA-0815": return new List<string> { "Furosemide 40mg - 1 viên buổi sáng", "Metformin 500mg - 2 viên/ngày" };
-                case "HSBA-0801": return new List<string> { "Losartan 50mg - 1 viên/ngày" };
-                case "HSBA-0799": return new List<string> { "Không kê thuốc" };
-                default: return new List<string> { "Amlodipine 5mg - 1 viên/ngày, sáng sau ăn", "Bisoprolol 2.5mg - 1 viên/ngày, sáng trước ăn" };
+                using (frmHSBADetail form = new frmHSBADetail(record))
+                {
+                    if (form.ShowDialog(this) == DialogResult.OK)
+                    {
+                        LoadDashboardStats();
+                        SetupRecentHsbaGrid();
+                    }
+                }
             }
         }
 

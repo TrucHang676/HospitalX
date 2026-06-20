@@ -52,19 +52,43 @@ namespace HospitalX.GUI.PH2.KyThuatVien
     internal static class KtvData
     {
         /// <summary>
-        /// Trả về thông tin kỹ thuật viên đang đăng nhập (mock — sẽ lấy từ Oracle session sau).
-        /// Các trường khớp 1-1 với cột trong NHANVIEN.
+        /// Trả về thông tin kỹ thuật viên đang đăng nhập.
         /// </summary>
         public static KtvTechnician CurrentTechnician()
         {
+            try
+            {
+                System.Data.DataTable dt = HospitalX.DAO.ProfileDAO.Instance.GetProfile();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    System.Data.DataRow row = dt.Rows[0];
+                    var ktv = new KtvTechnician();
+                    ktv.MaNv = row["MANV"]?.ToString() ?? HospitalX.DAO.DataProvider.Instance.CurrentUser;
+                    ktv.HoTen = row["HOTEN"]?.ToString() ?? "Kỹ thuật viên";
+                    ktv.Phai = row["PHAI"]?.ToString() ?? "Nữ";
+                    ktv.NgaySinh = row["NGAYSINH"] != DBNull.Value ? Convert.ToDateTime(row["NGAYSINH"]).ToString("dd/MM/yyyy") : "01/01/1990";
+                    ktv.Cmnd = row["CMND"]?.ToString() ?? "";
+                    ktv.QueQuan = row["QUEQUAN"]?.ToString() ?? "";
+                    ktv.SoDt = row["SODT"]?.ToString() ?? "";
+                    ktv.ChuyenKhoa = row["CHUYENKHOA"]?.ToString() ?? "";
+                    ktv.VaiTro = row["VAITRO"]?.ToString() ?? "Kỹ thuật viên";
+                    return ktv;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi load profile KTV từ database: " + ex.Message);
+            }
+
+            // Fallback
             return new KtvTechnician
             {
-                MaNv       = "KTV042",
-                HoTen      = "Nguyễn Thị Thu",
+                MaNv       = HospitalX.DAO.DataProvider.Instance.CurrentUser ?? "KTV001",
+                HoTen      = "Kỹ thuật viên",
                 Phai       = "Nữ",
                 NgaySinh   = "15/08/1992",
                 Cmnd       = "079292013456",
-                QueQuan    = "45 Đường Lê Lợi, P.3, TP. Biên Hòa, Đồng Nai",
+                QueQuan    = "45 Đường Lê Lợi, P.3, Biên Hòa, Đồng Nai",
                 SoDt       = "0914 567 890",
                 VaiTro     = "Kỹ thuật viên",
                 ChuyenKhoa = "Khoa Xét nghiệm"
@@ -77,91 +101,111 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         public static string TechnicianName() => CurrentTechnician().HoTen;
 
         /// <summary>
-        /// Danh sách dịch vụ phân công cho KTV này (mock ánh xạ từ HSBA_DV JOIN HSBA JOIN BENHNHAN).
+        /// Danh sách dịch vụ phân công cho KTV này (mức dòng/cột từ view VW_HSBA_DV_KTV).
         /// KETQUA = null → Chờ thực hiện; KETQUA != null → Hoàn thành.
         /// </summary>
         public static List<KtvService> Services()
         {
-            return new List<KtvService>
+            var list = new List<KtvService>();
+            try
             {
-                new KtvService
+                string sql = @"
+SELECT 
+    v.MAHSBA, 
+    v.LOAIDV, 
+    v.NGAYDV, 
+    v.KETQUA,
+    b.MABN,
+    b.TENBN,
+    b.PHAI,
+    b.NGAYSINH,
+    b.CCCD,
+    b.SONHA,
+    b.TENDUONG,
+    b.QUANHUYEN,
+    b.TINHTP
+FROM ADMINHOS.VW_HSBA_DV_KTV v
+LEFT JOIN ADMINHOS.HSBA h ON v.MAHSBA = h.MAHSBA
+LEFT JOIN ADMINHOS.BENHNHAN b ON h.MABN = b.MABN
+ORDER BY v.NGAYDV DESC";
+                System.Data.DataTable dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(sql, null, false);
+                if (dt != null)
                 {
-                    MaHsba   = "HSBA00001", RecordId = "HSBA00001",
-                    MaBn     = "BN000001",  Patient  = "Trần Văn Bình",
-                    BnGender = "Nam",       BnDob    = "12/03/1985",
-                    BnCccd   = "079000000001",
-                    BnDiaChi = "12 Đường số 1, Quận 1, Hồ Chí Minh",
-                    Service  = "Xét nghiệm máu",
-                    NgayDv   = "01/06/2026", Time = "07:30",
-                    KetQua   = null   // Chờ thực hiện
-                },
-                new KtvService
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        var svc = new KtvService();
+                        svc.MaHsba = row["MAHSBA"]?.ToString() ?? "";
+                        svc.RecordId = svc.MaHsba;
+                        svc.Service = row["LOAIDV"]?.ToString() ?? "";
+                        
+                        DateTime ngayDv = row["NGAYDV"] != DBNull.Value ? Convert.ToDateTime(row["NGAYDV"]) : DateTime.Now;
+                        svc.NgayDv = ngayDv.ToString("dd/MM/yyyy");
+                        svc.Time = ngayDv.ToString("HH:mm");
+                        
+                        svc.KetQua = row["KETQUA"]?.ToString();
+                        if (row["KETQUA"] == DBNull.Value) svc.KetQua = null;
+                        
+                        svc.MaBn = row["MABN"]?.ToString() ?? "";
+                        svc.Patient = row["TENBN"]?.ToString() ?? "";
+                        svc.BnGender = row["PHAI"]?.ToString() ?? "";
+                        
+                        if (row["NGAYSINH"] != DBNull.Value)
+                        {
+                            svc.BnDob = Convert.ToDateTime(row["NGAYSINH"]).ToString("dd/MM/yyyy");
+                        }
+                        else
+                        {
+                            svc.BnDob = "";
+                        }
+                        
+                        svc.BnCccd = row["CCCD"]?.ToString() ?? "";
+                        
+                        string sonha = row["SONHA"]?.ToString() ?? "";
+                        string tenduong = row["TENDUONG"]?.ToString() ?? "";
+                        string quanhuyen = row["QUANHUYEN"]?.ToString() ?? "";
+                        string tinhtp = row["TINHTP"]?.ToString() ?? "";
+                        
+                        List<string> addrParts = new List<string>();
+                        if (!string.IsNullOrEmpty(sonha)) addrParts.Add(sonha.Trim());
+                        if (!string.IsNullOrEmpty(tenduong)) addrParts.Add(tenduong.Trim());
+                        if (!string.IsNullOrEmpty(quanhuyen)) addrParts.Add(quanhuyen.Trim());
+                        if (!string.IsNullOrEmpty(tinhtp)) addrParts.Add(tinhtp.Trim());
+                        svc.BnDiaChi = string.Join(", ", addrParts);
+                        
+                        list.Add(svc);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi load services KTV từ database: " + ex.Message);
+            }
+            return list;
+        }
+
+        public static bool UpdateServiceResult(string mahsba, string loaidv, string ngaydv, string ketqua)
+        {
+            try
+            {
+                string sql = @"
+UPDATE ADMINHOS.VW_HSBA_DV_KTV 
+SET KETQUA = :ketqua
+WHERE MAHSBA = :mahsba AND LOAIDV = :loaidv AND TO_CHAR(NGAYDV, 'DD/MM/YYYY') = :ngaydv";
+                Oracle.ManagedDataAccess.Client.OracleParameter[] parameters = new Oracle.ManagedDataAccess.Client.OracleParameter[]
                 {
-                    MaHsba   = "HSBA00002", RecordId = "HSBA00002",
-                    MaBn     = "BN000002",  Patient  = "Nguyễn Thị Mai",
-                    BnGender = "Nữ",        BnDob    = "07/11/1990",
-                    BnCccd   = "079000000002",
-                    BnDiaChi = "23 Đường số 2, Quận 3, Hồ Chí Minh",
-                    Service  = "Chụp X-Quang",
-                    NgayDv   = "01/06/2026", Time = "08:00",
-                    KetQua   = null   // Chờ thực hiện
-                },
-                new KtvService
-                {
-                    MaHsba   = "HSBA00003", RecordId = "HSBA00003",
-                    MaBn     = "BN000003",  Patient  = "Lê Văn Dũng",
-                    BnGender = "Nam",       BnDob    = "22/05/1978",
-                    BnCccd   = "079000000003",
-                    BnDiaChi = "56 Đường số 3, Quận 5, Hồ Chí Minh",
-                    Service  = "Siêu âm",
-                    NgayDv   = "01/06/2026", Time = "08:30",
-                    KetQua   = null   // Chờ thực hiện
-                },
-                new KtvService
-                {
-                    MaHsba   = "HSBA00004", RecordId = "HSBA00004",
-                    MaBn     = "BN000004",  Patient  = "Phạm Thị Lan",
-                    BnGender = "Nữ",        BnDob    = "30/09/1965",
-                    BnCccd   = "079000000004",
-                    BnDiaChi = "8 Đường số 4, Quận 1, Hồ Chí Minh",
-                    Service  = "Xét nghiệm máu",
-                    NgayDv   = "01/06/2026", Time = "09:00",
-                    KetQua   = "Hồng cầu: 4.5, Bạch cầu: 7.2, Tiểu cầu: 220"
-                },
-                new KtvService
-                {
-                    MaHsba   = "HSBA00005", RecordId = "HSBA00005",
-                    MaBn     = "BN000005",  Patient  = "Hoàng Văn Tuấn",
-                    BnGender = "Nam",       BnDob    = "14/02/1970",
-                    BnCccd   = "079000000005",
-                    BnDiaChi = "101 Đường số 5, Quận 3, Hồ Chí Minh",
-                    Service  = "Siêu âm",
-                    NgayDv   = "01/06/2026", Time = "10:00",
-                    KetQua   = "Siêu âm ổ bụng: Gan, lách, thận bình thường. Không có dịch tự do."
-                },
-                new KtvService
-                {
-                    MaHsba   = "HSBA00006", RecordId = "HSBA00006",
-                    MaBn     = "BN000006",  Patient  = "Vũ Thị Hằng",
-                    BnGender = "Nữ",        BnDob    = "01/07/1988",
-                    BnCccd   = "079000000006",
-                    BnDiaChi = "77 Đường số 6, Quận 5, Hồ Chí Minh",
-                    Service  = "Chụp X-Quang",
-                    NgayDv   = "01/06/2026", Time = "10:30",
-                    KetQua   = null   // Chờ thực hiện
-                },
-                new KtvService
-                {
-                    MaHsba   = "HSBA00007", RecordId = "HSBA00007",
-                    MaBn     = "BN000007",  Patient  = "Phạm Văn Sơn",
-                    BnGender = "Nam",       BnDob    = "19/12/1955",
-                    BnCccd   = "079000000007",
-                    BnDiaChi = "34 Đường số 7, Quận 1, Hồ Chí Minh",
-                    Service  = "Xét nghiệm máu",
-                    NgayDv   = "01/06/2026", Time = "11:00",
-                    KetQua   = "Glucose: 6.2 mmol/L (↑), Cholesterol: 5.8 mmol/L (bình thường)"
-                },
-            };
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("ketqua", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = string.IsNullOrWhiteSpace(ketqua) ? (object)DBNull.Value : ketqua.Trim() },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("mahsba", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = mahsba.Trim() },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("loaidv", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = loaidv.Trim() },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("ngaydv", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = ngaydv.Trim() }
+                };
+                int rows = HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
+                return rows > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi update service result: " + ex.Message);
+                return false;
+            }
         }
 
         /// <summary>

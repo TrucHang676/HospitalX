@@ -148,10 +148,32 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            _record.Drugs.Add(new ucDonThuoc.DrugRecord(txtMedicineName.Text.Trim(), txtDose.Text.Trim()));
-            _changed = true;
-            RefreshGrid();
-            ClearInputs();
+            string name = txtMedicineName.Text.Trim();
+            string dose = txtDose.Text.Trim();
+
+            try
+            {
+                bool dbSuccess = HospitalX.DAO.PrescriptionDAO.InsertDrug(_record.HsbaId, _record.CreatedDate, name, dose);
+                if (dbSuccess)
+                {
+                    _record.Drugs.Add(new ucDonThuoc.DrugRecord(name, dose));
+                    _changed = true;
+                    RefreshGrid();
+                    ClearInputs();
+                }
+                else
+                {
+                    msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error;
+                    msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                    msgDialog.Show("Thêm thuốc thất bại. Vui lòng kiểm tra lại quyền hạn.", "Lỗi");
+                }
+            }
+            catch (Exception ex)
+            {
+                msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error;
+                msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                msgDialog.Show("Lỗi cơ sở dữ liệu: " + ex.Message, "Lỗi");
+            }
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -170,11 +192,33 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
-            drug.Name = txtMedicineName.Text.Trim();
-            drug.Dose = txtDose.Text.Trim();
-            _changed = true;
-            RefreshGrid();
-            ClearInputs();
+            string newName = txtMedicineName.Text.Trim();
+            string newDose = txtDose.Text.Trim();
+
+            try
+            {
+                bool dbSuccess = HospitalX.DAO.PrescriptionDAO.UpdateDrug(_record.HsbaId, _record.CreatedDate, drug.Name, newName, newDose);
+                if (dbSuccess)
+                {
+                    drug.Name = newName;
+                    drug.Dose = newDose;
+                    _changed = true;
+                    RefreshGrid();
+                    ClearInputs();
+                }
+                else
+                {
+                    msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error;
+                    msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                    msgDialog.Show("Cập nhật thuốc thất bại. Vui lòng kiểm tra lại quyền hạn.", "Lỗi");
+                }
+            }
+            catch (Exception ex)
+            {
+                msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error;
+                msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                msgDialog.Show("Lỗi cơ sở dữ liệu: " + ex.Message, "Lỗi");
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -185,10 +229,30 @@ namespace HospitalX.GUI.PH2.BacSi
             }
 
             var drug = (ucDonThuoc.DrugRecord)dgvDrugs.CurrentRow.Tag;
-            _record.Drugs.Remove(drug);
-            _changed = true;
-            RefreshGrid();
-            ClearInputs();
+
+            try
+            {
+                bool dbSuccess = HospitalX.DAO.PrescriptionDAO.DeleteDrug(_record.HsbaId, _record.CreatedDate, drug.Name);
+                if (dbSuccess)
+                {
+                    _record.Drugs.Remove(drug);
+                    _changed = true;
+                    RefreshGrid();
+                    ClearInputs();
+                }
+                else
+                {
+                    msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error;
+                    msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                    msgDialog.Show("Xóa thuốc thất bại. Vui lòng kiểm tra lại quyền hạn.", "Lỗi");
+                }
+            }
+            catch (Exception ex)
+            {
+                msgDialog.Icon = Guna.UI2.WinForms.MessageDialogIcon.Error;
+                msgDialog.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
+                msgDialog.Show("Lỗi cơ sở dữ liệu: " + ex.Message, "Lỗi");
+            }
         }
 
         private void btnNewMedicine_Click(object sender, EventArgs e)

@@ -50,18 +50,20 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlToolbar.Controls.Add(this.cmbGender);
             this.pnlToolbar.Controls.Add(this.txtSearch);
             this.pnlToolbar.FillColor = System.Drawing.Color.White;
-            this.pnlToolbar.Location = new System.Drawing.Point(24, 18);
+            this.pnlToolbar.Location = new System.Drawing.Point(32, 22);
+            this.pnlToolbar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlToolbar.Name = "pnlToolbar";
-            this.pnlToolbar.Size = new System.Drawing.Size(1080, 102);
+            this.pnlToolbar.Size = new System.Drawing.Size(1440, 90);
             this.pnlToolbar.TabIndex = 0;
             // 
             // lblCount
             // 
             this.lblCount.Font = new System.Drawing.Font("Segoe UI", 9.2F, System.Drawing.FontStyle.Bold);
             this.lblCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblCount.Location = new System.Drawing.Point(846, 72);
+            this.lblCount.Location = new System.Drawing.Point(1149, 56);
+            this.lblCount.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(204, 22);
+            this.lblCount.Size = new System.Drawing.Size(272, 27);
             this.lblCount.TabIndex = 4;
             this.lblCount.Text = "9 bệnh nhân";
             this.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -83,9 +85,10 @@ namespace HospitalX.GUI.PH2.BacSi
             "Tất cả giới tính",
             "Nam",
             "Nữ"});
-            this.cmbGender.Location = new System.Drawing.Point(778, 26);
+            this.cmbGender.Location = new System.Drawing.Point(1060, 14);
+            this.cmbGender.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cmbGender.Name = "cmbGender";
-            this.cmbGender.Size = new System.Drawing.Size(272, 38);
+            this.cmbGender.Size = new System.Drawing.Size(361, 38);
             this.cmbGender.StartIndex = 0;
             this.cmbGender.TabIndex = 3;
             this.cmbGender.SelectedIndexChanged += new System.EventHandler(this.FilterChanged);
@@ -104,12 +107,13 @@ namespace HospitalX.GUI.PH2.BacSi
             this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
             this.txtSearch.IconLeftOffset = new System.Drawing.Point(10, 0);
             this.txtSearch.IconLeftSize = new System.Drawing.Size(18, 18);
-            this.txtSearch.Location = new System.Drawing.Point(34, 26);
+            this.txtSearch.Location = new System.Drawing.Point(19, 14);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.txtSearch.PlaceholderText = "Tìm theo tên hoặc mã bệnh nhân...";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(334, 38);
+            this.txtSearch.Size = new System.Drawing.Size(445, 38);
             this.txtSearch.TabIndex = 2;
             this.txtSearch.TextChanged += new System.EventHandler(this.FilterChanged);
             // 
@@ -121,10 +125,11 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlTable.BorderThickness = 1;
             this.pnlTable.Controls.Add(this.dgvPatients);
             this.pnlTable.FillColor = System.Drawing.Color.White;
-            this.pnlTable.Location = new System.Drawing.Point(24, 137);
+            this.pnlTable.Location = new System.Drawing.Point(32, 137);
+            this.pnlTable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pnlTable.Name = "pnlTable";
-            this.pnlTable.Padding = new System.Windows.Forms.Padding(14);
-            this.pnlTable.Size = new System.Drawing.Size(1080, 596);
+            this.pnlTable.Padding = new System.Windows.Forms.Padding(19, 17, 19, 17);
+            this.pnlTable.Size = new System.Drawing.Size(1440, 772);
             this.pnlTable.TabIndex = 1;
             // 
             // dgvPatients
@@ -168,14 +173,16 @@ namespace HospitalX.GUI.PH2.BacSi
             this.dgvPatients.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPatients.EnableHeadersVisualStyles = false;
             this.dgvPatients.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(242)))), ((int)(((byte)(240)))));
-            this.dgvPatients.Location = new System.Drawing.Point(14, 14);
+            this.dgvPatients.Location = new System.Drawing.Point(19, 17);
+            this.dgvPatients.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvPatients.MultiSelect = false;
             this.dgvPatients.Name = "dgvPatients";
             this.dgvPatients.ReadOnly = true;
             this.dgvPatients.RowHeadersVisible = false;
+            this.dgvPatients.RowHeadersWidth = 51;
             this.dgvPatients.RowTemplate.Height = 64;
             this.dgvPatients.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPatients.Size = new System.Drawing.Size(1052, 568);
+            this.dgvPatients.Size = new System.Drawing.Size(1402, 738);
             this.dgvPatients.TabIndex = 0;
             this.dgvPatients.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPatients_CellContentClick);
             // 
@@ -183,6 +190,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colPatient.FillWeight = 26F;
             this.colPatient.HeaderText = "BỆNH NHÂN";
+            this.colPatient.MinimumWidth = 6;
             this.colPatient.Name = "colPatient";
             this.colPatient.ReadOnly = true;
             // 
@@ -190,6 +198,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colGender.FillWeight = 15F;
             this.colGender.HeaderText = "GIỚI TÍNH";
+            this.colGender.MinimumWidth = 6;
             this.colGender.Name = "colGender";
             this.colGender.ReadOnly = true;
             // 
@@ -197,6 +206,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colAge.FillWeight = 8F;
             this.colAge.HeaderText = "TUỔI";
+            this.colAge.MinimumWidth = 6;
             this.colAge.Name = "colAge";
             this.colAge.ReadOnly = true;
             // 
@@ -204,6 +214,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colHsbaCount.FillWeight = 8F;
             this.colHsbaCount.HeaderText = "HSBA";
+            this.colHsbaCount.MinimumWidth = 6;
             this.colHsbaCount.Name = "colHsbaCount";
             this.colHsbaCount.ReadOnly = true;
             // 
@@ -211,6 +222,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colRxCount.FillWeight = 15F;
             this.colRxCount.HeaderText = "ĐƠN THUỐC";
+            this.colRxCount.MinimumWidth = 6;
             this.colRxCount.Name = "colRxCount";
             this.colRxCount.ReadOnly = true;
             // 
@@ -218,6 +230,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colHometown.FillWeight = 17F;
             this.colHometown.HeaderText = "QUÊ QUÁN";
+            this.colHometown.MinimumWidth = 6;
             this.colHometown.Name = "colHometown";
             this.colHometown.ReadOnly = true;
             // 
@@ -225,6 +238,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colDetail.FillWeight = 11F;
             this.colDetail.HeaderText = "CHI TIẾT";
+            this.colDetail.MinimumWidth = 6;
             this.colDetail.Name = "colDetail";
             this.colDetail.ReadOnly = true;
             this.colDetail.Text = "Xem chi tiết";
@@ -234,6 +248,7 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             this.colHistory.FillWeight = 12F;
             this.colHistory.HeaderText = "TIỀN SỬ";
+            this.colHistory.MinimumWidth = 6;
             this.colHistory.Name = "colHistory";
             this.colHistory.ReadOnly = true;
             this.colHistory.Text = "Tiền sử bệnh";
@@ -241,13 +256,14 @@ namespace HospitalX.GUI.PH2.BacSi
             // 
             // ucBenhNhanCuaToi
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.Controls.Add(this.pnlTable);
             this.Controls.Add(this.pnlToolbar);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ucBenhNhanCuaToi";
-            this.Size = new System.Drawing.Size(1128, 782);
+            this.Size = new System.Drawing.Size(1504, 962);
             this.pnlToolbar.ResumeLayout(false);
             this.pnlTable.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPatients)).EndInit();

@@ -374,11 +374,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             "Tất cả đối tượng",
             "HSBA",
             "HSBA_DV",
-            "ĐƠNTHUỐC",
-            "SESSION",
-            "DBA_AUDIT_TRAIL",
-            "AUDIT_POLICY",
-            "BACKUP_HISTORY"});
+            "ĐƠNTHUỐC"});
             this.cmbObject.Location = new System.Drawing.Point(306, 40);
             this.cmbObject.Name = "cmbObject";
             this.cmbObject.Size = new System.Drawing.Size(150, 36);
@@ -487,7 +483,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             this.cmbResult.Items.AddRange(new object[] {
             "Tất cả kết quả",
             "Thành công",
-            "Thất bại"});
+            "Thất bại",
+            "Cảnh báo"});
             this.cmbResult.Location = new System.Drawing.Point(613, 40);
             this.cmbResult.Name = "cmbResult";
             this.cmbResult.Size = new System.Drawing.Size(135, 36);

@@ -262,7 +262,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtKhoa.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(238)))), ((int)(((byte)(235)))));
             this.txtKhoa.BorderRadius = 8;
             this.txtKhoa.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtKhoa.DefaultText = "Phòng Điều phối Y tế";
+            this.txtKhoa.DefaultText = "";
             this.txtKhoa.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
             this.txtKhoa.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.txtKhoa.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
@@ -291,7 +291,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKhoa.Name = "lblKhoa";
             this.lblKhoa.Size = new System.Drawing.Size(112, 19);
             this.lblKhoa.TabIndex = 7;
-            this.lblKhoa.Text = "KHOA / PHÒNG";
+            this.lblKhoa.Text = "CHI NHÁNH";
             // 
             // txtProfVaiTro
             // 

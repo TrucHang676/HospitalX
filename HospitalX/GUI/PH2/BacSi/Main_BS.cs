@@ -1,6 +1,9 @@
 using Guna.UI2.WinForms;
 using HospitalX.GUI.PH2.BacSi;
+using HospitalX.GUI.PH2.DieuPhoiVien;
+using HospitalX.DAO;
 using System;
+using System.Data;
 using System.Windows.Forms;
 
 namespace HospitalX.GUI.PH2
@@ -10,6 +13,7 @@ namespace HospitalX.GUI.PH2
         public Main_BS()
         {
             InitializeComponent();
+            LoadUserData();
             WireNavigationEvents();
             LoadPage(CreateTongQuanPage(), "Bảng điều khiển");
             btnTongQuan.Checked = true;
@@ -49,7 +53,7 @@ namespace HospitalX.GUI.PH2
 
         private void BtnThongBao_Click(object sender, EventArgs e)
         {
-            LoadPage(new ucThongBao(), "Thông báo");
+            LoadPage(new HospitalX.GUI.PH2.BacSi.ucThongBao(), "Thông báo");
         }
 
         private void BtnHSCN_Click(object sender, EventArgs e)
@@ -99,6 +103,39 @@ namespace HospitalX.GUI.PH2
         private void SetPageTitle(string title)
         {
             lblPageTitle.Text = title;
+        }
+
+        private void LoadUserData()
+        {
+            try
+            {
+                DataTable dt = ProfileDAO.Instance.GetProfile();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    string hoTen = row["HOTEN"]?.ToString() ?? string.Empty;
+                    string phai = row["PHAI"]?.ToString() ?? string.Empty;
+                    string vaiTro = row["VAITRO"]?.ToString() ?? string.Empty;
+                    string chuyenKhoa = row["CHUYENKHOA"]?.ToString() ?? string.Empty;
+
+                    lblTenBS.Text = hoTen;
+                    lbl.Text = string.IsNullOrEmpty(chuyenKhoa) ? vaiTro : "Bác sĩ " + chuyenKhoa;
+
+                    // Set gender-appropriate avatar
+                    if (phai.Equals("Nam", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ptbAdmin.Image = DpvAssets.Load("male_doctor.png");
+                    }
+                    else
+                    {
+                        ptbAdmin.Image = DpvAssets.Load("female_doctor.png");
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback to design defaults
+            }
         }
     }
 }

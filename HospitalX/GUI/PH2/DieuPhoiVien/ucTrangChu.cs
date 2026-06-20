@@ -97,12 +97,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 if (dtStats != null && dtStats.Rows.Count > 0)
                 {
                     DataRow row = dtStats.Rows[0];
-                    int todayPatients = row.Table.Columns.Contains("SO_HSBA_HOM_NAY") && row["SO_HSBA_HOM_NAY"] != DBNull.Value ? Convert.ToInt32(row["SO_HSBA_HOM_NAY"]) : 0;
+                    int todayNotices = row.Table.Columns.Contains("TODAY_NOTICES") && row["TODAY_NOTICES"] != DBNull.Value ? Convert.ToInt32(row["TODAY_NOTICES"]) : 0;
                     int activeKtvs = row.Table.Columns.Contains("ACTIVE_KTVS") && row["ACTIVE_KTVS"] != DBNull.Value ? Convert.ToInt32(row["ACTIVE_KTVS"]) : 0;
                     int pendingKtv = row.Table.Columns.Contains("PENDING_KTV") && row["PENDING_KTV"] != DBNull.Value ? Convert.ToInt32(row["PENDING_KTV"]) : 0;
                     int completedServices = row.Table.Columns.Contains("COMPLETED_SERVICES") && row["COMPLETED_SERVICES"] != DBNull.Value ? Convert.ToInt32(row["COMPLETED_SERVICES"]) : 0;
 
-                    UpdateKpiStats(todayPatients, activeKtvs, pendingKtv, completedServices);
+                    UpdateKpiStats(todayNotices, activeKtvs, pendingKtv, completedServices);
+                    WireQuickButton(btnQuick4, "Thông báo", todayNotices + " hôm nay", 6, Color.FromArgb(229, 57, 53));
                 }
 
                 // 2. Load Patient Grid
@@ -177,7 +178,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 Color.FromArgb(25, 118, 210)
             };
 
-            string[] iconTexts = { "HS", "KT", "CĐ", "OK" };
+            string[] iconTexts = { "TB", "KT", "CĐ", "OK" };
 
             Color[] iconBacks =
             {
@@ -197,7 +198,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             string[] subTexts =
             {
-                "Chờ xử lý",
+                "Hôm nay",
                 "Đang làm việc",
                 "Chờ xử lý",
                 "Hôm nay"
@@ -234,6 +235,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 _kpiCaps[i].Font = new Font("Segoe UI Semibold", 8.75F, FontStyle.Bold);
                 _kpiCaps[i].Padding = Padding.Empty;
                 _kpiCaps[i].ForeColor = Color.FromArgb(122, 149, 137);
+                if (i == 0)
+                {
+                    _kpiCaps[i].Text = "THÔNG BÁO HÔM NAY";
+                }
 
                 // Configure Value
                 _kpiVals[i].Font = new Font("Segoe UI Semibold", 22F, FontStyle.Bold);
@@ -493,7 +498,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             WireQuickButton(btnQuick1, "Thêm bệnh nhân", "Đăng ký mới", 12, Color.FromArgb(15, 110, 86));    // Green
             WireQuickButton(btnQuick2, "Tạo HSBA", "Hồ sơ bệnh án", 4, Color.FromArgb(255, 179, 0));       // Amber
             WireQuickButton(btnQuick3, "Phân công KTV", "Chẩn đoán hỗ trợ", 5, Color.FromArgb(25, 118, 210)); // Blue
-            WireQuickButton(btnQuick4, "Thông báo", "4 chưa đọc", 6, Color.FromArgb(229, 57, 53));        // Red
+            WireQuickButton(btnQuick4, "Thông báo", "Hôm nay", 6, Color.FromArgb(229, 57, 53));        // Red
         }
 
         private static void WireQuickButton(Guna2Button button, string title, string subtitle, int iconIndex, Color accentColor)

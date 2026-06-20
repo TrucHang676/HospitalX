@@ -25,7 +25,7 @@ namespace HospitalX.GUI.PH2.BacSi
             }
 
             _isLoaded = true;
-            SeedData();
+            LoadPrescriptionsFromDatabase();
             WireEvents();
             ApplyFilters();
         }
@@ -46,109 +46,52 @@ namespace HospitalX.GUI.PH2.BacSi
             flpPrescriptionList.Resize += (s, e) => ResizeCards();
         }
 
-        private void SeedData()
+        private void LoadPrescriptionsFromDatabase()
         {
-            if (_prescriptions.Count > 0)
+            _prescriptions.Clear();
+            try
             {
-                return;
+                System.Data.DataTable dt = HospitalX.DAO.PrescriptionDAO.GetPrescriptionsForDoctor();
+                if (dt != null)
+                {
+                    var dict = new Dictionary<string, PrescriptionRecord>();
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        string hsbaId = row["MAHSBA"].ToString().Trim();
+                        DateTime ngayDt = Convert.ToDateTime(row["NGAYDT"]);
+                        string key = hsbaId + "_" + ngayDt.ToString("yyyyMMddHHmmss");
+
+                        if (!dict.TryGetValue(key, out var record))
+                        {
+                            record = new PrescriptionRecord
+                            {
+                                HsbaId = hsbaId,
+                                PatientCode = row["MABN"].ToString().Trim(),
+                                PatientName = row["TENBN"].ToString().Trim(),
+                                Gender = row["PHAI"].ToString().Trim(),
+                                Age = row["TUOI"] != DBNull.Value ? Convert.ToInt32(row["TUOI"]) : 0,
+                                CreatedDate = ngayDt,
+                                Drugs = new List<DrugRecord>()
+                            };
+                            dict[key] = record;
+                            _prescriptions.Add(record);
+                        }
+
+                        if (row["TENTHUOC"] != DBNull.Value)
+                        {
+                            record.Drugs.Add(new DrugRecord
+                            {
+                                Name = row["TENTHUOC"].ToString().Trim(),
+                                Dose = row["LIEUDUNG"] != DBNull.Value ? row["LIEUDUNG"].ToString().Trim() : ""
+                            });
+                        }
+                    }
+                }
             }
-
-            _prescriptions.Add(new PrescriptionRecord
+            catch (Exception ex)
             {
-                HsbaId = "HSBA-0810",
-                PatientCode = "BN-00320",
-                PatientName = "Đinh Văn Phúc",
-                Gender = "Nam",
-                Age = 55,
-                CreatedDate = new DateTime(2026, 5, 15),
-                Drugs = new List<DrugRecord>
-                {
-                    new DrugRecord("Aspirin 81mg", "1 viên/ngày"),
-                    new DrugRecord("Clopidogrel 75mg", "1 viên/ngày"),
-                    new DrugRecord("Atorvastatin 40mg", "1 viên/ngày"),
-                    new DrugRecord("Bisoprolol 5mg", "1 viên/ngày")
-                }
-            });
-
-            _prescriptions.Add(new PrescriptionRecord
-            {
-                HsbaId = "HSBA-0821",
-                PatientCode = "BN-00341",
-                PatientName = "Nguyễn Văn An",
-                Gender = "Nam",
-                Age = 52,
-                CreatedDate = new DateTime(2026, 5, 21),
-                Drugs = new List<DrugRecord>
-                {
-                    new DrugRecord("Amlodipine 5mg", "1 viên/ngày"),
-                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày"),
-                    new DrugRecord("Aspirin 81mg", "1 viên/ngày")
-                }
-            });
-
-            _prescriptions.Add(new PrescriptionRecord
-            {
-                HsbaId = "HSBA-0815",
-                PatientCode = "BN-00215",
-                PatientName = "Phạm Quốc Hùng",
-                Gender = "Nam",
-                Age = 67,
-                CreatedDate = new DateTime(2026, 5, 18),
-                Drugs = new List<DrugRecord>
-                {
-                    new DrugRecord("Furosemide 40mg", "1 viên/ngày"),
-                    new DrugRecord("Spironolactone 25mg", "1 viên/ngày"),
-                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày"),
-                    new DrugRecord("Metformin 500mg", "2 viên/ngày"),
-                    new DrugRecord("Atorvastatin 20mg", "1 viên/ngày")
-                }
-            });
-
-            _prescriptions.Add(new PrescriptionRecord
-            {
-                HsbaId = "HSBA-0814",
-                PatientCode = "BN-00304",
-                PatientName = "Hoàng Thị Xuân",
-                Gender = "Nữ",
-                Age = 61,
-                CreatedDate = new DateTime(2026, 5, 17),
-                Drugs = new List<DrugRecord>
-                {
-                    new DrugRecord("Warfarin 5mg", "1 viên/ngày"),
-                    new DrugRecord("Atorvastatin 40mg", "1 viên/ngày"),
-                    new DrugRecord("Amlodipine 5mg", "1 viên/ngày"),
-                    new DrugRecord("Bisoprolol 2.5mg", "1 viên/ngày")
-                }
-            });
-
-            _prescriptions.Add(new PrescriptionRecord
-            {
-                HsbaId = "HSBA-0801",
-                PatientCode = "BN-00189",
-                PatientName = "Trần Thị Mai",
-                Gender = "Nữ",
-                Age = 45,
-                CreatedDate = new DateTime(2026, 5, 12),
-                Drugs = new List<DrugRecord>
-                {
-                    new DrugRecord("Losartan 50mg", "1 viên/ngày"),
-                    new DrugRecord("Hydrochlorothiazide 25mg", "1 viên/ngày")
-                }
-            });
-
-            _prescriptions.Add(new PrescriptionRecord
-            {
-                HsbaId = "HSBA-0799",
-                PatientCode = "BN-00174",
-                PatientName = "Võ Minh Tuấn",
-                Gender = "Nam",
-                Age = 29,
-                CreatedDate = new DateTime(2026, 5, 10),
-                Drugs = new List<DrugRecord>
-                {
-                    new DrugRecord("Metoprolol 25mg", "1 viên/ngày")
-                }
-            });
+                MessageBox.Show("Lỗi tải danh sách đơn thuốc từ cơ sở dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void ApplyFilters()
@@ -189,7 +132,6 @@ namespace HospitalX.GUI.PH2.BacSi
             }
 
             List<PrescriptionRecord> filtered = query.ToList();
-            RenderStats(filtered);
             RenderCards(filtered);
             lblResultCount.Text = "Hiển thị " + filtered.Count + " đơn thuốc";
         }
@@ -222,16 +164,6 @@ namespace HospitalX.GUI.PH2.BacSi
 
             fromDate = new DateTime(maxDate.Year, maxDate.Month, 1);
             toDate = fromDate.AddMonths(1).AddDays(-1);
-        }
-
-        private void RenderStats(List<PrescriptionRecord> records)
-        {
-            pnlStats.SuspendLayout();
-            pnlStats.Controls.Clear();
-            pnlStats.Controls.Add(CreateStatCard(records.Count.ToString(), "Đơn thuốc", "trong khoảng lọc", Color.FromArgb(15, 110, 86)));
-            pnlStats.Controls.Add(CreateStatCard(records.Sum(p => p.Drugs.Count).ToString(), "Tổng số thuốc", "đã kê", Color.FromArgb(15, 110, 86)));
-            pnlStats.Controls.Add(CreateStatCard(records.Select(p => p.PatientCode).Distinct().Count().ToString(), "Bệnh nhân", "có đơn thuốc", Color.FromArgb(15, 110, 86)));
-            pnlStats.ResumeLayout();
         }
 
         private Guna2Panel CreateStatCard(string number, string title, string caption, Color accent)
@@ -466,6 +398,7 @@ namespace HospitalX.GUI.PH2.BacSi
             {
                 if (form.ShowDialog(FindForm()) == DialogResult.OK)
                 {
+                    LoadPrescriptionsFromDatabase();
                     ApplyFilters();
                 }
             }

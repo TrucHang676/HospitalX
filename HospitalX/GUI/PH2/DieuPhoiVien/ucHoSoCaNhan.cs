@@ -38,8 +38,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void ucHoSoCaNhan_Load(object sender, EventArgs e)
         {
-            LoadProfileData();
             SetupStyles();
+            LoadProfileData();
             ucHoSoCaNhan_Resize(null, null);
         }
 
@@ -64,8 +64,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblDeptAndFacility.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
 
             // Style stat panels
-            StyleStatPanel(pnlStat1, lblStat1Val, lblStat1Cap, "124", "HSBA đã tạo");
-            StyleStatPanel(pnlStat2, lblStat2Val, lblStat2Cap, "98", "Lượt điều phối KTV");
+            StyleStatPanel(pnlStat1, lblStat1Val, lblStat1Cap, "0", "HSBA đã tạo");
+            StyleStatPanel(pnlStat2, lblStat2Val, lblStat2Cap, "0", "Lượt điều phối KTV");
 
             // Status badge
             lblStatusBadge.BackColor = Color.Transparent;
@@ -193,14 +193,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     string soDT = row["SODT"]?.ToString() ?? string.Empty;
                     string vaiTro = row["VAITRO"]?.ToString() ?? string.Empty;
                     string chuyenKhoa = row["CHUYENKHOA"]?.ToString() ?? string.Empty;
+                    string coSo = row["COSO"]?.ToString() ?? string.Empty;
 
                     lblUserName.Text = hoTen;
                     txtProfMaNV.Text = maNV;
                     txtProfHoTen.Text = hoTen;
                     txtProfVaiTro.Text = vaiTro;
                     lblUserRole.Text = vaiTro;
-                    txtKhoa.Text = chuyenKhoa;
-                    lblDeptAndFacility.Text = $"{chuyenKhoa}\r\nBệnh viện Đa khoa Tỉnh";
+                    txtKhoa.Text = coSo;
+                    lblDeptAndFacility.Text = $"Chi nhánh {coSo}\r\nBệnh viện Đa khoa Tỉnh";
                     txtProfGioiTinh.Text = phai;
                     txtProfNgaySinh.Text = ngaySinh;
                     txtProfCccd.Text = cmnd;

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Data;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2.BenhNhan
 {
@@ -50,9 +52,116 @@ namespace HospitalX.GUI.PH2.BenhNhan
         {
             InitializeComponent();
             BringEditableControlsToFront();
+            LoadPatientDataFromDB();
             RenderDashboard();
             SetHistoryEditing(false);
             btnSaveProfile.Visible = false;
+        }
+
+        private void LoadPatientDataFromDB()
+        {
+            try
+            {
+                // Load thông tin cá nhân từ VW_BENHNHAN_SELF
+                string sql = "SELECT MABN, TENBN, PHAI, NGAYSINH, CCCD, SONHA, TENDUONG, QUANHUYEN, TINHTP, TIENSUBENH, TIENSUBENHGD, DIUNGTHUOC FROM ADMINHOS.VW_BENHNHAN_SELF";
+                DataTable dt = DataProvider.Instance.ExecuteQuery(sql, null, false);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    currentPatient.Id = row["MABN"]?.ToString() ?? "";
+                    currentPatient.Name = row["TENBN"]?.ToString() ?? "";
+                    currentPatient.Gender = row["PHAI"]?.ToString() ?? "";
+                    currentPatient.BirthDate = row["NGAYSINH"] != DBNull.Value ? Convert.ToDateTime(row["NGAYSINH"]) : DateTime.Today;
+                    currentPatient.Cccd = row["CCCD"]?.ToString() ?? "";
+                    
+                    string sonha = row["SONHA"]?.ToString() ?? "";
+                    string tenduong = row["TENDUONG"]?.ToString() ?? "";
+                    string quanhuyen = row["QUANHUYEN"]?.ToString() ?? "";
+                    string tinhtp = row["TINHTP"]?.ToString() ?? "";
+                    
+                    List<string> addrParts = new List<string>();
+                    if (!string.IsNullOrEmpty(sonha)) addrParts.Add(sonha.Trim());
+                    if (!string.IsNullOrEmpty(tenduong)) addrParts.Add(tenduong.Trim());
+                    if (!string.IsNullOrEmpty(quanhuyen)) addrParts.Add(quanhuyen.Trim());
+                    if (!string.IsNullOrEmpty(tinhtp)) addrParts.Add(tinhtp.Trim());
+                    currentPatient.Address = string.Join(", ", addrParts);
+
+                    currentPatient.MedicalHistory = row["TIENSUBENH"]?.ToString() ?? "";
+                    currentPatient.FamilyHistory = row["TIENSUBENHGD"]?.ToString() ?? "";
+                    currentPatient.Allergy = row["DIUNGTHUOC"]?.ToString() ?? "";
+                }
+
+                // Load danh sách bệnh án tóm tắt từ stored procedure
+                medicalRecords.Clear();
+                string procHsba = "ADMINHOS.SP_GET_HSBA_FOR_PATIENT";
+                Oracle.ManagedDataAccess.Client.OracleParameter[] hsbaParams = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                {
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_mabn", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = DataProvider.Instance.CurrentUser },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                };
+                DataTable dtHsba = DataProvider.Instance.ExecuteQuery(procHsba, hsbaParams, true);
+                if (dtHsba != null)
+                {
+                    foreach (DataRow row in dtHsba.Rows)
+                    {
+                        string id = row["MAHSBA"]?.ToString() ?? "";
+                        DateTime ngay = row["NGAYTAO"] != DBNull.Value ? Convert.ToDateTime(row["NGAYTAO"]) : DateTime.Today;
+                        string chandoan = row["CHANDOAN"]?.ToString() ?? "";
+                        string dieutri = row["DIEUTRI"]?.ToString() ?? "";
+                        string ketluan = row["KETLUAN"]?.ToString() ?? "";
+                        medicalRecords.Add(new MedicalRecordSummary(id, ngay, chandoan, dieutri, ketluan));
+                    }
+                }
+
+                // Load tóm tắt đơn thuốc từ stored procedure (lấy từ các HSBA của bệnh nhân)
+                prescriptions.Clear();
+                foreach (var mr in medicalRecords)
+                {
+                    string procDt = "ADMINHOS.SP_GET_PRESCRIPTIONS_FOR_HSBA";
+                    Oracle.ManagedDataAccess.Client.OracleParameter[] dtParams = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                    {
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_mahsba", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = mr.Id },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                    };
+                    DataTable dtPres = DataProvider.Instance.ExecuteQuery(procDt, dtParams, true);
+                    if (dtPres != null)
+                    {
+                        foreach (DataRow row in dtPres.Rows)
+                        {
+                            string thuoc = row["TENTHUOC"]?.ToString() ?? "";
+                            string lieudung = row["CACHDUNG"]?.ToString() ?? "";
+                            prescriptions.Add(new PrescriptionSummary(thuoc, lieudung, mr.Date));
+                        }
+                    }
+                }
+
+                // Load tóm tắt dịch vụ từ stored procedure
+                services.Clear();
+                foreach (var mr in medicalRecords)
+                {
+                    string procDv = "ADMINHOS.SP_GET_SERVICES_FOR_HSBA";
+                    Oracle.ManagedDataAccess.Client.OracleParameter[] dvParams = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                    {
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_mahsba", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = mr.Id },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                    };
+                    DataTable dtDv = DataProvider.Instance.ExecuteQuery(procDv, dvParams, true);
+                    if (dtDv != null)
+                    {
+                        foreach (DataRow row in dtDv.Rows)
+                        {
+                            string tendv = row["TENDV"]?.ToString() ?? "";
+                            DateTime ngay = row["NGAYYEUCAU"] != DBNull.Value ? Convert.ToDateTime(row["NGAYYEUCAU"]) : mr.Date;
+                            string ketqua = row["KETQUA"]?.ToString() ?? "Chờ thực hiện";
+                            services.Add(new ServiceSummary(tendv, ngay, ketqua));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi tải dữ liệu bệnh nhân từ DB: " + ex.Message);
+            }
         }
 
         private void BringEditableControlsToFront()
@@ -135,18 +244,38 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
         private void btnSaveProfile_Click(object sender, EventArgs e)
         {
-            currentPatient.Allergy = txtAllergy.Text.Trim();
-            currentPatient.MedicalHistory = txtMedicalHistory.Text.Trim();
-            currentPatient.FamilyHistory = txtFamilyHistory.Text.Trim();
+            string allergy = txtAllergy.Text.Trim();
+            string medHist = txtMedicalHistory.Text.Trim();
+            string famHist = txtFamilyHistory.Text.Trim();
 
-            lblAllergyValue.Text = currentPatient.Allergy;
-            lblMedicalHistoryValue.Text = currentPatient.MedicalHistory;
-            lblFamilyHistoryValue.Text = currentPatient.FamilyHistory;
-            lblKpiAllergyValue.Text = HasRecordedAllergy(currentPatient.Allergy) ? "1" : "0";
+            try
+            {
+                string sql = "UPDATE ADMINHOS.VW_BENHNHAN_SELF SET TIENSUBENH = :medHist, TIENSUBENHGD = :famHist, DIUNGTHUOC = :allergy";
+                Oracle.ManagedDataAccess.Client.OracleParameter[] parameters = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                {
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("medHist", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = medHist },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("famHist", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = famHist },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("allergy", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = allergy }
+                };
+                DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
 
-            CaptureHistoryOriginals();
-            SetHistoryEditing(false);
-            btnSaveProfile.Visible = false;
+                currentPatient.Allergy = allergy;
+                currentPatient.MedicalHistory = medHist;
+                currentPatient.FamilyHistory = famHist;
+
+                lblAllergyValue.Text = currentPatient.Allergy;
+                lblMedicalHistoryValue.Text = currentPatient.MedicalHistory;
+                lblFamilyHistoryValue.Text = currentPatient.FamilyHistory;
+                lblKpiAllergyValue.Text = HasRecordedAllergy(currentPatient.Allergy) ? "1" : "0";
+
+                CaptureHistoryOriginals();
+                SetHistoryEditing(false);
+                btnSaveProfile.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi lưu tiền sử bệnh vào CSDL: " + ex.Message, "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnEditAddress_Click(object sender, EventArgs e)
@@ -159,8 +288,25 @@ namespace HospitalX.GUI.PH2.BenhNhan
                     return;
                 }
 
-                currentPatient.Address = dialog.FullAddress;
-                lblAddressValue.Text = currentPatient.Address;
+                try
+                {
+                    string sql = "UPDATE ADMINHOS.VW_BENHNHAN_SELF SET SONHA = :sonha, TENDUONG = :tenduong, QUANHUYEN = :quanhuyen, TINHTP = :tinhtp";
+                    Oracle.ManagedDataAccess.Client.OracleParameter[] parameters = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                    {
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("sonha", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.HouseNumber.Trim() },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("tenduong", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.StreetName.Trim() },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("quanhuyen", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.District.Trim() },
+                        new Oracle.ManagedDataAccess.Client.OracleParameter("tinhtp", Oracle.ManagedDataAccess.Client.OracleDbType.NVarchar2) { Value = dialog.City.Trim() }
+                    };
+                    DataProvider.Instance.ExecuteNonQuery(sql, parameters, false);
+
+                    currentPatient.Address = dialog.FullAddress;
+                    lblAddressValue.Text = currentPatient.Address;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi lưu địa chỉ vào CSDL: " + ex.Message, "Lỗi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace HospitalX.GUI.PH2.KyThuatVien
 {
@@ -159,29 +160,42 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void LoadProfileData()
         {
-            // In a real application, this would load from a database based on the logged-in employee ID.
-            // e.g.:
-            // NhanVien nv = NhanVienBLL.GetById(Session.CurrentNhanVienId);
-            // txtProfMaNV.Text = nv.MaNV;
-            // ...
+            KtvTechnician ktv = KtvData.CurrentTechnician();
 
-            // Populating controls with profile data:
-            lblUserName.Text = "Nguyễn Thị Thu";
+            lblUserName.Text = ktv.HoTen;
+            lblUserRole.Text = ktv.VaiTro + " " + ktv.ChuyenKhoa;
+            lblDeptAndFacility.Text = $"{ktv.ChuyenKhoa}\r\nBệnh viện Đa khoa HospitalX";
 
-            txtProfMaNV.Text = "KTV042";
-            txtProfHoTen.Text = "Nguyễn Thị Thu";
-            txtProfVaiTro.Text = "Kỹ thuật viên";
-            txtProfGioiTinh.Text = "Nữ";
-            txtProfNgaySinh.Text = "15/08/1992";
-            txtProfCccd.Text = "079292013456";
+            txtProfMaNV.Text = ktv.MaNv;
+            txtProfHoTen.Text = ktv.HoTen;
+            txtProfVaiTro.Text = ktv.VaiTro;
+            txtProfGioiTinh.Text = ktv.Phai;
+            txtProfNgaySinh.Text = ktv.NgaySinh;
+            txtProfCccd.Text = ktv.Cmnd;
+
+            SavedPhone = ktv.SoDt;
+            SavedAddress = ktv.QueQuan;
 
             txtContactPhone.Text = SavedPhone;
             txtContactAddress.Text = SavedAddress;
             AcceptCurrentContactValues();
 
             // Load dynamically calculated stats
-            lblStat1Val.Text = "12";
-            lblStat2Val.Text = "85";
+            try
+            {
+                var services = KtvData.Services();
+                int todayCount = services.Count(s => s.NgayDv == DateTime.Today.ToString("dd/MM/yyyy"));
+                int doneCount = services.Count(s => s.Status == "Hoàn thành");
+
+                lblStat1Val.Text = todayCount.ToString();
+                lblStat2Val.Text = doneCount.ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi load stats cho KTV profile: " + ex.Message);
+                lblStat1Val.Text = "0";
+                lblStat2Val.Text = "0";
+            }
         }
 
         private void LoadAuditLogs()
@@ -393,13 +407,26 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 return;
             }
 
-            // Save to static store
-            SavedPhone = phone;
-            SavedAddress = address;
-            ReloadContactData();
-
-            // Simulate save success
-            ShowInfoMessage("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageDialogIcon.Information);
+            try
+            {
+                string manv = HospitalX.DAO.DataProvider.Instance.CurrentUser;
+                bool success = HospitalX.DAO.ProfileDAO.Instance.UpdateProfile(phone, address, manv);
+                if (success)
+                {
+                    SavedPhone = phone;
+                    SavedAddress = address;
+                    ReloadContactData();
+                    ShowInfoMessage("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageDialogIcon.Information);
+                }
+                else
+                {
+                    ShowInfoMessage("Không thể cập nhật thông tin cá nhân. Vui lòng thử lại.", "Lỗi cập nhật", MessageDialogIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowInfoMessage("Lỗi kết nối CSDL: " + ex.Message, "Lỗi cập nhật", MessageDialogIcon.Error);
+            }
         }
 
         private void ContactFieldChanged(object sender, EventArgs e)

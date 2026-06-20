@@ -3,8 +3,10 @@ using HospitalX.GUI.PH2.DieuPhoiVien;
 using Guna.UI2.WinForms;
 using System;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2
 {
@@ -25,6 +27,7 @@ namespace HospitalX.GUI.PH2
 
         private void Main_DPV_Load(object sender, EventArgs e)
         {
+            LoadUserData();
             NavigateToDashboard();
         }
 
@@ -253,6 +256,38 @@ namespace HospitalX.GUI.PH2
         {
             ptbAdmin.Image = DpvAssets.Load("female_doctor.png");
             ptbAdmin.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+        private void LoadUserData()
+        {
+            try
+            {
+                DataTable dt = ProfileDAO.Instance.GetProfile();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataRow row = dt.Rows[0];
+                    string hoTen = row["HOTEN"]?.ToString() ?? string.Empty;
+                    string phai = row["PHAI"]?.ToString() ?? string.Empty;
+                    string vaiTro = row["VAITRO"]?.ToString() ?? string.Empty;
+
+                    lblTenDPV.Text = hoTen;
+                    lblRole.Text = vaiTro;
+
+                    // Set gender-appropriate avatar
+                    if (phai.Equals("Nam", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ptbAdmin.Image = DpvAssets.Load("male_doctor.png");
+                    }
+                    else
+                    {
+                        ptbAdmin.Image = DpvAssets.Load("female_doctor.png");
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback to design defaults
+            }
         }
 
         private Guna2Button btnThemBN;

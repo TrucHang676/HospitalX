@@ -150,10 +150,24 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void OpenHsbaDetail(string code, string date, string diagnosis)
         {
-            ucHSBA.HsbaRecord record = CreateHsbaRecord(code, date, diagnosis);
-            using (frmHSBADetail form = new frmHSBADetail(record))
+            try
             {
-                form.ShowDialog(this);
+                ucHSBA.HsbaRecord record = HospitalX.DAO.HsbaDAO.GetHsbaDetailsById(code);
+                if (record != null)
+                {
+                    using (frmHSBADetail form = new frmHSBADetail(record))
+                    {
+                        form.ShowDialog(this);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Không thể tìm thấy thông tin chi tiết hồ sơ bệnh án này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi kết nối cơ sở dữ liệu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

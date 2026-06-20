@@ -8,7 +8,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
     public partial class ucCapNhatHSBA : UserControl
     {
-        private List<MockHsbaItem> _mockList = null;
+        private List<HsbaItem> _hsbaList = null;
         private string _originalMaKhoa = "";
         private string _originalMaBs = "";
         private bool _isSelectingRow = false;
@@ -24,7 +24,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             base.OnLoad(e);
             
             ConfigureStyles();
-            LoadMockData();
+            
+            cboFacilityFilter.Visible = false;
+
+            LoadHsbaData();
             LoadDepartments();
             ApplyFilter();
 
@@ -34,6 +37,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cboKhoa.SelectedIndexChanged += CboKhoa_SelectedIndexChanged;
             cboBacSi.SelectedIndexChanged += CboBacSi_SelectedIndexChanged;
             btnUpdate.Click += BtnUpdate_Click;
+            cboDeptFilter.SelectedIndexChanged += (s, ev) => ApplyFilter();
 
             // Handle responsiveness
             this.Resize += (s, ev) => AdjustLayout();
@@ -84,55 +88,97 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvHsba.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 244, 240);
             dgvHsba.DefaultCellStyle.SelectionForeColor = Color.FromArgb(24, 48, 42);
             dgvHsba.RowTemplate.Height = 48;
+
+            cboFacilityFilter.Visible = false;
+
+            cboDeptFilter.Height = 36;
+            cboDeptFilter.BorderRadius = 8;
+            cboDeptFilter.FillColor = Color.FromArgb(247, 249, 248);
+            cboDeptFilter.BorderColor = Color.FromArgb(218, 232, 226);
+            cboDeptFilter.FocusedState.BorderColor = Color.FromArgb(15, 110, 86);
+            cboDeptFilter.HoverState.BorderColor = Color.FromArgb(15, 110, 86);
+            cboDeptFilter.Font = new Font("Segoe UI", 9.75F);
+            cboDeptFilter.ForeColor = Color.FromArgb(24, 48, 42);
         }
 
-        private void LoadMockData()
+        private void LoadHsbaData()
         {
-            _mockList = new List<MockHsbaItem>
+            _hsbaList = new List<HsbaItem>();
+            try
             {
-                new MockHsbaItem
+                System.Data.DataTable dt = HospitalX.DAO.HsbaDAO.GetHsbaForDieuPhoi();
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    MaHsba = "BA-2026-0001", MaBn = "BN0001", TenBn = "Nguyễn Văn A", Ngay = "15/06/2026 08:30:15",
-                    MaKhoa = "KTM", MaBs = "BS001", TenBs = "BS. Nguyễn Văn B",
-                    ChanDoan = "Đau thắt ngực không ổn định, tăng huyết áp độ 2.",
-                    DieuTri = "Theo dõi điện tâm đồ, dùng thuốc giãn mạch Nitroglycerin, thuốc chẹn beta.",
-                    KetLuan = "Đã kiểm soát được huyết áp, cơn đau giảm dần. Cần tái khám chuyên khoa Tim mạch."
-                },
-                new MockHsbaItem
-                {
-                    MaHsba = "BA-2026-0002", MaBn = "BN0002", TenBn = "Trần Thị B", Ngay = "16/06/2026 09:15:24",
-                    MaKhoa = "", MaBs = "", TenBs = "",
-                    ChanDoan = "Đau thượng vị cấp, nghi ngờ viêm loét dạ dày tá tràng.",
-                    DieuTri = "Truyền dịch bù nước điện giải, chuẩn bị thực hiện nội soi dạ dày.",
-                    KetLuan = "Chờ kết quả nội soi tiêu hóa để lên phác đồ điều trị cụ thể."
-                },
-                new MockHsbaItem
-                {
-                    MaHsba = "BA-2026-0003", MaBn = "BN0003", TenBn = "Lê Văn C", Ngay = "16/06/2026 10:05:40",
-                    MaKhoa = "KTK", MaBs = "BS005", TenBs = "BS. Hoàng Văn F",
-                    ChanDoan = "Đau đầu dữ dội kèm chóng mặt, nghi ngờ thiếu máu não cục bộ thoáng qua.",
-                    DieuTri = "Cho nằm đầu thấp, bổ sung dưỡng chất não, chụp MRI sọ não.",
-                    KetLuan = "Cần theo dõi thêm biểu hiện thần kinh khu trú tại phòng bệnh chuyên khoa."
-                },
-                new MockHsbaItem
-                {
-                    MaHsba = "BA-2026-0004", MaBn = "BN0004", TenBn = "Phạm Thị D", Ngay = "16/06/2026 11:20:00",
-                    MaKhoa = "", MaBs = "", TenBs = "",
-                    ChanDoan = "Rối loạn nhịp tim chưa rõ nguyên nhân, đau ngực trái âm ỉ.",
-                    DieuTri = "Đo ECG 24h (Holter), sẵn sàng xử lý cấp cứu nếu loạn nhịp nặng.",
-                    KetLuan = "Chưa có kết luận cuối cùng, cần hội chẩn chuyên khoa sâu."
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        var item = new HsbaItem
+                        {
+                            MaHsba = row["MAHSBA"] != DBNull.Value ? row["MAHSBA"].ToString().Trim() : "",
+                            MaBn = row["MABN"] != DBNull.Value ? row["MABN"].ToString().Trim() : "",
+                            TenBn = row["TEN_BENH_NHAN"] != DBNull.Value ? row["TEN_BENH_NHAN"].ToString().Trim() : "",
+                            Ngay = row["NGAY"] != DBNull.Value ? Convert.ToDateTime(row["NGAY"]).ToString("dd/MM/yyyy HH:mm:ss") : "",
+                            ChanDoan = row["CHANDOAN"] != DBNull.Value ? row["CHANDOAN"].ToString().Trim() : "",
+                            DieuTri = row["DIEUTRI"] != DBNull.Value ? row["DIEUTRI"].ToString().Trim() : "",
+                            MaBs = row["MABS"] != DBNull.Value ? row["MABS"].ToString().Trim() : "",
+                            MaKhoa = row["MAKHOA"] != DBNull.Value ? row["MAKHOA"].ToString().Trim() : "",
+                            TenBs = row["TEN_BACSI"] != DBNull.Value ? row["TEN_BACSI"].ToString().Trim() : "",
+                            KetLuan = row["KETLUAN"] != DBNull.Value ? row["KETLUAN"].ToString().Trim() : "",
+                            CungCoSo = row.Table.Columns.Contains("CUNG_CO_SO") && row["CUNG_CO_SO"] != DBNull.Value ? Convert.ToInt32(row["CUNG_CO_SO"]) : 1
+                        };
+
+                        if (string.IsNullOrEmpty(item.MaKhoa) && row["CHUYENKHOA_BACSI"] != DBNull.Value)
+                        {
+                            item.MaKhoa = MapKhoaToCode(row["CHUYENKHOA_BACSI"].ToString().Trim());
+                        }
+
+                        _hsbaList.Add(item);
+                    }
                 }
-            };
+            }
+            catch (Exception ex)
+            {
+                ShowDialog("Lỗi", "Không thể tải danh sách hồ sơ bệnh án từ cơ sở dữ liệu.\nChi tiết: " + ex.Message, MessageDialogIcon.Error);
+            }
         }
 
         private void LoadDepartments()
         {
             cboKhoa.Items.Clear();
             cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "", TenKhoa = "Chưa chọn khoa" });
-            cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTM", TenKhoa = "Khoa tim mạch" });
-            cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTH", TenKhoa = "Khoa tiêu hóa" });
-            cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTK", TenKhoa = "Khoa thần kinh" });
+
+            cboDeptFilter.Items.Clear();
+            
+            try
+            {
+                System.Data.DataTable dt = HospitalX.DAO.HsbaDAO.GetDepartments();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        if (row["CHUYENKHOA"] != DBNull.Value)
+                        {
+                            string tenKhoa = row["CHUYENKHOA"].ToString().Trim();
+                            string maKhoa = MapKhoaToCode(tenKhoa);
+                            cboKhoa.Items.Add(new DepartmentItem { MaKhoa = maKhoa, TenKhoa = tenKhoa });
+                            cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = maKhoa, TenKhoa = tenKhoa });
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Fallback
+                cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTM", TenKhoa = "Khoa tim mạch" });
+                cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTH", TenKhoa = "Khoa tiêu hóa" });
+                cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "KTK", TenKhoa = "Khoa thần kinh" });
+
+                cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "KTM", TenKhoa = "Khoa tim mạch" });
+                cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "KTH", TenKhoa = "Khoa tiêu hóa" });
+                cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "KTK", TenKhoa = "Khoa thần kinh" });
+            }
+            
             cboKhoa.SelectedIndex = 0;
+            cboDeptFilter.SelectedIndex = 0;
         }
 
         private void LoadDoctorsForDepartment(string maKhoa)
@@ -146,20 +192,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 return;
             }
 
-            if (maKhoa == "KTM")
+            string specialty = MapCodeToKhoa(maKhoa);
+            try
             {
-                cboBacSi.Items.Add(new DoctorItem { MaBS = "BS001", TenBS = "BS. Nguyễn Văn B" });
-                cboBacSi.Items.Add(new DoctorItem { MaBS = "BS002", TenBS = "BS. Trần Văn C" });
+                System.Data.DataTable dt = HospitalX.DAO.HsbaDAO.GetDoctorsForTaoHSBA(specialty);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (System.Data.DataRow row in dt.Rows)
+                    {
+                        string maBs = row["MANV"].ToString().Trim();
+                        string tenBs = row["HOTEN"].ToString().Trim();
+                        cboBacSi.Items.Add(new DoctorItem { MaBS = maBs, TenBS = tenBs });
+                    }
+                }
             }
-            else if (maKhoa == "KTH")
+            catch (Exception ex)
             {
-                cboBacSi.Items.Add(new DoctorItem { MaBS = "BS003", TenBS = "BS. Lê Văn D" });
-                cboBacSi.Items.Add(new DoctorItem { MaBS = "BS004", TenBS = "BS. Phạm Văn E" });
-            }
-            else if (maKhoa == "KTK")
-            {
-                cboBacSi.Items.Add(new DoctorItem { MaBS = "BS005", TenBS = "BS. Hoàng Văn F" });
-                cboBacSi.Items.Add(new DoctorItem { MaBS = "BS006", TenBS = "BS. Vũ Văn G" });
+                Console.WriteLine("Loi doc danh sach bac si: " + ex.Message);
             }
             
             cboBacSi.SelectedIndex = 0;
@@ -167,12 +216,18 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void ApplyFilter()
         {
-            if (_mockList == null) return;
+            if (_hsbaList == null) return;
 
             string selectedMaHsba = "";
             if (dgvHsba.SelectedRows.Count > 0)
             {
                 selectedMaHsba = dgvHsba.SelectedRows[0].Cells[colMaHSBA.Index].Value?.ToString() ?? "";
+            }
+
+            string selectedDept = "";
+            if (cboDeptFilter.SelectedItem is DepartmentItem selectedDeptItem)
+            {
+                selectedDept = selectedDeptItem.MaKhoa;
             }
 
             dgvHsba.Rows.Clear();
@@ -181,8 +236,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             int count = 0;
             DataGridViewRow selectTargetRow = null;
 
-            foreach (var item in _mockList)
+            foreach (var item in _hsbaList)
             {
+                if (!string.IsNullOrEmpty(selectedDept) && item.MaKhoa != selectedDept)
+                {
+                    continue;
+                }
+
                 string bsDisplay = string.IsNullOrEmpty(item.MaBs) ? "Chưa chỉ định" : $"{item.TenBs} ({item.MaBs})";
                 string khoaDisplay = string.IsNullOrEmpty(item.MaKhoa) ? "Chưa chọn khoa" : MapCodeToKhoa(item.MaKhoa);
 
@@ -190,7 +250,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 {
                     if (!item.MaHsba.ToLower().Contains(search) &&
                         !item.MaBn.ToLower().Contains(search) &&
-                        !item.TenBn.ToLower().Contains(search))
+                        !item.TenBn.ToLower().Contains(search) &&
+                        !item.MaBs.ToLower().Contains(search) &&
+                        !item.TenBs.ToLower().Contains(search))
                     {
                         continue;
                     }
@@ -215,7 +277,14 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 count++;
             }
 
-            lblListSub.Text = $"Hiển thị {count} hồ sơ bệnh án";
+            if (count == 0)
+            {
+                lblListSub.Text = "Chưa có hồ sơ bệnh án nào";
+            }
+            else
+            {
+                lblListSub.Text = $"Hiển thị {count} hồ sơ bệnh án";
+            }
             
             dgvHsba.ClearSelection();
             dgvHsba.CurrentCell = null;
@@ -241,6 +310,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             
             cboKhoa.Enabled = false;
             cboBacSi.Enabled = false;
+            lblWarning.Visible = false;
             if (cboKhoa.Items.Count > 0) cboKhoa.SelectedIndex = 0;
             if (cboBacSi.Items.Count > 0) cboBacSi.SelectedIndex = 0;
             
@@ -256,7 +326,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
 
             var selectedRow = dgvHsba.SelectedRows[0];
-            if (selectedRow.Tag is MockHsbaItem item)
+            if (selectedRow.Tag is HsbaItem item)
             {
                 _isSelectingRow = true;
                 _originalMaKhoa = item.MaKhoa;
@@ -269,8 +339,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 txtDieuTri.Text = item.DieuTri;
                 txtKetLuan.Text = item.KetLuan;
 
-                cboKhoa.Enabled = true;
-                cboBacSi.Enabled = true;
+                bool isEditable = (item.CungCoSo == 1);
+                cboKhoa.Enabled = isEditable;
+                cboBacSi.Enabled = isEditable;
+                lblWarning.Visible = !isEditable;
 
                 // Select khoa in combobox
                 bool foundKhoa = false;
@@ -341,6 +413,13 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 return;
             }
 
+            var selectedRow = dgvHsba.SelectedRows[0];
+            if (selectedRow.Tag is HsbaItem item && item.CungCoSo == 0)
+            {
+                btnUpdate.Enabled = false;
+                return;
+            }
+
             string currentMaKhoa = "";
             if (cboKhoa.SelectedItem is DepartmentItem selectedDept)
             {
@@ -361,7 +440,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (dgvHsba.SelectedRows.Count == 0) return;
             var selectedRow = dgvHsba.SelectedRows[0];
             
-            if (selectedRow.Tag is MockHsbaItem item)
+            if (selectedRow.Tag is HsbaItem item)
             {
                 string maKhoa = "";
                 string tenKhoa = "Chưa chọn khoa";
@@ -379,7 +458,26 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     tenBs = selectedDoc.TenBS;
                 }
 
-                // Update mock list item on-the-fly to reflect changes immediately in UI
+                // Update database
+                bool dbSuccess = false;
+                string dbError = "";
+                try
+                {
+                    dbSuccess = HospitalX.DAO.HsbaDAO.UpdateHsbaDepartmentAndDoctor(item.MaHsba, maKhoa, maBs);
+                }
+                catch (Exception ex)
+                {
+                    dbSuccess = false;
+                    dbError = ex.Message;
+                }
+
+                if (!dbSuccess)
+                {
+                    ShowDialog("Lỗi Cơ Sở Dữ Liệu", "Không thể cập nhật hồ sơ bệnh án.\nChi tiết lỗi: " + dbError, MessageDialogIcon.Error);
+                    return;
+                }
+
+                // Update item on-the-fly to reflect changes immediately in UI
                 item.MaKhoa = maKhoa;
                 item.MaBs = maBs;
                 item.TenBs = tenBs;
@@ -420,6 +518,23 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             return code;
         }
 
+        private string MapKhoaToCode(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            string lower = text.ToLower();
+            if (lower.Contains("tim mạch") || lower.Contains("ktm")) return "KTM";
+            if (lower.Contains("thần kinh") || lower.Contains("ktk")) return "KTK";
+            if (lower.Contains("tiêu hóa") || lower.Contains("kth")) return "KTH";
+            
+            int start = text.IndexOf('(');
+            int end = text.IndexOf(')');
+            if (start >= 0 && end > start)
+            {
+                return text.Substring(start + 1, end - start - 1);
+            }
+            return text.Length > 10 ? text.Substring(0, 10) : text;
+        }
+
         private void AdjustLayout()
         {
             int leftW = pnlScroll.ClientSize.Width - 440;
@@ -435,7 +550,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlDetailCard.Width = rightW;
             pnlDetailCard.Height = pnlScroll.ClientSize.Height - 40;
 
+            int gap = 10;
+            txtSearch.Width = 200;
             txtSearch.Left = pnlListCard.Width - txtSearch.Width - 20;
+
+            cboFacilityFilter.Visible = false;
+
+            cboDeptFilter.Width = 180; // Increased width to contain full department name
+            cboDeptFilter.Left = txtSearch.Left - cboDeptFilter.Width - gap;
+            cboDeptFilter.Top = txtSearch.Top;
+
             dgvHsba.Width = pnlListCard.Width - 40;
             dgvHsba.Height = pnlListCard.Height - dgvHsba.Top - 20;
 
@@ -456,6 +580,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btnUpdate.Width = cardInnerW;
 
             btnUpdate.Top = pnlDetailCard.Height - btnUpdate.Height - 20;
+
+            lblWarning.Width = cardInnerW;
+            lblWarning.Top = btnUpdate.Top - lblWarning.Height - 15;
         }
 
         private class DepartmentItem
@@ -478,7 +605,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
         }
 
-        private class MockHsbaItem
+        private class HsbaItem
         {
             public string MaHsba { get; set; }
             public string MaBn { get; set; }
@@ -490,6 +617,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             public string ChanDoan { get; set; }
             public string DieuTri { get; set; }
             public string KetLuan { get; set; }
+            public int CungCoSo { get; set; }
         }
     }
 }
+

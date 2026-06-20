@@ -6,18 +6,99 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2.BenhNhan
 {
     public partial class ucBenhAnBN : UserControl
     {
-        private readonly List<PatientMedicalRecord> records = PatientMedicalRecord.CreateSampleData();
+        private readonly List<PatientMedicalRecord> records = new List<PatientMedicalRecord>();
 
         public ucBenhAnBN()
         {
             InitializeComponent();
+            LoadMedicalRecordsFromDB();
             WireEvents();
             RenderRecords();
+        }
+
+        private void LoadMedicalRecordsFromDB()
+        {
+            records.Clear();
+            try
+            {
+                // Gọi stored procedure SP_GET_HSBA_FOR_PATIENT để lấy danh sách HSBA của bệnh nhân hiện tại
+                string procHsba = "ADMINHOS.SP_GET_HSBA_FOR_PATIENT";
+                Oracle.ManagedDataAccess.Client.OracleParameter[] hsbaParams = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                {
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_mabn", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = DataProvider.Instance.CurrentUser },
+                    new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                };
+                DataTable dtHsba = DataProvider.Instance.ExecuteQuery(procHsba, hsbaParams, true);
+                if (dtHsba != null)
+                {
+                    foreach (DataRow row in dtHsba.Rows)
+                    {
+                        var pmr = new PatientMedicalRecord();
+                        pmr.Id = row["MAHSBA"]?.ToString() ?? "";
+                        pmr.PatientId = row["MABN"]?.ToString() ?? "";
+                        pmr.PatientName = row["TENBN"]?.ToString() ?? "";
+                        pmr.Date = row["NGAYTAO"] != DBNull.Value ? Convert.ToDateTime(row["NGAYTAO"]) : DateTime.Today;
+                        pmr.Diagnosis = row["CHANDOAN"]?.ToString() ?? "";
+                        pmr.Treatment = row["DIEUTRI"]?.ToString() ?? "";
+                        pmr.Conclusion = row["KETLUAN"]?.ToString() ?? "";
+                        pmr.DoctorId = row["MABS"]?.ToString() ?? "";
+                        pmr.DoctorName = row["TENBS"]?.ToString() ?? "Bác sĩ điều trị";
+                        pmr.DoctorRole = "Bác sĩ";
+                        pmr.Department = row["TENKHOA"]?.ToString() ?? "Khoa điều trị";
+
+                        // Load dịch vụ đi kèm với HSBA này
+                        string procDv = "ADMINHOS.SP_GET_SERVICES_FOR_HSBA";
+                        Oracle.ManagedDataAccess.Client.OracleParameter[] dvParams = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                        {
+                            new Oracle.ManagedDataAccess.Client.OracleParameter("p_mahsba", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = pmr.Id },
+                            new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                        };
+                        DataTable dtDv = DataProvider.Instance.ExecuteQuery(procDv, dvParams, true);
+                        if (dtDv != null)
+                        {
+                            foreach (DataRow dRow in dtDv.Rows)
+                            {
+                                string tendv = dRow["TENDV"]?.ToString() ?? "";
+                                DateTime ngayy = dRow["NGAYYEUCAU"] != DBNull.Value ? Convert.ToDateTime(dRow["NGAYYEUCAU"]) : pmr.Date;
+                                string maktv = dRow["MAKTV"]?.ToString() ?? "Chưa phân công";
+                                string ketqua = dRow["KETQUA"]?.ToString() ?? "Chờ thực hiện";
+                                pmr.Services.Add(new RecordService(tendv, ngayy, maktv, ketqua));
+                            }
+                        }
+
+                        // Load đơn thuốc đi kèm với HSBA này
+                        string procDt = "ADMINHOS.SP_GET_PRESCRIPTIONS_FOR_HSBA";
+                        Oracle.ManagedDataAccess.Client.OracleParameter[] dtParams = new Oracle.ManagedDataAccess.Client.OracleParameter[]
+                        {
+                            new Oracle.ManagedDataAccess.Client.OracleParameter("p_mahsba", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2) { Value = pmr.Id },
+                            new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                        };
+                        DataTable dtPres = DataProvider.Instance.ExecuteQuery(procDt, dtParams, true);
+                        if (dtPres != null)
+                        {
+                            foreach (DataRow pRow in dtPres.Rows)
+                            {
+                                string thuoc = pRow["TENTHUOC"]?.ToString() ?? "";
+                                string lieudung = pRow["CACHDUNG"]?.ToString() ?? "";
+                                pmr.Prescriptions.Add(new RecordPrescription(pmr.Date, thuoc, lieudung));
+                            }
+                        }
+
+                        records.Add(pmr);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi load bệnh án từ database: " + ex.Message);
+            }
         }
 
         private void WireEvents()
