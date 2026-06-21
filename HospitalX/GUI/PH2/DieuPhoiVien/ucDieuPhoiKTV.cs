@@ -468,7 +468,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvRequests.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 9.25F, FontStyle.Bold);
             dgvRequests.ColumnHeadersDefaultCellStyle.SelectionBackColor = headerBack;
             dgvRequests.ColumnHeadersDefaultCellStyle.SelectionForeColor = headerFore;
-            dgvRequests.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvRequests.ColumnHeadersDefaultCellStyle.Padding = new Padding(12, 0, 0, 0);
             dgvRequests.ColumnHeadersHeight = 44;
             dgvRequests.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
@@ -477,7 +477,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvRequests.DefaultCellStyle.BackColor = Color.White;
             dgvRequests.DefaultCellStyle.SelectionBackColor = ColorTealLight;
             dgvRequests.DefaultCellStyle.SelectionForeColor = ColorTextPrimary;
-            dgvRequests.DefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvRequests.DefaultCellStyle.Padding = new Padding(12, 0, 0, 0);
 
             dgvRequests.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
             dgvRequests.RowsDefaultCellStyle.BackColor = Color.White;
@@ -515,9 +515,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             colTrangThai.MinimumWidth = 140;
             colTrangThai.HeaderText = "TRẠNG THÁI";
 
+            // Disable sorting glyph space to ensure perfect header-cell text alignment
+            foreach (DataGridViewColumn col in dgvRequests.Columns)
+            {
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            float dpiFactor = 1.0f;
+            try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+
             colThaoTac.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colThaoTac.Width = 120;
+            colThaoTac.Width = (int)(140 * dpiFactor);
             colThaoTac.HeaderText = "THAO TÁC";
+            colThaoTac.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colThaoTac.HeaderCell.Style.Padding = new Padding(0);
         }
 
         private void ApplyFilter()
@@ -742,8 +753,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             if (e.ColumnIndex == colMaHSBA.Index)
             {
-                // Indent HSBA text by 16px to completely clear the green selection indicator bar
-                Rectangle textRect = new Rectangle(e.CellBounds.X + 16, e.CellBounds.Y, e.CellBounds.Width - 18, e.CellBounds.Height);
+                // Indent HSBA text by 14px to align with the header while clearing the selection bar
+                Rectangle textRect = new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height);
                 TextRenderer.DrawText(e.Graphics, r.Hsba, FontMono, textRect, ColorTextSecondary,
                     TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
             }
@@ -753,24 +764,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 int topOffset = (e.CellBounds.Height - 24 - 20 - 6) / 2;
 
                 TextRenderer.DrawText(e.Graphics, r.PatientName, FontBold,
-                    new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y + topOffset, e.CellBounds.Width - 10, 24),
+                    new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y + topOffset, e.CellBounds.Width - 16, 24),
                     ColorTextPrimary, TextFormatFlags.Left | TextFormatFlags.EndEllipsis);
 
                 TextRenderer.DrawText(e.Graphics, r.PatientCode, FontNormal,
-                    new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y + topOffset + 24 + 6, e.CellBounds.Width - 10, 20),
+                    new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y + topOffset + 24 + 6, e.CellBounds.Width - 16, 20),
                     ColorTextMuted, TextFormatFlags.Left);
             }
             else if (e.ColumnIndex == colLoaiDV.Index)
             {
-                // Indent content by 8px to align with column headers
-                Rectangle textRect = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y, e.CellBounds.Width - 10, e.CellBounds.Height);
+                // Indent content by 14px to align with column headers
+                Rectangle textRect = new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height);
                 TextRenderer.DrawText(e.Graphics, r.ServiceType, FontNormal, textRect, ColorTextPrimary,
                     TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
             }
             else if (e.ColumnIndex == colKTV.Index)
             {
-                // Indent content by 8px to align with column headers
-                Rectangle textRect = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y, e.CellBounds.Width - 10, e.CellBounds.Height);
+                // Indent content by 14px to align with column headers
+                Rectangle textRect = new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height);
                 TextRenderer.DrawText(e.Graphics, r.AssignedKtv, FontNormal, textRect, ColorTextPrimary,
                     TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
             }
@@ -803,7 +814,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
                 int badgeW = r.StatusLabel.Length > 12 ? 135 : 115;
                 int badgeH = 24; // Height 24 to comfortably hold status label
-                int badgeX = e.CellBounds.X + 8; // Offset by 8px to align badge with column headers
+                int badgeX = e.CellBounds.X + 14; // Offset by 14px to align badge with column headers
                 int badgeY = e.CellBounds.Y + (e.CellBounds.Height - badgeH) / 2;
 
                 using (var path = GetRoundedRectPath(new RectangleF(badgeX, badgeY, badgeW, badgeH), 12)) // Capsule shape
