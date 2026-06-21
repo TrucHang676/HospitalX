@@ -267,12 +267,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             // Columns widths
             dgv.Columns["colIndex"].FillWeight = 8;
-            dgv.Columns["colPatient"].FillWeight = 30;
-            dgv.Columns["colService"].FillWeight = 30;
+            dgv.Columns["colIndex"].MinimumWidth = 62;
+            dgv.Columns["colPatient"].FillWeight = 24;
+            dgv.Columns["colPatient"].MinimumWidth = 130;
+            dgv.Columns["colService"].FillWeight = 24;
+            dgv.Columns["colService"].MinimumWidth = 130;
             dgv.Columns["colMaHsba"].FillWeight = 18;
-            dgv.Columns["colTime"].FillWeight = 18;
-            dgv.Columns["colStatus"].FillWeight = 20;
-            dgv.Columns["colAction"].FillWeight = 28;
+            dgv.Columns["colMaHsba"].MinimumWidth = 90;
+            dgv.Columns["colTime"].FillWeight = 20;
+            dgv.Columns["colTime"].MinimumWidth = 110;
+            dgv.Columns["colStatus"].FillWeight = 22;
+            dgv.Columns["colStatus"].MinimumWidth = 145;
+            dgv.Columns["colAction"].FillWeight = 33;
+            dgv.Columns["colAction"].MinimumWidth = 195;
 
             foreach (DataGridViewColumn col in dgv.Columns)
             {
@@ -628,11 +635,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 return;
             }
 
+            int cellPad = dgv.Columns[e.ColumnIndex].Name == "colIndex" ? 8 : 12;
             TextRenderer.DrawText(
                 e.Graphics,
                 value,
                 new Font("Segoe UI", 8.8F, FontStyle.Regular),
-                new Rectangle(cell.X + 4, cell.Y, cell.Width - 8, cell.Height),
+                new Rectangle(cell.X + cellPad, cell.Y, cell.Width - (cellPad + 4), cell.Height),
                 Color.FromArgb(24, 48, 42),
                 TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
             e.Handled = true;
@@ -664,11 +672,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             string glyph = sorted ? (sortAscending ? "  ▲" : "  ▼") : "  ⇅";
             Color glyphColor = sorted ? Color.FromArgb(15, 110, 86) : Color.FromArgb(170, 184, 194);
 
+            int leftPad = 12;
+            if (column.Name == "colIndex")
+            {
+                leftPad = 8;
+            }
+            else if (column.Name == "colAction" || column.Name == "colStatus")
+            {
+                leftPad = 10;
+            }
             TextRenderer.DrawText(
                 e.Graphics,
                 title,
                 new Font("Segoe UI", 8.8F, FontStyle.Bold),
-                new Rectangle(cell.X + 8, cell.Y, cell.Width - 36, cell.Height),
+                new Rectangle(cell.X + leftPad, cell.Y, cell.Width - (leftPad + 28), cell.Height),
                 Color.FromArgb(122, 149, 137),
                 TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
 
