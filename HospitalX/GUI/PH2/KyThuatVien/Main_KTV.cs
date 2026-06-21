@@ -125,24 +125,27 @@ namespace HospitalX.GUI.PH2
             btnExit.Location = new Point(pnlTopbar.Width - 50, 19);
             btnExit.CustomIconSize = 18F;
 
-            pnlLogo.Size = new Size(46, 46);
-            pnlLogo.BorderRadius = 8;
-            pnlLogo.Location = new Point(8, 6);
-            ptbChuThap.Location = new Point(10, 10);
-            ptbChuThap.Size = new Size(26, 27);
+            pnlLogo.Size = new Size(61, 57);
+            pnlLogo.BorderRadius = 25;
+            pnlLogo.BorderThickness = 1;
+            pnlLogo.BorderColor = Color.Green;
+            pnlLogo.FillColor = Color.White;
+            pnlLogo.Location = new Point(11, 7);
+            ptbChuThap.Location = new Point(13, 12);
+            ptbChuThap.Size = new Size(35, 33);
             lblLogoPlus.Visible = false;
 
             lblBrand.Text = "HOSPITAL SYSTEM";
             lblBrand.Font = new Font("Segoe UI", 6.75F, FontStyle.Bold);
             lblBrand.ForeColor = Color.Lime;
-            lblBrand.Location = new Point(66, 21);
+            lblBrand.Location = new Point(88, 26);
 
-            lblBrandSub.Text = "Kỹ thuật viên";
+            lblBrandSub.Text = "Bệnh viện X";
             lblBrandSub.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblBrandSub.ForeColor = Color.White;
-            lblBrandSub.Location = new Point(65, 36);
+            lblBrandSub.Location = new Point(87, 44);
 
-            pnlAvatar.Location = new Point(18, 85);
+            pnlAvatar.Location = new Point(24, 104);
             pnlAvatar.Size = new Size(36, 36);
             pnlAvatar.BorderRadius = 8;
             pnlAvatar.FillColor = Color.Transparent;
@@ -154,15 +157,15 @@ namespace HospitalX.GUI.PH2
             lblRole.Text = "KTV xét nghiệm";
             lblRole.Font = new Font("Segoe UI", 6.75F, FontStyle.Bold);
             lblRole.ForeColor = Color.WhiteSmoke;
-            lblRole.Location = new Point(63, 89);
+            lblRole.Location = new Point(84, 101);
 
             lblTenKtv.Text = "Nguyễn Thị Thu";
             lblTenKtv.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblTenKtv.ForeColor = Color.White;
-            lblTenKtv.Location = new Point(61, 108);
+            lblTenKtv.Location = new Point(81, 120);
 
-            AddOrUpdateSidebarSeparator("ktvHeaderLine", 65);
-            AddOrUpdateSidebarSeparator("ktvProfileLine", 135);
+            AddOrUpdateSidebarSeparator("ktvHeaderLine", 80);
+            AddOrUpdateSidebarSeparator("ktvProfileLine", 166);
 
             ConfigureSidebarButton(btnDashboard, "TỔNG QUAN", 186);
             ConfigureSidebarButton(btnDichVu, "DỊCH VỤ PHÂN CÔNG", 246);
