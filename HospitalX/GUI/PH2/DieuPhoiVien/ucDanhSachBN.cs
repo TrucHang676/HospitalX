@@ -672,7 +672,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             StylePageButton(btnPrevPage, "<");
             StylePageButton(btnNextPage, ">");
 
-            pnlPagination.Controls.Add(lblPageInfo);
+            lblPageInfo.Visible = false;
+            // pnlPagination.Controls.Add(lblPageInfo); // Hủy bỏ hiển thị Trang xx/
             pnlPagination.Controls.Add(btnPrevPage);
 
             // Generate page numbers 1 through 5 (dynamic clicking logic)
@@ -697,7 +698,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void StylePageButton(Guna2Button btn, string text)
         {
-            btn.Size = new Size(36, 36);
+            btn.Size = new Size(44, 36); // Tăng chiều rộng từ 36 lên 44 để tránh rớt dòng và lỗi hiển thị số trang từ trang 10 đổ đi
             btn.Margin = new Padding(3, 2, 3, 2);
             btn.BorderRadius = 6;
             btn.BorderThickness = 1;

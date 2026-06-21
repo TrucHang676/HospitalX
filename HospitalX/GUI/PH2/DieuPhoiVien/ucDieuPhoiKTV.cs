@@ -138,7 +138,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlPagination = new FlowLayoutPanel
             {
                 Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                Size = new Size(400, 40),
+                Size = new Size(500, 40),
                 FlowDirection = FlowDirection.LeftToRight,
                 WrapContents = false,
                 BackColor = Color.Transparent
@@ -186,7 +186,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void StylePageButton(Guna2Button btn, string text)
         {
-            btn.Size = new Size(36, 36);
+            btn.Size = new Size(44, 36); // Tăng chiều rộng từ 36 lên 44 để tránh rớt dòng và lỗi hiển thị số trang từ trang 10 đổ đi
             btn.Margin = new Padding(3, 2, 3, 2);
             btn.BorderRadius = 6;
             btn.BorderThickness = 1;
@@ -860,8 +860,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             if (pnlPagination != null)
             {
                 int bottomY = pnlServiceRequests.Height - 40 - 15;
-                pnlPagination.Size = new Size(400, 40);
-                pnlPagination.Location = new Point(leftW - 400 - 20, bottomY);
+                pnlPagination.Size = new Size(500, 40);
+                pnlPagination.Location = new Point(leftW - 500 - 20, bottomY);
             }
 
             // Set minimum horizontal scroll limit to preserve visual design integrity (without right panel)
