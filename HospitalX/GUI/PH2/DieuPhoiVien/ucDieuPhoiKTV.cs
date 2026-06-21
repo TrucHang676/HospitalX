@@ -192,6 +192,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btn.BorderThickness = 1;
             btn.BorderColor = ColorBorder;
             btn.FillColor = Color.Transparent;
+            btn.Image = null;
+            btn.ImageSize = new Size(0, 0);
+            btn.Padding = new Padding(0);
             
             if (text == "<" || text == ">")
             {

@@ -704,6 +704,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             btn.BorderThickness = 1;
             btn.BorderColor = Color.FromArgb(218, 232, 226); // #D8E8E3
             btn.FillColor = Color.Transparent;
+            btn.Image = null;
+            btn.ImageSize = new Size(0, 0);
+            btn.Padding = new Padding(0);
             
             // Set slightly larger font for mathematical arrows "<" and ">" to center them perfectly
             if (text == "<" || text == ">")
