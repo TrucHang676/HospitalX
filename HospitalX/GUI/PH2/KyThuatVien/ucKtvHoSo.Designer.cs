@@ -56,11 +56,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.btnChangePassword = new Guna.UI2.WinForms.Guna2Button();
             this.lblPasswordMock = new System.Windows.Forms.Label();
             this.lblTitleSecurity = new System.Windows.Forms.Label();
-            this.pnlCardActivities = new Guna.UI2.WinForms.Guna2Panel();
-            this.flpActivities = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblTitleActivities = new System.Windows.Forms.Label();
+
             this.txtKhoa = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblKhoa = new System.Windows.Forms.Label();
+            this.lblSlogan = new System.Windows.Forms.Label();
             this.pnlScroll.SuspendLayout();
             this.pnlLeftCard.SuspendLayout();
             this.pnlStat2.SuspendLayout();
@@ -70,7 +69,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlCardProfessional.SuspendLayout();
             this.pnlCardContact.SuspendLayout();
             this.pnlCardSecurity.SuspendLayout();
-            this.pnlCardActivities.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlScroll
@@ -86,6 +84,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlScroll.Size = new System.Drawing.Size(755, 532);
             this.pnlScroll.TabIndex = 0;
             // 
+            // 
             // pnlLeftCard
             // 
             this.pnlLeftCard.BackColor = System.Drawing.Color.Transparent;
@@ -97,10 +96,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlLeftCard.Controls.Add(this.lblUserName);
             this.pnlLeftCard.Controls.Add(this.ptbAvatar);
             this.pnlLeftCard.FillColor = System.Drawing.Color.White;
-            this.pnlLeftCard.Location = new System.Drawing.Point(18, 20);
-            this.pnlLeftCard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlLeftCard.Location = new System.Drawing.Point(24, 25);
+            this.pnlLeftCard.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlLeftCard.Name = "pnlLeftCard";
-            this.pnlLeftCard.Size = new System.Drawing.Size(240, 422);
+            this.pnlLeftCard.Size = new System.Drawing.Size(320, 645);
             this.pnlLeftCard.TabIndex = 0;
             // 
             // lblStatusBadge
@@ -111,11 +110,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblStatusBadge.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
             this.lblStatusBadge.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblStatusBadge.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblStatusBadge.Location = new System.Drawing.Point(56, 374);
-            this.lblStatusBadge.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblStatusBadge.Location = new System.Drawing.Point(61, 535);
+            this.lblStatusBadge.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblStatusBadge.Name = "lblStatusBadge";
             this.lblStatusBadge.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
-            this.lblStatusBadge.Size = new System.Drawing.Size(128, 24);
+            this.lblStatusBadge.Size = new System.Drawing.Size(171, 30);
             this.lblStatusBadge.TabIndex = 6;
             this.lblStatusBadge.Text = "● Đang hoạt động";
             // 
@@ -123,10 +122,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // 
             this.pnlStat2.Controls.Add(this.lblStat2Cap);
             this.pnlStat2.Controls.Add(this.lblStat2Val);
-            this.pnlStat2.Location = new System.Drawing.Point(124, 268);
-            this.pnlStat2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlStat2.Location = new System.Drawing.Point(162, 395);
+            this.pnlStat2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlStat2.Name = "pnlStat2";
-            this.pnlStat2.Size = new System.Drawing.Size(98, 77);
+            this.pnlStat2.Size = new System.Drawing.Size(131, 95);
             this.pnlStat2.TabIndex = 5;
             // 
             // lblStat2Cap
@@ -134,10 +133,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblStat2Cap.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblStat2Cap.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblStat2Cap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblStat2Cap.Location = new System.Drawing.Point(0, 45);
-            this.lblStat2Cap.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStat2Cap.Location = new System.Drawing.Point(0, 56);
             this.lblStat2Cap.Name = "lblStat2Cap";
-            this.lblStat2Cap.Size = new System.Drawing.Size(98, 32);
+            this.lblStat2Cap.Size = new System.Drawing.Size(131, 39);
             this.lblStat2Cap.TabIndex = 1;
             this.lblStat2Cap.Text = "Lượt điều phối KTV";
             this.lblStat2Cap.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -148,9 +146,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblStat2Val.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.lblStat2Val.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblStat2Val.Location = new System.Drawing.Point(0, 0);
-            this.lblStat2Val.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStat2Val.Name = "lblStat2Val";
-            this.lblStat2Val.Size = new System.Drawing.Size(98, 37);
+            this.lblStat2Val.Size = new System.Drawing.Size(131, 46);
             this.lblStat2Val.TabIndex = 0;
             this.lblStat2Val.Text = "98";
             this.lblStat2Val.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -159,10 +156,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // 
             this.pnlStat1.Controls.Add(this.lblStat1Cap);
             this.pnlStat1.Controls.Add(this.lblStat1Val);
-            this.pnlStat1.Location = new System.Drawing.Point(19, 268);
-            this.pnlStat1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlStat1.Location = new System.Drawing.Point(25, 395);
+            this.pnlStat1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlStat1.Name = "pnlStat1";
-            this.pnlStat1.Size = new System.Drawing.Size(98, 77);
+            this.pnlStat1.Size = new System.Drawing.Size(131, 95);
             this.pnlStat1.TabIndex = 4;
             // 
             // lblStat1Cap
@@ -170,10 +167,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblStat1Cap.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblStat1Cap.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.lblStat1Cap.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
-            this.lblStat1Cap.Location = new System.Drawing.Point(0, 45);
-            this.lblStat1Cap.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblStat1Cap.Location = new System.Drawing.Point(0, 56);
             this.lblStat1Cap.Name = "lblStat1Cap";
-            this.lblStat1Cap.Size = new System.Drawing.Size(98, 32);
+            this.lblStat1Cap.Size = new System.Drawing.Size(131, 39);
             this.lblStat1Cap.TabIndex = 1;
             this.lblStat1Cap.Text = "HSBA đã tạo";
             this.lblStat1Cap.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -184,39 +180,35 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblStat1Val.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
             this.lblStat1Val.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.lblStat1Val.Location = new System.Drawing.Point(0, 0);
-            this.lblStat1Val.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblStat1Val.Name = "lblStat1Val";
-            this.lblStat1Val.Size = new System.Drawing.Size(98, 37);
+            this.lblStat1Val.Size = new System.Drawing.Size(131, 46);
             this.lblStat1Val.TabIndex = 0;
             this.lblStat1Val.Text = "124";
             this.lblStat1Val.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // lblDeptAndFacility
             // 
-            this.lblDeptAndFacility.Location = new System.Drawing.Point(15, 215);
-            this.lblDeptAndFacility.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblDeptAndFacility.Location = new System.Drawing.Point(22, 337);
             this.lblDeptAndFacility.Name = "lblDeptAndFacility";
-            this.lblDeptAndFacility.Size = new System.Drawing.Size(210, 37);
+            this.lblDeptAndFacility.Size = new System.Drawing.Size(280, 46);
             this.lblDeptAndFacility.TabIndex = 3;
             this.lblDeptAndFacility.Text = "Phòng Điều phối Y tế\r\nBệnh viện Đa khoa Tỉnh";
             this.lblDeptAndFacility.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // lblUserRole
             // 
-            this.lblUserRole.Location = new System.Drawing.Point(15, 191);
-            this.lblUserRole.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblUserRole.Location = new System.Drawing.Point(13, 295);
             this.lblUserRole.Name = "lblUserRole";
-            this.lblUserRole.Size = new System.Drawing.Size(210, 19);
+            this.lblUserRole.Size = new System.Drawing.Size(280, 23);
             this.lblUserRole.TabIndex = 2;
             this.lblUserRole.Text = "Điều phối viên";
             this.lblUserRole.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblUserName
             // 
-            this.lblUserName.Location = new System.Drawing.Point(15, 158);
-            this.lblUserName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblUserName.Location = new System.Drawing.Point(13, 250);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(210, 24);
+            this.lblUserName.Size = new System.Drawing.Size(280, 30);
             this.lblUserName.TabIndex = 1;
             this.lblUserName.Text = "Lê Hoài Thương";
             this.lblUserName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -224,25 +216,27 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // ptbAvatar
             // 
             this.ptbAvatar.ImageRotate = 0F;
-            this.ptbAvatar.Location = new System.Drawing.Point(75, 32);
-            this.ptbAvatar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ptbAvatar.Location = new System.Drawing.Point(100, 39);
+            this.ptbAvatar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ptbAvatar.Name = "ptbAvatar";
-            this.ptbAvatar.Size = new System.Drawing.Size(90, 98);
+            this.ptbAvatar.Size = new System.Drawing.Size(120, 121);
             this.ptbAvatar.TabIndex = 0;
             this.ptbAvatar.TabStop = false;
             // 
             // pnlRight
             // 
+            this.pnlRight.AutoSize = true;
+            this.pnlRight.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnlRight.BackColor = System.Drawing.Color.Transparent;
             this.pnlRight.Controls.Add(this.pnlCardProfessional);
             this.pnlRight.Controls.Add(this.pnlCardContact);
             this.pnlRight.Controls.Add(this.pnlCardSecurity);
-            this.pnlRight.Controls.Add(this.pnlCardActivities);
+            this.pnlRight.Controls.Add(this.lblSlogan);
             this.pnlRight.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.pnlRight.Location = new System.Drawing.Point(276, 20);
-            this.pnlRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlRight.Location = new System.Drawing.Point(368, 25);
+            this.pnlRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlRight.Name = "pnlRight";
-            this.pnlRight.Size = new System.Drawing.Size(456, 999);
+            this.pnlRight.Size = new System.Drawing.Size(608, 770);
             this.pnlRight.TabIndex = 1;
             this.pnlRight.WrapContents = false;
             // 
@@ -668,39 +662,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblTitleSecurity.TabIndex = 6;
             this.lblTitleSecurity.Text = "Bảo mật tài khoản";
             // 
-            // pnlCardActivities
+            // lblSlogan
             // 
-            this.pnlCardActivities.BackColor = System.Drawing.Color.Transparent;
-            this.pnlCardActivities.Controls.Add(this.flpActivities);
-            this.pnlCardActivities.Controls.Add(this.lblTitleActivities);
-            this.pnlCardActivities.FillColor = System.Drawing.Color.White;
-            this.pnlCardActivities.Location = new System.Drawing.Point(2, 526);
-            this.pnlCardActivities.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.pnlCardActivities.Name = "pnlCardActivities";
-            this.pnlCardActivities.Size = new System.Drawing.Size(452, 272);
-            this.pnlCardActivities.TabIndex = 3;
-            // 
-            // flpActivities
-            // 
-            this.flpActivities.AutoScroll = true;
-            this.flpActivities.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flpActivities.Location = new System.Drawing.Point(15, 49);
-            this.flpActivities.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.flpActivities.Name = "flpActivities";
-            this.flpActivities.Size = new System.Drawing.Size(422, 203);
-            this.flpActivities.TabIndex = 8;
-            this.flpActivities.WrapContents = false;
-            // 
-            // lblTitleActivities
-            // 
-            this.lblTitleActivities.AutoSize = true;
-            this.lblTitleActivities.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold);
-            this.lblTitleActivities.Location = new System.Drawing.Point(15, 15);
-            this.lblTitleActivities.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTitleActivities.Name = "lblTitleActivities";
-            this.lblTitleActivities.Size = new System.Drawing.Size(142, 20);
-            this.lblTitleActivities.TabIndex = 6;
-            this.lblTitleActivities.Text = "Hoạt động gần đây";
+            this.lblSlogan.BackColor = System.Drawing.Color.Transparent;
+            this.lblSlogan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Italic);
+            this.lblSlogan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
+            this.lblSlogan.Location = new System.Drawing.Point(3, 667);
+            this.lblSlogan.Margin = new System.Windows.Forms.Padding(3, 20, 3, 2);
+            this.lblSlogan.Name = "lblSlogan";
+            this.lblSlogan.Size = new System.Drawing.Size(543, 89);
+            this.lblSlogan.TabIndex = 12;
+            this.lblSlogan.Text = "“Phân tích chuẩn xác, kết quả trung thực, tận tụy phục vụ.”";
+            this.lblSlogan.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+
             // 
             // txtKhoa
             // 
@@ -762,8 +736,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.pnlCardContact.PerformLayout();
             this.pnlCardSecurity.ResumeLayout(false);
             this.pnlCardSecurity.PerformLayout();
-            this.pnlCardActivities.ResumeLayout(false);
-            this.pnlCardActivities.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -809,10 +781,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private System.Windows.Forms.Label lblTitleSecurity;
         private System.Windows.Forms.Label lblPasswordMock;
         private Guna.UI2.WinForms.Guna2Button btnChangePassword;
-        private Guna.UI2.WinForms.Guna2Panel pnlCardActivities;
-        private System.Windows.Forms.Label lblTitleActivities;
-        private System.Windows.Forms.FlowLayoutPanel flpActivities;
         private Guna.UI2.WinForms.Guna2TextBox txtKhoa;
         private System.Windows.Forms.Label lblKhoa;
+        private System.Windows.Forms.Label lblSlogan;
     }
 }
