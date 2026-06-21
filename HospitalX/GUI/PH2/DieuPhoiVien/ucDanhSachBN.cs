@@ -653,9 +653,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             // Create right-aligned FlowLayoutPanel for pagination controls
             pnlPagination = new FlowLayoutPanel();
-            pnlPagination.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            pnlPagination.Size = new Size(500, 40);
-            pnlPagination.Location = new Point(pnlTableCard.Width - 500 - 21, pnlTableCard.Height - 40 - 15);
+            pnlPagination.Anchor = AnchorStyles.Bottom;
+            pnlPagination.AutoSize = true;
+            pnlPagination.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             pnlPagination.FlowDirection = FlowDirection.LeftToRight;
             pnlPagination.WrapContents = false;
             pnlPagination.BackColor = Color.Transparent;
@@ -663,7 +663,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Align page info label vertically — use same height & margin as buttons
             // so they occupy the exact same vertical space in the FlowLayoutPanel
             lblPageInfo.AutoSize = false;
-            lblPageInfo.Size = new Size(90, 36);  // Same height as buttons (36px)
+            lblPageInfo.Size = new Size(90, 30);  // Same height as buttons (30px)
             lblPageInfo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             lblPageInfo.ForeColor = Color.FromArgb(122, 149, 137);
             lblPageInfo.TextAlign = ContentAlignment.MiddleLeft;
@@ -698,8 +698,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void StylePageButton(Guna2Button btn, string text)
         {
-            btn.Size = new Size(44, 36); // Tăng chiều rộng từ 36 lên 44 để tránh rớt dòng và lỗi hiển thị số trang từ trang 10 đổ đi
-            btn.Margin = new Padding(3, 2, 3, 2);
+            float dpiFactor = 1.0f;
+            try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+
+            btn.AutoSize = false;
+            btn.Size = new Size((int)(42 * dpiFactor), (int)(30 * dpiFactor));
+            btn.Margin = new Padding((int)(4 * dpiFactor), (int)(2 * dpiFactor), (int)(4 * dpiFactor), (int)(2 * dpiFactor));
             btn.BorderRadius = 6;
             btn.BorderThickness = 1;
             btn.BorderColor = Color.FromArgb(218, 232, 226); // #D8E8E3
@@ -711,11 +715,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Set slightly larger font for mathematical arrows "<" and ">" to center them perfectly
             if (text == "<" || text == ">")
             {
-                btn.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+                btn.Font = new Font("Segoe UI", 10.5F * dpiFactor, FontStyle.Bold);
             }
             else
             {
-                btn.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+                btn.Font = new Font("Segoe UI", 9F * dpiFactor, FontStyle.Bold);
             }
             
             btn.ForeColor = Color.FromArgb(74, 98, 89);
@@ -757,6 +761,29 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 if (startPage + 4 > _totalPage) startPage = _totalPage - 4;
             }
 
+            float dpiFactor = 1.0f;
+            try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+
+            int maxPageVisible = startPage + 4;
+            int buttonWidth = (int)(42 * dpiFactor);
+            using (var measureFont = new Font("Segoe UI", 9F * dpiFactor, FontStyle.Bold))
+            {
+                int textWidth = TextRenderer.MeasureText(maxPageVisible.ToString(), measureFont).Width;
+                int padding = (int)(16 * dpiFactor);
+                int minWidth = (int)(42 * dpiFactor);
+                buttonWidth = Math.Max(textWidth + padding, minWidth);
+            }
+            int buttonHeight = (int)(30 * dpiFactor);
+            int marginH = (int)(4 * dpiFactor);
+            int marginV = (int)(2 * dpiFactor);
+
+            btnPrevPage.AutoSize = false;
+            btnPrevPage.Size = new Size(buttonWidth, buttonHeight);
+            btnPrevPage.Margin = new Padding(marginH, marginV, marginH, marginV);
+            btnNextPage.AutoSize = false;
+            btnNextPage.Size = new Size(buttonWidth, buttonHeight);
+            btnNextPage.Margin = new Padding(marginH, marginV, marginH, marginV);
+
             // Toggle visibility, text, and selection for page buttons
             for (int i = 0; i < 5; i++)
             {
@@ -767,6 +794,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 {
                     btn.Visible = true;
                     btn.Text = pageNum.ToString();
+                    btn.AutoSize = false;
+                    btn.Size = new Size(buttonWidth, buttonHeight);
+                    btn.Margin = new Padding(marginH, marginV, marginH, marginV);
                     if (pageNum == _currentPage)
                     {
                         btn.FillColor = Color.FromArgb(15, 110, 86); // teal
@@ -791,10 +821,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             btnPrevPage.ForeColor = btnPrevPage.Enabled ? Color.FromArgb(74, 98, 89) : Color.FromArgb(180, 200, 190);
             btnNextPage.ForeColor = btnNextPage.Enabled ? Color.FromArgb(74, 98, 89) : Color.FromArgb(180, 200, 190);
+
+            // Force layout pass to calculate exact auto-sized width and center in the white table card
+            if (pnlPagination != null)
+            {
+                pnlPagination.PerformLayout();
+                pnlPagination.Location = new Point((pnlTableCard.Width - pnlPagination.Width) / 2, pnlTableCard.Height - pnlPagination.Height - (int)(15 * dpiFactor));
+            }
         }
 
         private void ucDanhSachBN_Resize(object sender, EventArgs e)
         {
+            float dpiFactor = 1.0f;
+            try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+
             int targetWidth = pnlScroll.ClientSize.Width - 54;
             if (targetWidth < 1350) targetWidth = 1350; // Prevent layouts from shrinking below minimum readable content width
 
@@ -802,7 +842,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlTableCard.Width = targetWidth;
             if (pnlPagination != null)
             {
-                pnlPagination.Location = new Point(pnlTableCard.Width - pnlPagination.Width - 21, pnlTableCard.Height - pnlPagination.Height - 15);
+                pnlPagination.Location = new Point((pnlTableCard.Width - pnlPagination.Width) / 2, pnlTableCard.Height - pnlPagination.Height - (int)(15 * dpiFactor));
             }
 
             // Position btnReset on the right side of pnlFilterBar
