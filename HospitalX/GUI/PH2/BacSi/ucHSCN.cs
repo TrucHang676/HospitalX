@@ -472,13 +472,13 @@ namespace HospitalX.GUI.PH2.BacSi
                 bool success = ProfileDAO.Instance.UpdateProfile(
                     phone,
                     address,
-                    txtProfMaNV.Text.Trim(),
-                    txtProfHoTen.Text.Trim(),
-                    txtProfGioiTinh.Text.Trim(),
+                    txtProfMaNV.Text.Trim() == _originalMaNV ? _originalMaNV : txtProfMaNV.Text.Trim(),
+                    txtProfHoTen.Text.Trim() == _originalHoTen ? _originalHoTen : txtProfHoTen.Text.Trim(),
+                    txtProfGioiTinh.Text.Trim() == _originalGioiTinh ? _originalGioiTinh : txtProfGioiTinh.Text.Trim(),
                     ngaysinh,
-                    txtProfCccd.Text.Trim(),
-                    txtProfVaiTro.Text.Trim(),
-                    txtKhoa.Text.Trim(),
+                    txtProfCccd.Text.Trim() == _originalCccd ? _originalCccd : txtProfCccd.Text.Trim(),
+                    txtProfVaiTro.Text.Trim() == _originalVaiTro ? _originalVaiTro : txtProfVaiTro.Text.Trim(),
+                    txtKhoa.Text.Trim() == _originalKhoa ? _originalKhoa : txtKhoa.Text.Trim(),
                     _originalCoSo
                 );
 

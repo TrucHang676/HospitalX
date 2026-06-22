@@ -4398,10 +4398,92 @@ BEGIN
 END;
 /
 
+-- 44b. SP_UPDATE_PATIENT_SELF: Cap nhat ho so benh nhan (TC#5 - bao mat tai tang CSDL)
+-- Chi cap nhat duoc chinh ho so minh (SESSION_USER); chi sua duoc dia chi + tien su.
+-- Cac truong bi han che (MABN, TENBN, PHAI, NGAYSINH, CCCD) duoc kiem tra trong SP;
+-- neu co thay doi -> RAISE_APPLICATION_ERROR cu the cho tung truong.
+CREATE OR REPLACE PROCEDURE SP_UPDATE_PATIENT_SELF (
+    p_mabn         IN VARCHAR2,
+    p_tenbn        IN NVARCHAR2,
+    p_phai         IN NVARCHAR2,
+    p_ngaysinh     IN DATE,
+    p_cccd         IN VARCHAR2,
+    p_sonha        IN NVARCHAR2,
+    p_tenduong     IN NVARCHAR2,
+    p_quanhuyen    IN NVARCHAR2,
+    p_tinhtp       IN NVARCHAR2,
+    p_tiensubenh   IN NVARCHAR2,
+    p_tiensubenhgd IN NVARCHAR2,
+    p_diungthuoc   IN NVARCHAR2
+)
+AUTHID DEFINER
+AS
+    v_session  VARCHAR2(128) := SYS_CONTEXT('USERENV','SESSION_USER');
+    v_tenbn    NVARCHAR2(200);
+    v_phai     NVARCHAR2(10);
+    v_ngaysinh DATE;
+    v_cccd     VARCHAR2(30);
+    v_count    NUMBER;
+BEGIN
+    -- Buoc 1: Chi duoc cap nhat chinh ho so minh
+    IF UPPER(NVL(p_mabn,' ')) != UPPER(v_session) THEN
+        RAISE_APPLICATION_ERROR(-20020,
+            'Chinh sach bao mat: Khong duoc phep thay doi ma benh nhan');
+    END IF;
+
+    SELECT COUNT(*) INTO v_count FROM ADMINHOS.BENHNHAN WHERE MABN = v_session;
+    IF v_count = 0 THEN
+        RAISE_APPLICATION_ERROR(-20005, 'Ho so benh nhan khong ton tai');
+    END IF;
+
+    -- Buoc 2: Doc gia tri hien tai tu bang goc de so sanh
+    SELECT TENBN, PHAI, NGAYSINH, CCCD
+    INTO   v_tenbn, v_phai, v_ngaysinh, v_cccd
+    FROM   ADMINHOS.BENHNHAN
+    WHERE  MABN = v_session;
+
+    -- Buoc 3: Kiem tra cac truong bi han che
+    IF NVL(p_tenbn,    N'__NULL__') != NVL(v_tenbn,    N'__NULL__') THEN
+        RAISE_APPLICATION_ERROR(-20021,
+            'Chinh sach bao mat: Khong duoc phep cap nhat Ten benh nhan');
+    END IF;
+    IF NVL(p_phai,     N'__NULL__') != NVL(v_phai,     N'__NULL__') THEN
+        RAISE_APPLICATION_ERROR(-20022,
+            'Chinh sach bao mat: Khong duoc phep cap nhat Gioi tinh');
+    END IF;
+    IF TRUNC(NVL(p_ngaysinh, DATE '1900-01-01')) != TRUNC(NVL(v_ngaysinh, DATE '1900-01-01')) THEN
+        RAISE_APPLICATION_ERROR(-20023,
+            'Chinh sach bao mat: Khong duoc phep cap nhat Ngay sinh');
+    END IF;
+    IF NVL(p_cccd, '__NULL__') != NVL(v_cccd, '__NULL__') THEN
+        RAISE_APPLICATION_ERROR(-20024,
+            'Chinh sach bao mat: Khong duoc phep cap nhat CCCD');
+    END IF;
+
+    -- Buoc 4: Chi cap nhat cac truong duoc phep
+    UPDATE ADMINHOS.BENHNHAN
+    SET    SONHA        = p_sonha,
+           TENDUONG     = p_tenduong,
+           QUANHUYEN    = p_quanhuyen,
+           TINHTP       = p_tinhtp,
+           TIENSUBENH   = p_tiensubenh,
+           TIENSUBENHGD = p_tiensubenhgd,
+           DIUNGTHUOC   = p_diungthuoc
+    WHERE  MABN = v_session;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20005, 'Khong tim thay ban ghi de cap nhat');
+    END IF;
+
+    COMMIT;
+END;
+/
+
 -- Cap quyen cho ROLE_BENHNHAN (dung pattern cua script goc)
 GRANT EXECUTE ON ADMINHOS.SP_GET_PATIENT_SELF            TO ROLE_BENHNHAN;
 GRANT EXECUTE ON ADMINHOS.SP_UPDATE_PATIENT_HISTORY_SELF TO ROLE_BENHNHAN;
 GRANT EXECUTE ON ADMINHOS.SP_UPDATE_PATIENT_ADDRESS_SELF TO ROLE_BENHNHAN;
+GRANT EXECUTE ON ADMINHOS.SP_UPDATE_PATIENT_SELF         TO ROLE_BENHNHAN;
 
 -- 44. SP_GET_BACKUP_HISTORY: Lay lich su backup tu V$BACKUP_SET (can quyen DBA/SELECT_CATALOG_ROLE)
 CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_BACKUP_HISTORY(

@@ -465,9 +465,15 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             {
                 // Gửi toàn bộ dữ liệu xuống Oracle — bảo mật được thực thi ở tầng SP/Trigger
                 bool success = ProfileDAO.Instance.UpdateProfile(
-                    phone, address, manv, hoten, phai, ngaysinh, cmnd, vaitro,
+                    phone, address, 
+                    txtProfMaNV.Text.Trim() == _originalMaNV ? _originalMaNV : txtProfMaNV.Text.Trim(),
+                    txtProfHoTen.Text.Trim() == _originalHoTen ? _originalHoTen : txtProfHoTen.Text.Trim(),
+                    txtProfGioiTinh.Text.Trim() == _originalGioiTinh ? _originalGioiTinh : txtProfGioiTinh.Text.Trim(),
+                    ngaysinh, 
+                    txtProfCccd.Text.Trim() == _originalCccd ? _originalCccd : txtProfCccd.Text.Trim(),
+                    txtProfVaiTro.Text.Trim() == _originalVaiTro ? _originalVaiTro : txtProfVaiTro.Text.Trim(),
                     chuyenkhoa: string.Empty,  // DPV không có chuyên khoa
-                    coso: coso);
+                    coso: txtKhoa.Text.Trim() == _originalCoSo ? _originalCoSo : txtKhoa.Text.Trim());
 
                 if (success)
                 {

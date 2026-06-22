@@ -17,33 +17,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucHSCN));
             this.pnlRoot = new System.Windows.Forms.Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnEditHistory = new Guna.UI2.WinForms.Guna2Button();
             this.txtFamilyHistory = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtMedicalHistory = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtAllergy = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblFamilyHistoryValue = new System.Windows.Forms.Label();
             this.lblFamilyHistoryCaption = new System.Windows.Forms.Label();
-            this.lblMedicalHistoryValue = new System.Windows.Forms.Label();
             this.lblMedicalHistoryCaption = new System.Windows.Forms.Label();
-            this.lblAllergyValue = new System.Windows.Forms.Label();
             this.lblAllergyCaption = new System.Windows.Forms.Label();
             this.lblHistoryTitle = new System.Windows.Forms.Label();
             this.pnlProfile = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnEditAddress = new Guna.UI2.WinForms.Guna2Button();
-            this.lblAddressValue = new System.Windows.Forms.Label();
+            this.txtAddressField = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtCccdField = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtDobField = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtGenderField = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtPatientName = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtPatientId = new Guna.UI2.WinForms.Guna2TextBox();
             this.lblAddressCaption = new System.Windows.Forms.Label();
-            this.lblCccdValue = new System.Windows.Forms.Label();
             this.lblCccdCaption = new System.Windows.Forms.Label();
-            this.lblDobValue = new System.Windows.Forms.Label();
             this.lblDobCaption = new System.Windows.Forms.Label();
-            this.lblGenderValue = new System.Windows.Forms.Label();
             this.lblGenderCaption = new System.Windows.Forms.Label();
-            this.lblPatientNameValue = new System.Windows.Forms.Label();
             this.lblPatientNameCaption = new System.Windows.Forms.Label();
-            this.lblPatientIdValue = new System.Windows.Forms.Label();
             this.lblPatientIdCaption = new System.Windows.Forms.Label();
             this.lblProfileTitle = new System.Windows.Forms.Label();
             this.pnlKpiPrescription = new Guna.UI2.WinForms.Guna2Panel();
@@ -63,10 +57,10 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiAllergyTitle = new System.Windows.Forms.Label();
             this.lblKpiAllergyValue = new System.Windows.Forms.Label();
             this.pnlWelcome = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnSaveProfile = new Guna.UI2.WinForms.Guna2Button();
             this.lblWelcomeMeta = new System.Windows.Forms.Label();
             this.lblWelcomeName = new System.Windows.Forms.Label();
             this.lblWelcomeId = new System.Windows.Forms.Label();
-            this.btnSaveProfile = new Guna.UI2.WinForms.Guna2Button();
             this.pnlRoot.SuspendLayout();
             this.pnlHistory.SuspendLayout();
             this.pnlProfile.SuspendLayout();
@@ -76,9 +70,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlKpiAllergy.SuspendLayout();
             this.pnlWelcome.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnlRoot
-            // 
+            //
             this.pnlRoot.AutoScroll = true;
             this.pnlRoot.Controls.Add(this.pnlHistory);
             this.pnlRoot.Controls.Add(this.pnlProfile);
@@ -87,30 +81,25 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlRoot.Controls.Add(this.pnlKpiHsba);
             this.pnlRoot.Controls.Add(this.pnlKpiAllergy);
             this.pnlRoot.Controls.Add(this.pnlWelcome);
-            this.pnlRoot.Controls.Add(this.btnSaveProfile);
             this.pnlRoot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRoot.Location = new System.Drawing.Point(0, 0);
             this.pnlRoot.Name = "pnlRoot";
             this.pnlRoot.Padding = new System.Windows.Forms.Padding(24, 20, 24, 24);
             this.pnlRoot.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.TabIndex = 0;
-            // 
+            //
             // pnlHistory
-            // 
-            this.pnlHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.pnlHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlHistory.BorderRadius = 8;
             this.pnlHistory.BorderThickness = 1;
-            this.pnlHistory.Controls.Add(this.btnEditHistory);
             this.pnlHistory.Controls.Add(this.txtFamilyHistory);
             this.pnlHistory.Controls.Add(this.txtMedicalHistory);
             this.pnlHistory.Controls.Add(this.txtAllergy);
-            this.pnlHistory.Controls.Add(this.lblFamilyHistoryValue);
             this.pnlHistory.Controls.Add(this.lblFamilyHistoryCaption);
-            this.pnlHistory.Controls.Add(this.lblMedicalHistoryValue);
             this.pnlHistory.Controls.Add(this.lblMedicalHistoryCaption);
-            this.pnlHistory.Controls.Add(this.lblAllergyValue);
             this.pnlHistory.Controls.Add(this.lblAllergyCaption);
             this.pnlHistory.Controls.Add(this.lblHistoryTitle);
             this.pnlHistory.FillColor = System.Drawing.Color.White;
@@ -118,38 +107,16 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlHistory.Name = "pnlHistory";
             this.pnlHistory.Size = new System.Drawing.Size(560, 406);
             this.pnlHistory.TabIndex = 6;
-            // 
-            // btnEditHistory
-            // 
-            this.btnEditHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEditHistory.BackColor = System.Drawing.Color.Transparent;
-            this.btnEditHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
-            this.btnEditHistory.BorderRadius = 8;
-            this.btnEditHistory.BorderThickness = 1;
-            this.btnEditHistory.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnEditHistory.FillColor = System.Drawing.Color.White;
-            this.btnEditHistory.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnEditHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
-            this.btnEditHistory.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
-            this.btnEditHistory.Image = ((System.Drawing.Image)(resources.GetObject("btnEditHistory.Image")));
-            this.btnEditHistory.ImageSize = new System.Drawing.Size(35, 35);
-            this.btnEditHistory.Location = new System.Drawing.Point(490, 17);
-            this.btnEditHistory.Name = "btnEditHistory";
-            this.btnEditHistory.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
-            this.btnEditHistory.Size = new System.Drawing.Size(38, 32);
-            this.btnEditHistory.TabIndex = 10;
-            this.btnEditHistory.Click += new System.EventHandler(this.btnEditHistory_Click);
-            // 
+            //
             // txtFamilyHistory
-            // 
-            this.txtFamilyHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.txtFamilyHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFamilyHistory.BackColor = System.Drawing.Color.Transparent;
             this.txtFamilyHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.txtFamilyHistory.BorderRadius = 8;
             this.txtFamilyHistory.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtFamilyHistory.DefaultText = "Cha tăng huyết áp";
-            this.txtFamilyHistory.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtFamilyHistory.FillColor = System.Drawing.Color.White;
             this.txtFamilyHistory.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.txtFamilyHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.txtFamilyHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -158,22 +125,21 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtFamilyHistory.Multiline = true;
             this.txtFamilyHistory.Name = "txtFamilyHistory";
             this.txtFamilyHistory.PlaceholderText = "";
-            this.txtFamilyHistory.ReadOnly = true;
+            this.txtFamilyHistory.ReadOnly = false;
             this.txtFamilyHistory.SelectedText = "";
             this.txtFamilyHistory.Size = new System.Drawing.Size(508, 64);
             this.txtFamilyHistory.TabIndex = 9;
-            this.txtFamilyHistory.TextChanged += new System.EventHandler(this.HistoryField_TextChanged);
-            // 
+            this.txtFamilyHistory.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // txtMedicalHistory
-            // 
-            this.txtMedicalHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.txtMedicalHistory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMedicalHistory.BackColor = System.Drawing.Color.Transparent;
             this.txtMedicalHistory.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.txtMedicalHistory.BorderRadius = 8;
             this.txtMedicalHistory.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtMedicalHistory.DefaultText = "Tăng huyết áp từ 2018";
-            this.txtMedicalHistory.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtMedicalHistory.FillColor = System.Drawing.Color.White;
             this.txtMedicalHistory.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.txtMedicalHistory.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.txtMedicalHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -182,22 +148,21 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtMedicalHistory.Multiline = true;
             this.txtMedicalHistory.Name = "txtMedicalHistory";
             this.txtMedicalHistory.PlaceholderText = "";
-            this.txtMedicalHistory.ReadOnly = true;
+            this.txtMedicalHistory.ReadOnly = false;
             this.txtMedicalHistory.SelectedText = "";
             this.txtMedicalHistory.Size = new System.Drawing.Size(508, 62);
             this.txtMedicalHistory.TabIndex = 8;
-            this.txtMedicalHistory.TextChanged += new System.EventHandler(this.HistoryField_TextChanged);
-            // 
+            this.txtMedicalHistory.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // txtAllergy
-            // 
-            this.txtAllergy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.txtAllergy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAllergy.BackColor = System.Drawing.Color.Transparent;
             this.txtAllergy.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.txtAllergy.BorderRadius = 8;
             this.txtAllergy.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtAllergy.DefaultText = "Không ghi nhận";
-            this.txtAllergy.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtAllergy.FillColor = System.Drawing.Color.White;
             this.txtAllergy.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.txtAllergy.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.txtAllergy.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
@@ -206,29 +171,14 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtAllergy.Multiline = true;
             this.txtAllergy.Name = "txtAllergy";
             this.txtAllergy.PlaceholderText = "";
-            this.txtAllergy.ReadOnly = true;
+            this.txtAllergy.ReadOnly = false;
             this.txtAllergy.SelectedText = "";
             this.txtAllergy.Size = new System.Drawing.Size(508, 63);
             this.txtAllergy.TabIndex = 7;
-            this.txtAllergy.TextChanged += new System.EventHandler(this.HistoryField_TextChanged);
-            // 
-            // lblFamilyHistoryValue
-            // 
-            this.lblFamilyHistoryValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFamilyHistoryValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblFamilyHistoryValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblFamilyHistoryValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblFamilyHistoryValue.Location = new System.Drawing.Point(20, 315);
-            this.lblFamilyHistoryValue.Name = "lblFamilyHistoryValue";
-            this.lblFamilyHistoryValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblFamilyHistoryValue.Size = new System.Drawing.Size(508, 64);
-            this.lblFamilyHistoryValue.TabIndex = 6;
-            this.lblFamilyHistoryValue.Text = "Cha tăng huyết áp";
-            this.lblFamilyHistoryValue.Visible = false;
-            // 
+            this.txtAllergy.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // lblFamilyHistoryCaption
-            // 
+            //
             this.lblFamilyHistoryCaption.AutoSize = true;
             this.lblFamilyHistoryCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblFamilyHistoryCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -238,24 +188,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblFamilyHistoryCaption.Size = new System.Drawing.Size(110, 15);
             this.lblFamilyHistoryCaption.TabIndex = 5;
             this.lblFamilyHistoryCaption.Text = "TIỀN SỬ GIA ĐÌNH";
-            // 
-            // lblMedicalHistoryValue
-            // 
-            this.lblMedicalHistoryValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMedicalHistoryValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblMedicalHistoryValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblMedicalHistoryValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblMedicalHistoryValue.Location = new System.Drawing.Point(20, 204);
-            this.lblMedicalHistoryValue.Name = "lblMedicalHistoryValue";
-            this.lblMedicalHistoryValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblMedicalHistoryValue.Size = new System.Drawing.Size(508, 62);
-            this.lblMedicalHistoryValue.TabIndex = 4;
-            this.lblMedicalHistoryValue.Text = "Tăng huyết áp từ 2018";
-            this.lblMedicalHistoryValue.Visible = false;
-            // 
+            //
             // lblMedicalHistoryCaption
-            // 
+            //
             this.lblMedicalHistoryCaption.AutoSize = true;
             this.lblMedicalHistoryCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblMedicalHistoryCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -265,24 +200,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblMedicalHistoryCaption.Size = new System.Drawing.Size(87, 15);
             this.lblMedicalHistoryCaption.TabIndex = 3;
             this.lblMedicalHistoryCaption.Text = "TIỀN SỬ BỆNH";
-            // 
-            // lblAllergyValue
-            // 
-            this.lblAllergyValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblAllergyValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblAllergyValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblAllergyValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblAllergyValue.Location = new System.Drawing.Point(20, 90);
-            this.lblAllergyValue.Name = "lblAllergyValue";
-            this.lblAllergyValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblAllergyValue.Size = new System.Drawing.Size(508, 63);
-            this.lblAllergyValue.TabIndex = 2;
-            this.lblAllergyValue.Text = "Không ghi nhận";
-            this.lblAllergyValue.Visible = false;
-            // 
+            //
             // lblAllergyCaption
-            // 
+            //
             this.lblAllergyCaption.AutoSize = true;
             this.lblAllergyCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblAllergyCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -292,9 +212,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblAllergyCaption.Size = new System.Drawing.Size(94, 15);
             this.lblAllergyCaption.TabIndex = 1;
             this.lblAllergyCaption.Text = "DỊ ỨNG THUỐC";
-            // 
+            //
             // lblHistoryTitle
-            // 
+            //
             this.lblHistoryTitle.AutoSize = true;
             this.lblHistoryTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblHistoryTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
@@ -304,24 +224,23 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblHistoryTitle.Size = new System.Drawing.Size(81, 28);
             this.lblHistoryTitle.TabIndex = 0;
             this.lblHistoryTitle.Text = "Tiền sử";
-            // 
+            //
             // pnlProfile
-            // 
+            //
             this.pnlProfile.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlProfile.BorderRadius = 8;
             this.pnlProfile.BorderThickness = 1;
-            this.pnlProfile.Controls.Add(this.btnEditAddress);
-            this.pnlProfile.Controls.Add(this.lblAddressValue);
+            this.pnlProfile.Controls.Add(this.txtAddressField);
             this.pnlProfile.Controls.Add(this.lblAddressCaption);
-            this.pnlProfile.Controls.Add(this.lblCccdValue);
+            this.pnlProfile.Controls.Add(this.txtCccdField);
             this.pnlProfile.Controls.Add(this.lblCccdCaption);
-            this.pnlProfile.Controls.Add(this.lblDobValue);
+            this.pnlProfile.Controls.Add(this.txtDobField);
             this.pnlProfile.Controls.Add(this.lblDobCaption);
-            this.pnlProfile.Controls.Add(this.lblGenderValue);
+            this.pnlProfile.Controls.Add(this.txtGenderField);
             this.pnlProfile.Controls.Add(this.lblGenderCaption);
-            this.pnlProfile.Controls.Add(this.lblPatientNameValue);
+            this.pnlProfile.Controls.Add(this.txtPatientName);
             this.pnlProfile.Controls.Add(this.lblPatientNameCaption);
-            this.pnlProfile.Controls.Add(this.lblPatientIdValue);
+            this.pnlProfile.Controls.Add(this.txtPatientId);
             this.pnlProfile.Controls.Add(this.lblPatientIdCaption);
             this.pnlProfile.Controls.Add(this.lblProfileTitle);
             this.pnlProfile.FillColor = System.Drawing.Color.White;
@@ -329,41 +248,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlProfile.Name = "pnlProfile";
             this.pnlProfile.Size = new System.Drawing.Size(472, 406);
             this.pnlProfile.TabIndex = 5;
-            // 
-            // btnEditAddress
-            // 
-            this.btnEditAddress.BackColor = System.Drawing.Color.Transparent;
-            this.btnEditAddress.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
-            this.btnEditAddress.BorderRadius = 8;
-            this.btnEditAddress.BorderThickness = 1;
-            this.btnEditAddress.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnEditAddress.FillColor = System.Drawing.Color.White;
-            this.btnEditAddress.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnEditAddress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
-            this.btnEditAddress.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
-            this.btnEditAddress.Image = ((System.Drawing.Image)(resources.GetObject("btnEditAddress.Image")));
-            this.btnEditAddress.ImageSize = new System.Drawing.Size(35, 35);
-            this.btnEditAddress.Location = new System.Drawing.Point(414, 282);
-            this.btnEditAddress.Name = "btnEditAddress";
-            this.btnEditAddress.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
-            this.btnEditAddress.Size = new System.Drawing.Size(37, 28);
-            this.btnEditAddress.TabIndex = 13;
-            this.btnEditAddress.Click += new System.EventHandler(this.btnEditAddress_Click);
-            // 
-            // lblAddressValue
-            // 
-            this.lblAddressValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblAddressValue.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblAddressValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblAddressValue.Location = new System.Drawing.Point(215, 315);
-            this.lblAddressValue.Name = "lblAddressValue";
-            this.lblAddressValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblAddressValue.Size = new System.Drawing.Size(236, 30);
-            this.lblAddressValue.TabIndex = 12;
-            this.lblAddressValue.Text = "12 Nguyễn Trãi, Q.1, TP.HCM";
-            // 
+            //
+            // txtAddressField
+            //
+            this.txtAddressField.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtAddressField.BorderRadius = 8;
+            this.txtAddressField.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtAddressField.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtAddressField.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtAddressField.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtAddressField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.txtAddressField.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtAddressField.Location = new System.Drawing.Point(215, 310);
+            this.txtAddressField.Name = "txtAddressField";
+            this.txtAddressField.PlaceholderText = "Số nhà, Tên đường, Quận/Huyện, Tỉnh/TP";
+            this.txtAddressField.SelectedText = "";
+            this.txtAddressField.Size = new System.Drawing.Size(236, 34);
+            this.txtAddressField.TabIndex = 12;
+            this.txtAddressField.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // lblAddressCaption
-            // 
+            //
             this.lblAddressCaption.AutoSize = true;
             this.lblAddressCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblAddressCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -373,21 +278,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblAddressCaption.Size = new System.Drawing.Size(51, 15);
             this.lblAddressCaption.TabIndex = 11;
             this.lblAddressCaption.Text = "ĐỊA CHỈ";
-            // 
-            // lblCccdValue
-            // 
-            this.lblCccdValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblCccdValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCccdValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblCccdValue.Location = new System.Drawing.Point(22, 315);
-            this.lblCccdValue.Name = "lblCccdValue";
-            this.lblCccdValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblCccdValue.Size = new System.Drawing.Size(146, 30);
-            this.lblCccdValue.TabIndex = 10;
-            this.lblCccdValue.Text = "079074012345";
-            // 
+            //
+            // txtCccdField
+            //
+            this.txtCccdField.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtCccdField.BorderRadius = 8;
+            this.txtCccdField.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtCccdField.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtCccdField.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtCccdField.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
+            this.txtCccdField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.txtCccdField.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtCccdField.Location = new System.Drawing.Point(22, 310);
+            this.txtCccdField.Name = "txtCccdField";
+            this.txtCccdField.PlaceholderText = "";
+            this.txtCccdField.SelectedText = "";
+            this.txtCccdField.Size = new System.Drawing.Size(172, 34);
+            this.txtCccdField.TabIndex = 10;
+            this.txtCccdField.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // lblCccdCaption
-            // 
+            //
             this.lblCccdCaption.AutoSize = true;
             this.lblCccdCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblCccdCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -397,21 +308,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblCccdCaption.Size = new System.Drawing.Size(37, 15);
             this.lblCccdCaption.TabIndex = 9;
             this.lblCccdCaption.Text = "CCCD";
-            // 
-            // lblDobValue
-            // 
-            this.lblDobValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblDobValue.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblDobValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblDobValue.Location = new System.Drawing.Point(215, 204);
-            this.lblDobValue.Name = "lblDobValue";
-            this.lblDobValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblDobValue.Size = new System.Drawing.Size(146, 30);
-            this.lblDobValue.TabIndex = 8;
-            this.lblDobValue.Text = "12/04/1974";
-            // 
+            //
+            // txtDobField
+            //
+            this.txtDobField.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtDobField.BorderRadius = 8;
+            this.txtDobField.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtDobField.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtDobField.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtDobField.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtDobField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.txtDobField.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtDobField.Location = new System.Drawing.Point(215, 197);
+            this.txtDobField.Name = "txtDobField";
+            this.txtDobField.PlaceholderText = "dd/MM/yyyy";
+            this.txtDobField.SelectedText = "";
+            this.txtDobField.Size = new System.Drawing.Size(236, 34);
+            this.txtDobField.TabIndex = 8;
+            this.txtDobField.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // lblDobCaption
-            // 
+            //
             this.lblDobCaption.AutoSize = true;
             this.lblDobCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblDobCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -421,21 +338,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblDobCaption.Size = new System.Drawing.Size(71, 15);
             this.lblDobCaption.TabIndex = 7;
             this.lblDobCaption.Text = "NGÀY SINH";
-            // 
-            // lblGenderValue
-            // 
-            this.lblGenderValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
-            this.lblGenderValue.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblGenderValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblGenderValue.Location = new System.Drawing.Point(22, 202);
-            this.lblGenderValue.Name = "lblGenderValue";
-            this.lblGenderValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblGenderValue.Size = new System.Drawing.Size(146, 30);
-            this.lblGenderValue.TabIndex = 6;
-            this.lblGenderValue.Text = "Nam";
-            // 
+            //
+            // txtGenderField
+            //
+            this.txtGenderField.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtGenderField.BorderRadius = 8;
+            this.txtGenderField.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtGenderField.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
+            this.txtGenderField.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtGenderField.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtGenderField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.txtGenderField.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtGenderField.Location = new System.Drawing.Point(22, 197);
+            this.txtGenderField.Name = "txtGenderField";
+            this.txtGenderField.PlaceholderText = "";
+            this.txtGenderField.SelectedText = "";
+            this.txtGenderField.Size = new System.Drawing.Size(172, 34);
+            this.txtGenderField.TabIndex = 6;
+            this.txtGenderField.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // lblGenderCaption
-            // 
+            //
             this.lblGenderCaption.AutoSize = true;
             this.lblGenderCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblGenderCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -445,21 +368,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblGenderCaption.Size = new System.Drawing.Size(65, 15);
             this.lblGenderCaption.TabIndex = 5;
             this.lblGenderCaption.Text = "GIỚI TÍNH";
-            // 
-            // lblPatientNameValue
-            // 
-            this.lblPatientNameValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblPatientNameValue.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lblPatientNameValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblPatientNameValue.Location = new System.Drawing.Point(215, 90);
-            this.lblPatientNameValue.Name = "lblPatientNameValue";
-            this.lblPatientNameValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblPatientNameValue.Size = new System.Drawing.Size(236, 30);
-            this.lblPatientNameValue.TabIndex = 4;
-            this.lblPatientNameValue.Text = "Nguyễn Văn An";
-            // 
+            //
+            // txtPatientName
+            //
+            this.txtPatientName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtPatientName.BorderRadius = 8;
+            this.txtPatientName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPatientName.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
+            this.txtPatientName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtPatientName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.txtPatientName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
+            this.txtPatientName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtPatientName.Location = new System.Drawing.Point(215, 84);
+            this.txtPatientName.Name = "txtPatientName";
+            this.txtPatientName.PlaceholderText = "";
+            this.txtPatientName.SelectedText = "";
+            this.txtPatientName.Size = new System.Drawing.Size(236, 34);
+            this.txtPatientName.TabIndex = 4;
+            this.txtPatientName.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // lblPatientNameCaption
-            // 
+            //
             this.lblPatientNameCaption.AutoSize = true;
             this.lblPatientNameCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblPatientNameCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -469,21 +398,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblPatientNameCaption.Size = new System.Drawing.Size(102, 15);
             this.lblPatientNameCaption.TabIndex = 3;
             this.lblPatientNameCaption.Text = "TÊN BỆNH NHÂN";
-            // 
-            // lblPatientIdValue
-            // 
-            this.lblPatientIdValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
-            this.lblPatientIdValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
-            this.lblPatientIdValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblPatientIdValue.Location = new System.Drawing.Point(22, 90);
-            this.lblPatientIdValue.Name = "lblPatientIdValue";
-            this.lblPatientIdValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblPatientIdValue.Size = new System.Drawing.Size(146, 30);
-            this.lblPatientIdValue.TabIndex = 2;
-            this.lblPatientIdValue.Text = "BN-00341";
-            // 
+            //
+            // txtPatientId
+            //
+            this.txtPatientId.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
+            this.txtPatientId.BorderRadius = 8;
+            this.txtPatientId.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPatientId.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
+            this.txtPatientId.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtPatientId.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
+            this.txtPatientId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.txtPatientId.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.txtPatientId.Location = new System.Drawing.Point(22, 84);
+            this.txtPatientId.Name = "txtPatientId";
+            this.txtPatientId.PlaceholderText = "";
+            this.txtPatientId.SelectedText = "";
+            this.txtPatientId.Size = new System.Drawing.Size(172, 34);
+            this.txtPatientId.TabIndex = 2;
+            this.txtPatientId.TextChanged += new System.EventHandler(this.AnyField_TextChanged);
+            //
             // lblPatientIdCaption
-            // 
+            //
             this.lblPatientIdCaption.AutoSize = true;
             this.lblPatientIdCaption.BackColor = System.Drawing.Color.Transparent;
             this.lblPatientIdCaption.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
@@ -493,9 +428,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblPatientIdCaption.Size = new System.Drawing.Size(99, 15);
             this.lblPatientIdCaption.TabIndex = 1;
             this.lblPatientIdCaption.Text = "MÃ BỆNH NHÂN";
-            // 
+            //
             // lblProfileTitle
-            // 
+            //
             this.lblProfileTitle.AutoSize = true;
             this.lblProfileTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblProfileTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
@@ -505,9 +440,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblProfileTitle.Size = new System.Drawing.Size(174, 28);
             this.lblProfileTitle.TabIndex = 0;
             this.lblProfileTitle.Text = "Thông tin cơ bản";
-            // 
+            //
             // pnlKpiPrescription
-            // 
+            //
             this.pnlKpiPrescription.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlKpiPrescription.BorderRadius = 8;
             this.pnlKpiPrescription.BorderThickness = 1;
@@ -519,9 +454,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlKpiPrescription.Name = "pnlKpiPrescription";
             this.pnlKpiPrescription.Size = new System.Drawing.Size(244, 90);
             this.pnlKpiPrescription.TabIndex = 4;
-            // 
+            //
             // lblKpiPrescriptionSub
-            // 
+            //
             this.lblKpiPrescriptionSub.AutoSize = true;
             this.lblKpiPrescriptionSub.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiPrescriptionSub.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -531,9 +466,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiPrescriptionSub.Size = new System.Drawing.Size(83, 15);
             this.lblKpiPrescriptionSub.TabIndex = 2;
             this.lblKpiPrescriptionSub.Text = "thuốc đang kê";
-            // 
+            //
             // lblKpiPrescriptionTitle
-            // 
+            //
             this.lblKpiPrescriptionTitle.AutoSize = true;
             this.lblKpiPrescriptionTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiPrescriptionTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -543,9 +478,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiPrescriptionTitle.Size = new System.Drawing.Size(77, 19);
             this.lblKpiPrescriptionTitle.TabIndex = 1;
             this.lblKpiPrescriptionTitle.Text = "Đơn thuốc";
-            // 
+            //
             // lblKpiPrescriptionValue
-            // 
+            //
             this.lblKpiPrescriptionValue.AutoSize = true;
             this.lblKpiPrescriptionValue.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiPrescriptionValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
@@ -555,9 +490,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiPrescriptionValue.Size = new System.Drawing.Size(35, 41);
             this.lblKpiPrescriptionValue.TabIndex = 0;
             this.lblKpiPrescriptionValue.Text = "3";
-            // 
+            //
             // pnlKpiService
-            // 
+            //
             this.pnlKpiService.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlKpiService.BorderRadius = 8;
             this.pnlKpiService.BorderThickness = 1;
@@ -569,9 +504,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlKpiService.Name = "pnlKpiService";
             this.pnlKpiService.Size = new System.Drawing.Size(244, 90);
             this.pnlKpiService.TabIndex = 3;
-            // 
+            //
             // lblKpiServiceSub
-            // 
+            //
             this.lblKpiServiceSub.AutoSize = true;
             this.lblKpiServiceSub.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiServiceSub.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -581,9 +516,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiServiceSub.Size = new System.Drawing.Size(73, 15);
             this.lblKpiServiceSub.TabIndex = 2;
             this.lblKpiServiceSub.Text = "đã thực hiện";
-            // 
+            //
             // lblKpiServiceTitle
-            // 
+            //
             this.lblKpiServiceTitle.AutoSize = true;
             this.lblKpiServiceTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiServiceTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -593,9 +528,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiServiceTitle.Size = new System.Drawing.Size(58, 19);
             this.lblKpiServiceTitle.TabIndex = 1;
             this.lblKpiServiceTitle.Text = "Dịch vụ";
-            // 
+            //
             // lblKpiServiceValue
-            // 
+            //
             this.lblKpiServiceValue.AutoSize = true;
             this.lblKpiServiceValue.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiServiceValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
@@ -605,9 +540,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiServiceValue.Size = new System.Drawing.Size(35, 41);
             this.lblKpiServiceValue.TabIndex = 0;
             this.lblKpiServiceValue.Text = "3";
-            // 
+            //
             // pnlKpiHsba
-            // 
+            //
             this.pnlKpiHsba.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlKpiHsba.BorderRadius = 8;
             this.pnlKpiHsba.BorderThickness = 1;
@@ -619,9 +554,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlKpiHsba.Name = "pnlKpiHsba";
             this.pnlKpiHsba.Size = new System.Drawing.Size(244, 90);
             this.pnlKpiHsba.TabIndex = 2;
-            // 
+            //
             // lblKpiHsbaSub
-            // 
+            //
             this.lblKpiHsbaSub.AutoSize = true;
             this.lblKpiHsbaSub.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiHsbaSub.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -631,9 +566,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiHsbaSub.Size = new System.Drawing.Size(101, 15);
             this.lblKpiHsbaSub.TabIndex = 2;
             this.lblKpiHsbaSub.Text = "lần khám gần đây";
-            // 
+            //
             // lblKpiHsbaTitle
-            // 
+            //
             this.lblKpiHsbaTitle.AutoSize = true;
             this.lblKpiHsbaTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiHsbaTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -643,9 +578,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiHsbaTitle.Size = new System.Drawing.Size(105, 19);
             this.lblKpiHsbaTitle.TabIndex = 1;
             this.lblKpiHsbaTitle.Text = "Hồ sơ bệnh án";
-            // 
+            //
             // lblKpiHsbaValue
-            // 
+            //
             this.lblKpiHsbaValue.AutoSize = true;
             this.lblKpiHsbaValue.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiHsbaValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
@@ -655,9 +590,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiHsbaValue.Size = new System.Drawing.Size(35, 41);
             this.lblKpiHsbaValue.TabIndex = 0;
             this.lblKpiHsbaValue.Text = "3";
-            // 
+            //
             // pnlKpiAllergy
-            // 
+            //
             this.pnlKpiAllergy.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.pnlKpiAllergy.BorderRadius = 8;
             this.pnlKpiAllergy.BorderThickness = 1;
@@ -669,9 +604,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlKpiAllergy.Name = "pnlKpiAllergy";
             this.pnlKpiAllergy.Size = new System.Drawing.Size(244, 90);
             this.pnlKpiAllergy.TabIndex = 1;
-            // 
+            //
             // lblKpiAllergySub
-            // 
+            //
             this.lblKpiAllergySub.AutoSize = true;
             this.lblKpiAllergySub.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiAllergySub.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -681,9 +616,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiAllergySub.Size = new System.Drawing.Size(108, 15);
             this.lblKpiAllergySub.TabIndex = 2;
             this.lblKpiAllergySub.Text = "trạng thái ghi nhận";
-            // 
+            //
             // lblKpiAllergyTitle
-            // 
+            //
             this.lblKpiAllergyTitle.AutoSize = true;
             this.lblKpiAllergyTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiAllergyTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -693,9 +628,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiAllergyTitle.Size = new System.Drawing.Size(94, 19);
             this.lblKpiAllergyTitle.TabIndex = 1;
             this.lblKpiAllergyTitle.Text = "Dị ứng thuốc";
-            // 
+            //
             // lblKpiAllergyValue
-            // 
+            //
             this.lblKpiAllergyValue.AutoSize = true;
             this.lblKpiAllergyValue.BackColor = System.Drawing.Color.Transparent;
             this.lblKpiAllergyValue.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
@@ -705,12 +640,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblKpiAllergyValue.Size = new System.Drawing.Size(35, 41);
             this.lblKpiAllergyValue.TabIndex = 0;
             this.lblKpiAllergyValue.Text = "0";
-            // 
+            //
             // pnlWelcome
-            // 
-            this.pnlWelcome.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.pnlWelcome.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlWelcome.BorderRadius = 12;
+            this.pnlWelcome.Controls.Add(this.btnSaveProfile);
             this.pnlWelcome.Controls.Add(this.lblWelcomeMeta);
             this.pnlWelcome.Controls.Add(this.lblWelcomeName);
             this.pnlWelcome.Controls.Add(this.lblWelcomeId);
@@ -719,9 +655,28 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlWelcome.Name = "pnlWelcome";
             this.pnlWelcome.Size = new System.Drawing.Size(1056, 126);
             this.pnlWelcome.TabIndex = 0;
-            // 
+            //
+            // btnSaveProfile (nút Cập nhật — trong banner header, góc phải)
+            //
+            this.btnSaveProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveProfile.BackColor = System.Drawing.Color.Transparent;
+            this.btnSaveProfile.BorderRadius = 8;
+            this.btnSaveProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSaveProfile.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnSaveProfile.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSaveProfile.ForeColor = System.Drawing.Color.White;
+            this.btnSaveProfile.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
+            this.btnSaveProfile.Location = new System.Drawing.Point(864, 12);
+            this.btnSaveProfile.Name = "btnSaveProfile";
+            this.btnSaveProfile.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
+            this.btnSaveProfile.Size = new System.Drawing.Size(162, 38);
+            this.btnSaveProfile.TabIndex = 7;
+            this.btnSaveProfile.Text = "Cập nhật";
+            this.btnSaveProfile.Visible = false;
+            this.btnSaveProfile.Click += new System.EventHandler(this.btnSaveProfile_Click);
+            //
             // lblWelcomeMeta
-            // 
+            //
             this.lblWelcomeMeta.AutoSize = true;
             this.lblWelcomeMeta.BackColor = System.Drawing.Color.Transparent;
             this.lblWelcomeMeta.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
@@ -731,9 +686,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblWelcomeMeta.Size = new System.Drawing.Size(105, 20);
             this.lblWelcomeMeta.TabIndex = 3;
             this.lblWelcomeMeta.Text = "Nam · 52 tuổi";
-            // 
+            //
             // lblWelcomeName
-            // 
+            //
             this.lblWelcomeName.AutoSize = true;
             this.lblWelcomeName.BackColor = System.Drawing.Color.Transparent;
             this.lblWelcomeName.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold);
@@ -743,9 +698,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblWelcomeName.Size = new System.Drawing.Size(252, 45);
             this.lblWelcomeName.TabIndex = 2;
             this.lblWelcomeName.Text = "Nguyễn Văn An";
-            // 
+            //
             // lblWelcomeId
-            // 
+            //
             this.lblWelcomeId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblWelcomeId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
             this.lblWelcomeId.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold);
@@ -756,29 +711,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblWelcomeId.TabIndex = 0;
             this.lblWelcomeId.Text = "BN-00341";
             this.lblWelcomeId.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnSaveProfile
-            // 
-            this.btnSaveProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveProfile.BackColor = System.Drawing.Color.Transparent;
-            this.btnSaveProfile.BorderRadius = 8;
-            this.btnSaveProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSaveProfile.DefaultAutoSize = true;
-            this.btnSaveProfile.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(82)))), ((int)(((byte)(66)))));
-            this.btnSaveProfile.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnSaveProfile.ForeColor = System.Drawing.Color.White;
-            this.btnSaveProfile.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnSaveProfile.Location = new System.Drawing.Point(969, 713);
-            this.btnSaveProfile.Name = "btnSaveProfile";
-            this.btnSaveProfile.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
-            this.btnSaveProfile.Size = new System.Drawing.Size(111, 29);
-            this.btnSaveProfile.TabIndex = 7;
-            this.btnSaveProfile.Text = "Lưu thay đổi";
-            this.btnSaveProfile.Visible = false;
-            this.btnSaveProfile.Click += new System.EventHandler(this.btnSaveProfile_Click);
-            // 
+            //
             // ucHSCN
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
@@ -802,14 +737,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlWelcome.ResumeLayout(false);
             this.pnlWelcome.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
         private System.Windows.Forms.Panel pnlRoot;
-        private Guna.UI2.WinForms.Guna2Button btnSaveProfile;
         private Guna.UI2.WinForms.Guna2Panel pnlWelcome;
+        private Guna.UI2.WinForms.Guna2Button btnSaveProfile;
         private System.Windows.Forms.Label lblWelcomeId;
         private System.Windows.Forms.Label lblWelcomeName;
         private System.Windows.Forms.Label lblWelcomeMeta;
@@ -832,29 +766,24 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private Guna.UI2.WinForms.Guna2Panel pnlProfile;
         private System.Windows.Forms.Label lblProfileTitle;
         private System.Windows.Forms.Label lblPatientIdCaption;
-        private System.Windows.Forms.Label lblPatientIdValue;
-        private System.Windows.Forms.Label lblPatientNameValue;
+        private Guna.UI2.WinForms.Guna2TextBox txtPatientId;
         private System.Windows.Forms.Label lblPatientNameCaption;
-        private System.Windows.Forms.Label lblGenderValue;
+        private Guna.UI2.WinForms.Guna2TextBox txtPatientName;
         private System.Windows.Forms.Label lblGenderCaption;
-        private System.Windows.Forms.Label lblDobValue;
+        private Guna.UI2.WinForms.Guna2TextBox txtGenderField;
         private System.Windows.Forms.Label lblDobCaption;
-        private System.Windows.Forms.Label lblCccdValue;
+        private Guna.UI2.WinForms.Guna2TextBox txtDobField;
         private System.Windows.Forms.Label lblCccdCaption;
-        private Guna.UI2.WinForms.Guna2Button btnEditAddress;
-        private System.Windows.Forms.Label lblAddressValue;
+        private Guna.UI2.WinForms.Guna2TextBox txtCccdField;
         private System.Windows.Forms.Label lblAddressCaption;
+        private Guna.UI2.WinForms.Guna2TextBox txtAddressField;
         private Guna.UI2.WinForms.Guna2Panel pnlHistory;
         private System.Windows.Forms.Label lblHistoryTitle;
         private System.Windows.Forms.Label lblAllergyCaption;
         private Guna.UI2.WinForms.Guna2TextBox txtAllergy;
-        private System.Windows.Forms.Label lblAllergyValue;
-        private Guna.UI2.WinForms.Guna2TextBox txtMedicalHistory;
-        private System.Windows.Forms.Label lblMedicalHistoryValue;
         private System.Windows.Forms.Label lblMedicalHistoryCaption;
-        private Guna.UI2.WinForms.Guna2TextBox txtFamilyHistory;
-        private System.Windows.Forms.Label lblFamilyHistoryValue;
+        private Guna.UI2.WinForms.Guna2TextBox txtMedicalHistory;
         private System.Windows.Forms.Label lblFamilyHistoryCaption;
-        private Guna.UI2.WinForms.Guna2Button btnEditHistory;
+        private Guna.UI2.WinForms.Guna2TextBox txtFamilyHistory;
     }
 }
