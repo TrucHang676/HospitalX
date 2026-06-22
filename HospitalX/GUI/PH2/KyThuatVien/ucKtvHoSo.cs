@@ -91,7 +91,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblStatusBadge.PressedColor = Color.FromArgb(230, 244, 240);
             lblStatusBadge.Cursor = Cursors.Default;
 
-            foreach (var panel in new[] { pnlCardProfessional, pnlCardContact, pnlCardSecurity })
+            foreach (var panel in new[] { pnlCardProfessional, pnlCardSecurity })
             {
                 panel.BorderColor = BorderGray;
                 panel.BorderThickness = 1;
@@ -108,6 +108,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblTitleContact.ForeColor = ThemeGreen;
             lblTitleSecurity.ForeColor = ThemeGreen;
 
+            lblTitleContact.Visible = true;
+
             var labelFont = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             foreach (var lbl in new[] { label1, label2, label3, lblKhoa, label4, label5, label6, label8, label9 })
             {
@@ -119,7 +121,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             }
 
             pnlCardProfessional.Margin = new Padding(0, 0, 0, 20);
-            pnlCardContact.Margin = new Padding(0, 0, 0, 20);
             pnlCardSecurity.Margin = new Padding(0, 0, 0, 20);
             if (lblSlogan != null)
             {
@@ -267,10 +268,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             // Set card dimensions (matching coordinator exactly)
             pnlCardProfessional.Width = rightW;
-            pnlCardProfessional.Height = 250;
-
-            pnlCardContact.Width = rightW;
-            pnlCardContact.Height = 340;
+            pnlCardProfessional.Height = 570;
 
             pnlCardSecurity.Width = rightW;
             pnlCardSecurity.Height = 120;
@@ -281,22 +279,19 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             int fieldW = (rightW - (colPadding * 2) - colGap) / 2;
             int col2X = colPadding + fieldW + colGap;
 
-            // Professional Card
+            // Merged Card Y positioning and height of fields
             lblTitleProf.Top = 20;
+            btnUpdateContact.Top = 20;
+            btnUpdateContact.Height = 40;
+            btnUpdateContact.Location = new Point(rightW - btnUpdateContact.Width - 24, btnUpdateContact.Top);
 
+            // Row 1
             label1.Top = 64;
             label1.Left = colPadding;
             txtProfMaNV.Left = colPadding;
             txtProfMaNV.Top = 86;
             txtProfMaNV.Width = fieldW;
             txtProfMaNV.Height = 44;
-
-            label3.Top = 154;
-            label3.Left = colPadding;
-            txtProfVaiTro.Left = colPadding;
-            txtProfVaiTro.Top = 176;
-            txtProfVaiTro.Width = fieldW;
-            txtProfVaiTro.Height = 44;
 
             label2.Top = 64;
             label2.Left = col2X;
@@ -305,6 +300,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             txtProfHoTen.Width = fieldW;
             txtProfHoTen.Height = 44;
 
+            // Row 2
+            label3.Top = 154;
+            label3.Left = colPadding;
+            txtProfVaiTro.Left = colPadding;
+            txtProfVaiTro.Top = 176;
+            txtProfVaiTro.Width = fieldW;
+            txtProfVaiTro.Height = 44;
+
             lblKhoa.Top = 154;
             lblKhoa.Left = col2X;
             txtKhoa.Left = col2X;
@@ -312,45 +315,45 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             txtKhoa.Width = fieldW;
             txtKhoa.Height = 44;
 
-            // Contact Card
-            lblTitleContact.Top = 20;
-            btnUpdateContact.Top = 20;
-            btnUpdateContact.Height = 40;
-            btnUpdateContact.Location = new Point(rightW - btnUpdateContact.Width - 24, btnUpdateContact.Top);
+            // Subheader: Personal Info
+            lblTitleContact.Top = 244;
+            lblTitleContact.Left = colPadding;
 
-            label4.Top = 64;
+            // Row 3
+            label4.Top = 288;
             label4.Left = colPadding;
             txtProfGioiTinh.Left = colPadding;
-            txtProfGioiTinh.Top = 86;
+            txtProfGioiTinh.Top = 310;
             txtProfGioiTinh.Width = fieldW;
             txtProfGioiTinh.Height = 44;
 
-            label6.Top = 154;
-            label6.Left = colPadding;
-            txtProfCccd.Left = colPadding;
-            txtProfCccd.Top = 176;
-            txtProfCccd.Width = fieldW;
-            txtProfCccd.Height = 44;
-
-            label5.Top = 64;
+            label5.Top = 288;
             label5.Left = col2X;
             txtProfNgaySinh.Left = col2X;
-            txtProfNgaySinh.Top = 86;
+            txtProfNgaySinh.Top = 310;
             txtProfNgaySinh.Width = fieldW;
             txtProfNgaySinh.Height = 44;
 
-            label8.Top = 154;
+            // Row 4
+            label6.Top = 378;
+            label6.Left = colPadding;
+            txtProfCccd.Left = colPadding;
+            txtProfCccd.Top = 400;
+            txtProfCccd.Width = fieldW;
+            txtProfCccd.Height = 44;
+
+            label8.Top = 378;
             label8.Left = col2X;
             txtContactPhone.Left = col2X;
-            txtContactPhone.Top = 176;
+            txtContactPhone.Top = 400;
             txtContactPhone.Width = fieldW;
             txtContactPhone.Height = 44;
 
-            // Full-width address field
-            label9.Top = 244;
+            // Row 5 (Full-width address field)
+            label9.Top = 468;
             label9.Left = colPadding;
             txtContactAddress.Left = colPadding;
-            txtContactAddress.Top = 266;
+            txtContactAddress.Top = 490;
             txtContactAddress.Width = rightW - (colPadding * 2);
             txtContactAddress.Height = 44;
 
