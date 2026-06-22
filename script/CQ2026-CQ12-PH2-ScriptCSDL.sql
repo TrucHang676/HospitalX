@@ -1572,7 +1572,7 @@ EXEC ADMINHOS.SP_YC1C3_SAFE_REVOKE;
 -- MANV, HOTEN, CHUYENKHOA, VAITRO
 -- Không cho xem CMND, ngày sinh, quê quán, số điện thoại...
 CREATE OR REPLACE VIEW ADMINHOS.VW_NHANVIEN_DIEUPHOI AS
-SELECT 
+SELECT
     NV.MANV,
     NV.HOTEN,
     NV.CHUYENKHOA,
@@ -1580,19 +1580,11 @@ SELECT
     NV.COSO
 FROM ADMINHOS.NHANVIEN NV
 WHERE NV.VAITRO IN (N'Bác sĩ/Y sĩ', N'Kỹ thuật viên')
-  AND (
-        NV.COSO = (
-            SELECT DP.COSO
-            FROM ADMINHOS.NHANVIEN DP
-            WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
-              AND DP.VAITRO = N'Điều phối viên'
-        )
-        OR NOT EXISTS (
-            SELECT 1
-            FROM ADMINHOS.NHANVIEN DP
-            WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
-              AND DP.VAITRO = N'Điều phối viên'
-        )
+  AND NV.COSO = (
+        SELECT DP.COSO
+        FROM ADMINHOS.NHANVIEN DP
+        WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
+          AND DP.VAITRO = N'Điều phối viên'
   );
 /
 
@@ -4017,11 +4009,9 @@ AS
 BEGIN
     UPDATE ADMINHOS.HSBA
     SET CHANDOAN = p_chandoan,
-        DIEUTRI = p_dieutri
+        DIEUTRI  = p_dieutri,
+        KETLUAN  = p_ketluan
     WHERE MAHSBA = p_mahsba;
-    
-    -- Gọi SP cập nhật kết luận cũ
-    SP_CAPNHAT_KETLUAN_HSBA(p_mahsba, p_ketluan);
     COMMIT;
 END;
 /

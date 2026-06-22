@@ -774,16 +774,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             pnlPatientFound.Visible = true;
 
-            // Generate unique HSBA code from database sequential ID
-            try
-            {
-                txtMaHSBA.Text = HospitalX.DAO.HsbaDAO.GetNextHsbaId();
-            }
-            catch
-            {
-                string suffix = code.Length >= 4 ? code.Substring(code.Length - 4) : "9999";
-                txtMaHSBA.Text = $"HS26{suffix}";
-            }
+            // Mã HSBA sẽ được tự động sinh khi nhấn Tạo hồ sơ bệnh án
+            txtMaHSBA.Text = "(Tự động)";
 
             // Map patient registered department to cboKhoaDT to assist coordinator
             string deptLower = dept.ToLower();
