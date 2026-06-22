@@ -27,6 +27,7 @@ namespace HospitalX.GUI.PH2
             WireNavigation();
             LoadPage(new ucKtvDashboard(), "Trang chủ", "Xin chào, bạn có 7 dịch vụ được phân công hôm nay");
             btnDashboard.Checked = true;
+            LoadKtvInfo();
         }
 
         private void Main_KTV_FormClosed(object sender, FormClosedEventArgs e)
@@ -249,6 +250,27 @@ namespace HospitalX.GUI.PH2
             catch (System.Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("Error loading button images: " + ex.Message);
+            }
+        }
+
+        public void LoadKtvInfo()
+        {
+            try
+            {
+                System.Data.DataTable dt = HospitalX.DAO.ProfileDAO.Instance.GetProfile();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    System.Data.DataRow row = dt.Rows[0];
+                    string hoten = row["HOTEN"]?.ToString();
+                    if (!string.IsNullOrEmpty(hoten))
+                    {
+                        lblTenKtv.Text = hoten;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error loading KTV name in sidebar: " + ex.Message);
             }
         }
 

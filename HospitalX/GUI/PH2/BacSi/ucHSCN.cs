@@ -20,6 +20,14 @@ namespace HospitalX.GUI.PH2.BacSi
         private Guna2MessageDialog _messageDialog;
         private string _originalContactPhone;
         private string _originalContactAddress;
+        private string _originalMaNV;
+        private string _originalHoTen;
+        private string _originalVaiTro;
+        private string _originalKhoa;
+        private string _originalGioiTinh;
+        private string _originalNgaySinh;
+        private string _originalCccd;
+        private string _originalCoSo;
         private bool _isLoadingContact;
 
         private static string SavedPhone = "090 123 4567";
@@ -31,6 +39,15 @@ namespace HospitalX.GUI.PH2.BacSi
             DoubleBuffered = true;
             txtContactPhone.TextChanged += txtContactPhone_TextChanged;
             txtContactAddress.TextChanged += txtContactAddress_TextChanged;
+            
+            txtProfMaNV.TextChanged += (s, ev) => ContactFieldChanged();
+            txtProfHoTen.TextChanged += (s, ev) => ContactFieldChanged();
+            txtProfVaiTro.TextChanged += (s, ev) => ContactFieldChanged();
+            txtKhoa.TextChanged += (s, ev) => ContactFieldChanged();
+            txtProfGioiTinh.TextChanged += (s, ev) => ContactFieldChanged();
+            txtProfNgaySinh.TextChanged += (s, ev) => ContactFieldChanged();
+            txtProfCccd.TextChanged += (s, ev) => ContactFieldChanged();
+            
             btnUpdateContact.Click += btnUpdateContact_Click;
         }
 
@@ -65,6 +82,7 @@ namespace HospitalX.GUI.PH2.BacSi
                     string vaiTro = row["VAITRO"]?.ToString() ?? string.Empty;
                     string chuyenKhoa = row["CHUYENKHOA"]?.ToString() ?? string.Empty;
                     string coSo = row["COSO"]?.ToString() ?? string.Empty;
+                    _originalCoSo = coSo;
 
                     lblUserName.Text = hoTen;
                     txtProfMaNV.Text = maNV;
@@ -258,12 +276,12 @@ namespace HospitalX.GUI.PH2.BacSi
 
         private void SetupReadOnlyField(Guna2TextBox box)
         {
-            box.ReadOnly = true;
-            box.Enabled = false;
-            box.FillColor = Color.FromArgb(247, 249, 248);
-            box.BorderColor = Color.FromArgb(230, 238, 235);
-            box.ForeColor = Color.FromArgb(90, 110, 100);
-            box.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
+            box.ReadOnly = false;
+            box.Enabled = true;
+            box.FillColor = Color.White;
+            box.BorderColor = BorderGray;
+            box.ForeColor = TextDark;
+            box.Font = new Font("Segoe UI", 10.5F);
         }
 
         private void ucHSCN_Resize(object sender, EventArgs e)
@@ -433,28 +451,53 @@ namespace HospitalX.GUI.PH2.BacSi
                 return;
             }
 
+            DateTime? ngaysinh = null;
+            if (!string.IsNullOrWhiteSpace(txtProfNgaySinh.Text))
+            {
+                if (DateTime.TryParseExact(txtProfNgaySinh.Text.Trim(), "dd/MM/yyyy",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.DateTimeStyles.None, out DateTime dob))
+                {
+                    ngaysinh = dob;
+                }
+                else
+                {
+                    ShowMessage("Ngày sinh phải đúng định dạng dd/MM/yyyy.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
+                    return;
+                }
+            }
+
             try
             {
-                bool success = ProfileDAO.Instance.UpdateProfile(phone, address, txtProfMaNV.Text);
+                bool success = ProfileDAO.Instance.UpdateProfile(
+                    phone,
+                    address,
+                    txtProfMaNV.Text.Trim() == _originalMaNV ? _originalMaNV : txtProfMaNV.Text.Trim(),
+                    txtProfHoTen.Text.Trim() == _originalHoTen ? _originalHoTen : txtProfHoTen.Text.Trim(),
+                    txtProfGioiTinh.Text.Trim() == _originalGioiTinh ? _originalGioiTinh : txtProfGioiTinh.Text.Trim(),
+                    ngaysinh,
+                    txtProfCccd.Text.Trim() == _originalCccd ? _originalCccd : txtProfCccd.Text.Trim(),
+                    txtProfVaiTro.Text.Trim() == _originalVaiTro ? _originalVaiTro : txtProfVaiTro.Text.Trim(),
+                    txtKhoa.Text.Trim() == _originalKhoa ? _originalKhoa : txtKhoa.Text.Trim(),
+                    _originalCoSo
+                );
+
                 if (success)
                 {
                     SavedPhone = phone;
                     SavedAddress = address;
                     ReloadContactData();
-                    ShowMessage("Cập nhật thông tin liên hệ thành công.", "Thông báo", MessageDialogIcon.Information);
+                    ShowMessage("Cập nhật thông tin thành công.", "Thông báo", MessageDialogIcon.Information);
                 }
                 else
                 {
-                    ShowMessage("Cập nhật thông tin liên hệ thất bại hoặc không thay đổi.", "Thông báo", MessageDialogIcon.Warning);
+                    ShowMessage("Cập nhật thông tin thất bại hoặc không thay đổi.", "Thông báo", MessageDialogIcon.Warning);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Graceful fallback if database is offline/mock mode
-                SavedPhone = phone;
-                SavedAddress = address;
-                ReloadContactData();
-                ShowMessage("Cập nhật thông tin liên hệ thành công (Chế độ ngoại tuyến).", "Thông báo", MessageDialogIcon.Information);
+                ShowMessage("Lỗi CSDL: " + ex.Message, "Lỗi cập nhật", MessageDialogIcon.Error);
+                LoadProfileData(); // Reset to original values from DB
             }
         }
 
@@ -492,12 +535,26 @@ namespace HospitalX.GUI.PH2.BacSi
         {
             _originalContactPhone = NormalizeContactText(txtContactPhone.Text);
             _originalContactAddress = NormalizeContactText(txtContactAddress.Text);
+            _originalMaNV = NormalizeContactText(txtProfMaNV.Text);
+            _originalHoTen = NormalizeContactText(txtProfHoTen.Text);
+            _originalVaiTro = NormalizeContactText(txtProfVaiTro.Text);
+            _originalKhoa = NormalizeContactText(txtKhoa.Text);
+            _originalGioiTinh = NormalizeContactText(txtProfGioiTinh.Text);
+            _originalNgaySinh = NormalizeContactText(txtProfNgaySinh.Text);
+            _originalCccd = NormalizeContactText(txtProfCccd.Text);
         }
 
         private void UpdateContactSaveButton()
         {
             bool changed = NormalizeContactText(txtContactPhone.Text) != _originalContactPhone
-                || NormalizeContactText(txtContactAddress.Text) != _originalContactAddress;
+                || NormalizeContactText(txtContactAddress.Text) != _originalContactAddress
+                || NormalizeContactText(txtProfMaNV.Text) != _originalMaNV
+                || NormalizeContactText(txtProfHoTen.Text) != _originalHoTen
+                || NormalizeContactText(txtProfVaiTro.Text) != _originalVaiTro
+                || NormalizeContactText(txtKhoa.Text) != _originalKhoa
+                || NormalizeContactText(txtProfGioiTinh.Text) != _originalGioiTinh
+                || NormalizeContactText(txtProfNgaySinh.Text) != _originalNgaySinh
+                || NormalizeContactText(txtProfCccd.Text) != _originalCccd;
 
             btnUpdateContact.Visible = true;
             btnUpdateContact.Enabled = changed;
