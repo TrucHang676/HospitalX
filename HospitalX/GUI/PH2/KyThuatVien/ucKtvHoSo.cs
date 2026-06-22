@@ -463,6 +463,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     SavedPhone   = phone;
                     SavedAddress = address;
                     LoadProfileData();
+
+                    // Refresh main form header info (sidebar name)
+                    var mainForm = this.FindForm() as HospitalX.GUI.PH2.Main_KTV;
+                    if (mainForm != null)
+                    {
+                        mainForm.LoadKtvInfo();
+                    }
+
                     ShowInfoMessage("Cập nhật thông tin cá nhân thành công!", "Thông báo", MessageDialogIcon.Information);
                 }
                 else

@@ -74,6 +74,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // pnlRoot
             //
             this.pnlRoot.AutoScroll = true;
+            this.pnlRoot.Controls.Add(this.btnSaveProfile);
             this.pnlRoot.Controls.Add(this.pnlHistory);
             this.pnlRoot.Controls.Add(this.pnlProfile);
             this.pnlRoot.Controls.Add(this.pnlKpiPrescription);
@@ -646,7 +647,6 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlWelcome.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlWelcome.BorderRadius = 12;
-            this.pnlWelcome.Controls.Add(this.btnSaveProfile);
             this.pnlWelcome.Controls.Add(this.lblWelcomeMeta);
             this.pnlWelcome.Controls.Add(this.lblWelcomeName);
             this.pnlWelcome.Controls.Add(this.lblWelcomeId);
@@ -655,24 +655,25 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlWelcome.Name = "pnlWelcome";
             this.pnlWelcome.Size = new System.Drawing.Size(1056, 126);
             this.pnlWelcome.TabIndex = 0;
-            //
-            // btnSaveProfile (nút Cập nhật — trong banner header, góc phải)
-            //
-            this.btnSaveProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            // 
+            // btnSaveProfile
+            // 
+            this.btnSaveProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveProfile.BackColor = System.Drawing.Color.Transparent;
             this.btnSaveProfile.BorderRadius = 8;
             this.btnSaveProfile.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSaveProfile.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.btnSaveProfile.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnSaveProfile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
             this.btnSaveProfile.ForeColor = System.Drawing.Color.White;
             this.btnSaveProfile.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(148)))), ((int)(((byte)(112)))));
-            this.btnSaveProfile.Location = new System.Drawing.Point(864, 12);
+            this.btnSaveProfile.Location = new System.Drawing.Point(960, 710);
             this.btnSaveProfile.Name = "btnSaveProfile";
             this.btnSaveProfile.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
-            this.btnSaveProfile.Size = new System.Drawing.Size(162, 38);
+            this.btnSaveProfile.Size = new System.Drawing.Size(120, 35);
             this.btnSaveProfile.TabIndex = 7;
             this.btnSaveProfile.Text = "Cập nhật";
-            this.btnSaveProfile.Visible = false;
+            this.btnSaveProfile.Visible = true;
+            this.btnSaveProfile.Enabled = false;
             this.btnSaveProfile.Click += new System.EventHandler(this.btnSaveProfile_Click);
             //
             // lblWelcomeMeta

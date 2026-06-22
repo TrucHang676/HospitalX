@@ -55,7 +55,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             _isLoading = false;
             CaptureAllOriginals();
             RenderDashboard();
-            btnSaveProfile.Visible = false;
+            btnSaveProfile.Enabled = false;
         }
 
         // ──────────────────────────────────────────────────────────────────
@@ -206,7 +206,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private void AnyField_TextChanged(object sender, EventArgs e)
         {
             if (_isLoading) return;
-            btnSaveProfile.Visible = HasAnyChanges();
+            btnSaveProfile.Enabled = HasAnyChanges();
         }
 
         private bool HasAnyChanges()
@@ -285,7 +285,15 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
                 CaptureAllOriginals();
                 RenderDashboard();
-                btnSaveProfile.Visible = false;
+                btnSaveProfile.Enabled = false;
+
+                // Notify Main_BN to update its header details (top left name/age)
+                var mainForm = this.FindForm() as HospitalX.GUI.PH2.Main_BN;
+                if (mainForm != null)
+                {
+                    mainForm.LoadPatientInfo();
+                }
+
                 MessageBox.Show("Cập nhật thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
@@ -297,7 +305,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 _isLoading = true;
                 PopulateTextboxes();
                 _isLoading = false;
-                btnSaveProfile.Visible = false;
+                btnSaveProfile.Enabled = false;
             }
         }
 

@@ -2,6 +2,9 @@ using Guna.UI2.WinForms;
 using HospitalX.GUI.PH2.BenhNhan;
 using System;
 using System.Windows.Forms;
+using Oracle.ManagedDataAccess.Client;
+using System.Data;
+using HospitalX.DAO;
 
 namespace HospitalX.GUI.PH2
 {
@@ -16,6 +19,7 @@ namespace HospitalX.GUI.PH2
             WireNavigationEvents();
             LoadPage(new ucHSCN(), "Trang chủ");
             btnHSCN.Checked = true;
+            LoadPatientInfo();
         }
 
         // Gắn sự kiện điều hướng cho các nút sidebar.
@@ -87,6 +91,35 @@ namespace HospitalX.GUI.PH2
             {
                 Application.Exit();
                 Environment.Exit(0);
+            }
+        }
+
+        public void LoadPatientInfo()
+        {
+            try
+            {
+                OracleParameter[] selfParams = new OracleParameter[]
+                {
+                    new OracleParameter("p_cursor", OracleDbType.RefCursor) { Direction = ParameterDirection.Output }
+                };
+                System.Data.DataTable dt = DataProvider.Instance.ExecuteQuery("ADMINHOS.SP_GET_PATIENT_SELF", selfParams, true);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    System.Data.DataRow row = dt.Rows[0];
+                    string name = row["TENBN"]?.ToString() ?? "";
+                    string phai = row["PHAI"]?.ToString() ?? "";
+                    DateTime dob = row["NGAYSINH"] != DBNull.Value ? Convert.ToDateTime(row["NGAYSINH"]) : DateTime.Today;
+                    
+                    int age = DateTime.Today.Year - dob.Year;
+                    if (dob.Date > DateTime.Today.AddYears(-age)) age--;
+
+                    lblTenBN.Text = "BN. " + name;
+                    lblPhai_Tuoi.Text = $"{phai}, {age} tuổi";
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error loading patient header info: " + ex.Message);
             }
         }
     }
