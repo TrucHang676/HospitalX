@@ -36,6 +36,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private string _origFamHist;
 
         private bool _isLoading;
+        private Guna2MessageDialog _messageDialog;
 
         private readonly List<MedicalRecordSummary> medicalRecords = new List<MedicalRecordSummary>();
         private readonly List<ServiceSummary> services = new List<ServiceSummary>();
@@ -236,8 +237,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
                     System.Globalization.CultureInfo.InvariantCulture,
                     System.Globalization.DateTimeStyles.None, out DateTime dob))
                 {
-                    MessageBox.Show("Ngày sinh phải đúng định dạng dd/MM/yyyy.", "Lỗi nhập liệu",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ShowMessage("Ngày sinh phải đúng định dạng dd/MM/yyyy.", "Lỗi nhập liệu", MessageDialogIcon.Warning);
                     return;
                 }
                 ngaySinh = dob;
@@ -294,13 +294,12 @@ namespace HospitalX.GUI.PH2.BenhNhan
                     mainForm.LoadPatientInfo();
                 }
 
-                MessageBox.Show("Cập nhật thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ShowMessage("Cập nhật thành công.", "Thông báo", MessageDialogIcon.Information);
             }
             catch (Exception ex)
             {
                 // Hiển thị lỗi Oracle — chính sách bảo mật từ chối trường bị hạn chế
-                MessageBox.Show("Lỗi CSDL: " + ex.Message, "Cập nhật bị từ chối",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowMessage("Lỗi CSDL: " + ex.Message, "Cập nhật bị từ chối", MessageDialogIcon.Error);
                 // Reset về giá trị gốc
                 _isLoading = true;
                 PopulateTextboxes();
@@ -325,6 +324,21 @@ namespace HospitalX.GUI.PH2.BenhNhan
         {
             return !string.IsNullOrWhiteSpace(allergy)
                 && !allergy.Trim().Equals("Không ghi nhận", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private void ShowMessage(string message, string title, MessageDialogIcon icon)
+        {
+            if (_messageDialog == null)
+            {
+                _messageDialog = new Guna2MessageDialog();
+            }
+
+            _messageDialog.Parent = FindForm();
+            _messageDialog.Icon = icon;
+            _messageDialog.Buttons = MessageDialogButtons.OK;
+            _messageDialog.Caption = title;
+            _messageDialog.Style = MessageDialogStyle.Light;
+            _messageDialog.Show(message);
         }
 
         // ──────────────────────────────────────────────────────────────────

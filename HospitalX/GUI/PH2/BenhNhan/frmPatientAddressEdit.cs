@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
 
 namespace HospitalX.GUI.PH2.BenhNhan
 {
@@ -9,6 +10,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private readonly string originalStreetName;
         private readonly string originalDistrict;
         private readonly string originalCity;
+        private Guna2MessageDialog _messageDialog;
 
         public frmPatientAddressEdit(string houseNumber, string streetName, string district, string city)
         {
@@ -77,8 +79,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
         {
             if (!HasCompleteInput())
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ số nhà, tên đường, quận/huyện và tỉnh/thành phố.",
-                    "Thiếu dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ShowMessage("Vui lòng nhập đầy đủ số nhà, tên đường, quận/huyện và tỉnh/thành phố.",
+                    "Thiếu dữ liệu", MessageDialogIcon.Warning);
                 UpdateSaveButtonState();
                 return;
             }
@@ -91,6 +93,20 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
             DialogResult = DialogResult.OK;
             Close();
+        }
+        private void ShowMessage(string message, string title, MessageDialogIcon icon)
+        {
+            if (_messageDialog == null)
+            {
+                _messageDialog = new Guna2MessageDialog();
+            }
+
+            _messageDialog.Parent = this;
+            _messageDialog.Icon = icon;
+            _messageDialog.Buttons = MessageDialogButtons.OK;
+            _messageDialog.Caption = title;
+            _messageDialog.Style = MessageDialogStyle.Light;
+            _messageDialog.Show(message);
         }
     }
 }
