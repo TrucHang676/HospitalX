@@ -137,8 +137,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             pnlPagination = new FlowLayoutPanel
             {
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                Size = new Size(400, 40),
+                Anchor = AnchorStyles.Bottom,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 FlowDirection = FlowDirection.LeftToRight,
                 WrapContents = false,
                 BackColor = Color.Transparent
@@ -147,7 +148,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             lblPageInfo = new Label
             {
                 AutoSize = false,
-                Size = new Size(90, 36),
+                Size = new Size(90, 32),
                 Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
                 ForeColor = ColorTextMuted,
                 TextAlign = ContentAlignment.MiddleLeft,
@@ -162,7 +163,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             StylePageButton(btnNextPage, ">");
             btnNextPage.Click += BtnNextPage_Click;
 
-            pnlPagination.Controls.Add(lblPageInfo);
+            lblPageInfo.Visible = false;
             pnlPagination.Controls.Add(btnPrevPage);
 
             _pageButtons.Clear();
@@ -186,26 +187,33 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void StylePageButton(Guna2Button btn, string text)
         {
-            btn.Size = new Size(36, 36);
-            btn.Margin = new Padding(3, 2, 3, 2);
+            float dpiFactor = 1.0f;
+            try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+
+            btn.AutoSize = false;
+            btn.Size = new Size((int)(42 * dpiFactor), (int)(30 * dpiFactor));
+            btn.Margin = new Padding((int)(4 * dpiFactor), (int)(2 * dpiFactor), (int)(4 * dpiFactor), (int)(2 * dpiFactor));
             btn.BorderRadius = 6;
             btn.BorderThickness = 1;
             btn.BorderColor = ColorBorder;
             btn.FillColor = Color.Transparent;
+            btn.Image = null;
+            btn.ImageSize = new Size(0, 0);
+            btn.Padding = new Padding(0);
             
             if (text == "<" || text == ">")
             {
-                btn.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+                btn.Font = new Font("Segoe UI", 10.5F * dpiFactor, FontStyle.Bold);
             }
             else
             {
-                btn.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+                btn.Font = new Font("Segoe UI", 9F * dpiFactor, FontStyle.Bold);
             }
             
             btn.ForeColor = ColorTextSecondary;
             btn.Text = text;
             btn.Cursor = Cursors.Hand;
-
+            
             btn.DisabledState.FillColor = Color.Transparent;
             btn.DisabledState.BorderColor = ColorBorder;
             btn.DisabledState.ForeColor = Color.FromArgb(180, 200, 190);
@@ -239,6 +247,30 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 if (startPage + 4 > _totalPage) startPage = _totalPage - 4;
             }
 
+            float dpiFactor = 1.0f;
+            try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+
+            int maxPageVisible = startPage + 4;
+            int buttonWidth = (int)(42 * dpiFactor);
+            using (var measureFont = new Font("Segoe UI", 9F * dpiFactor, FontStyle.Bold))
+            {
+                int textWidth = TextRenderer.MeasureText(maxPageVisible.ToString(), measureFont).Width;
+                int padding = (int)(16 * dpiFactor);
+                int minWidth = (int)(42 * dpiFactor);
+                buttonWidth = Math.Max(textWidth + padding, minWidth);
+            }
+            int buttonHeight = (int)(30 * dpiFactor);
+            int marginH = (int)(4 * dpiFactor);
+            int marginV = (int)(2 * dpiFactor);
+
+            // Update prev/next buttons size to match
+            btnPrevPage.AutoSize = false;
+            btnPrevPage.Size = new Size(buttonWidth, buttonHeight);
+            btnPrevPage.Margin = new Padding(marginH, marginV, marginH, marginV);
+            btnNextPage.AutoSize = false;
+            btnNextPage.Size = new Size(buttonWidth, buttonHeight);
+            btnNextPage.Margin = new Padding(marginH, marginV, marginH, marginV);
+
             // Toggle visibility, text, and selection for page buttons
             for (int i = 0; i < 5; i++)
             {
@@ -249,6 +281,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 {
                     btn.Visible = true;
                     btn.Text = pageNum.ToString();
+                    btn.AutoSize = false;
+                    btn.Size = new Size(buttonWidth, buttonHeight);
+                    btn.Margin = new Padding(marginH, marginV, marginH, marginV);
                     if (pageNum == _currentPage)
                     {
                         btn.FillColor = ColorTeal;
@@ -273,6 +308,14 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             btnPrevPage.ForeColor = btnPrevPage.Enabled ? ColorTextSecondary : Color.FromArgb(180, 200, 190);
             btnNextPage.ForeColor = btnNextPage.Enabled ? ColorTextSecondary : Color.FromArgb(180, 200, 190);
+
+            // Force layout pass to calculate exact auto-sized width and center in the white table card
+            if (pnlPagination != null)
+            {
+                pnlPagination.PerformLayout();
+                int bottomY = pnlServiceRequests.Height - pnlPagination.Height - (int)(15 * dpiFactor);
+                pnlPagination.Location = new Point((pnlServiceRequests.Width - pnlPagination.Width) / 2, bottomY);
+            }
         }
 
         private void BtnPrevPage_Click(object sender, EventArgs e)
@@ -425,7 +468,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvRequests.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 9.25F, FontStyle.Bold);
             dgvRequests.ColumnHeadersDefaultCellStyle.SelectionBackColor = headerBack;
             dgvRequests.ColumnHeadersDefaultCellStyle.SelectionForeColor = headerFore;
-            dgvRequests.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvRequests.ColumnHeadersDefaultCellStyle.Padding = new Padding(12, 0, 0, 0);
             dgvRequests.ColumnHeadersHeight = 44;
             dgvRequests.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
 
@@ -434,7 +477,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             dgvRequests.DefaultCellStyle.BackColor = Color.White;
             dgvRequests.DefaultCellStyle.SelectionBackColor = ColorTealLight;
             dgvRequests.DefaultCellStyle.SelectionForeColor = ColorTextPrimary;
-            dgvRequests.DefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvRequests.DefaultCellStyle.Padding = new Padding(12, 0, 0, 0);
 
             dgvRequests.AlternatingRowsDefaultCellStyle.BackColor = Color.White;
             dgvRequests.RowsDefaultCellStyle.BackColor = Color.White;
@@ -472,9 +515,20 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             colTrangThai.MinimumWidth = 140;
             colTrangThai.HeaderText = "TRẠNG THÁI";
 
+            // Disable sorting glyph space to ensure perfect header-cell text alignment
+            foreach (DataGridViewColumn col in dgvRequests.Columns)
+            {
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+
+            float dpiFactor = 1.0f;
+            try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+
             colThaoTac.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colThaoTac.Width = 120;
+            colThaoTac.Width = (int)(140 * dpiFactor);
             colThaoTac.HeaderText = "THAO TÁC";
+            colThaoTac.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colThaoTac.HeaderCell.Style.Padding = new Padding(0);
         }
 
         private void ApplyFilter()
@@ -699,8 +753,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             if (e.ColumnIndex == colMaHSBA.Index)
             {
-                // Indent HSBA text by 16px to completely clear the green selection indicator bar
-                Rectangle textRect = new Rectangle(e.CellBounds.X + 16, e.CellBounds.Y, e.CellBounds.Width - 18, e.CellBounds.Height);
+                // Indent HSBA text by 14px to align with the header while clearing the selection bar
+                Rectangle textRect = new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height);
                 TextRenderer.DrawText(e.Graphics, r.Hsba, FontMono, textRect, ColorTextSecondary,
                     TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
             }
@@ -710,24 +764,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 int topOffset = (e.CellBounds.Height - 24 - 20 - 6) / 2;
 
                 TextRenderer.DrawText(e.Graphics, r.PatientName, FontBold,
-                    new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y + topOffset, e.CellBounds.Width - 10, 24),
+                    new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y + topOffset, e.CellBounds.Width - 16, 24),
                     ColorTextPrimary, TextFormatFlags.Left | TextFormatFlags.EndEllipsis);
 
                 TextRenderer.DrawText(e.Graphics, r.PatientCode, FontNormal,
-                    new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y + topOffset + 24 + 6, e.CellBounds.Width - 10, 20),
+                    new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y + topOffset + 24 + 6, e.CellBounds.Width - 16, 20),
                     ColorTextMuted, TextFormatFlags.Left);
             }
             else if (e.ColumnIndex == colLoaiDV.Index)
             {
-                // Indent content by 8px to align with column headers
-                Rectangle textRect = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y, e.CellBounds.Width - 10, e.CellBounds.Height);
+                // Indent content by 14px to align with column headers
+                Rectangle textRect = new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height);
                 TextRenderer.DrawText(e.Graphics, r.ServiceType, FontNormal, textRect, ColorTextPrimary,
                     TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
             }
             else if (e.ColumnIndex == colKTV.Index)
             {
-                // Indent content by 8px to align with column headers
-                Rectangle textRect = new Rectangle(e.CellBounds.X + 8, e.CellBounds.Y, e.CellBounds.Width - 10, e.CellBounds.Height);
+                // Indent content by 14px to align with column headers
+                Rectangle textRect = new Rectangle(e.CellBounds.X + 14, e.CellBounds.Y, e.CellBounds.Width - 16, e.CellBounds.Height);
                 TextRenderer.DrawText(e.Graphics, r.AssignedKtv, FontNormal, textRect, ColorTextPrimary,
                     TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
             }
@@ -760,7 +814,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
                 int badgeW = r.StatusLabel.Length > 12 ? 135 : 115;
                 int badgeH = 24; // Height 24 to comfortably hold status label
-                int badgeX = e.CellBounds.X + 8; // Offset by 8px to align badge with column headers
+                int badgeX = e.CellBounds.X + 14; // Offset by 14px to align badge with column headers
                 int badgeY = e.CellBounds.Y + (e.CellBounds.Height - badgeH) / 2;
 
                 using (var path = GetRoundedRectPath(new RectangleF(badgeX, badgeY, badgeW, badgeH), 12)) // Capsule shape
@@ -859,9 +913,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // Position pagination controls dynamically at the bottom right of the requests panel
             if (pnlPagination != null)
             {
-                int bottomY = pnlServiceRequests.Height - 40 - 15;
-                pnlPagination.Size = new Size(400, 40);
-                pnlPagination.Location = new Point(leftW - 400 - 20, bottomY);
+                float dpiFactor = 1.0f;
+                try { dpiFactor = this.DeviceDpi / 96.0f; } catch { }
+                int bottomY = pnlServiceRequests.Height - pnlPagination.Height - (int)(15 * dpiFactor);
+                pnlPagination.Location = new Point((pnlServiceRequests.Width - pnlPagination.Width) / 2, bottomY);
             }
 
             // Set minimum horizontal scroll limit to preserve visual design integrity (without right panel)

@@ -165,7 +165,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // colThaoTac
             // 
             this.colThaoTac.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.colThaoTac.Width = 120;
+            this.colThaoTac.Width = 140;
             this.colThaoTac.HeaderText = "THAO TÁC";
             this.colThaoTac.Name = "colThaoTac";
             this.colThaoTac.ReadOnly = true;

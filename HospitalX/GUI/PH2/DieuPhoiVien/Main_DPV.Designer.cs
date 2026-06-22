@@ -187,7 +187,7 @@ namespace HospitalX.GUI.PH2
             this.btnDieuPhoiKTV.Name = "btnDieuPhoiKTV";
             this.btnDieuPhoiKTV.Size = new System.Drawing.Size(277, 47);
             this.btnDieuPhoiKTV.TabIndex = 11;
-            this.btnDieuPhoiKTV.Text = "ĐIỀU PHỐI KỸ THUẬT VIÊN";
+            this.btnDieuPhoiKTV.Text = "ĐIỀU PHỐI KTV";
             this.btnDieuPhoiKTV.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDieuPhoiKTV.TextOffset = new System.Drawing.Point(15, 0);
             // 

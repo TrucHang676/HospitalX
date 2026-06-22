@@ -102,13 +102,15 @@ namespace HospitalX.GUI.PH2
             // 
             // pnlLogo
             // 
-            this.pnlLogo.BorderRadius = 23;
+            this.pnlLogo.BorderColor = System.Drawing.Color.Green;
+            this.pnlLogo.BorderRadius = 25;
+            this.pnlLogo.BorderThickness = 1;
             this.pnlLogo.Controls.Add(this.ptbChuThap);
             this.pnlLogo.Controls.Add(this.lblLogoPlus);
             this.pnlLogo.FillColor = System.Drawing.Color.White;
-            this.pnlLogo.Location = new System.Drawing.Point(8, 6);
+            this.pnlLogo.Location = new System.Drawing.Point(11, 7);
             this.pnlLogo.Name = "pnlLogo";
-            this.pnlLogo.Size = new System.Drawing.Size(46, 46);
+            this.pnlLogo.Size = new System.Drawing.Size(61, 57);
             this.pnlLogo.TabIndex = 0;
             // 
             // ptbChuThap
@@ -117,9 +119,9 @@ namespace HospitalX.GUI.PH2
             this.ptbChuThap.FillColor = System.Drawing.Color.Transparent;
             this.ptbChuThap.Image = ((System.Drawing.Image)(resources.GetObject("ptbChuThap.Image")));
             this.ptbChuThap.ImageRotate = 0F;
-            this.ptbChuThap.Location = new System.Drawing.Point(10, 10);
+            this.ptbChuThap.Location = new System.Drawing.Point(13, 12);
             this.ptbChuThap.Name = "ptbChuThap";
-            this.ptbChuThap.Size = new System.Drawing.Size(26, 27);
+            this.ptbChuThap.Size = new System.Drawing.Size(35, 33);
             this.ptbChuThap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbChuThap.TabIndex = 1;
             this.ptbChuThap.TabStop = false;
@@ -142,25 +144,25 @@ namespace HospitalX.GUI.PH2
             // 
             this.lblBrand.AutoSize = true;
             this.lblBrand.BackColor = System.Drawing.Color.Transparent;
-            this.lblBrand.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblBrand.ForeColor = System.Drawing.Color.White;
-            this.lblBrand.Location = new System.Drawing.Point(65, 21);
+            this.lblBrand.Font = new System.Drawing.Font("Segoe UI", 6.75F, System.Drawing.FontStyle.Bold);
+            this.lblBrand.ForeColor = System.Drawing.Color.Lime;
+            this.lblBrand.Location = new System.Drawing.Point(88, 26);
             this.lblBrand.Name = "lblBrand";
-            this.lblBrand.Size = new System.Drawing.Size(98, 25);
+            this.lblBrand.Size = new System.Drawing.Size(100, 15);
             this.lblBrand.TabIndex = 1;
-            this.lblBrand.Text = "HospitalX";
+            this.lblBrand.Text = "HOSPITAL SYSTEM";
             // 
             // lblBrandSub
             // 
             this.lblBrandSub.AutoSize = true;
             this.lblBrandSub.BackColor = System.Drawing.Color.Transparent;
-            this.lblBrandSub.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblBrandSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(170)))), ((int)(((byte)(220)))), ((int)(((byte)(205)))));
-            this.lblBrandSub.Location = new System.Drawing.Point(66, 45);
+            this.lblBrandSub.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblBrandSub.ForeColor = System.Drawing.Color.White;
+            this.lblBrandSub.Location = new System.Drawing.Point(87, 44);
             this.lblBrandSub.Name = "lblBrandSub";
-            this.lblBrandSub.Size = new System.Drawing.Size(80, 12);
+            this.lblBrandSub.Size = new System.Drawing.Size(86, 20);
             this.lblBrandSub.TabIndex = 2;
-            this.lblBrandSub.Text = "KỸ THUẬT VIÊN";
+            this.lblBrandSub.Text = "Bệnh viện X";
             // 
             // pnlAvatar
             // 

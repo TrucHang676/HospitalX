@@ -188,7 +188,7 @@ namespace HospitalX.GUI.PH2
 
         public void NavigateToDieuPhoiKTV()
         {
-            LoadPage(new ucDieuPhoiKTV(), "Điều phối kỹ thuật viên", "/ HSBA_DV");
+            LoadPage(new ucDieuPhoiKTV(), "Điều phối KTV", "/ HSBA_DV");
             btnDieuPhoiKTV.Checked = true;
         }
 
