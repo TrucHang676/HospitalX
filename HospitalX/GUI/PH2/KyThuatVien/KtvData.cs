@@ -47,6 +47,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         public string SoDt       { get; set; }  // SODT
         public string VaiTro     { get; set; }  // VAITRO
         public string ChuyenKhoa { get; set; }  // CHUYENKHOA
+        public string CoSo       { get; set; }  // COSO
     }
 
     internal static class KtvData
@@ -72,6 +73,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     ktv.SoDt = row["SODT"]?.ToString() ?? "";
                     ktv.ChuyenKhoa = row["CHUYENKHOA"]?.ToString() ?? "";
                     ktv.VaiTro = row["VAITRO"]?.ToString() ?? "Kỹ thuật viên";
+                    ktv.CoSo = row["COSO"]?.ToString() ?? "";
                     return ktv;
                 }
             }
@@ -91,7 +93,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 QueQuan    = "45 Đường Lê Lợi, P.3, Biên Hòa, Đồng Nai",
                 SoDt       = "0914 567 890",
                 VaiTro     = "Kỹ thuật viên",
-                ChuyenKhoa = "Khoa Xét nghiệm"
+                ChuyenKhoa = "Khoa Xét nghiệm",
+                CoSo       = "Hồ Chí Minh"
             };
         }
 

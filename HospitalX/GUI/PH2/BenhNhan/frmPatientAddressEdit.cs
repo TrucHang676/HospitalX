@@ -35,7 +35,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
         {
             get
             {
-                return string.Format("{0} {1}, {2}, {3}",
+                // Consistent with DB storage: SONHA, TENDUONG, QUANHUYEN, TINHTP
+                return string.Join(", ",
                     txtHouseNumber.Text.Trim(),
                     txtStreetName.Text.Trim(),
                     txtDistrict.Text.Trim(),

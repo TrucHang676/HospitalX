@@ -437,15 +437,14 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
             public static AddressParts Parse(string address)
             {
+                // DB format: "SONHA, TENDUONG, QUANHUYEN, TINHTP" — 4 comma-separated parts
                 string[] parts = (address ?? string.Empty).Split(',');
-                string[] streetParts = parts.Length > 0 ? parts[0].Trim().Split(new[] { ' ' }, 2) : new string[0];
-
                 return new AddressParts
                 {
-                    HouseNumber = streetParts.Length > 0 ? streetParts[0].Trim() : string.Empty,
-                    StreetName = streetParts.Length > 1 ? streetParts[1].Trim() : string.Empty,
-                    District = parts.Length > 1 ? parts[1].Trim() : string.Empty,
-                    City = parts.Length > 2 ? parts[2].Trim() : string.Empty
+                    HouseNumber = parts.Length > 0 ? parts[0].Trim() : string.Empty,
+                    StreetName  = parts.Length > 1 ? parts[1].Trim() : string.Empty,
+                    District    = parts.Length > 2 ? parts[2].Trim() : string.Empty,
+                    City        = parts.Length > 3 ? parts[3].Trim() : string.Empty
                 };
             }
         }

@@ -12,10 +12,12 @@
 
 -- ==========================================================
 -- PHÂN HỆ 2: ỨNG DỤNG QUẢN LÝ DỮ LIỆU Y TẾ
--- YÊU CẦU 1 - CÂU 1:
--- Cài đặt cơ sở dữ liệu và thiết lập tài khoản theo mô tả TC#1
 -- ==========================================================
 
+-- ==========================================================
+-- YÊU CẦU 1 - CÂU 1 +  CÂU 2:
+-- Cài đặt cơ sở dữ liệu và thiết lập tài khoản theo mô tả TC#1
+-- ==========================================================
 
 -- ==========================================================
 -- PHẦN 1. THIẾT LẬP BAN ĐẦU - CHẠY BẰNG SYSDBA
@@ -202,11 +204,11 @@ CREATE TABLE BENHNHAN (
     TENBN           NVARCHAR2(100)  NOT NULL,
     PHAI            NVARCHAR2(4)   NOT NULL,
     NGAYSINH        DATE            NOT NULL,
-    CCCD            VARCHAR2(20)    UNIQUE,
-    SONHA           NVARCHAR2(50),
-    TENDUONG        NVARCHAR2(100),
-    QUANHUYEN       NVARCHAR2(50),
-    TINHTP          NVARCHAR2(50),
+    CCCD            VARCHAR2(20)    UNIQUE NOT NULL,
+    SONHA           NVARCHAR2(50)   NOT NULL,
+    TENDUONG        NVARCHAR2(100)  NOT NULL,
+    QUANHUYEN       NVARCHAR2(50)   NOT NULL,
+    TINHTP          NVARCHAR2(50)   NOT NULL,
     TIENSUBENH      NVARCHAR2(300),
     TIENSUBENHGD    NVARCHAR2(300),
     DIUNGTHUOC      NVARCHAR2(100),
@@ -221,7 +223,7 @@ CREATE TABLE NHANVIEN (
     HOTEN           NVARCHAR2(100)  NOT NULL,
     PHAI            NVARCHAR2(4)   NOT NULL,
     NGAYSINH        DATE            NOT NULL,
-    CMND            VARCHAR2(20)    UNIQUE,
+    CMND            VARCHAR2(20)    UNIQUE NOT NULL,
     QUEQUAN         NVARCHAR2(100),
     SODT            VARCHAR2(15),
     VAITRO          NVARCHAR2(50)   NOT NULL,
@@ -298,13 +300,11 @@ END;
 /
 
 
-
-
 CREATE TABLE DONTHUOC (
     MAHSBA          VARCHAR2(10)    NOT NULL,
     NGAYDT          DATE            NOT NULL,
     TENTHUOC        NVARCHAR2(100)  NOT NULL,
-    LIEUDUNG        NVARCHAR2(100),
+    LIEUDUNG        NVARCHAR2(100)  NOT NULL,
 
     CONSTRAINT PK_DONTHUOC
         PRIMARY KEY (MAHSBA, NGAYDT, TENTHUOC),
@@ -562,7 +562,7 @@ COMMIT;
 -- Kết thúc
 
 -- ==========================================================
--- 4. TẠO VIEW VÀ ROLE RBAC CHO KỸ THUẬT VIÊN VÀ BỆNH NHÂN
+-- PHẦN 3. TẠO VIEW VÀ ROLE RBAC CHO KỸ THUẬT VIÊN VÀ BỆNH NHÂN
 -- ==========================================================
 
 -- View cho bệnh nhân chỉ thấy dữ liệu của chính mình
@@ -685,6 +685,33 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20006, 'Khong co quyen cap nhat thong tin nhan vien nay');
     END IF;
 
+    -- Kiểm tra xem người dùng có thay đổi các cột không được phép hay không
+    IF :NEW.MANV != :OLD.MANV THEN
+        RAISE_APPLICATION_ERROR(-20010, 'Chinh sach bao mat: Khong duoc phep cap nhat ma nhan vien');
+    END IF;
+    IF :NEW.HOTEN != :OLD.HOTEN THEN
+        RAISE_APPLICATION_ERROR(-20011, 'Chinh sach bao mat: Khong duoc phep cap nhat ho ten nhan vien');
+    END IF;
+    IF :NEW.PHAI != :OLD.PHAI THEN
+        RAISE_APPLICATION_ERROR(-20012, 'Chinh sach bao mat: Khong duoc phep cap nhat phai (gioi tinh)');
+    END IF;
+    IF :NEW.NGAYSINH != :OLD.NGAYSINH THEN
+        RAISE_APPLICATION_ERROR(-20013, 'Chinh sach bao mat: Khong duoc phep cap nhat ngay sinh');
+    END IF;
+    IF :NEW.CMND != :OLD.CMND THEN
+        RAISE_APPLICATION_ERROR(-20014, 'Chinh sach bao mat: Khong duoc phep cap nhat CMND/CCCD');
+    END IF;
+    IF :NEW.VAITRO != :OLD.VAITRO THEN
+        RAISE_APPLICATION_ERROR(-20015, 'Chinh sach bao mat: Khong duoc phep cap nhat vai tro');
+    END IF;
+    -- DECODE không dùng được trong PL/SQL IF — dùng NVL để so sánh NULL-safe
+    IF NVL(:NEW.CHUYENKHOA, '<<NULL>>') != NVL(:OLD.CHUYENKHOA, '<<NULL>>') THEN
+        RAISE_APPLICATION_ERROR(-20016, 'Chinh sach bao mat: Khong duoc phep cap nhat chuyen khoa');
+    END IF;
+    IF NVL(:NEW.COSO, '<<NULL>>') != NVL(:OLD.COSO, '<<NULL>>') THEN
+        RAISE_APPLICATION_ERROR(-20017, 'Chinh sach bao mat: Khong duoc phep cap nhat co so lam viec');
+    END IF;
+
     UPDATE NHANVIEN
     SET QUEQUAN = NVL(:NEW.QUEQUAN, :OLD.QUEQUAN),
         SODT = NVL(:NEW.SODT, :OLD.SODT)
@@ -704,6 +731,23 @@ BEGIN
     -- chỉ cho phép người dùng cập nhật chính hồ sơ của mình
     IF SYS_CONTEXT('USERENV','SESSION_USER') != NVL(:OLD.MABN, ' ') THEN
         RAISE_APPLICATION_ERROR(-20004, 'Khong co quyen cap nhat thong tin benh nhan nay');
+    END IF;
+
+    -- Kiểm tra nếu người dùng cố ý cập nhật các trường không được phép
+    IF :NEW.MABN != :OLD.MABN THEN
+        RAISE_APPLICATION_ERROR(-20020, 'Chinh sach bao mat: Khong duoc phep cap nhat ma benh nhan');
+    END IF;
+    IF :NEW.TENBN != :OLD.TENBN THEN
+        RAISE_APPLICATION_ERROR(-20021, 'Chinh sach bao mat: Khong duoc phep cap nhat ho ten benh nhan');
+    END IF;
+    IF :NEW.PHAI != :OLD.PHAI THEN
+        RAISE_APPLICATION_ERROR(-20022, 'Chinh sach bao mat: Khong duoc phep cap nhat phai (gioi tinh) benh nhan');
+    END IF;
+    IF :NEW.NGAYSINH != :OLD.NGAYSINH THEN
+        RAISE_APPLICATION_ERROR(-20023, 'Chinh sach bao mat: Khong duoc phep cap nhat ngay sinh benh nhan');
+    END IF;
+    IF :NEW.CCCD != :OLD.CCCD THEN
+        RAISE_APPLICATION_ERROR(-20024, 'Chinh sach bao mat: Khong duoc phep cap nhat CCCD benh nhan');
     END IF;
 
     UPDATE BENHNHAN
@@ -3518,14 +3562,28 @@ END;
 CREATE OR REPLACE PROCEDURE SP_UPDATE_PROFILE (
     p_sodt IN VARCHAR2,
     p_quequan IN NVARCHAR2,
-    p_manv IN VARCHAR2
+    p_manv IN VARCHAR2,
+    p_hoten IN NVARCHAR2,
+    p_phai IN NVARCHAR2,
+    p_ngaysinh IN DATE,
+    p_cmnd IN VARCHAR2,
+    p_vaitro IN NVARCHAR2,
+    p_chuyenkhoa IN NVARCHAR2,
+    p_coso IN VARCHAR2
 )
 AUTHID DEFINER
 AS
 BEGIN
     UPDATE ADMINHOS.VW_NHANVIEN_SELF
     SET SODT = p_sodt,
-        QUEQUAN = p_quequan
+        QUEQUAN = p_quequan,
+        HOTEN = p_hoten,
+        PHAI = p_phai,
+        NGAYSINH = p_ngaysinh,
+        CMND = p_cmnd,
+        VAITRO = p_vaitro,
+        CHUYENKHOA = p_chuyenkhoa,
+        COSO = p_coso
     WHERE MANV = p_manv;
     COMMIT;
 END;
@@ -4180,6 +4238,16 @@ BEGIN
             EXECUTE IMMEDIATE 'GRANT EXECUTE ON ADMINHOS.' || v_common_procs(i) || ' TO ' || u.MANV;
         END LOOP;
     END LOOP;
+
+    -- 3. Cấp quyền cho Kỹ thuật viên (KTV)
+    FOR u IN (
+        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = N'Kỹ thuật viên'
+    ) LOOP
+        -- Cấp SP dùng chung
+        FOR i IN 1..v_common_procs.COUNT LOOP
+            EXECUTE IMMEDIATE 'GRANT EXECUTE ON ADMINHOS.' || v_common_procs(i) || ' TO ' || u.MANV;
+        END LOOP;
+    END LOOP;
 END;
 /
 
@@ -4300,6 +4368,7 @@ BEGIN
         ORDER BY BS.COMPLETION_TIME DESC';
 END;
 /
+
 
 -- Cap quyen cho admin_ph2 va DBA 
 GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY TO admin_ph2;
