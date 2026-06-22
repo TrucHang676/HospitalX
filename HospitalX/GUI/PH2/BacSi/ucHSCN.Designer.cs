@@ -227,7 +227,6 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlRight.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.pnlRight.BackColor = System.Drawing.Color.Transparent;
             this.pnlRight.Controls.Add(this.pnlCardProfessional);
-            this.pnlRight.Controls.Add(this.pnlCardContact);
             this.pnlRight.Controls.Add(this.pnlCardSecurity);
             this.pnlRight.Controls.Add(this.lblSlogan);
             this.pnlRight.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -411,26 +410,20 @@ namespace HospitalX.GUI.PH2.BacSi
             this.lblTitleProf.TabIndex = 0;
             this.lblTitleProf.Text = "Thông tin chuyên môn";
             // 
-            // pnlCardContact
+            // pnlCardProfessional (Merged Profile Card)
             // 
-            this.pnlCardContact.Controls.Add(this.btnUpdateContact);
-            this.pnlCardContact.Controls.Add(this.txtProfGioiTinh);
-            this.pnlCardContact.Controls.Add(this.label4);
-            this.pnlCardContact.Controls.Add(this.txtProfNgaySinh);
-            this.pnlCardContact.Controls.Add(this.label5);
-            this.pnlCardContact.Controls.Add(this.txtProfCccd);
-            this.pnlCardContact.Controls.Add(this.label6);
-            this.pnlCardContact.Controls.Add(this.txtContactAddress);
-            this.pnlCardContact.Controls.Add(this.label9);
-            this.pnlCardContact.Controls.Add(this.txtContactPhone);
-            this.pnlCardContact.Controls.Add(this.label8);
-            this.pnlCardContact.Controls.Add(this.lblTitleContact);
-            this.pnlCardContact.FillColor = System.Drawing.Color.White;
-            this.pnlCardContact.Location = new System.Drawing.Point(3, 226);
-            this.pnlCardContact.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pnlCardContact.Name = "pnlCardContact";
-            this.pnlCardContact.Size = new System.Drawing.Size(603, 305);
-            this.pnlCardContact.TabIndex = 1;
+            this.pnlCardProfessional.Controls.Add(this.btnUpdateContact);
+            this.pnlCardProfessional.Controls.Add(this.txtProfGioiTinh);
+            this.pnlCardProfessional.Controls.Add(this.label4);
+            this.pnlCardProfessional.Controls.Add(this.txtProfNgaySinh);
+            this.pnlCardProfessional.Controls.Add(this.label5);
+            this.pnlCardProfessional.Controls.Add(this.txtProfCccd);
+            this.pnlCardProfessional.Controls.Add(this.label6);
+            this.pnlCardProfessional.Controls.Add(this.txtContactAddress);
+            this.pnlCardProfessional.Controls.Add(this.label9);
+            this.pnlCardProfessional.Controls.Add(this.txtContactPhone);
+            this.pnlCardProfessional.Controls.Add(this.label8);
+            this.pnlCardProfessional.Controls.Add(this.lblTitleContact);
             // 
             // btnUpdateContact
             // 
@@ -714,8 +707,7 @@ namespace HospitalX.GUI.PH2.BacSi
             this.pnlRight.ResumeLayout(false);
             this.pnlCardProfessional.ResumeLayout(false);
             this.pnlCardProfessional.PerformLayout();
-            this.pnlCardContact.ResumeLayout(false);
-            this.pnlCardContact.PerformLayout();
+
             this.pnlCardSecurity.ResumeLayout(false);
             this.pnlCardSecurity.PerformLayout();
             this.ResumeLayout(false);
