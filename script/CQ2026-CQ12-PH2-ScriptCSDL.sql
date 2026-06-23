@@ -2797,17 +2797,123 @@ EXCEPTION
 END;
 /
 
--- Policy mới cho UPDATE/DELETE bất hợp pháp trên HSBA_DV
+
+-- Policy mới cho UPDATE bất hợp pháp trên HSBA_DV
 BEGIN
     DBMS_FGA.DROP_POLICY(
         object_schema => 'ADMINHOS',
         object_name   => 'HSBA_DV',
-        policy_name   => 'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
+        policy_name   => 'FGA_HSBA_DV_UPDATE_BATHOPPHAP'
     );
 EXCEPTION
     WHEN OTHERS THEN NULL;
 END;
 /
+
+-- Policy mới cho UPDATE MAKTV bất hợp pháp trên HSBA_DV
+BEGIN
+    DBMS_FGA.DROP_POLICY(
+        object_schema => 'ADMINHOS',
+        object_name   => 'HSBA_DV',
+        policy_name   => 'FGA_HSBA_DV_UPDATE_MAKTV_BATHOPPHAP'
+    );
+EXCEPTION
+    WHEN OTHERS THEN NULL;
+END;
+/
+
+-- Policy mới cho UPDATE KETQUA bất hợp pháp trên HSBA_DV
+BEGIN
+    DBMS_FGA.DROP_POLICY(
+        object_schema => 'ADMINHOS',
+        object_name   => 'HSBA_DV',
+        policy_name   => 'FGA_HSBA_DV_UPDATE_KETQUA_BATHOPPHAP'
+    );
+EXCEPTION
+    WHEN OTHERS THEN NULL;
+END;
+/
+
+-- Policy mới cho UPDATE các cột khác bất hợp pháp trên HSBA_DV
+BEGIN
+    DBMS_FGA.DROP_POLICY(
+        object_schema => 'ADMINHOS',
+        object_name   => 'HSBA_DV',
+        policy_name   => 'FGA_HSBA_DV_UPDATE_OTHER_BATHOPPHAP'
+    );
+EXCEPTION
+    WHEN OTHERS THEN NULL;
+END;
+/
+
+-- Policy mới cho DELETE bất hợp pháp trên HSBA_DV
+BEGIN
+    DBMS_FGA.DROP_POLICY(
+        object_schema => 'ADMINHOS',
+        object_name   => 'HSBA_DV',
+        policy_name   => 'FGA_HSBA_DV_DELETE_BATHOPPHAP'
+    );
+EXCEPTION
+    WHEN OTHERS THEN NULL;
+END;
+/
+
+
+-- Hàm hỗ trợ FGA: kiểm tra user hiện tại có phải Bác sĩ/Y sĩ phụ trách HSBA không
+CREATE OR REPLACE FUNCTION ADMINHOS.FN_FGA_IS_BS_PHUTRACH_HSBA (
+    p_mahsba IN VARCHAR2
+)
+RETURN NUMBER
+AS
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_count
+    FROM ADMINHOS.HSBA H
+    JOIN ADMINHOS.NHANVIEN NV
+      ON NV.MANV = H.MABS
+    WHERE H.MAHSBA = p_mahsba
+      AND H.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
+      AND NV.VAITRO = N'Bác sĩ/Y sĩ';
+
+    IF v_count > 0 THEN
+        RETURN 1;
+    END IF;
+
+    RETURN 0;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN 0;
+END;
+/
+
+SHOW ERRORS FUNCTION ADMINHOS.FN_FGA_IS_BS_PHUTRACH_HSBA;
+
+-- Hàm hỗ trợ FGA: kiểm tra user hiện tại có phải Điều phối viên không
+CREATE OR REPLACE FUNCTION ADMINHOS.FN_FGA_IS_DPV
+RETURN NUMBER
+AS
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_count
+    FROM ADMINHOS.NHANVIEN
+    WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
+      AND VAITRO = N'Điều phối viên';
+
+    IF v_count > 0 THEN
+        RETURN 1;
+    END IF;
+
+    RETURN 0;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN 0;
+END;
+/
+
+SHOW ERRORS FUNCTION ADMINHOS.FN_FGA_IS_DPV;
+
 
 
 -- ==========================================================
@@ -2911,10 +3017,10 @@ END;
 --
 -- Giải thích:
 -- - HSBA_DV là bảng dịch vụ hỗ trợ chẩn đoán.
--- - Trong bài toán, kỹ thuật viên mới là người phù hợp thao tác dịch vụ.
--- - Xem INSERT bất hợp pháp khi user hiện tại không phải KTV%.
--- - Để FGA ghi nhận được, trong phần test ta cố ý cấp INSERT cho BS0001,
---   rồi để FGA ghi nhận đây là hành vi bất hợp pháp về nghiệp vụ.
+-- - Theo TC#3, Bác sĩ/Y sĩ được thêm dịch vụ cho HSBA mình phụ trách.
+-- - INSERT bất hợp pháp khi user hiện tại không phải bác sĩ phụ trách HSBA đó.
+-- - Để FGA ghi nhận được, trong phần test cần cấp quyền INSERT để câu lệnh
+--   chạy tới bảng, sau đó FGA ghi nhận theo điều kiện nghiệp vụ.
 -- ==========================================================
 
 BEGIN
@@ -2922,7 +3028,7 @@ BEGIN
         object_schema      => 'ADMINHOS',
         object_name        => 'HSBA_DV',
         policy_name        => 'FGA_HSBA_DV_INSERT_BATHOPPHAP',
-        audit_condition    => 'SYS_CONTEXT(''USERENV'', ''SESSION_USER'') NOT LIKE ''KTV%''',
+        audit_condition    => 'ADMINHOS.FN_FGA_IS_BS_PHUTRACH_HSBA(MAHSBA) = 0',
         audit_column       => NULL,
         statement_types    => 'INSERT',
         audit_trail        => DBMS_FGA.DB + DBMS_FGA.EXTENDED
@@ -2940,24 +3046,73 @@ END;
 -- Audit hành vi SỬA/XÓA bất hợp pháp trên HSBA_DV.
 --
 -- Giải thích:
--- - Mỗi dòng HSBA_DV có MAKTV là kỹ thuật viên được phân công.
--- - Hợp pháp khi SESSION_USER = MAKTV.
--- - Bất hợp pháp khi SESSION_USER khác MAKTV.
--- - Ví dụ: KTV001 cập nhật/xóa dòng có MAKTV = KTV002.
+-- - Hợp pháp chỉ có 2 trường hợp:
+--   + Điều phối viên cập nhật MAKTV để phân công kỹ thuật viên.
+--   + Kỹ thuật viên cập nhật KETQUA trên dòng được phân công cho mình.
+-- - Trường hợp bất hợp pháp: mọi UPDATE không thuộc 2 trường hợp trên đều audit.
+-- - DELETE hợp pháp khi Bác sĩ/Y sĩ xóa dịch vụ thuộc HSBA mình phụ trách.
 -- ==========================================================
 
 BEGIN
     DBMS_FGA.ADD_POLICY(
         object_schema      => 'ADMINHOS',
         object_name        => 'HSBA_DV',
-        policy_name        => 'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP',
+        policy_name        => 'FGA_HSBA_DV_UPDATE_MAKTV_BATHOPPHAP',
+        audit_condition    => 'ADMINHOS.FN_FGA_IS_DPV() = 0',
+        audit_column       => 'MAKTV',
+        statement_types    => 'UPDATE',
+        audit_trail        => DBMS_FGA.DB + DBMS_FGA.EXTENDED,
+        audit_column_opts  => DBMS_FGA.ANY_COLUMNS
+    );
+
+    DBMS_OUTPUT.PUT_LINE('Created policy FGA_HSBA_DV_UPDATE_MAKTV_BATHOPPHAP');
+END;
+/
+
+BEGIN
+    DBMS_FGA.ADD_POLICY(
+        object_schema      => 'ADMINHOS',
+        object_name        => 'HSBA_DV',
+        policy_name        => 'FGA_HSBA_DV_UPDATE_KETQUA_BATHOPPHAP',
         audit_condition    => 'SYS_CONTEXT(''USERENV'', ''SESSION_USER'') <> NVL(MAKTV, ''#'')',
+        audit_column       => 'KETQUA',
+        statement_types    => 'UPDATE',
+        audit_trail        => DBMS_FGA.DB + DBMS_FGA.EXTENDED,
+        audit_column_opts  => DBMS_FGA.ANY_COLUMNS
+    );
+
+    DBMS_OUTPUT.PUT_LINE('Created policy FGA_HSBA_DV_UPDATE_KETQUA_BATHOPPHAP');
+END;
+/
+
+BEGIN
+    DBMS_FGA.ADD_POLICY(
+        object_schema      => 'ADMINHOS',
+        object_name        => 'HSBA_DV',
+        policy_name        => 'FGA_HSBA_DV_UPDATE_OTHER_BATHOPPHAP',
+        audit_condition    => '1 = 1',
+        audit_column       => 'MAHSBA,LOAIDV,NGAYDV',
+        statement_types    => 'UPDATE',
+        audit_trail        => DBMS_FGA.DB + DBMS_FGA.EXTENDED,
+        audit_column_opts  => DBMS_FGA.ANY_COLUMNS
+    );
+
+    DBMS_OUTPUT.PUT_LINE('Created policy FGA_HSBA_DV_UPDATE_OTHER_BATHOPPHAP');
+END;
+/
+
+BEGIN
+    DBMS_FGA.ADD_POLICY(
+        object_schema      => 'ADMINHOS',
+        object_name        => 'HSBA_DV',
+        policy_name        => 'FGA_HSBA_DV_DELETE_BATHOPPHAP',
+        audit_condition    => 'ADMINHOS.FN_FGA_IS_BS_PHUTRACH_HSBA(MAHSBA) = 0',
         audit_column       => NULL,
-        statement_types    => 'UPDATE,DELETE',
+        statement_types    => 'DELETE',
         audit_trail        => DBMS_FGA.DB + DBMS_FGA.EXTENDED
     );
 
-    DBMS_OUTPUT.PUT_LINE('Created policy FGA_HSBA_DV_UPD_DEL_BATHOPPHAP');
+    DBMS_OUTPUT.PUT_LINE('Created policy FGA_HSBA_DV_DELETE_BATHOPPHAP');
 END;
 /
 
@@ -3307,7 +3462,10 @@ BEGIN
               'FGA_HSBA_UPDATE_HOPPHAP',
               'FGA_HSBA_UPDATE_BATHOPPHAP',
               'FGA_HSBA_DV_INSERT_BATHOPPHAP',
-              'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP'
+              'FGA_HSBA_DV_UPDATE_MAKTV_BATHOPPHAP',
+              'FGA_HSBA_DV_UPDATE_KETQUA_BATHOPPHAP',
+              'FGA_HSBA_DV_UPDATE_OTHER_BATHOPPHAP',
+              'FGA_HSBA_DV_DELETE_BATHOPPHAP'
           )
     )
     ORDER BY THOI_GIAN DESC;
@@ -3326,7 +3484,7 @@ BEGIN
         (SELECT COUNT(*) FROM DBA_AUDIT_TRAIL WHERE OWNER = 'ADMINHOS'
          AND OBJ_NAME IN ('HSBA', 'DONTHUOC', 'HSBA_DV', 'VW_NHANVIEN_SELF', 'VW_BENHNHAN_SELF', 'SP_CAPNHAT_KETLUAN_HSBA', 'FN_DEM_DONTHUOC')) +
         (SELECT COUNT(*) FROM DBA_FGA_AUDIT_TRAIL WHERE OBJECT_SCHEMA = 'ADMINHOS'
-         AND POLICY_NAME IN ('FGA_DONTHUOC_UPDATE', 'FGA_HSBA_UPDATE_HOPPHAP', 'FGA_HSBA_UPDATE_BATHOPPHAP', 'FGA_HSBA_DV_INSERT_BATHOPPHAP', 'FGA_HSBA_DV_UPD_DEL_BATHOPPHAP')) AS TOTAL_AUDIT,
+         AND POLICY_NAME IN ('FGA_DONTHUOC_UPDATE', 'FGA_HSBA_UPDATE_HOPPHAP', 'FGA_HSBA_UPDATE_BATHOPPHAP', 'FGA_HSBA_DV_INSERT_BATHOPPHAP', 'FGA_HSBA_DV_UPDATE_MAKTV_BATHOPPHAP', 'FGA_HSBA_DV_UPDATE_KETQUA_BATHOPPHAP', 'FGA_HSBA_DV_UPDATE_OTHER_BATHOPPHAP', 'FGA_HSBA_DV_DELETE_BATHOPPHAP')) AS TOTAL_AUDIT,
         (SELECT COUNT(*) FROM DBA_AUDIT_TRAIL WHERE OWNER = 'ADMINHOS' AND RETURNCODE != 0
          AND OBJ_NAME IN ('HSBA', 'DONTHUOC', 'HSBA_DV', 'VW_NHANVIEN_SELF', 'VW_BENHNHAN_SELF', 'SP_CAPNHAT_KETLUAN_HSBA', 'FN_DEM_DONTHUOC')) +
         (SELECT COUNT(*) FROM DBA_FGA_AUDIT_TRAIL WHERE OBJECT_SCHEMA = 'ADMINHOS' AND POLICY_NAME LIKE '%BATHOPPHAP%') AS ABNORMAL_ALERTS
