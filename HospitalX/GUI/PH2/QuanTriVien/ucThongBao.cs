@@ -1,9 +1,12 @@
 using Guna.UI2.WinForms;
+using HospitalX.DAO;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Oracle.ManagedDataAccess.Client;
 
 namespace HospitalX.GUI.PH2.QuanTriVien
 {
@@ -31,7 +34,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
             _loaded = true;
             LocalizeStaticText();
-            SeedData();
+            LoadNotificationsFromDB();
             BindDesignerLabelButtons();
             RenderSentCards();
             UpdateSelectedCount();
@@ -50,7 +53,81 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             btnSend.Text = "Gửi thông báo qua OLS";
             txtContent.PlaceholderText = "Nhập nội dung thông báo nội bộ...";
             txtLocation.PlaceholderText = "VD: Hội trường A";
+        }
 
+        private string MapLabelCodeToOls(string code)
+        {
+            switch (code.ToLower())
+            {
+                case "t1": return "NV";
+                case "t2": return "BGD";
+                case "t3": return "LDK";
+                case "t4": return "LDK:TH";
+                case "t5": return "NV:TH:HCM";
+                case "t6": return "NV:TH:HN";
+                case "t7": return "LDK:TH,TK:HP";
+                default: return "NV";
+            }
+        }
+
+        private string MapOlsToLabelCode(string olsLabel)
+        {
+            if (string.IsNullOrEmpty(olsLabel)) return "";
+            olsLabel = olsLabel.ToUpper().Replace(" ", "");
+            if (olsLabel.Contains("BGD")) return "t2";
+            if (olsLabel.Contains("LDK:TH,TK:HP")) return "t7";
+            if (olsLabel.Contains("LDK:TH")) return "t4";
+            if (olsLabel.Contains("LDK")) return "t3";
+            if (olsLabel.Contains("NV:TH:HCM")) return "t5";
+            if (olsLabel.Contains("NV:TH:HN")) return "t6";
+            if (olsLabel.Contains("NV")) return "t1";
+            return olsLabel;
+        }
+
+        private string GetPriorityFromLabel(string olsLabel)
+        {
+            if (string.IsNullOrEmpty(olsLabel)) return "Thông thường";
+            if (olsLabel.Contains("BGD") || olsLabel.Contains("HP")) return "Khẩn cấp";
+            if (olsLabel.Contains("LDK")) return "Quan trọng";
+            return "Thông thường";
+        }
+
+        private void LoadNotificationsFromDB()
+        {
+            _notifications.Clear();
+            try
+            {
+                string query = "SELECT MATB, NOIDUNG, NGAYGIO, DIADIEM, NHAN_OLS FROM ADMINHOS.VW_THONGBAO_APP ORDER BY NGAYGIO DESC";
+                DataTable dt = DataProvider.Instance.ExecuteQuery(query, null, false);
+                if (dt != null)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string matb = row["MATB"]?.ToString() ?? "";
+                        string noidung = row["NOIDUNG"]?.ToString() ?? "";
+                        
+                        DateTime ngayGioVal = DateTime.Now;
+                        if (row["NGAYGIO"] != DBNull.Value)
+                        {
+                            ngayGioVal = Convert.ToDateTime(row["NGAYGIO"]);
+                        }
+                        string ngayGio = ngayGioVal.ToString("dd/MM HH:mm");
+                        
+                        string diadiem = row["DIADIEM"]?.ToString() ?? "";
+                        string nhanOls = row["NHAN_OLS"]?.ToString() ?? "";
+                        
+                        string labelCode = MapOlsToLabelCode(nhanOls);
+                        string priority = GetPriorityFromLabel(nhanOls);
+
+                        _notifications.Add(new NotificationRecord(ngayGio, noidung, diadiem, labelCode, priority));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Loi tai thong bao: " + ex.Message);
+                SeedData();
+            }
         }
 
         private void SeedData()
@@ -280,21 +357,58 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                 return;
             }
 
-            string summary = content.Length > 96 ? content.Substring(0, 96) + "..." : content;
-            _notifications.Insert(0, new NotificationRecord(
-                dtpTime.Value.ToString("dd/MM HH:mm"),
-                summary,
-                txtLocation.Text.Trim(),
-                string.Join(", ", labels),
-                Convert.ToString(cmbPriority.SelectedItem)));
+            try
+            {
+                // 1. Lấy mã thông báo tiếp theo (T8, T9, ...)
+                int maxNum = 0;
+                try
+                {
+                    string maxQuery = "SELECT MAX(TO_NUMBER(SUBSTR(MATB, 2))) FROM ADMINHOS.THONGBAO";
+                    DataTable maxDt = DataProvider.Instance.ExecuteQuery(maxQuery, null, false);
+                    if (maxDt != null && maxDt.Rows.Count > 0)
+                    {
+                        object obj = maxDt.Rows[0][0];
+                        if (obj != DBNull.Value)
+                        {
+                            maxNum = Convert.ToInt32(obj);
+                        }
+                    }
+                }
+                catch { }
+                string nextMaTB = "T" + (maxNum + 1);
 
-            txtContent.Clear();
-            txtLocation.Clear();
-            _selectedLabels.Clear();
-            UpdateLabelButtons();
-            UpdateSendButtonState();
-            RenderSentCards();
-            ShowMessage("Thông báo OLS", "Đã gửi thông báo thành công.", MessageDialogIcon.Information);
+                // 2. Map nhãn OLS được chọn đầu tiên
+                string selectedLabelCode = labels[0];
+                string olsLabel = MapLabelCodeToOls(selectedLabelCode);
+
+                // 3. Thực thi Insert xuống DB sử dụng OLS thật
+                string insertQuery = "INSERT INTO ADMINHOS.THONGBAO (MATB, NOIDUNG, NGAYGIO, DIADIEM, OLS_LABEL) VALUES (:matb, :noidung, :ngaygio, :diadiem, CHAR_TO_LABEL('THONGBAO_OLS', :nhan_ols))";
+                OracleParameter[] parameters = new OracleParameter[]
+                {
+                    new OracleParameter("matb", OracleDbType.Varchar2) { Value = nextMaTB },
+                    new OracleParameter("noidung", OracleDbType.NVarchar2) { Value = content },
+                    new OracleParameter("ngaygio", OracleDbType.TimeStamp) { Value = dtpTime.Value },
+                    new OracleParameter("diadiem", OracleDbType.NVarchar2) { Value = txtLocation.Text.Trim() },
+                    new OracleParameter("nhan_ols", OracleDbType.Varchar2) { Value = olsLabel }
+                };
+
+                DataProvider.Instance.ExecuteNonQuery(insertQuery, parameters, false);
+
+                // 4. Reload từ DB để hiển thị
+                LoadNotificationsFromDB();
+
+                txtContent.Clear();
+                txtLocation.Clear();
+                _selectedLabels.Clear();
+                UpdateLabelButtons();
+                UpdateSendButtonState();
+                RenderSentCards();
+                ShowMessage("Thông báo OLS", "Đã gửi thông báo thành công và lưu xuống DB.", MessageDialogIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Lỗi CSDL", "Không thể gửi thông báo: " + ex.Message, MessageDialogIcon.Error);
+            }
         }
 
         private void chkAll_CheckedChanged(object sender, EventArgs e)
