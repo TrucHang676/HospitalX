@@ -15,6 +15,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Guna2Panel pnlBannerAvatar;
         private Label lblBannerAvatarText;
         private Label lblBannerTitle;
+        private Label lblBannerSubtitle;
 
         private readonly Guna2Panel[] statCards = new Guna2Panel[4];
         private readonly Guna2Panel[] statDots = new Guna2Panel[4];
@@ -140,7 +141,11 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblBannerTitle = TextLabel("Chào buổi sáng!", 110, 26, 500, 34, 18F, FontStyle.Bold, Color.White);
             lblBannerTitle.AutoSize = true;
 
+            lblBannerSubtitle = TextLabel("Đang tải dữ liệu...", 110, 68, 500, 22, 10F, FontStyle.Regular, Color.FromArgb(218, 242, 235));
+            lblBannerSubtitle.AutoSize = true;
+
             banner.Controls.Add(lblBannerTitle);
+            banner.Controls.Add(lblBannerSubtitle);
             Controls.Add(banner);
 
             // 2. Khởi tạo 4 Stat Cards
@@ -439,6 +444,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             pnlBannerAvatar.Location = new Point(30, 29);
             lblBannerTitle.Location = new Point(110, 26);
             lblBannerTitle.Width = banner.Width - 150;
+            lblBannerSubtitle.Location = new Point(110, 68);
+            lblBannerSubtitle.Width = banner.Width - 150;
 
             // 2. Layout 4 Stat Cards
             int cardWidth = (availWidth - 3 * gap) / 4;
@@ -586,6 +593,23 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             // Cập nhật Banner — không có thông tin ca làm trong DB, chỉ hiển thị số liệu thực
             lblBannerTitle.Text = $"Xin chào, Kỹ thuật viên {ktvName}!";
+
+            // Lấy số lượng thông báo thực tế của KTV bằng NoticeDAO
+            int noticeCount = 0;
+            try
+            {
+                System.Data.DataTable dtNotices = HospitalX.DAO.NoticeDAO.Instance.GetNotifications();
+                if (dtNotices != null)
+                {
+                    noticeCount = dtNotices.Rows.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi lấy thông báo của KTV: " + ex.Message);
+            }
+
+            lblBannerSubtitle.Text = $"Hôm nay bạn có {pendingKq} dịch vụ chỉ định cần cập nhật kết quả và {noticeCount} thông báo mới.";
 
             lblStatValues[0].Text = totalToday.ToString();
             lblStatTrendsVal[0].Text = "";
