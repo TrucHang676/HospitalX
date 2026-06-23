@@ -3795,6 +3795,19 @@ BEGIN
 END;
 /
 
+-- 13.5. Doi mat khau cua chinh minh
+CREATE OR REPLACE PROCEDURE SP_CHANGE_MY_PASSWORD (
+    p_new_password IN VARCHAR2
+) AUTHID DEFINER AS
+    v_username VARCHAR2(128);
+    v_sql VARCHAR2(500);
+BEGIN
+    v_username := SYS_CONTEXT('USERENV', 'SESSION_USER');
+    v_sql := 'ALTER USER ' || v_username || ' IDENTIFIED BY "' || p_new_password || '"';
+    EXECUTE IMMEDIATE v_sql;
+END;
+/
+
 -- 14. Lấy toàn bộ bệnh nhân
 CREATE OR REPLACE PROCEDURE SP_GET_ALL_PATIENTS (
     p_cursor OUT SYS_REFCURSOR
@@ -4410,7 +4423,8 @@ DECLARE
         'SP_GET_PROFILE',
         'SP_GET_PROFILE_STATS',
         'SP_UPDATE_PROFILE',
-        'SP_GET_NOTIFICATIONS'
+        'SP_GET_NOTIFICATIONS',
+        'SP_CHANGE_MY_PASSWORD'
     );
 BEGIN
     -- 1. Cấp quyền cho Điều phối viên (DPV)

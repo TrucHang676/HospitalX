@@ -2,6 +2,7 @@ using Guna.UI2.WinForms;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Oracle.ManagedDataAccess.Client;
 
 namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
@@ -160,10 +161,63 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                 return;
             }
 
-            // Simulate change success
-            ShowMessage("Đổi mật khẩu thành công!", "Thông báo", MessageDialogIcon.Information);
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            // 1. Verify old password by trying to establish a connection to the database
+            string currentConnStr = HospitalX.DAO.DataProvider.Instance.ConnectionString;
+            string username = HospitalX.DAO.DataProvider.Instance.CurrentUser;
+
+            string testConnStr = "";
+            try
+            {
+                var builder = new OracleConnectionStringBuilder(currentConnStr);
+                builder.Password = oldPass;
+                testConnStr = builder.ConnectionString;
+            }
+            catch
+            {
+                testConnStr = "User Id=" + username + ";Password=" + oldPass + ";Data Source=localhost:1521/PDBHOSX;";
+            }
+
+            bool oldPasswordValid = false;
+            try
+            {
+                using (var conn = new OracleConnection(testConnStr))
+                {
+                    conn.Open();
+                    oldPasswordValid = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Mật khẩu hiện tại không đúng. Vui lòng kiểm tra lại. (" + ex.Message + ")", "Lỗi xác thực", MessageDialogIcon.Error);
+                return;
+            }
+
+            // 2. Perform the database password change under the active connection
+            if (oldPasswordValid)
+            {
+                try
+                {
+                    // Gọi stored procedure SP_CHANGE_MY_PASSWORD để thực hiện nghiệp vụ đổi mật khẩu
+                    OracleParameter[] parameters = new OracleParameter[]
+                    {
+                        new OracleParameter("p_new_password", OracleDbType.Varchar2) { Value = newPass }
+                    };
+                    HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery("ADMINHOS.SP_CHANGE_MY_PASSWORD", parameters, true);
+
+                    // Update DataProvider's connection string so subsequent queries use the new credentials
+                    var newConnBuilder = new OracleConnectionStringBuilder(currentConnStr);
+                    newConnBuilder.Password = newPass;
+                    HospitalX.DAO.DataProvider.Instance.SetConnectionString(newConnBuilder.ConnectionString);
+
+                    ShowMessage("Đổi mật khẩu thành công!", "Thông báo", MessageDialogIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                catch (Exception ex)
+                {
+                    ShowMessage("Không thể thay đổi mật khẩu trên database: " + ex.Message, "Lỗi thay đổi", MessageDialogIcon.Error);
+                }
+            }
         }
 
         private void UpdateConfirmButtonState(object sender, EventArgs e)

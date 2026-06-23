@@ -1,4 +1,5 @@
 using Guna.UI2.WinForms;
+using HospitalX.GUI.PH2.DieuPhoiVien;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -305,6 +306,14 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 PopulateTextboxes();
                 _isLoading = false;
                 btnSaveProfile.Enabled = false;
+            }
+        }
+
+        private void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            using (var frm = new frmDoiMatKhau())
+            {
+                frm.ShowDialog(this);
             }
         }
 

@@ -17,6 +17,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
 
         private void InitializeComponent()
         {
+            this.btnChangePassword = new Guna.UI2.WinForms.Guna2Button();
             this.pnlRoot = new System.Windows.Forms.Panel();
             this.pnlHistory = new Guna.UI2.WinForms.Guna2Panel();
             this.txtFamilyHistory = new Guna.UI2.WinForms.Guna2TextBox();
@@ -74,6 +75,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // pnlRoot
             //
             this.pnlRoot.AutoScroll = true;
+            this.pnlRoot.Controls.Add(this.btnChangePassword);
             this.pnlRoot.Controls.Add(this.btnSaveProfile);
             this.pnlRoot.Controls.Add(this.pnlHistory);
             this.pnlRoot.Controls.Add(this.pnlProfile);
@@ -675,6 +677,27 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.btnSaveProfile.Visible = true;
             this.btnSaveProfile.Enabled = false;
             this.btnSaveProfile.Click += new System.EventHandler(this.btnSaveProfile_Click);
+            // 
+            // btnChangePassword
+            // 
+            this.btnChangePassword.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChangePassword.BackColor = System.Drawing.Color.Transparent;
+            this.btnChangePassword.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnChangePassword.BorderRadius = 8;
+            this.btnChangePassword.BorderThickness = 1;
+            this.btnChangePassword.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnChangePassword.FillColor = System.Drawing.Color.Transparent;
+            this.btnChangePassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btnChangePassword.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.btnChangePassword.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(244)))), ((int)(((byte)(240)))));
+            this.btnChangePassword.Location = new System.Drawing.Point(824, 710);
+            this.btnChangePassword.Name = "btnChangePassword";
+            this.btnChangePassword.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(235)))), ((int)(((byte)(225)))));
+            this.btnChangePassword.Size = new System.Drawing.Size(120, 35);
+            this.btnChangePassword.TabIndex = 8;
+            this.btnChangePassword.Text = "Đổi mật khẩu";
+            this.btnChangePassword.Visible = true;
+            this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
             //
             // lblWelcomeMeta
             //
@@ -745,6 +768,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private System.Windows.Forms.Panel pnlRoot;
         private Guna.UI2.WinForms.Guna2Panel pnlWelcome;
         private Guna.UI2.WinForms.Guna2Button btnSaveProfile;
+        private Guna.UI2.WinForms.Guna2Button btnChangePassword;
         private System.Windows.Forms.Label lblWelcomeId;
         private System.Windows.Forms.Label lblWelcomeName;
         private System.Windows.Forms.Label lblWelcomeMeta;

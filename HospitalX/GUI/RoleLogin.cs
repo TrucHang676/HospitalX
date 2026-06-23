@@ -461,19 +461,7 @@ namespace HospitalX.GUI
                 return;
             }
 
-            // Check if mock credential is used to bypass database check for easier testing
-            string expectedUser;
-            if (IsMockCredential(username, password, out expectedUser))
-            {
-                string dbPassword = (expectedUser.StartsWith("DP") || expectedUser.StartsWith("BS") || expectedUser.StartsWith("KTV") || expectedUser.StartsWith("BN")) ? "Hos@123456" : password;
-                string mockConnStr = "User Id=" + expectedUser + ";Password=" + dbPassword + ";Data Source=localhost:1521/PDBHOSX;";
-                DataProvider.Instance.SetConnectionString(mockConnStr);
-                DataProvider.Instance.CurrentUser = expectedUser;
-                OpenMainForm(mockConnStr);
-                return;
-            }
-
-            // Otherwise, proceed with real Oracle database connection
+            // Proceed with real Oracle database connection
             string connStr = BuildConnectionString(username, password);
 
             try

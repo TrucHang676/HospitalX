@@ -21,6 +21,11 @@ namespace HospitalX.DAO
             set { currentUser = value; }
         }
 
+        public string ConnectionString
+        {
+            get { return connectionString; }
+        }
+
         private static DataProvider instance;
         public static DataProvider Instance
         {
