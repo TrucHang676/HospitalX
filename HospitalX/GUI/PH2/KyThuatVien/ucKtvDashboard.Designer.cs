@@ -103,9 +103,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblDesignerTaskTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(48)))), ((int)(((byte)(42)))));
             this.lblDesignerTaskTitle.Location = new System.Drawing.Point(26, 20);
             this.lblDesignerTaskTitle.Name = "lblDesignerTaskTitle";
-            this.lblDesignerTaskTitle.Size = new System.Drawing.Size(160, 25);
+            this.lblDesignerTaskTitle.Size = new System.Drawing.Size(206, 25);
             this.lblDesignerTaskTitle.TabIndex = 0;
-            this.lblDesignerTaskTitle.Text = "Dịch vụ hôm nay";
+            this.lblDesignerTaskTitle.Text = "Dịch vụ chờ thực hiện";
             // 
             // activityCard
             // 
@@ -213,9 +213,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             this.lblStat1Title.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblStat1Title.Location = new System.Drawing.Point(66, 22);
             this.lblStat1Title.Name = "lblStat1Title";
-            this.lblStat1Title.Size = new System.Drawing.Size(107, 13);
+            this.lblStat1Title.Size = new System.Drawing.Size(147, 13);
             this.lblStat1Title.TabIndex = 2;
-            this.lblStat1Title.Text = "DỊCH VỤ HÔM NAY";
+            this.lblStat1Title.Text = "DỊCH VỤ CHỜ THỰC HIỆN";
             // 
             // flpStat1Trend
             // 

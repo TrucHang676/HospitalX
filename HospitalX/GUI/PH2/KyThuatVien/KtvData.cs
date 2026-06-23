@@ -145,8 +145,8 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                         svc.Service = row["LOAIDV"]?.ToString() ?? "";
                         
                         DateTime ngayDv = row["NGAYDV"] != DBNull.Value ? Convert.ToDateTime(row["NGAYDV"]) : DateTime.Now;
-                        svc.NgayDv = ngayDv.ToString("dd/MM/yyyy");
-                        svc.Time = ngayDv.ToString("HH:mm");
+                        svc.NgayDv = ngayDv.ToString("dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                        svc.Time = ngayDv.ToString("HH:mm", System.Globalization.CultureInfo.InvariantCulture);
                         
                         svc.KetQua = row["KETQUA"]?.ToString();
                         if (row["KETQUA"] == DBNull.Value) svc.KetQua = null;
