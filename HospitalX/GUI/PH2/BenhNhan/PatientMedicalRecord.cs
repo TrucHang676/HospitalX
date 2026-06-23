@@ -21,6 +21,30 @@ namespace HospitalX.GUI.PH2.BenhNhan
         public List<RecordService> Services { get; set; } = new List<RecordService>();
         public List<RecordPrescription> Prescriptions { get; set; } = new List<RecordPrescription>();
 
+        private static string GetRowString(System.Data.DataRow row, params string[] colNames)
+        {
+            foreach (var name in colNames)
+            {
+                if (row.Table.Columns.Contains(name))
+                {
+                    return row[name] != DBNull.Value ? row[name].ToString().Trim() : "";
+                }
+            }
+            return "";
+        }
+
+        private static DateTime GetRowDate(System.Data.DataRow row, string[] colNames, DateTime fallback)
+        {
+            foreach (var name in colNames)
+            {
+                if (row.Table.Columns.Contains(name))
+                {
+                    return row[name] != DBNull.Value ? Convert.ToDateTime(row[name]) : fallback;
+                }
+            }
+            return fallback;
+        }
+
         public static List<PatientMedicalRecord> LoadFromDB()
         {
             var records = new List<PatientMedicalRecord>();
@@ -38,17 +62,19 @@ namespace HospitalX.GUI.PH2.BenhNhan
                     foreach (System.Data.DataRow row in dtHsba.Rows)
                     {
                         var pmr = new PatientMedicalRecord();
-                        pmr.Id = row["MAHSBA"]?.ToString() ?? "";
-                        pmr.PatientId = row["MABN"]?.ToString() ?? "";
-                        pmr.PatientName = row["TENBN"]?.ToString() ?? "";
-                        pmr.Date = row["NGAYTAO"] != DBNull.Value ? Convert.ToDateTime(row["NGAYTAO"]) : DateTime.Today;
-                        pmr.Diagnosis = row["CHANDOAN"]?.ToString() ?? "";
-                        pmr.Treatment = row["DIEUTRI"]?.ToString() ?? "";
-                        pmr.Conclusion = row["KETLUAN"]?.ToString() ?? "";
-                        pmr.DoctorId = row["MABS"]?.ToString() ?? "";
-                        pmr.DoctorName = row["TENBS"]?.ToString() ?? "Bác sĩ điều trị";
+                        pmr.Id = GetRowString(row, "MAHSBA");
+                        pmr.PatientId = GetRowString(row, "MABN");
+                        pmr.PatientName = GetRowString(row, "TENBN", "TEN_BENH_NHAN");
+                        pmr.Date = GetRowDate(row, new[] { "NGAY", "NGAYTAO" }, DateTime.Today);
+                        pmr.Diagnosis = GetRowString(row, "CHANDOAN");
+                        pmr.Treatment = GetRowString(row, "DIEUTRI");
+                        pmr.Conclusion = GetRowString(row, "KETLUAN");
+                        pmr.DoctorId = GetRowString(row, "MABS", "MA_BACSI");
+                        pmr.DoctorName = GetRowString(row, "TENBS", "TEN_BACSI");
+                        if (string.IsNullOrEmpty(pmr.DoctorName)) pmr.DoctorName = "Bác sĩ điều trị";
                         pmr.DoctorRole = "Bác sĩ";
-                        pmr.Department = row["TENKHOA"]?.ToString() ?? "Khoa điều trị";
+                        pmr.Department = GetRowString(row, "TENKHOA", "MAKHOA", "CHUYENKHOA");
+                        if (string.IsNullOrEmpty(pmr.Department)) pmr.Department = "Khoa điều trị";
 
                         // Load dịch vụ đi kèm với HSBA này
                         string procDv = "ADMINHOS.SP_GET_SERVICES_FOR_HSBA";
@@ -62,10 +88,12 @@ namespace HospitalX.GUI.PH2.BenhNhan
                         {
                             foreach (System.Data.DataRow dRow in dtDv.Rows)
                             {
-                                string tendv = dRow["TENDV"]?.ToString() ?? "";
-                                DateTime ngayy = dRow["NGAYYEUCAU"] != DBNull.Value ? Convert.ToDateTime(dRow["NGAYYEUCAU"]) : pmr.Date;
-                                string maktv = dRow["MAKTV"]?.ToString() ?? "Chưa phân công";
-                                string ketqua = dRow["KETQUA"]?.ToString() ?? "Chờ thực hiện";
+                                string tendv = GetRowString(dRow, "LOAIDV", "TENDV", "LOAI_DICHVU");
+                                DateTime ngayy = GetRowDate(dRow, new[] { "NGAYDV", "NGAYYEUCAU" }, pmr.Date);
+                                string maktv = GetRowString(dRow, "MAKTV", "MA_KTV");
+                                if (string.IsNullOrEmpty(maktv)) maktv = "Chưa phân công";
+                                string ketqua = GetRowString(dRow, "KETQUA", "KET_QUA");
+                                if (string.IsNullOrEmpty(ketqua)) ketqua = "Chờ thực hiện";
                                 pmr.Services.Add(new RecordService(tendv, ngayy, maktv, ketqua));
                             }
                         }
@@ -82,8 +110,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
                         {
                             foreach (System.Data.DataRow pRow in dtPres.Rows)
                             {
-                                string thuoc = pRow["TENTHUOC"]?.ToString() ?? "";
-                                string lieudung = pRow["CACHDUNG"]?.ToString() ?? "";
+                                string thuoc = GetRowString(pRow, "TENTHUOC");
+                                string lieudung = GetRowString(pRow, "LIEUDUNG", "CACHDUNG", "CACH_DUNG");
                                 pmr.Prescriptions.Add(new RecordPrescription(pmr.Date, thuoc, lieudung));
                             }
                         }
