@@ -249,9 +249,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             float dpiFactor = (float)this.DeviceDpi / 96f;
 
-            // --- Left Card sizing & positioning ---
-            int leftCardW = (int)(260 * dpiFactor);
-            int leftCardH = (int)(460 * dpiFactor);
+            // --- Left Card sizing & positioning (match coordinator: 320x645) ---
+            int leftCardW = (int)(320 * dpiFactor);
+            int leftCardH = (int)(645 * dpiFactor);
 
             pnlLeftCard.Location = new Point(24, 24);
             pnlLeftCard.Size = new Size(leftCardW, leftCardH);
@@ -377,33 +377,33 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void CenterLeftCardChildren(int cardW, float dpiFactor)
         {
-            // Avatar
-            int avatarSize = (int)(100 * dpiFactor);
+            // Avatar (matching DPV size of 120)
+            int avatarSize = (int)(120 * dpiFactor);
             ptbAvatar.Size = new Size(avatarSize, avatarSize);
-            ptbAvatar.Location = new Point((cardW - avatarSize) / 2, (int)(24 * dpiFactor));
+            ptbAvatar.Location = new Point((cardW - avatarSize) / 2, (int)(38 * dpiFactor));
 
             // Username label
-            int labelW = cardW - (int)(20 * dpiFactor);
-            int labelX = (int)(10 * dpiFactor);
-            lblUserName.Location = new Point(labelX, ptbAvatar.Bottom + (int)(10 * dpiFactor));
-            lblUserName.Size = new Size(labelW, (int)(26 * dpiFactor));
+            int labelW = cardW - (int)(40 * dpiFactor);
+            int labelX = (int)(20 * dpiFactor);
+            lblUserName.Location = new Point(labelX, ptbAvatar.Bottom + (int)(16 * dpiFactor));
+            lblUserName.Size = new Size(labelW, (int)(30 * dpiFactor));
             lblUserName.TextAlign = ContentAlignment.MiddleCenter;
 
             // Role label
-            lblUserRole.Location = new Point(labelX, lblUserName.Bottom + (int)(2 * dpiFactor));
-            lblUserRole.Size = new Size(labelW, (int)(20 * dpiFactor));
+            lblUserRole.Location = new Point(labelX, lblUserName.Bottom + (int)(4 * dpiFactor));
+            lblUserRole.Size = new Size(labelW, (int)(22 * dpiFactor));
             lblUserRole.TextAlign = ContentAlignment.MiddleCenter;
 
             // Department & Facility
-            lblDeptAndFacility.Location = new Point(labelX, lblUserRole.Bottom + (int)(2 * dpiFactor));
-            lblDeptAndFacility.Size = new Size(labelW, (int)(36 * dpiFactor));
+            lblDeptAndFacility.Location = new Point(labelX, lblUserRole.Bottom + (int)(8 * dpiFactor));
+            lblDeptAndFacility.Size = new Size(labelW, (int)(46 * dpiFactor));
             lblDeptAndFacility.TextAlign = ContentAlignment.TopCenter;
 
-            // Stat panels
-            int statW = (int)(100 * dpiFactor);
-            int statH = (int)(75 * dpiFactor);
+            // Stat panels (matching DPV size of 131x95)
+            int statW = (int)(131 * dpiFactor);
+            int statH = (int)(95 * dpiFactor);
             int statGap = (int)(12 * dpiFactor);
-            int statsTopY = lblDeptAndFacility.Bottom + (int)(10 * dpiFactor);
+            int statsTopY = lblDeptAndFacility.Bottom + (int)(16 * dpiFactor);
             int totalStatsW = statW * 2 + statGap;
             int statsStartX = (cardW - totalStatsW) / 2;
 
@@ -416,7 +416,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             int badgeW = (int)(155 * dpiFactor);
             int badgeH = (int)(28 * dpiFactor);
             lblStatusBadge.Size = new Size(badgeW, badgeH);
-            lblStatusBadge.Location = new Point((cardW - badgeW) / 2, pnlStat1.Bottom + (int)(12 * dpiFactor));
+            lblStatusBadge.Location = new Point((cardW - badgeW) / 2, pnlStat1.Bottom + (int)(20 * dpiFactor));
         }
 
         private void btnUpdateContact_Click(object sender, EventArgs e)
