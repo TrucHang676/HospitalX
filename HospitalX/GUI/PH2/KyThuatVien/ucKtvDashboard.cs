@@ -43,6 +43,21 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private readonly Label[] lblProgVals = new Label[3];
         private readonly Guna2Panel[] progressDetailRows = new Guna2Panel[3];
 
+        private static readonly Color QuickTitleColor = Color.FromArgb(24, 48, 42);
+        private static readonly Color QuickSubColor = Color.FromArgb(122, 149, 137);
+        private static readonly Font QuickTitleFont = new Font("Segoe UI", 9.25F, FontStyle.Bold);
+        private static readonly Font QuickSubFont = new Font("Segoe UI", 8.5F, FontStyle.Regular);
+
+        private const int RightSidePad = 16;
+        private const int SectionHeaderHeight = 44;
+        private const int QuickButtonGap = 10;
+
+        private Guna2Button btnQuick1;
+        private Guna2Button btnQuick2;
+        private Guna2Button btnQuick3;
+        private Guna2Button btnQuick4;
+        private Guna2Panel pnlQuickDivider;
+
         public ucKtvDashboard()
         {
             InitializeComponent();
@@ -244,10 +259,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 }
             }
 
-            // 3. Khởi tạo Task Card (Dịch vụ hôm nay) - Xóa hover của card cha
+            // 3. Khởi tạo Task Card (Dịch vụ chờ thực hiện) - Xóa hover của card cha
             taskCard.BorderColor = Color.FromArgb(218, 232, 226);
             PrepareRoundedPanel(taskCard);
-            lblTaskTitle = TextLabel("Dịch vụ hôm nay", 26, 20, 300, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
+            lblTaskTitle = TextLabel("Dịch vụ chờ thực hiện", 26, 20, 300, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
             taskCard.Controls.Add(lblTaskTitle);
 
             // 4. Khởi tạo Activity Card (Hoạt động gần đây) - Xóa hover của card cha
@@ -256,10 +271,31 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblActivityTitle = TextLabel("Hoạt động gần đây", 24, 20, 260, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
             activityCard.Controls.Add(lblActivityTitle);
 
-            // 5. Khởi tạo Schedule Card (Lịch thực hiện hôm nay) - Xóa hover của card cha
+            // 5. Khởi tạo Schedule Card -> Chuyển thành Thao tác nhanh
             scheduleCard.BorderColor = Color.FromArgb(218, 232, 226);
-            lblScheduleTitle = TextLabel("Lịch thực hiện hôm nay", 26, 20, 300, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
+            PrepareRoundedPanel(scheduleCard);
+            lblScheduleTitle = TextLabel("Thao tác nhanh", 26, 20, 300, 36, 14F, FontStyle.Bold, Color.FromArgb(24, 48, 42));
             scheduleCard.Controls.Add(lblScheduleTitle);
+
+            pnlQuickDivider = new Guna2Panel { Height = 1, FillColor = Color.FromArgb(218, 232, 226) };
+            scheduleCard.Controls.Add(pnlQuickDivider);
+
+            btnQuick1 = new Guna2Button();
+            btnQuick2 = new Guna2Button();
+            btnQuick3 = new Guna2Button();
+            btnQuick4 = new Guna2Button();
+
+            ConfigureQuickButton(btnQuick1);
+            ConfigureQuickButton(btnQuick2);
+            ConfigureQuickButton(btnQuick3);
+            ConfigureQuickButton(btnQuick4);
+
+            scheduleCard.Controls.Add(btnQuick1);
+            scheduleCard.Controls.Add(btnQuick2);
+            scheduleCard.Controls.Add(btnQuick3);
+            scheduleCard.Controls.Add(btnQuick4);
+
+            SetupQuickActions();
 
             // 6. Khởi tạo Progress Card (Tiến độ hôm nay) - Xóa hover của card cha
             progressCard.BorderColor = Color.FromArgb(218, 232, 226);
@@ -509,42 +545,16 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 }
             }
 
-            // 4. Layout Hàng 2 (Lịch thực hiện hôm nay)
+            // 4. Layout Hàng 2 (Thao tác nhanh)
             int row2Y = taskCard.Bottom + gap;
-            int row2Height = 380;
+            int row2Height = 160;
 
             scheduleCard.Location = new Point(margin, row2Y);
             scheduleCard.Size = new Size(availWidth, row2Height);
 
             progressCard.Visible = false;
 
-            // Cập nhật các dòng lịch trình biểu diễn trực quan (Timeline blocks)
-            int schedY = 62;
-            int blockWidth = availWidth - 120;
-
-            for (int i = 0; i < scheduleControls.Count; i++)
-            {
-                var ctrl = scheduleControls[i];
-                if (ctrl.Tag != null)
-                {
-                    var info = (ScheduleControlInfo)ctrl.Tag;
-                    if (info.Role == "Time")
-                    {
-                        ctrl.Location = new Point(18, schedY + 6);
-                    }
-                    else if (info.Role == "Block")
-                    {
-                        ctrl.Location = new Point(94, schedY);
-                        ctrl.Size = new Size(blockWidth, 48);
-
-                        foreach (Control child in ctrl.Controls)
-                        {
-                            child.Width = blockWidth - 32;
-                        }
-                        schedY += 60;
-                    }
-                }
-            }
+            LayoutQuickPanel(availWidth, row2Height);
 
             // Cập nhật layout Vòng tròn Tiến độ hôm nay
             int ringSpacing = (rightCardWidth - 40 - (3 * 82)) / 2;
@@ -643,12 +653,24 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             lblProgVals[1].Text = completed.ToString();
             lblProgVals[2].Text = pendingKq.ToString();
 
-            // 3. Danh sách dịch vụ: LOAIDV · TENBN · NGAYDV (từ HSBA_DV JOIN BENHNHAN)
-            for (int i = 0; i < Math.Min(5, mockSvc.Count); i++)
+            // 3. Danh sách dịch vụ: Lọc chỉ hiển thị các dịch vụ "Chờ thực hiện"
+            List<Control> controlsToRemove = new List<Control>();
+            foreach (Control c in taskCard.Controls)
+            {
+                if (c != lblTaskTitle) controlsToRemove.Add(c);
+            }
+            foreach (Control c in controlsToRemove)
+            {
+                taskCard.Controls.Remove(c);
+                c.Dispose();
+            }
+
+            var pendingServices = mockSvc.Where(x => x.Status == "Chờ thực hiện").ToList();
+            for (int i = 0; i < Math.Min(5, pendingServices.Count); i++)
             {
                 // info: TENBN · MABN · NGAYDV — phản ánh đúng join HSBA_DV-HSBA-BENHNHAN
-                string info = $"{mockSvc[i].Patient}  ·  {mockSvc[i].MaBn}  ·  {mockSvc[i].NgayDv}";
-                AddTaskRow(mockSvc[i].Service, info, mockSvc[i].Status);
+                string info = $"{pendingServices[i].Patient}  ·  {pendingServices[i].MaBn}  ·  {pendingServices[i].NgayDv}";
+                AddTaskRow(pendingServices[i].Service, info, pendingServices[i].Status);
             }
 
             // 4. Hoạt động gần đây — kiểm tra độ dài tránh lỗi văng index
@@ -670,18 +692,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 AddActivityRow("Không có hoạt động gần đây", "", "ℹ️", Color.FromArgb(120, 130, 140), Color.FromArgb(245, 246, 248));
             }
 
-            // 5. Lịch thực hiện hôm nay — kiểm tra độ dài tránh lỗi văng index
+            // 5. Thao tác nhanh
             scheduleControls.Clear();
-            if (mockSvc.Count > 0) AddScheduleItem(mockSvc[0].Time, mockSvc[0].Service, mockSvc[0].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            if (mockSvc.Count > 1) AddScheduleItem(mockSvc[1].Time, mockSvc[1].Service, mockSvc[1].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            if (mockSvc.Count > 2) AddScheduleItem(mockSvc[2].Time, mockSvc[2].Service, mockSvc[2].Patient, Color.FromArgb(240, 165, 0), Color.FromArgb(255, 244, 220));
-            if (mockSvc.Count > 4) AddScheduleItem(mockSvc[4].Time, mockSvc[4].Service, mockSvc[4].Patient, Color.FromArgb(15, 110, 86), Color.FromArgb(230, 244, 240));
-            if (mockSvc.Count > 5) AddScheduleItem(mockSvc[5].Time, mockSvc[5].Service, mockSvc[5].Patient, Color.FromArgb(35, 119, 196), Color.FromArgb(232, 241, 251));
-
-            if (mockSvc.Count == 0)
-            {
-                AddScheduleItem("--:--", "Không có lịch thực hiện hôm nay", "", Color.FromArgb(120, 130, 140), Color.FromArgb(245, 246, 248));
-            }
+            SetupQuickActions();
 
             // Cập nhật lại giao diện sau khi tải dữ liệu
             LayoutControls();
@@ -734,6 +747,16 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             badge.Controls.Add(lblBadgeText);
             rowPanel.Controls.Add(badge);
 
+            // Click handler to navigate to KetQua tab
+            EventHandler rowClick = (s, e) =>
+            {
+                if (Main_KTV.Instance != null)
+                {
+                    Main_KTV.Instance.NavigateToKetQua();
+                }
+            };
+            rowPanel.Click += rowClick;
+
             // Thêm hiệu ứng hover riêng cho dòng con (Chỉ đổi nền dòng con khi hover)
             rowPanel.MouseEnter += (s, e) =>
             {
@@ -754,12 +777,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 c.MouseEnter += (s, e) => { rowPanel.FillColor = Color.FromArgb(240, 247, 245); rowPanel.BorderColor = Color.FromArgb(15, 110, 86); };
                 c.MouseLeave += (s, e) => { rowPanel.FillColor = Color.White; rowPanel.BorderColor = Color.FromArgb(238, 242, 240); };
                 c.Cursor = Cursors.Hand;
+                c.Click += rowClick;
             }
             foreach (Control c in badge.Controls)
             {
                 c.MouseEnter += (s, e) => { rowPanel.FillColor = Color.FromArgb(240, 247, 245); rowPanel.BorderColor = Color.FromArgb(15, 110, 86); };
                 c.MouseLeave += (s, e) => { rowPanel.FillColor = Color.White; rowPanel.BorderColor = Color.FromArgb(238, 242, 240); };
                 c.Cursor = Cursors.Hand;
+                c.Click += rowClick;
             }
 
             taskCard.Controls.Add(rowPanel);
@@ -948,6 +973,169 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
                 e.Graphics.ResetClip();
             }
+        }
+
+        private void ConfigureQuickButton(Guna2Button button)
+        {
+            button.BorderRadius = 10;
+            button.BorderThickness = 1;
+            button.BorderColor = Color.FromArgb(238, 242, 240);
+            button.FillColor = Color.White;
+            button.Cursor = Cursors.Hand;
+            button.Click += btnQuick_Click;
+        }
+
+        private void SetupQuickActions()
+        {
+            int noticeCount = 0;
+            try
+            {
+                System.Data.DataTable dtNotices = HospitalX.DAO.NoticeDAO.Instance.GetNotifications();
+                if (dtNotices != null)
+                {
+                    noticeCount = dtNotices.Rows.Count;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Warning: Lỗi lấy thông báo của KTV: " + ex.Message);
+            }
+
+            WireQuickButton(btnQuick1, "Dịch vụ được giao", "Danh sách dịch vụ", 12, Color.FromArgb(15, 110, 86));    // Green
+            WireQuickButton(btnQuick2, "Cập nhật kết quả", "Nhập kết quả dịch vụ", 4, Color.FromArgb(255, 179, 0));  // Amber
+            WireQuickButton(btnQuick3, "Thông báo", $"{noticeCount} hôm nay", 5, Color.FromArgb(25, 118, 210));      // Blue
+            WireQuickButton(btnQuick4, "Hồ sơ cá nhân", "Thông tin cá nhân", 6, Color.FromArgb(229, 57, 53));       // Red
+        }
+
+        private static void WireQuickButton(Guna2Button button, string title, string subtitle, int iconIndex, Color accentColor)
+        {
+            button.Image = null; // Remove icons from buttons
+            button.Tag = new object[] { title, subtitle, iconIndex, accentColor };
+            button.Text = string.Empty;
+
+            Color hoverFill;
+            if (accentColor == Color.FromArgb(15, 110, 86))      // Green
+                hoverFill = Color.FromArgb(230, 244, 240);
+            else if (accentColor == Color.FromArgb(255, 179, 0)) // Amber
+                hoverFill = Color.FromArgb(255, 248, 225);
+            else if (accentColor == Color.FromArgb(25, 118, 210)) // Blue
+                hoverFill = Color.FromArgb(227, 242, 253);
+            else if (accentColor == Color.FromArgb(229, 57, 53))  // Red
+                hoverFill = Color.FromArgb(253, 236, 234);
+            else
+                hoverFill = Color.FromArgb(230, 244, 240);
+
+            button.HoverState.FillColor = hoverFill;
+            button.HoverState.BorderColor = accentColor;
+            button.Paint -= QuickButton_Paint;
+            button.Paint += QuickButton_Paint;
+            button.Invalidate();
+        }
+
+        private static void QuickButton_Paint(object sender, PaintEventArgs e)
+        {
+            var button = (Guna2Button)sender;
+            if (!(button.Tag is object[] tag) || tag.Length < 2) return;
+
+            string title = tag[0].ToString();
+            string subtitle = tag[1].ToString();
+
+            if (tag.Length >= 4 && tag[3] is Color accentColor)
+            {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                using (var path = GetRoundedRectPath(new RectangleF(0, 0, button.Width, button.Height), 10))
+                {
+                    e.Graphics.SetClip(path);
+                    using (var brush = new SolidBrush(accentColor))
+                    {
+                        e.Graphics.FillRectangle(brush, 0, 0, 4, button.Height);
+                    }
+                    e.Graphics.ResetClip();
+                }
+            }
+
+            const int textLeft = 24;
+            int textAreaW = button.Width - textLeft - 8;
+
+            Size titleSize = TextRenderer.MeasureText(title, QuickTitleFont,
+                new Size(textAreaW, 0), TextFormatFlags.Left | TextFormatFlags.WordBreak);
+            int subHeight = TextRenderer.MeasureText(subtitle, QuickSubFont).Height;
+            int blockHeight = titleSize.Height + subHeight + 1;
+            int titleTop = (button.Height - blockHeight) / 2;
+
+            TextRenderer.DrawText(e.Graphics, title, QuickTitleFont,
+                new Rectangle(textLeft, titleTop, textAreaW, titleSize.Height),
+                QuickTitleColor,
+                TextFormatFlags.Left | TextFormatFlags.NoPadding | TextFormatFlags.WordBreak);
+
+            TextRenderer.DrawText(e.Graphics, subtitle, QuickSubFont,
+                new Point(textLeft, titleTop + titleSize.Height + 1), QuickSubColor,
+                TextFormatFlags.Left | TextFormatFlags.NoPadding);
+        }
+
+        private void btnQuick_Click(object sender, EventArgs e)
+        {
+            if (Main_KTV.Instance == null) return;
+
+            var btn = (Guna2Button)sender;
+            string action = btn.Tag is object[] tag && tag.Length > 0 ? tag[0].ToString() : string.Empty;
+
+            switch (action)
+            {
+                case "Dịch vụ được giao":
+                    Main_KTV.Instance.NavigateToDichVu();
+                    break;
+                case "Cập nhật kết quả":
+                    Main_KTV.Instance.NavigateToKetQua();
+                    break;
+                case "Thông báo":
+                    Main_KTV.Instance.NavigateToThongBao();
+                    break;
+                case "Hồ sơ cá nhân":
+                    Main_KTV.Instance.NavigateToHoSo();
+                    break;
+            }
+        }
+
+        private void LayoutQuickPanel(int panelWidth, int panelHeight)
+        {
+            int btnW = (panelWidth - RightSidePad * 2 - QuickButtonGap * 3) / 4;
+            int dividerY = SectionHeaderHeight + 10;
+
+            if (pnlQuickDivider != null)
+            {
+                pnlQuickDivider.Location = new Point(RightSidePad, dividerY);
+                pnlQuickDivider.Size = new Size(panelWidth - RightSidePad * 2, 1);
+                pnlQuickDivider.BringToFront();
+            }
+
+            int contentTop = dividerY + 13;
+            int btnH = 80;
+            int iconSize = 28;
+
+            if (lblScheduleTitle != null)
+            {
+                lblScheduleTitle.Location = new Point(20, 18);
+                lblScheduleTitle.BringToFront();
+            }
+
+            PlaceQuickButton(btnQuick1, RightSidePad, contentTop, btnW, btnH, iconSize);
+            PlaceQuickButton(btnQuick2, RightSidePad + btnW + QuickButtonGap, contentTop, btnW, btnH, iconSize);
+            PlaceQuickButton(btnQuick3, RightSidePad + (btnW + QuickButtonGap) * 2, contentTop, btnW, btnH, iconSize);
+            PlaceQuickButton(btnQuick4, RightSidePad + (btnW + QuickButtonGap) * 3, contentTop, btnW, btnH, iconSize);
+
+            btnQuick1.BringToFront();
+            btnQuick2.BringToFront();
+            btnQuick3.BringToFront();
+            btnQuick4.BringToFront();
+        }
+
+        private static void PlaceQuickButton(Guna2Button button, int x, int y, int width, int height, int iconSize)
+        {
+            button.Location = new Point(x, y);
+            button.Size = new Size(width, height);
+            if (button.Image != null)
+                button.ImageSize = new Size(iconSize, iconSize);
         }
 
         private static System.Drawing.Drawing2D.GraphicsPath GetRoundedRectPath(RectangleF rect, float radius)

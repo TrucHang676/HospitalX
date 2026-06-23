@@ -90,6 +90,26 @@ namespace HospitalX.GUI.PH2
             SwitchToTab(btnKetQua, new ucKtvKetQua(), "Cập nhật kết quả dịch vụ", "3 kết quả đang chờ cập nhật");
         }
 
+        public void NavigateToDichVu()
+        {
+            SwitchToTab(btnDichVu, new UcKtvDichVu(), "Dịch vụ được phân công", "Danh sách HSBA_DV của kỹ thuật viên");
+        }
+
+        public void NavigateToKetQua()
+        {
+            SwitchToTab(btnKetQua, new ucKtvKetQua(), "Cập nhật kết quả dịch vụ", "3 kết quả đang chờ cập nhật");
+        }
+
+        public void NavigateToHoSo()
+        {
+            SwitchToTab(btnHoSo, new ucKtvHoSo(), "Hồ sơ cá nhân", "Quản lý thông tin cá nhân và tài khoản");
+        }
+
+        public void NavigateToThongBao()
+        {
+            SwitchToTab(btnThongBao, new ucKtvThongBao(), "Thông báo", "Trung tâm thông báo nghiệp vụ");
+        }
+
         private void LoadPage(UserControl control, string title, string subtitle)
         {
             DisposeCurrentPage();
