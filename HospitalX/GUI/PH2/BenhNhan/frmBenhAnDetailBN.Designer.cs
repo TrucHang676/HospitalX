@@ -426,10 +426,11 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // flowServices
             // 
             this.flowServices.AutoScroll = true;
+            this.flowServices.BackColor = System.Drawing.Color.White;
             this.flowServices.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowServices.Location = new System.Drawing.Point(22, 58);
+            this.flowServices.Location = new System.Drawing.Point(16, 58);
             this.flowServices.Name = "flowServices";
-            this.flowServices.Size = new System.Drawing.Size(472, 160);
+            this.flowServices.Size = new System.Drawing.Size(484, 160);
             this.flowServices.TabIndex = 0;
             this.flowServices.WrapContents = false;
             // 
@@ -439,7 +440,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblServicesTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblServicesTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             this.lblServicesTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblServicesTitle.Location = new System.Drawing.Point(17, 18);
+            this.lblServicesTitle.Location = new System.Drawing.Point(16, 18);
             this.lblServicesTitle.Name = "lblServicesTitle";
             this.lblServicesTitle.Size = new System.Drawing.Size(210, 28);
             this.lblServicesTitle.TabIndex = 1;
@@ -461,10 +462,11 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // flowPrescriptions
             // 
             this.flowPrescriptions.AutoScroll = true;
+            this.flowPrescriptions.BackColor = System.Drawing.Color.White;
             this.flowPrescriptions.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowPrescriptions.Location = new System.Drawing.Point(22, 58);
+            this.flowPrescriptions.Location = new System.Drawing.Point(16, 58);
             this.flowPrescriptions.Name = "flowPrescriptions";
-            this.flowPrescriptions.Size = new System.Drawing.Size(472, 160);
+            this.flowPrescriptions.Size = new System.Drawing.Size(484, 160);
             this.flowPrescriptions.TabIndex = 0;
             this.flowPrescriptions.WrapContents = false;
             // 
@@ -474,7 +476,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblPrescriptionTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblPrescriptionTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
             this.lblPrescriptionTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblPrescriptionTitle.Location = new System.Drawing.Point(17, 18);
+            this.lblPrescriptionTitle.Location = new System.Drawing.Point(16, 18);
             this.lblPrescriptionTitle.Name = "lblPrescriptionTitle";
             this.lblPrescriptionTitle.Size = new System.Drawing.Size(112, 28);
             this.lblPrescriptionTitle.TabIndex = 1;

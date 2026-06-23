@@ -14,6 +14,12 @@ namespace HospitalX.GUI.PH2.BenhNhan
             InitializeComponent();
             BindData();
             AddNavigationButtons();
+
+            // Wire up layout events to automatically fill the width when scrollbars are shown/hidden
+            flowServices.Resize += (s, e) => LayoutCards();
+            flowPrescriptions.Resize += (s, e) => LayoutCards();
+            // Perform initial layout
+            LayoutCards();
         }
 
         private void AddNavigationButtons()
@@ -27,8 +33,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 FillColor = Color.FromArgb(230, 245, 239),
                 BorderRadius = 6,
                 Cursor = Cursors.Hand,
-                Size = new Size(110, 28),
-                Location = new Point(pnlServices.Width - 130, 16)
+                Size = new Size(140, 28),
+                Location = new Point(pnlServices.Width - 140 - 16, 18)
             };
             btnViewServices.HoverState.FillColor = Color.FromArgb(200, 235, 225);
             btnViewServices.Click += (sender, e) =>
@@ -50,8 +56,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 FillColor = Color.FromArgb(230, 245, 239),
                 BorderRadius = 6,
                 Cursor = Cursors.Hand,
-                Size = new Size(110, 28),
-                Location = new Point(pnlPrescription.Width - 130, 16)
+                Size = new Size(140, 28),
+                Location = new Point(pnlPrescription.Width - 140 - 16, 18)
             };
             btnViewPrescriptions.HoverState.FillColor = Color.FromArgb(200, 235, 225);
             btnViewPrescriptions.Click += (sender, e) =>
@@ -128,8 +134,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 Font = new Font("Segoe UI", 10F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(10, 42, 64),
                 Location = new Point(14, 8),
-                Size = new Size(430, 24),
-                Text = title
+                Size = new Size(row.Width - 28, 24),
+                Text = title,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
             });
 
             row.Controls.Add(new Label
@@ -140,7 +147,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 ForeColor = Color.FromArgb(0, 105, 85),
                 Location = new Point(14, 38),
                 Size = new Size(180, 22),
-                Text = meta
+                Text = meta,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left
             });
 
             row.Controls.Add(new Label
@@ -150,11 +158,33 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 Font = new Font("Segoe UI", 8.5F),
                 ForeColor = Color.FromArgb(74, 98, 92),
                 Location = new Point(204, 38),
-                Size = new Size(245, 22),
-                Text = note
+                Size = new Size(row.Width - 204 - 14, 22),
+                Text = note,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right
             });
 
             return row;
+        }
+
+        private void LayoutCards()
+        {
+            int serviceCardWidth = flowServices.ClientSize.Width - 8;
+            if (serviceCardWidth > 10)
+            {
+                foreach (Control card in flowServices.Controls)
+                {
+                    card.Width = serviceCardWidth;
+                }
+            }
+
+            int prescriptionCardWidth = flowPrescriptions.ClientSize.Width - 8;
+            if (prescriptionCardWidth > 10)
+            {
+                foreach (Control card in flowPrescriptions.Controls)
+                {
+                    card.Width = prescriptionCardWidth;
+                }
+            }
         }
     }
 }
