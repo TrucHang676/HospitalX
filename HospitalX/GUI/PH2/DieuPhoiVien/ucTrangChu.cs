@@ -44,6 +44,12 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private int _hoveredPatientRow = -1;
         private bool _isLayoutInProgress = false;
 
+        private Guna2Panel pnlBanner;
+        private Guna2Panel pnlBannerAvatar;
+        private Label lblBannerAvatarText;
+        private Label lblBannerTitle;
+        private Label lblBannerSubtitle;
+
         private readonly Guna2Panel[] _kpiCards;
         private readonly Label[] _kpiIcons;
         private readonly Label[] _kpiCaps;
@@ -74,6 +80,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void ucTrangChu_Load(object sender, EventArgs e)
         {
+            BuildWelcomeBanner();
             ConfigureCardStyles();
             SetupKpiVisuals();
             SetupSectionHeaders();
@@ -104,6 +111,34 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
                     UpdateKpiStats(todayNotices, activeKtvs, pendingKtv, completedServices);
                     WireQuickButton(btnQuick4, "Thông báo", todayNotices + " hôm nay", 6, Color.FromArgb(229, 57, 53));
+
+                    // Cập nhật thông tin chào mừng và thống kê trên Banner của DPV
+                    string dpvName = "Điều phối viên";
+                    try
+                    {
+                        DataTable dtProfile = HospitalX.DAO.ProfileDAO.Instance.GetProfile();
+                        if (dtProfile != null && dtProfile.Rows.Count > 0)
+                        {
+                            dpvName = dtProfile.Rows[0]["HOTEN"]?.ToString() ?? "Điều phối viên";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Warning: Lỗi load profile DPV cho banner: " + ex.Message);
+                    }
+
+                    lblBannerTitle.Text = $"Chào buổi sáng, Điều phối viên {dpvName}";
+                    if (!string.IsNullOrEmpty(dpvName) && dpvName != "Điều phối viên")
+                    {
+                        string[] parts = dpvName.Trim().Split(' ');
+                        string lastWord = parts[parts.Length - 1];
+                        if (!string.IsNullOrEmpty(lastWord))
+                        {
+                            lblBannerAvatarText.Text = lastWord.Substring(0, 1).ToUpperInvariant();
+                        }
+                    }
+
+                    lblBannerSubtitle.Text = $"Hôm nay hệ thống có {todayNotices} thông báo mới và {pendingKtv} hồ sơ bệnh án đang chờ điều phối kỹ thuật viên.";
                 }
 
                 // 2. Load Patient Grid
@@ -343,16 +378,41 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void RelayoutScrollContent()
         {
+            if (pnlScroll.ClientSize.Width <= 0) return;
+
+            // Save and temporarily reset the scroll position to prevent coordinate shifting during layout calculations
+            Point scrollPos = pnlScroll.AutoScrollPosition;
+            pnlScroll.AutoScrollPosition = new Point(0, 0);
+
             int contentW = Math.Max(960, pnlScroll.ClientSize.Width - 40);
-            if (pnlScroll.ClientSize.Width > 0)
+
+            if (pnlBanner != null)
             {
-                pnlKpiRow.Width = contentW;
-                pnlMiddle.Width = contentW;
-                LayoutMiddleSection();
+                pnlBanner.Width = contentW;
+                lblBannerTitle.Width = contentW - 150;
+                lblBannerSubtitle.Width = contentW - 150;
+            }
+            pnlKpiRow.Width = contentW;
+            pnlMiddle.Width = contentW;
+            LayoutMiddleSection();
+
+            // Perform positioning in non-scrolled coordinates
+            if (pnlBanner != null)
+            {
+                pnlBanner.Location = new Point(27, 20); // 27 is the standard X coordinate in designer
+                pnlKpiRow.Location = new Point(27, pnlBanner.Bottom + 24);
+            }
+            else
+            {
+                pnlKpiRow.Location = new Point(27, 20);
             }
 
-            pnlMiddle.Location = new Point(pnlMiddle.Left, pnlKpiRow.Bottom + 24);
+            pnlMiddle.Location = new Point(27, pnlKpiRow.Bottom + 24);
+
             pnlScroll.AutoScrollMinSize = new Size(0, pnlMiddle.Bottom + 32);
+
+            // Restore the scroll position (AutoScrollPosition takes positive values)
+            pnlScroll.AutoScrollPosition = new Point(Math.Abs(scrollPos.X), Math.Abs(scrollPos.Y));
         }
 
 
@@ -981,5 +1041,62 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             form.ShowMessage(message, "Thông báo");
         }
 
+        private Label TextLabel(string text, int x, int y, int width, int height, float size, FontStyle style, Color color, ContentAlignment align = ContentAlignment.MiddleLeft)
+        {
+            var lbl = new Label();
+            lbl.Text = text;
+            lbl.Location = new Point(x, y);
+            lbl.Size = new Size(width, height);
+            lbl.Font = new Font("Segoe UI", size, style);
+            lbl.ForeColor = color;
+            lbl.TextAlign = align;
+            lbl.BackColor = Color.Transparent;
+            return lbl;
+        }
+
+        private void BuildWelcomeBanner()
+        {
+            pnlBanner = new Guna2Panel
+            {
+                BorderRadius = 14,
+                FillColor = Color.FromArgb(15, 110, 86),
+                Size = new Size(pnlKpiRow.Width, 118),
+                BackColor = Color.Transparent,
+                Location = new Point(pnlKpiRow.Left, 20)
+            };
+
+            pnlBannerAvatar = new Guna2Panel
+            {
+                Size = new Size(60, 60),
+                BorderRadius = 14,
+                FillColor = Color.FromArgb(66, 132, 114),
+                BackColor = Color.Transparent,
+                Location = new Point(30, 29)
+            };
+
+            lblBannerAvatarText = new Label
+            {
+                Text = "DP",
+                Dock = DockStyle.Fill,
+                Font = new Font("Segoe UI", 16F, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BackColor = Color.Transparent
+            };
+            pnlBannerAvatar.Controls.Add(lblBannerAvatarText);
+            pnlBanner.Controls.Add(pnlBannerAvatar);
+
+            lblBannerTitle = TextLabel("Chào buổi sáng, Điều phối viên!", 110, 26, 500, 34, 18F, FontStyle.Bold, Color.White);
+            lblBannerTitle.AutoSize = true;
+
+            lblBannerSubtitle = TextLabel("Đang tải dữ liệu thống kê hôm nay...", 110, 68, 500, 22, 10F, FontStyle.Regular, Color.FromArgb(218, 242, 235));
+            lblBannerSubtitle.AutoSize = true;
+
+            pnlBanner.Controls.Add(lblBannerTitle);
+            pnlBanner.Controls.Add(lblBannerSubtitle);
+
+            pnlScroll.Controls.Add(pnlBanner);
+            pnlBanner.BringToFront();
+        }
     }
 }

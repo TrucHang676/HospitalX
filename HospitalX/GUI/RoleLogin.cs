@@ -461,6 +461,10 @@ namespace HospitalX.GUI
                 return;
             }
 
+            // Clear connection pools to ensure we authenticate physically against the DB,
+            // preventing ADO.NET from reusing an existing session from the pool with an old password.
+            OracleConnection.ClearAllPools();
+
             // Proceed with real Oracle database connection
             string connStr = BuildConnectionString(username, password);
 

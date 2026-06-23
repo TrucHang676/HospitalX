@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using HospitalX.DAO;
 using HospitalX.GUI.PH1;
 using Oracle.ManagedDataAccess.Client;
@@ -81,10 +81,9 @@ namespace HospitalX.GUI
                 return;
             }
 
-            // 2. Build Oracle EZConnect string: host:port/service
-            if (string.IsNullOrEmpty(host)) host = "localhost";
-            if (string.IsNullOrEmpty(port)) port = "1521";
-            if (string.IsNullOrEmpty(service)) service = "PDBHOSX";
+            // Clear connection pools to ensure we authenticate physically against the DB,
+            // preventing ADO.NET from reusing an existing session from the pool with an old password.
+            OracleConnection.ClearAllPools();
 
             string connStr = $"User Id={user};Password={pass};Data Source={host}:{port}/{service};";
 

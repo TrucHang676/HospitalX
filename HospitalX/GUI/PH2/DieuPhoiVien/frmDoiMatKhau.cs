@@ -209,6 +209,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
                     newConnBuilder.Password = newPass;
                     HospitalX.DAO.DataProvider.Instance.SetConnectionString(newConnBuilder.ConnectionString);
 
+                    // Clear connection pools to invalidate any existing sessions cached with old credentials
+                    OracleConnection.ClearAllPools();
+
                     ShowMessage("Đổi mật khẩu thành công!", "Thông báo", MessageDialogIcon.Information);
                     this.DialogResult = DialogResult.OK;
                     this.Close();
