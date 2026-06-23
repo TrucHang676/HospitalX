@@ -4244,12 +4244,17 @@ BEGIN
         BN.DIUNGTHUOC,
         BN.TIENSUBENH,
         HS.NGAY,
+        HS.NGAY AS NGAYTAO,
         HS.CHANDOAN,
         HS.DIEUTRI,
         HS.MAKHOA,
-        HS.KETLUAN
+        HS.KETLUAN,
+        HS.MABS,
+        NV.HOTEN AS TENBS,
+        NV.CHUYENKHOA AS TENKHOA
     FROM ADMINHOS.HSBA HS
     LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    LEFT JOIN ADMINHOS.NHANVIEN NV ON HS.MABS = NV.MANV
     WHERE HS.MABN = p_mabn
     ORDER BY HS.NGAY DESC;
 END;
@@ -4277,12 +4282,17 @@ BEGIN
         BN.DIUNGTHUOC,
         BN.TIENSUBENH,
         HS.NGAY,
+        HS.NGAY AS NGAYTAO,
         HS.CHANDOAN,
         HS.DIEUTRI,
         HS.MAKHOA,
-        HS.KETLUAN
+        HS.KETLUAN,
+        HS.MABS,
+        NV.HOTEN AS TENBS,
+        NV.CHUYENKHOA AS TENKHOA
     FROM ADMINHOS.HSBA HS
     LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    LEFT JOIN ADMINHOS.NHANVIEN NV ON HS.MABS = NV.MANV
     WHERE HS.MAHSBA = p_mahsba;
 END;
 /
@@ -4735,6 +4745,8 @@ GRANT DATAPUMP_EXP_FULL_DATABASE TO admin_ph2;
 GRANT DATAPUMP_EXP_FULL_DATABASE TO ADMINHOS;
 GRANT DATAPUMP_IMP_FULL_DATABASE TO admin_ph2;
 GRANT DATAPUMP_IMP_FULL_DATABASE TO ADMINHOS;
+GRANT SELECT_CATALOG_ROLE        TO admin_ph2;
+GRANT SELECT_CATALOG_ROLE        TO ADMINHOS;
 
 -- -------------------------------------------------------
 -- BƯỚC 4: Tạo/Reset bảng BACKUP_LOG và Sequence
@@ -4782,7 +4794,7 @@ CREATE OR REPLACE PROCEDURE ADMINHOS.SP_RUN_DATAPUMP_BACKUP (
     p_log_id       OUT VARCHAR2,
     p_status       OUT VARCHAR2,
     p_message      OUT VARCHAR2
-) AUTHID CURRENT_USER
+) AUTHID DEFINER
 AS
     v_job_handle   NUMBER;
     v_job_state    VARCHAR2(30);
@@ -4870,11 +4882,11 @@ BEGIN
         value  => q'[IN ('ADMINHOS')]'
     );
 
-    -- Nén dữ liệu (nhỏ hơn, nhanh hơn)
+    -- Nén metadata (METADATA_ONLY không yêu cầu Advanced Compression license)
     DBMS_DATAPUMP.SET_PARAMETER(
         handle => v_job_handle,
         name   => 'COMPRESSION',
-        value  => 'ALL'
+        value  => 'METADATA_ONLY'
     );
 
     -- Chạy và chờ kết quả

@@ -188,7 +188,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             _backupPercent = 0;
             progressBackup.Value = 0;
             lblBackupPercent.Text = "0%";
-            lblBackupStatus.Text = "Dang khoi dong Data Pump Export...";
+            lblBackupStatus.Text = "Đang khởi động Data Pump Export...";
             pnlBackupProgress.Visible = true;
             btnStartBackup.Enabled = false;
             btnDryRun.Enabled = false;
@@ -252,12 +252,10 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
                     if (status == "SUCCESS")
                     {
-                        // Dat progress 100%
                         progressBackup.Value = 100;
                         lblBackupPercent.Text = "100%";
-                        lblBackupStatus.Text = "Hoan tat sao luu thanh cong!";
+                        lblBackupStatus.Text = "Hoàn tất sao lưu thành công!";
 
-                        // Them ban ghi moi vao danh sach
                         string recId = logId ?? ("BK-" + DateTime.Now.ToString("yyyyMMdd-HHmmss"));
                         var record = new BackupRecord(
                             recId, DateTime.Now, backupType, "MANUAL",
@@ -266,7 +264,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                         RenderHistory();
                         RenderRestoreCards();
 
-                        // Reload tu DB de lay thong tin chinh xac
+                        // Reload từ DB để lấy thông tin chính xác
                         System.Threading.Tasks.Task.Delay(2000).ContinueWith(_ =>
                         {
                             this.Invoke((System.Action)(() =>
@@ -278,23 +276,23 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                         });
 
                         MessageBox.Show(
-                            "Sao luu thanh cong!\n" + message,
-                            "Sao luu hoan tat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            "Sao lưu thành công!\n" + message,
+                            "Sao lưu hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
                         progressBackup.Value = 0;
-                        lblBackupPercent.Text = "Loi";
-                        lblBackupStatus.Text = "Sao luu that bai - kiem tra loi.";
+                        lblBackupPercent.Text = "Lỗi";
+                        lblBackupStatus.Text = "Sao lưu thất bại — kiểm tra lỗi.";
 
                         string errMsg = caughtEx != null ? caughtEx.Message : message;
                         MessageBox.Show(
-                            "Sao luu that bai!\n\n" + errMsg + "\n\n" +
-                            "Kiem tra:\n" +
-                            "1. Oracle Directory HOSPITALX_BACKUP_DIR hoac DATA_PUMP_DIR da ton tai?\n" +
-                            "2. Thu muc tren Oracle server co the ghi duoc?\n" +
-                            "3. User co quyen EXP_FULL_DATABASE hoac DATAPUMP_EXP_FULL_DATABASE?",
-                            "Loi Sao luu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            "Sao lưu thất bại!\n\n" + errMsg + "\n\n" +
+                            "Kiểm tra:\n" +
+                            "1. Oracle Directory HOSPITALX_BACKUP_DIR hoặc DATA_PUMP_DIR đã tồn tại?\n" +
+                            "2. Thư mục trên Oracle server có thể ghi được?\n" +
+                            "3. User có quyền DATAPUMP_EXP_FULL_DATABASE?",
+                            "Lỗi Sao lưu", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }));
             });
@@ -311,15 +309,15 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             lblBackupPercent.Text = _backupPercent + "%";
 
             if (_backupPercent < 20)
-                lblBackupStatus.Text = "Khoi dong DBMS_DATAPUMP...";
+                lblBackupStatus.Text = "Khởi động DBMS_DATAPUMP...";
             else if (_backupPercent < 40)
-                lblBackupStatus.Text = "Dang export metadata va cau truc bang...";
+                lblBackupStatus.Text = "Đang export metadata và cấu trúc bảng...";
             else if (_backupPercent < 65)
-                lblBackupStatus.Text = "Dang export du lieu HSBA, dich vu...";
+                lblBackupStatus.Text = "Đang export dữ liệu HSBA, dịch vụ...";
             else if (_backupPercent < 85)
-                lblBackupStatus.Text = "Dang nen va ghi file .dmp...";
+                lblBackupStatus.Text = "Đang ghi file .dmp vào thư mục backup...";
             else
-                lblBackupStatus.Text = "Hoan tat - cho Oracle xac nhan...";
+                lblBackupStatus.Text = "Hoàn tất — chờ Oracle xác nhận...";
         }
 
         private void LocalizeStaticText()
