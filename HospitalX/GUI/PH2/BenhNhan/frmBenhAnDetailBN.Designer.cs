@@ -147,106 +147,115 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             // lblDoctorPhoneValue
             // 
+            this.lblDoctorPhoneValue.AutoSize = false;
+            this.lblDoctorPhoneValue.BackColor = System.Drawing.Color.Transparent;
             this.lblDoctorPhoneValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
             this.lblDoctorPhoneValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblDoctorPhoneValue.Location = new System.Drawing.Point(124, 139);
+            this.lblDoctorPhoneValue.Location = new System.Drawing.Point(125, 128);
             this.lblDoctorPhoneValue.Name = "lblDoctorPhoneValue";
-            this.lblDoctorPhoneValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblDoctorPhoneValue.Size = new System.Drawing.Size(166, 22);
+            this.lblDoctorPhoneValue.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDoctorPhoneValue.Size = new System.Drawing.Size(235, 30);
             this.lblDoctorPhoneValue.TabIndex = 0;
             this.lblDoctorPhoneValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorPhone
             // 
-            this.lblDoctorPhone.AutoSize = true;
+            this.lblDoctorPhone.AutoSize = false;
             this.lblDoctorPhone.BackColor = System.Drawing.Color.Transparent;
-            this.lblDoctorPhone.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorPhone.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDoctorPhone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblDoctorPhone.Location = new System.Drawing.Point(80, 140);
+            this.lblDoctorPhone.Location = new System.Drawing.Point(20, 128);
             this.lblDoctorPhone.Name = "lblDoctorPhone";
-            this.lblDoctorPhone.Size = new System.Drawing.Size(30, 15);
+            this.lblDoctorPhone.Size = new System.Drawing.Size(100, 30);
             this.lblDoctorPhone.TabIndex = 1;
-            this.lblDoctorPhone.Text = "SĐT";
+            this.lblDoctorPhone.Text = "Điện thoại";
+            this.lblDoctorPhone.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorDeptValue
             // 
-            this.lblDoctorDeptValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblDoctorDeptValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorDeptValue.AutoSize = false;
+            this.lblDoctorDeptValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblDoctorDeptValue.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblDoctorDeptValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblDoctorDeptValue.Location = new System.Drawing.Point(123, 175);
+            this.lblDoctorDeptValue.Location = new System.Drawing.Point(125, 166);
             this.lblDoctorDeptValue.Name = "lblDoctorDeptValue";
-            this.lblDoctorDeptValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblDoctorDeptValue.Size = new System.Drawing.Size(150, 30);
+            this.lblDoctorDeptValue.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDoctorDeptValue.Size = new System.Drawing.Size(235, 30);
             this.lblDoctorDeptValue.TabIndex = 2;
             this.lblDoctorDeptValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorDept
             // 
-            this.lblDoctorDept.AutoSize = true;
+            this.lblDoctorDept.AutoSize = false;
             this.lblDoctorDept.BackColor = System.Drawing.Color.Transparent;
-            this.lblDoctorDept.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorDept.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDoctorDept.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblDoctorDept.Location = new System.Drawing.Point(19, 178);
+            this.lblDoctorDept.Location = new System.Drawing.Point(20, 166);
             this.lblDoctorDept.Name = "lblDoctorDept";
-            this.lblDoctorDept.Size = new System.Drawing.Size(91, 15);
+            this.lblDoctorDept.Size = new System.Drawing.Size(100, 30);
             this.lblDoctorDept.TabIndex = 3;
-            this.lblDoctorDept.Text = "CHUYÊN KHOA";
+            this.lblDoctorDept.Text = "Chuyên khoa";
+            this.lblDoctorDept.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorRoleValue
             // 
-            this.lblDoctorRoleValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(245)))), ((int)(((byte)(239)))));
-            this.lblDoctorRoleValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorRoleValue.AutoSize = false;
+            this.lblDoctorRoleValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblDoctorRoleValue.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblDoctorRoleValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblDoctorRoleValue.Location = new System.Drawing.Point(123, 94);
+            this.lblDoctorRoleValue.Location = new System.Drawing.Point(125, 90);
             this.lblDoctorRoleValue.Name = "lblDoctorRoleValue";
-            this.lblDoctorRoleValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
-            this.lblDoctorRoleValue.Size = new System.Drawing.Size(120, 30);
+            this.lblDoctorRoleValue.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDoctorRoleValue.Size = new System.Drawing.Size(235, 30);
             this.lblDoctorRoleValue.TabIndex = 4;
             this.lblDoctorRoleValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorRole
             // 
-            this.lblDoctorRole.AutoSize = true;
+            this.lblDoctorRole.AutoSize = false;
             this.lblDoctorRole.BackColor = System.Drawing.Color.Transparent;
-            this.lblDoctorRole.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorRole.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDoctorRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblDoctorRole.Location = new System.Drawing.Point(57, 97);
+            this.lblDoctorRole.Location = new System.Drawing.Point(20, 90);
             this.lblDoctorRole.Name = "lblDoctorRole";
-            this.lblDoctorRole.Size = new System.Drawing.Size(53, 15);
+            this.lblDoctorRole.Size = new System.Drawing.Size(100, 30);
             this.lblDoctorRole.TabIndex = 5;
-            this.lblDoctorRole.Text = "VAI TRÒ";
+            this.lblDoctorRole.Text = "Vai trò";
+            this.lblDoctorRole.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorNameValue
             // 
-            this.lblDoctorNameValue.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
-            this.lblDoctorNameValue.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorNameValue.AutoSize = false;
+            this.lblDoctorNameValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblDoctorNameValue.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblDoctorNameValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblDoctorNameValue.Location = new System.Drawing.Point(121, 54);
+            this.lblDoctorNameValue.Location = new System.Drawing.Point(125, 52);
             this.lblDoctorNameValue.Name = "lblDoctorNameValue";
-            this.lblDoctorNameValue.Padding = new System.Windows.Forms.Padding(10, 4, 8, 4);
+            this.lblDoctorNameValue.Padding = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDoctorNameValue.Size = new System.Drawing.Size(235, 30);
             this.lblDoctorNameValue.TabIndex = 6;
             this.lblDoctorNameValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorName
             // 
-            this.lblDoctorName.AutoSize = true;
+            this.lblDoctorName.AutoSize = false;
             this.lblDoctorName.BackColor = System.Drawing.Color.Transparent;
-            this.lblDoctorName.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorName.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDoctorName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblDoctorName.Location = new System.Drawing.Point(60, 60);
+            this.lblDoctorName.Location = new System.Drawing.Point(20, 52);
             this.lblDoctorName.Name = "lblDoctorName";
-            this.lblDoctorName.Size = new System.Drawing.Size(50, 15);
+            this.lblDoctorName.Size = new System.Drawing.Size(100, 30);
             this.lblDoctorName.TabIndex = 7;
-            this.lblDoctorName.Text = "HỌ TÊN";
+            this.lblDoctorName.Text = "Họ và tên";
+            this.lblDoctorName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblDoctorTitle
             // 
             this.lblDoctorTitle.AutoSize = true;
             this.lblDoctorTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblDoctorTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
+            this.lblDoctorTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblDoctorTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblDoctorTitle.Location = new System.Drawing.Point(17, 13);
+            this.lblDoctorTitle.Location = new System.Drawing.Point(16, 14);
             this.lblDoctorTitle.Name = "lblDoctorTitle";
             this.lblDoctorTitle.Size = new System.Drawing.Size(121, 28);
             this.lblDoctorTitle.TabIndex = 0;
@@ -282,26 +291,26 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtConclusion.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
             this.txtConclusion.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtConclusion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.txtConclusion.Location = new System.Drawing.Point(360, 140);
+            this.txtConclusion.Location = new System.Drawing.Point(335, 140);
             this.txtConclusion.Multiline = true;
             this.txtConclusion.Name = "txtConclusion";
             this.txtConclusion.PlaceholderText = "";
             this.txtConclusion.ReadOnly = true;
             this.txtConclusion.SelectedText = "";
-            this.txtConclusion.Size = new System.Drawing.Size(272, 56);
+            this.txtConclusion.Size = new System.Drawing.Size(295, 56);
             this.txtConclusion.TabIndex = 0;
             // 
             // lblConclusion
             // 
             this.lblConclusion.AutoSize = true;
             this.lblConclusion.BackColor = System.Drawing.Color.Transparent;
-            this.lblConclusion.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblConclusion.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblConclusion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblConclusion.Location = new System.Drawing.Point(362, 120);
+            this.lblConclusion.Location = new System.Drawing.Point(335, 120);
             this.lblConclusion.Name = "lblConclusion";
-            this.lblConclusion.Size = new System.Drawing.Size(63, 15);
+            this.lblConclusion.Size = new System.Drawing.Size(54, 15);
             this.lblConclusion.TabIndex = 1;
-            this.lblConclusion.Text = "KẾT LUẬN";
+            this.lblConclusion.Text = "Kết luận";
             // 
             // txtTreatment
             // 
@@ -313,26 +322,26 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtTreatment.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
             this.txtTreatment.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtTreatment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.txtTreatment.Location = new System.Drawing.Point(24, 140);
+            this.txtTreatment.Location = new System.Drawing.Point(20, 140);
             this.txtTreatment.Multiline = true;
             this.txtTreatment.Name = "txtTreatment";
             this.txtTreatment.PlaceholderText = "";
             this.txtTreatment.ReadOnly = true;
             this.txtTreatment.SelectedText = "";
-            this.txtTreatment.Size = new System.Drawing.Size(307, 56);
+            this.txtTreatment.Size = new System.Drawing.Size(295, 56);
             this.txtTreatment.TabIndex = 2;
             // 
             // lblTreatment
             // 
             this.lblTreatment.AutoSize = true;
             this.lblTreatment.BackColor = System.Drawing.Color.Transparent;
-            this.lblTreatment.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblTreatment.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblTreatment.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblTreatment.Location = new System.Drawing.Point(25, 120);
+            this.lblTreatment.Location = new System.Drawing.Point(20, 120);
             this.lblTreatment.Name = "lblTreatment";
-            this.lblTreatment.Size = new System.Drawing.Size(57, 15);
+            this.lblTreatment.Size = new System.Drawing.Size(49, 15);
             this.lblTreatment.TabIndex = 3;
-            this.lblTreatment.Text = "ĐIỀU TRỊ";
+            this.lblTreatment.Text = "Điều trị";
             // 
             // txtDiagnosis
             // 
@@ -344,55 +353,57 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtDiagnosis.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(249)))));
             this.txtDiagnosis.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.txtDiagnosis.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.txtDiagnosis.Location = new System.Drawing.Point(24, 80);
+            this.txtDiagnosis.Location = new System.Drawing.Point(20, 80);
             this.txtDiagnosis.Name = "txtDiagnosis";
             this.txtDiagnosis.PlaceholderText = "";
             this.txtDiagnosis.ReadOnly = true;
             this.txtDiagnosis.SelectedText = "";
-            this.txtDiagnosis.Size = new System.Drawing.Size(608, 32);
+            this.txtDiagnosis.Size = new System.Drawing.Size(610, 32);
             this.txtDiagnosis.TabIndex = 4;
             // 
             // lblDiagnosis
             // 
             this.lblDiagnosis.AutoSize = true;
             this.lblDiagnosis.BackColor = System.Drawing.Color.Transparent;
-            this.lblDiagnosis.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblDiagnosis.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblDiagnosis.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblDiagnosis.Location = new System.Drawing.Point(25, 60);
+            this.lblDiagnosis.Location = new System.Drawing.Point(20, 60);
             this.lblDiagnosis.Name = "lblDiagnosis";
-            this.lblDiagnosis.Size = new System.Drawing.Size(78, 15);
+            this.lblDiagnosis.Size = new System.Drawing.Size(66, 15);
             this.lblDiagnosis.TabIndex = 5;
-            this.lblDiagnosis.Text = "CHẨN ĐOÁN";
+            this.lblDiagnosis.Text = "Chẩn đoán";
             // 
             // lblRecordDateValue
             // 
+            this.lblRecordDateValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRecordDateValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
             this.lblRecordDateValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblRecordDateValue.Location = new System.Drawing.Point(533, 23);
+            this.lblRecordDateValue.Location = new System.Drawing.Point(510, 14);
             this.lblRecordDateValue.Name = "lblRecordDateValue";
-            this.lblRecordDateValue.Size = new System.Drawing.Size(99, 22);
+            this.lblRecordDateValue.Size = new System.Drawing.Size(120, 28);
             this.lblRecordDateValue.TabIndex = 6;
             this.lblRecordDateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblRecordDate
             // 
-            this.lblRecordDate.AutoSize = true;
+            this.lblRecordDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRecordDate.BackColor = System.Drawing.Color.Transparent;
-            this.lblRecordDate.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblRecordDate.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblRecordDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblRecordDate.Location = new System.Drawing.Point(464, 28);
+            this.lblRecordDate.Location = new System.Drawing.Point(430, 14);
             this.lblRecordDate.Name = "lblRecordDate";
-            this.lblRecordDate.Size = new System.Drawing.Size(63, 15);
+            this.lblRecordDate.Size = new System.Drawing.Size(80, 28);
             this.lblRecordDate.TabIndex = 7;
-            this.lblRecordDate.Text = "NGÀY LẬP";
+            this.lblRecordDate.Text = "Ngày lập:";
+            this.lblRecordDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblRecordTitle
             // 
             this.lblRecordTitle.AutoSize = true;
             this.lblRecordTitle.BackColor = System.Drawing.Color.Transparent;
-            this.lblRecordTitle.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
+            this.lblRecordTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblRecordTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblRecordTitle.Location = new System.Drawing.Point(22, 11);
+            this.lblRecordTitle.Location = new System.Drawing.Point(20, 14);
             this.lblRecordTitle.Name = "lblRecordTitle";
             this.lblRecordTitle.Size = new System.Drawing.Size(162, 28);
             this.lblRecordTitle.TabIndex = 8;

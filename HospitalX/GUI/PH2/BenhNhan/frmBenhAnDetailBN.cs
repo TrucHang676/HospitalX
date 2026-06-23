@@ -66,19 +66,19 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 BorderRadius = 7,
                 BorderThickness = 1,
                 FillColor = Color.FromArgb(250, 252, 251),
-                Height = 80,
-                Margin = new Padding(0, 0, 0, 10),
-                Width = 680
+                Height = 74,
+                Margin = new Padding(0, 0, 0, 8),
+                Width = 445
             };
 
             row.Controls.Add(new Label
             {
                 AutoEllipsis = true,
                 BackColor = Color.Transparent,
-                Font = new Font("Segoe UI", 10.5f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(10, 42, 64),
-                Location = new Point(16, 9),
-                Size = new Size(400, 30),
+                Location = new Point(14, 8),
+                Size = new Size(415, 24),
                 Text = title
             });
 
@@ -86,10 +86,10 @@ namespace HospitalX.GUI.PH2.BenhNhan
             {
                 AutoEllipsis = true,
                 BackColor = Color.Transparent,
-                Font = new Font("Segoe UI", 9f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 8.5F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(0, 105, 85),
-                Location = new Point(16, 40),
-                Size = new Size(200, 25),
+                Location = new Point(14, 38),
+                Size = new Size(180, 22),
                 Text = meta
             });
 
@@ -97,10 +97,10 @@ namespace HospitalX.GUI.PH2.BenhNhan
             {
                 AutoEllipsis = true,
                 BackColor = Color.Transparent,
-                Font = new Font("Segoe UI", 9f),
+                Font = new Font("Segoe UI", 8.5F),
                 ForeColor = Color.FromArgb(74, 98, 92),
-                Location = new Point(250, 40),
-                Size = new Size(300, 25),
+                Location = new Point(204, 38),
+                Size = new Size(225, 22),
                 Text = note
             });
 
