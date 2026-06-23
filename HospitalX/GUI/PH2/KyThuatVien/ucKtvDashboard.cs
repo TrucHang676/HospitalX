@@ -465,7 +465,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 }
             }
 
-            // 3. Layout Hàng 1 (Dịch vụ hôm nay & Hoạt động gần đây)
+            // 3. Layout Hàng 1 (Dịch vụ hôm nay)
             int row1Y = statCards[0].Bottom + gap;
             int row1Height = 380; // Tăng chiều cao lên 380px để hiển thị danh sách thoáng hơn
 
@@ -473,10 +473,9 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             int rightCardWidth = availWidth - leftCardWidth - gap;
 
             taskCard.Location = new Point(margin, row1Y);
-            taskCard.Size = new Size(leftCardWidth, row1Height);
+            taskCard.Size = new Size(availWidth, row1Height);
 
-            activityCard.Location = new Point(margin + leftCardWidth + gap, row1Y);
-            activityCard.Size = new Size(rightCardWidth, row1Height);
+            activityCard.Visible = false;
 
             // Cập nhật vị trí các dòng dịch vụ (Task item panels) tự động co giãn theo chiều rộng Card
             int itemY = 62;
@@ -485,7 +484,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 if (ctrl is Guna2Panel && ctrl.Tag != null && ctrl.Tag.ToString() == "TaskRow")
                 {
                     ctrl.Location = new Point(20, itemY);
-                    ctrl.Width = leftCardWidth - 40;
+                    ctrl.Width = taskCard.Width - 40;
 
                     // Căn chỉnh các nhãn nội dung và Badge trạng thái sát lề phải của mỗi dòng dịch vụ
                     foreach (Control child in ctrl.Controls)
@@ -500,26 +499,6 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                         }
                     }
                     itemY += 62; // Đẹp mắt và cân đối
-                }
-            }
-
-            // Cập nhật vị trí các dòng hoạt động gần đây
-            int actY = 62;
-            foreach (Control ctrl in activityCard.Controls)
-            {
-                if (ctrl is Guna2Panel && ctrl.Tag != null && ctrl.Tag.ToString() == "ActRow")
-                {
-                    ctrl.Location = new Point(20, actY);
-                    ctrl.Width = rightCardWidth - 40;
-
-                    foreach (Control child in ctrl.Controls)
-                    {
-                        if (child is Label)
-                        {
-                            child.Width = ctrl.Width - 76; // Đặt thành 76px để không đè lên avatar icon
-                        }
-                    }
-                    actY += 72; // Khoảng giãn cách hoạt động
                 }
             }
 
