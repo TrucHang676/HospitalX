@@ -3320,7 +3320,7 @@ EXCEPTION
 END;
 /
 
-CREATE OR REPLACE PROCEDURE SP_RUN_DATAPUMP_BACKUP AS
+CREATE OR REPLACE PROCEDURE SP_RUN_DATAPUMP_BACKUP_DAILY AS
     v_job_handle NUMBER;
 BEGIN
     v_job_handle := DBMS_DATAPUMP.OPEN(
@@ -3361,7 +3361,7 @@ BEGIN
     DBMS_SCHEDULER.CREATE_JOB(
         job_name        => 'JOB_DAILY_DATAPUMP_BACKUP',
         job_type        => 'STORED_PROCEDURE',
-        job_action      => 'ADMINHOS.SP_RUN_DATAPUMP_BACKUP',
+        job_action      => 'ADMINHOS.SP_RUN_DATAPUMP_BACKUP_DAILY',
         start_date      => TRUNC(SYSDATE + 1) + INTERVAL '2' HOUR,
         repeat_interval => 'FREQ=DAILY; BYHOUR=2; BYMINUTE=0; BYSECOND=0',
         enabled         => TRUE,
@@ -4673,3 +4673,326 @@ END;
 -- Cap quyen cho admin_ph2 va DBA 
 GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY TO admin_ph2;
 GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY TO DBA;
+
+
+-- ==========================================================
+-- SAO LƯU & PHỤC HỒI - DATA PUMP EXPORT
+-- Chạy với quyền ADMINHOS (đã có GRANT ANY ROLE, DBA)
+-- ==========================================================
+SET SERVEROUTPUT ON SIZE UNLIMITED
+SET DEFINE OFF
+WHENEVER SQLERROR CONTINUE
+
+-- -------------------------------------------------------
+-- BƯỚC 1: Xác định đường dẫn DATA_PUMP_DIR mặc định Oracle
+--         và tạo HOSPITALX_BACKUP_DIR trỏ về cùng đường dẫn
+--         (không cần tạo folder thủ công - dùng thư mục có sẵn)
+-- -------------------------------------------------------
+DECLARE
+    v_dp_path   VARCHAR2(500);
+    v_sql       VARCHAR2(1000);
+BEGIN
+    -- Lấy đường dẫn của DATA_PUMP_DIR (luôn có sẵn trong mỗi Oracle install)
+    BEGIN
+        SELECT DIRECTORY_PATH INTO v_dp_path
+        FROM   DBA_DIRECTORIES
+        WHERE  DIRECTORY_NAME = 'DATA_PUMP_DIR'
+        AND    ROWNUM = 1;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            BEGIN
+                SELECT DIRECTORY_PATH INTO v_dp_path
+                FROM   DBA_DIRECTORIES
+                WHERE  ROWNUM = 1;
+            EXCEPTION
+                WHEN NO_DATA_FOUND THEN
+                    v_dp_path := 'C:\oracle\backup';
+            END;
+    END;
+
+    DBMS_OUTPUT.PUT_LINE('>>> Data Pump directory path: ' || v_dp_path);
+
+    -- Tạo HOSPITALX_BACKUP_DIR trỏ về cùng đường dẫn (dùng alias để dễ nhận biết)
+    v_sql := 'CREATE OR REPLACE DIRECTORY HOSPITALX_BACKUP_DIR AS ''' || v_dp_path || '''';
+    EXECUTE IMMEDIATE v_sql;
+    DBMS_OUTPUT.PUT_LINE('>>> Đã tạo HOSPITALX_BACKUP_DIR -> ' || v_dp_path);
+END;
+/
+
+-- -------------------------------------------------------
+-- BƯỚC 2: Cấp quyền READ/WRITE trên directory cho các user
+-- -------------------------------------------------------
+GRANT READ, WRITE ON DIRECTORY HOSPITALX_BACKUP_DIR TO ADMINHOS;
+GRANT READ, WRITE ON DIRECTORY HOSPITALX_BACKUP_DIR TO admin_ph2;
+GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR        TO ADMINHOS;
+GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR        TO admin_ph2;
+
+-- -------------------------------------------------------
+-- BƯỚC 3: Cấp quyền Data Pump cho admin_ph2 và ADMINHOS
+--         (ADMINHOS có GRANT ANY ROLE nên làm được)
+-- -------------------------------------------------------
+GRANT DATAPUMP_EXP_FULL_DATABASE TO admin_ph2;
+GRANT DATAPUMP_EXP_FULL_DATABASE TO ADMINHOS;
+GRANT DATAPUMP_IMP_FULL_DATABASE TO admin_ph2;
+GRANT DATAPUMP_IMP_FULL_DATABASE TO ADMINHOS;
+
+-- -------------------------------------------------------
+-- BƯỚC 4: Tạo/Reset bảng BACKUP_LOG và Sequence
+-- -------------------------------------------------------
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE ADMINHOS.SEQ_BACKUP_LOG';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP TABLE ADMINHOS.BACKUP_LOG CASCADE CONSTRAINTS PURGE';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+
+CREATE TABLE ADMINHOS.BACKUP_LOG (
+    ID           VARCHAR2(50)   PRIMARY KEY,
+    START_TIME   TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    END_TIME     TIMESTAMP,
+    TYPE         VARCHAR2(10)   DEFAULT 'FULL',
+    SOURCE       VARCHAR2(20)   DEFAULT 'MANUAL',
+    DIR_NAME     VARCHAR2(100),
+    FILE_NAME    VARCHAR2(200),
+    FILE_PATH    VARCHAR2(500),
+    FILE_SIZE_MB NUMBER(10,2),
+    DURATION_SEC NUMBER(10),
+    STATUS       VARCHAR2(20)   DEFAULT 'RUNNING',
+    ERROR_MSG    VARCHAR2(1000),
+    CREATED_BY   VARCHAR2(50)   DEFAULT SYS_CONTEXT('USERENV','SESSION_USER')
+)
+/
+
+CREATE SEQUENCE ADMINHOS.SEQ_BACKUP_LOG
+    START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE
+/
+
+-- -------------------------------------------------------
+-- BƯỚC 5: SP_RUN_DATAPUMP_BACKUP
+--         Tự động tìm directory, xử lý lỗi, ghi BACKUP_LOG
+-- -------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_RUN_DATAPUMP_BACKUP (
+    p_backup_type  IN  VARCHAR2 DEFAULT 'FULL',
+    p_tag          IN  VARCHAR2 DEFAULT NULL,
+    p_log_id       OUT VARCHAR2,
+    p_status       OUT VARCHAR2,
+    p_message      OUT VARCHAR2
+) AUTHID CURRENT_USER
+AS
+    v_job_handle   NUMBER;
+    v_job_state    VARCHAR2(30);
+    v_log_id       VARCHAR2(50);
+    v_filename     VARCHAR2(200);
+    v_logfile      VARCHAR2(200);
+    v_job_name     VARCHAR2(30);
+    v_dir_name     VARCHAR2(100);
+    v_start_time   TIMESTAMP;
+    v_end_time     TIMESTAMP;
+    v_seq          NUMBER;
+    v_ts           VARCHAR2(20);
+    v_err_msg      VARCHAR2(1000);
+BEGIN
+    v_ts       := TO_CHAR(SYSDATE, 'YYYYMMDD_HH24MISS');
+    v_seq      := ADMINHOS.SEQ_BACKUP_LOG.NEXTVAL;
+    v_log_id   := 'BK-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-' || LPAD(TO_CHAR(v_seq), 4, '0');
+    p_log_id   := v_log_id;
+
+    -- Tên file không chứa ký tự đặc biệt
+    v_filename := 'HX_BCK_' || v_ts || '.dmp';
+    v_logfile  := 'HX_BCK_' || v_ts || '.log';
+    -- Job name tối đa 30 ký tự, không dấu gạch ngang, không ký tự đặc biệt
+    v_job_name := 'HXEXP' || TO_CHAR(SYSDATE, 'MMDDHH24MISS');
+
+    -- Tìm directory theo thứ tự ưu tiên
+    v_dir_name := NULL;
+    BEGIN
+        SELECT DIRECTORY_NAME INTO v_dir_name FROM DBA_DIRECTORIES
+        WHERE  DIRECTORY_NAME = 'HOSPITALX_BACKUP_DIR' AND ROWNUM = 1;
+    EXCEPTION WHEN NO_DATA_FOUND THEN NULL;
+    END;
+
+    IF v_dir_name IS NULL THEN
+        BEGIN
+            SELECT DIRECTORY_NAME INTO v_dir_name FROM DBA_DIRECTORIES
+            WHERE  DIRECTORY_NAME = 'DATA_PUMP_DIR' AND ROWNUM = 1;
+        EXCEPTION WHEN NO_DATA_FOUND THEN NULL;
+        END;
+    END IF;
+
+    IF v_dir_name IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20099,
+            'Không tìm thấy Oracle Directory. Chạy script PH2 trước.');
+    END IF;
+
+    -- Ghi bản ghi RUNNING vào log
+    v_start_time := SYSTIMESTAMP;
+    INSERT INTO ADMINHOS.BACKUP_LOG
+        (ID, START_TIME, TYPE, SOURCE, DIR_NAME, FILE_NAME, STATUS, CREATED_BY)
+    VALUES
+        (v_log_id, v_start_time,
+         UPPER(NVL(p_backup_type, 'FULL')), 'MANUAL',
+         v_dir_name, v_filename, 'RUNNING',
+         SYS_CONTEXT('USERENV', 'SESSION_USER'));
+    COMMIT;
+
+    -- Mở Data Pump Export Job
+    v_job_handle := DBMS_DATAPUMP.OPEN(
+        operation => 'EXPORT',
+        job_mode  => 'SCHEMA',
+        job_name  => v_job_name
+    );
+
+    -- File dump
+    DBMS_DATAPUMP.ADD_FILE(
+        handle    => v_job_handle,
+        filename  => v_filename,
+        directory => v_dir_name,
+        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_DUMP_FILE
+    );
+
+    -- File log
+    DBMS_DATAPUMP.ADD_FILE(
+        handle    => v_job_handle,
+        filename  => v_logfile,
+        directory => v_dir_name,
+        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_LOG_FILE
+    );
+
+    -- Chỉ export schema ADMINHOS
+    DBMS_DATAPUMP.METADATA_FILTER(
+        handle => v_job_handle,
+        name   => 'SCHEMA_EXPR',
+        value  => q'[IN ('ADMINHOS')]'
+    );
+
+    -- Nén dữ liệu (nhỏ hơn, nhanh hơn)
+    DBMS_DATAPUMP.SET_PARAMETER(
+        handle => v_job_handle,
+        name   => 'COMPRESSION',
+        value  => 'ALL'
+    );
+
+    -- Chạy và chờ kết quả
+    DBMS_DATAPUMP.START_JOB(v_job_handle);
+    DBMS_DATAPUMP.WAIT_FOR_JOB(v_job_handle, v_job_state);
+    v_end_time := SYSTIMESTAMP;
+
+    IF v_job_state = 'COMPLETED' THEN
+        UPDATE ADMINHOS.BACKUP_LOG
+        SET  STATUS       = 'SUCCESS',
+             END_TIME     = v_end_time,
+             DURATION_SEC = GREATEST(0, ROUND(
+                 (CAST(v_end_time AS DATE) - CAST(v_start_time AS DATE)) * 86400
+             )),
+             FILE_PATH    = v_dir_name || ':' || v_filename
+        WHERE ID = v_log_id;
+        COMMIT;
+        p_status  := 'SUCCESS';
+        p_message := 'Sao lưu thành công! File: ' || v_filename
+                  || ' | Thư mục Oracle: ' || v_dir_name;
+    ELSE
+        UPDATE ADMINHOS.BACKUP_LOG
+        SET  STATUS    = 'FAILED',
+             END_TIME  = v_end_time,
+             ERROR_MSG = 'Job state: ' || v_job_state
+        WHERE ID = v_log_id;
+        COMMIT;
+        p_status  := 'FAILED';
+        p_message := 'Job kết thúc với trạng thái: ' || v_job_state;
+    END IF;
+
+    DBMS_DATAPUMP.DETACH(v_job_handle);
+
+EXCEPTION
+    WHEN OTHERS THEN
+        v_err_msg := SUBSTR(SQLERRM, 1, 900);
+        BEGIN
+            UPDATE ADMINHOS.BACKUP_LOG
+            SET  STATUS    = 'FAILED',
+                 END_TIME  = SYSTIMESTAMP,
+                 ERROR_MSG = v_err_msg
+            WHERE ID = v_log_id;
+            COMMIT;
+        EXCEPTION WHEN OTHERS THEN NULL;
+        END;
+        BEGIN
+            DBMS_DATAPUMP.STOP_JOB(v_job_handle, 1, 0);
+        EXCEPTION WHEN OTHERS THEN NULL;
+        END;
+        p_status  := 'FAILED';
+        p_message := SQLERRM;
+        RAISE;
+END SP_RUN_DATAPUMP_BACKUP;
+/
+
+-- -------------------------------------------------------
+-- BƯỚC 6: SP_GET_BACKUP_HISTORY_APP
+-- -------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_BACKUP_HISTORY_APP (
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT
+            ID,
+            START_TIME,
+            TYPE,
+            SOURCE,
+            CASE WHEN FILE_SIZE_MB IS NOT NULL
+                 THEN TO_CHAR(FILE_SIZE_MB, 'FM9990.0') || ' MB'
+                 ELSE NVL(FILE_NAME, '-')
+            END AS "SIZE",
+            CASE WHEN DURATION_SEC IS NOT NULL
+                 THEN TO_CHAR(FLOOR(DURATION_SEC / 60)) || 'm '
+                   || TO_CHAR(MOD(DURATION_SEC, 60))   || 's'
+                 ELSE '-'
+            END AS DURATION,
+            STATUS
+        FROM  ADMINHOS.BACKUP_LOG
+        ORDER BY START_TIME DESC;
+END;
+/
+
+-- -------------------------------------------------------
+-- BƯỚC 7: Cấp đầy đủ quyền
+-- -------------------------------------------------------
+GRANT EXECUTE ON ADMINHOS.SP_RUN_DATAPUMP_BACKUP    TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_RUN_DATAPUMP_BACKUP    TO DBA;
+GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY_APP TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY_APP TO DBA;
+GRANT SELECT, INSERT, UPDATE ON ADMINHOS.BACKUP_LOG TO admin_ph2;
+GRANT SELECT ON ADMINHOS.BACKUP_LOG                 TO DBA;
+
+-- -------------------------------------------------------
+-- KIỂM TRA KẾT QUẢ
+-- -------------------------------------------------------
+SET LINESIZE 130
+COLUMN OBJECT_NAME FORMAT A42
+COLUMN OBJECT_TYPE FORMAT A22
+COLUMN STATUS      FORMAT A10
+
+SELECT OBJECT_NAME, OBJECT_TYPE, STATUS
+FROM   USER_OBJECTS
+WHERE  OBJECT_NAME IN (
+    'BACKUP_LOG','SEQ_BACKUP_LOG',
+    'SP_RUN_DATAPUMP_BACKUP','SP_GET_BACKUP_HISTORY_APP'
+)
+ORDER BY OBJECT_TYPE, OBJECT_NAME;
+
+COLUMN DIRECTORY_NAME FORMAT A30
+COLUMN DIRECTORY_PATH FORMAT A70
+
+SELECT DIRECTORY_NAME, DIRECTORY_PATH
+FROM   DBA_DIRECTORIES
+WHERE  DIRECTORY_NAME IN ('HOSPITALX_BACKUP_DIR','DATA_PUMP_DIR')
+ORDER BY DIRECTORY_NAME;
+
+PROMPT
+PROMPT ================================================
+PROMPT  SETUP BACKUP/RESTORE HOÀN TẤT THÀNH CÔNG!
+PROMPT ================================================

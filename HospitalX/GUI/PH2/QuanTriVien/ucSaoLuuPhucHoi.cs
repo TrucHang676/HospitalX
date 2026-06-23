@@ -117,44 +117,209 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             _backups.Clear();
             try
             {
-                // Gọi stored procedure thay vì raw SQL (đẩy nghiệp vụ xuống Oracle)
-                System.Data.DataTable dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(
-                    "ADMINHOS.SP_GET_BACKUP_HISTORY",
-                    new Oracle.ManagedDataAccess.Client.OracleParameter[] {
-                        new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = System.Data.ParameterDirection.Output }
-                    }, true);
+                // Dung SP_GET_BACKUP_HISTORY_APP (tu bang BACKUP_LOG) - chinh xac hon
+                System.Data.DataTable dt = null;
+                try
+                {
+                    dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(
+                        "ADMINHOS.SP_GET_BACKUP_HISTORY_APP",
+                        new Oracle.ManagedDataAccess.Client.OracleParameter[] {
+                            new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = System.Data.ParameterDirection.Output }
+                        }, true);
+                }
+                catch
+                {
+                    // Fallback: thu SP_GET_BACKUP_HISTORY cu (tu V$BACKUP_SET) neu bang log chua ton tai
+                    try
+                    {
+                        dt = HospitalX.DAO.DataProvider.Instance.ExecuteQuery(
+                            "ADMINHOS.SP_GET_BACKUP_HISTORY",
+                            new Oracle.ManagedDataAccess.Client.OracleParameter[] {
+                                new Oracle.ManagedDataAccess.Client.OracleParameter("p_cursor", Oracle.ManagedDataAccess.Client.OracleDbType.RefCursor) { Direction = System.Data.ParameterDirection.Output }
+                            }, true);
+                    }
+                    catch { dt = null; }
+                }
+
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     foreach (System.Data.DataRow row in dt.Rows)
                     {
                         string id = row["ID"]?.ToString() ?? "";
-                        DateTime time = row["START_TIME"] != DBNull.Value ? Convert.ToDateTime(row["START_TIME"]) : DateTime.Now;
+                        DateTime time = row["START_TIME"] != System.DBNull.Value ? Convert.ToDateTime(row["START_TIME"]) : DateTime.Now;
                         string type = row["TYPE"]?.ToString() ?? "FULL";
-                        string source = row["SOURCE"]?.ToString() ?? "SYSTEM";
+                        string source = row["SOURCE"]?.ToString() ?? "MANUAL";
                         string size = row["SIZE"]?.ToString() ?? "-";
                         string duration = row["DURATION"]?.ToString() ?? "-";
-                        
-                        string status = row["STATUS"]?.ToString() ?? "A";
-                        bool success = (status == "A" || status == "COMPLETED" || status == "AVAILABLE");
-                        
+                        string status = row["STATUS"]?.ToString() ?? "SUCCESS";
+                        // BACKUP_LOG dung 'SUCCESS'/'FAILED'/'RUNNING'; V$BACKUP_SET dung 'A'/'D'
+                        bool success = (status == "SUCCESS" || status == "A" || status == "AVAILABLE" || status == "COMPLETED");
                         _backups.Add(new BackupRecord(id, time, type, source, size, duration, success));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Warning: Lỗi load backup từ V$BACKUP_SET: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("Warning: Loi load backup history: " + ex.Message);
             }
 
+            // Du lieu mau neu chua co ban sao luu nao
             if (_backups.Count == 0)
             {
-                _backups.Add(new BackupRecord("BK-20260524-F", new DateTime(2026, 5, 24, 0, 1, 0), "FULL", "AUTO", "8.4 GB", "48m 10s", true));
-                _backups.Add(new BackupRecord("BK-20260523-I18", new DateTime(2026, 5, 23, 18, 0, 0), "INCR", "AUTO", "2.1 GB", "13m 40s", true));
-                _backups.Add(new BackupRecord("BK-20260523-I12", new DateTime(2026, 5, 23, 12, 0, 0), "INCR", "AUTO", "1.7 GB", "10m 58s", true));
-                _backups.Add(new BackupRecord("BK-20260523-F", new DateTime(2026, 5, 23, 0, 1, 0), "FULL", "AUTO", "8.3 GB", "47m 05s", true));
-                _backups.Add(new BackupRecord("BK-20260522-M01", new DateTime(2026, 5, 22, 9, 30, 0), "FULL", "MANUAL", "8.2 GB", "46m 12s", true));
-                _backups.Add(new BackupRecord("BK-20260521-I18", new DateTime(2026, 5, 21, 18, 0, 0), "INCR", "AUTO", "-", "-", false));
+                _backups.Add(new BackupRecord("BK-20260524-F",   new DateTime(2026, 5, 24, 0, 1, 0),  "FULL", "AUTO",   "8.4 GB", "48m 10s", true));
+                _backups.Add(new BackupRecord("BK-20260523-I18",  new DateTime(2026, 5, 23, 18, 0, 0), "INCR", "AUTO",   "2.1 GB", "13m 40s", true));
+                _backups.Add(new BackupRecord("BK-20260523-I12",  new DateTime(2026, 5, 23, 12, 0, 0), "INCR", "AUTO",   "1.7 GB", "10m 58s", true));
+                _backups.Add(new BackupRecord("BK-20260523-F",    new DateTime(2026, 5, 23, 0, 1, 0),  "FULL", "AUTO",   "8.3 GB", "47m 05s", true));
+                _backups.Add(new BackupRecord("BK-20260522-M01",  new DateTime(2026, 5, 22, 9, 30, 0), "FULL", "MANUAL", "8.2 GB", "46m 12s", true));
+                _backups.Add(new BackupRecord("BK-20260521-I18",  new DateTime(2026, 5, 21, 18, 0, 0), "INCR", "AUTO",   "-",       "-",       false));
             }
+        }
+
+        // -------------------------------------------------------------------
+        // SAO LUU: Goi SP_RUN_DATAPUMP_BACKUP tren Oracle trong background thread
+        // de khong block UI, sau do cap nhat progress bar theo timer
+        // -------------------------------------------------------------------
+        private void BtnStartBackup_Click(object sender, EventArgs e)
+        {
+            string backupType = chkIncremental.Checked ? "INCR" : "FULL";
+            string tag = txtBackupTag?.Text?.Trim() ?? "";
+
+            // Khoa nut, reset progress
+            _backupPercent = 0;
+            progressBackup.Value = 0;
+            lblBackupPercent.Text = "0%";
+            lblBackupStatus.Text = "Dang khoi dong Data Pump Export...";
+            pnlBackupProgress.Visible = true;
+            btnStartBackup.Enabled = false;
+            btnDryRun.Enabled = false;
+
+            // Bat dau timer de cap nhat UI (progress gia lap trong khi Oracle chay)
+            _backupTimer.Start();
+
+            // Chay Oracle stored procedure trong background thread
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                string logId = null;
+                string status = null;
+                string message = null;
+                Exception caughtEx = null;
+
+                try
+                {
+                    var pLogId = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_log_id", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 50)
+                    { Direction = System.Data.ParameterDirection.Output };
+
+                    var pStatus = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_status", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 20)
+                    { Direction = System.Data.ParameterDirection.Output };
+
+                    var pMessage = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_message", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 1000)
+                    { Direction = System.Data.ParameterDirection.Output };
+
+                    var pType = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_backup_type", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2)
+                    { Value = backupType, Direction = System.Data.ParameterDirection.Input };
+
+                    var pTag = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_tag", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2)
+                    { Value = string.IsNullOrEmpty(tag) ? (object)System.DBNull.Value : tag,
+                      Direction = System.Data.ParameterDirection.Input };
+
+                    HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery(
+                        "ADMINHOS.SP_RUN_DATAPUMP_BACKUP",
+                        new Oracle.ManagedDataAccess.Client.OracleParameter[] { pType, pTag, pLogId, pStatus, pMessage },
+                        true);
+
+                    logId   = pLogId.Value?.ToString();
+                    status  = pStatus.Value?.ToString() ?? "FAILED";
+                    message = pMessage.Value?.ToString() ?? "";
+                }
+                catch (Exception ex)
+                {
+                    status    = "FAILED";
+                    caughtEx  = ex;
+                    message   = ex.Message;
+                }
+
+                // Cap nhat UI tren main thread
+                this.Invoke((System.Action)(() =>
+                {
+                    _backupTimer.Stop();
+                    btnStartBackup.Enabled = true;
+                    btnDryRun.Enabled = true;
+
+                    if (status == "SUCCESS")
+                    {
+                        // Dat progress 100%
+                        progressBackup.Value = 100;
+                        lblBackupPercent.Text = "100%";
+                        lblBackupStatus.Text = "Hoan tat sao luu thanh cong!";
+
+                        // Them ban ghi moi vao danh sach
+                        string recId = logId ?? ("BK-" + DateTime.Now.ToString("yyyyMMdd-HHmmss"));
+                        var record = new BackupRecord(
+                            recId, DateTime.Now, backupType, "MANUAL",
+                            "-", "-", true);
+                        _backups.Insert(0, record);
+                        RenderHistory();
+                        RenderRestoreCards();
+
+                        // Reload tu DB de lay thong tin chinh xac
+                        System.Threading.Tasks.Task.Delay(2000).ContinueWith(_ =>
+                        {
+                            this.Invoke((System.Action)(() =>
+                            {
+                                LoadBackupHistoryFromDB();
+                                RenderHistory();
+                                RenderRestoreCards();
+                            }));
+                        });
+
+                        MessageBox.Show(
+                            "Sao luu thanh cong!\n" + message,
+                            "Sao luu hoan tat", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        progressBackup.Value = 0;
+                        lblBackupPercent.Text = "Loi";
+                        lblBackupStatus.Text = "Sao luu that bai - kiem tra loi.";
+
+                        string errMsg = caughtEx != null ? caughtEx.Message : message;
+                        MessageBox.Show(
+                            "Sao luu that bai!\n\n" + errMsg + "\n\n" +
+                            "Kiem tra:\n" +
+                            "1. Oracle Directory HOSPITALX_BACKUP_DIR hoac DATA_PUMP_DIR da ton tai?\n" +
+                            "2. Thu muc tren Oracle server co the ghi duoc?\n" +
+                            "3. User co quyen EXP_FULL_DATABASE hoac DATAPUMP_EXP_FULL_DATABASE?",
+                            "Loi Sao luu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }));
+            });
+        }
+
+        private void BackupTimer_Tick(object sender, EventArgs e)
+        {
+            // Tang dan progress trong khi Oracle dang xu ly (toi da 90% - con 10% cho ket qua)
+            if (_backupPercent < 90)
+            {
+                _backupPercent = Math.Min(90, _backupPercent + 4);
+            }
+            progressBackup.Value = _backupPercent;
+            lblBackupPercent.Text = _backupPercent + "%";
+
+            if (_backupPercent < 20)
+                lblBackupStatus.Text = "Khoi dong DBMS_DATAPUMP...";
+            else if (_backupPercent < 40)
+                lblBackupStatus.Text = "Dang export metadata va cau truc bang...";
+            else if (_backupPercent < 65)
+                lblBackupStatus.Text = "Dang export du lieu HSBA, dich vu...";
+            else if (_backupPercent < 85)
+                lblBackupStatus.Text = "Dang nen va ghi file .dmp...";
+            else
+                lblBackupStatus.Text = "Hoan tat - cho Oracle xac nhan...";
         }
 
         private void LocalizeStaticText()
@@ -287,70 +452,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             msgDialog.Show();
         }
 
-        private void BtnStartBackup_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery("ADMINHOS.SP_RUN_DATAPUMP_BACKUP", null, true);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Không thể khởi động tiến trình Data Pump trên server: " + ex.Message, "Lỗi Sao lưu", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            _backupPercent = 0;
-            progressBackup.Value = 0;
-            lblBackupPercent.Text = "0%";
-            lblBackupStatus.Text = "Đang chuẩn bị RMAN channel...";
-            pnlBackupProgress.Visible = true;
-            btnStartBackup.Enabled = false;
-            _backupTimer.Start();
-        }
-
-        private void BackupTimer_Tick(object sender, EventArgs e)
-        {
-            _backupPercent = Math.Min(100, _backupPercent + 7);
-            progressBackup.Value = _backupPercent;
-            lblBackupPercent.Text = _backupPercent + "%";
-
-            if (_backupPercent < 30)
-            {
-                lblBackupStatus.Text = "Đang sao lưu SYSTEM và DATA tablespace...";
-            }
-            else if (_backupPercent < 65)
-            {
-                lblBackupStatus.Text = "Đang sao lưu dữ liệu nghiệp vụ phân hệ 2...";
-            }
-            else if (_backupPercent < 95)
-            {
-                lblBackupStatus.Text = "Đang sao lưu archive log và kiểm tra catalog...";
-            }
-            else
-            {
-                lblBackupStatus.Text = "Hoàn tất sao lưu.";
-            }
-
-            if (_backupPercent < 100)
-            {
-                return;
-            }
-
-            _backupTimer.Stop();
-            btnStartBackup.Enabled = true;
-            string type = chkIncremental.Checked ? "INCR" : "FULL";
-            BackupRecord record = new BackupRecord(
-                "BK-NOW-" + DateTime.Now.ToString("HHmmss"),
-                DateTime.Now,
-                type,
-                "MANUAL",
-                type == "FULL" ? "8.4 GB" : "1.8 GB",
-                type == "FULL" ? "48m" : "12m",
-                true);
-            _backups.Insert(0, record);
-            RenderHistory();
-            RenderRestoreCards();
-        }
 
         private void RenderHistory()
         {
