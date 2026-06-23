@@ -18,6 +18,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
         public ucBenhAnBN()
         {
             InitializeComponent();
+            dtpFrom.Value = new DateTime(2026, 1, 1);
+            dtpTo.Value = new DateTime(2026, 12, 31);
             LoadMedicalRecordsFromDB();
             WireEvents();
             RenderRecords();

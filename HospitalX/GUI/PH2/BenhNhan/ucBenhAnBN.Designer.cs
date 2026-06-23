@@ -22,9 +22,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.flowRecords = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlToolbar = new Guna.UI2.WinForms.Guna2Panel();
             this.lblCount = new System.Windows.Forms.Label();
+            this.lblSortLabel = new System.Windows.Forms.Label();
             this.cmbSort = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.lblDateTo = new System.Windows.Forms.Label();
             this.dtpTo = new Guna.UI2.WinForms.Guna2DateTimePicker();
+            this.lblDateFrom = new System.Windows.Forms.Label();
             this.dtpFrom = new Guna.UI2.WinForms.Guna2DateTimePicker();
+            this.lblDateRange = new System.Windows.Forms.Label();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.pnlRoot.SuspendLayout();
             this.pnlToolbar.SuspendLayout();
@@ -49,9 +53,9 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.flowRecords.AutoScroll = true;
             this.flowRecords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
             this.flowRecords.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowRecords.Location = new System.Drawing.Point(24, 142);
+            this.flowRecords.Location = new System.Drawing.Point(24, 106);
             this.flowRecords.Name = "flowRecords";
-            this.flowRecords.Size = new System.Drawing.Size(1080, 616);
+            this.flowRecords.Size = new System.Drawing.Size(1080, 652);
             this.flowRecords.TabIndex = 1;
             this.flowRecords.WrapContents = false;
             // 
@@ -63,29 +67,48 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.pnlToolbar.BorderRadius = 8;
             this.pnlToolbar.BorderThickness = 1;
             this.pnlToolbar.Controls.Add(this.lblCount);
+            this.pnlToolbar.Controls.Add(this.lblSortLabel);
             this.pnlToolbar.Controls.Add(this.cmbSort);
+            this.pnlToolbar.Controls.Add(this.lblDateTo);
             this.pnlToolbar.Controls.Add(this.dtpTo);
+            this.pnlToolbar.Controls.Add(this.lblDateFrom);
             this.pnlToolbar.Controls.Add(this.dtpFrom);
+            this.pnlToolbar.Controls.Add(this.lblDateRange);
             this.pnlToolbar.Controls.Add(this.txtSearch);
             this.pnlToolbar.FillColor = System.Drawing.Color.White;
             this.pnlToolbar.Location = new System.Drawing.Point(24, 18);
             this.pnlToolbar.Name = "pnlToolbar";
             this.pnlToolbar.Padding = new System.Windows.Forms.Padding(16);
-            this.pnlToolbar.Size = new System.Drawing.Size(1080, 104);
+            this.pnlToolbar.Size = new System.Drawing.Size(1080, 74);
             this.pnlToolbar.TabIndex = 0;
+            // 
             // 
             // lblCount
             // 
             this.lblCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCount.BackColor = System.Drawing.Color.Transparent;
-            this.lblCount.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblCount.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.lblCount.Location = new System.Drawing.Point(825, 66);
+            this.lblCount.Location = new System.Drawing.Point(920, 19);
             this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(228, 22);
+            this.lblCount.Size = new System.Drawing.Size(140, 36);
             this.lblCount.TabIndex = 5;
             this.lblCount.Text = "Hiển thị 0 hồ sơ";
             this.lblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblSortLabel
+            // 
+            this.lblSortLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSortLabel.AutoSize = false;
+            this.lblSortLabel.BackColor = System.Drawing.Color.Transparent;
+            this.lblSortLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblSortLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblSortLabel.Location = new System.Drawing.Point(735, 19);
+            this.lblSortLabel.Name = "lblSortLabel";
+            this.lblSortLabel.Size = new System.Drawing.Size(55, 36);
+            this.lblSortLabel.TabIndex = 11;
+            this.lblSortLabel.Text = "Sắp xếp";
+            this.lblSortLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cmbSort
             // 
@@ -106,16 +129,30 @@ namespace HospitalX.GUI.PH2.BenhNhan
             "Mới nhất",
             "Cũ nhất",
             "Mã HSBA A-Z"});
-            this.cmbSort.Location = new System.Drawing.Point(884, 24);
+            this.cmbSort.Location = new System.Drawing.Point(795, 19);
             this.cmbSort.Name = "cmbSort";
-            this.cmbSort.Size = new System.Drawing.Size(169, 36);
+            this.cmbSort.Size = new System.Drawing.Size(120, 36);
             this.cmbSort.StartIndex = 0;
             this.cmbSort.TabIndex = 4;
+            // 
+            // lblDateTo
+            // 
+            this.lblDateTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDateTo.AutoSize = false;
+            this.lblDateTo.BackColor = System.Drawing.Color.Transparent;
+            this.lblDateTo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblDateTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblDateTo.Location = new System.Drawing.Point(570, 19);
+            this.lblDateTo.Name = "lblDateTo";
+            this.lblDateTo.Size = new System.Drawing.Size(30, 36);
+            this.lblDateTo.TabIndex = 10;
+            this.lblDateTo.Text = "Đến";
+            this.lblDateTo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // dtpTo
             // 
             this.dtpTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpTo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.dtpTo.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.dtpTo.BorderRadius = 6;
             this.dtpTo.BorderThickness = 1;
             this.dtpTo.Checked = true;
@@ -124,7 +161,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpTo.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpTo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTo.Location = new System.Drawing.Point(609, 24);
+            this.dtpTo.Location = new System.Drawing.Point(605, 19);
             this.dtpTo.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
             this.dtpTo.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             this.dtpTo.Name = "dtpTo";
@@ -132,10 +169,24 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpTo.TabIndex = 3;
             this.dtpTo.Value = new System.DateTime(2026, 5, 31, 0, 0, 0, 0);
             // 
+            // lblDateFrom
+            // 
+            this.lblDateFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDateFrom.AutoSize = false;
+            this.lblDateFrom.BackColor = System.Drawing.Color.Transparent;
+            this.lblDateFrom.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblDateFrom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblDateFrom.Location = new System.Drawing.Point(410, 19);
+            this.lblDateFrom.Name = "lblDateFrom";
+            this.lblDateFrom.Size = new System.Drawing.Size(25, 36);
+            this.lblDateFrom.TabIndex = 9;
+            this.lblDateFrom.Text = "Từ";
+            this.lblDateFrom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // dtpFrom
             // 
             this.dtpFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpFrom.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
+            this.dtpFrom.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.dtpFrom.BorderRadius = 6;
             this.dtpFrom.BorderThickness = 1;
             this.dtpFrom.Checked = true;
@@ -144,7 +195,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpFrom.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.dtpFrom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFrom.Location = new System.Drawing.Point(468, 24);
+            this.dtpFrom.Location = new System.Drawing.Point(440, 19);
             this.dtpFrom.MaxDate = new System.DateTime(2099, 12, 31, 0, 0, 0, 0);
             this.dtpFrom.MinDate = new System.DateTime(1900, 1, 1, 0, 0, 0, 0);
             this.dtpFrom.Name = "dtpFrom";
@@ -152,10 +203,22 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.dtpFrom.TabIndex = 2;
             this.dtpFrom.Value = new System.DateTime(2026, 1, 1, 0, 0, 0, 0);
             // 
+            // lblDateRange
+            // 
+            this.lblDateRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDateRange.AutoSize = false;
+            this.lblDateRange.BackColor = System.Drawing.Color.Transparent;
+            this.lblDateRange.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblDateRange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
+            this.lblDateRange.Location = new System.Drawing.Point(340, 19);
+            this.lblDateRange.Name = "lblDateRange";
+            this.lblDateRange.Size = new System.Drawing.Size(65, 36);
+            this.lblDateRange.TabIndex = 8;
+            this.lblDateRange.Text = "Thời gian";
+            this.lblDateRange.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // txtSearch
             // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSearch.BackColor = System.Drawing.Color.Transparent;
             this.txtSearch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(224)))), ((int)(((byte)(219)))));
             this.txtSearch.BorderRadius = 6;
@@ -171,13 +234,13 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
             this.txtSearch.IconLeft = ((System.Drawing.Image)(resources.GetObject("txtSearch.IconLeft")));
-            this.txtSearch.Location = new System.Drawing.Point(18, 24);
+            this.txtSearch.Location = new System.Drawing.Point(18, 19);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
             this.txtSearch.PlaceholderText = "Tìm theo mã HSBA, chẩn đoán, điều trị, bác sĩ...";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(404, 36);
+            this.txtSearch.Size = new System.Drawing.Size(300, 36);
             this.txtSearch.TabIndex = 0;
             // 
             // ucBenhAnBN
@@ -191,6 +254,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.Size = new System.Drawing.Size(1128, 782);
             this.pnlRoot.ResumeLayout(false);
             this.pnlToolbar.ResumeLayout(false);
+            this.pnlToolbar.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -200,8 +264,12 @@ namespace HospitalX.GUI.PH2.BenhNhan
         private System.Windows.Forms.Panel pnlRoot;
         private Guna.UI2.WinForms.Guna2Panel pnlToolbar;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
+        private System.Windows.Forms.Label lblDateRange;
+        private System.Windows.Forms.Label lblDateFrom;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpFrom;
+        private System.Windows.Forms.Label lblDateTo;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpTo;
+        private System.Windows.Forms.Label lblSortLabel;
         private Guna.UI2.WinForms.Guna2ComboBox cmbSort;
         private System.Windows.Forms.Label lblCount;
         private System.Windows.Forms.FlowLayoutPanel flowRecords;

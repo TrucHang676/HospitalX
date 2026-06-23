@@ -16,6 +16,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
         public ucDonThuocBN()
         {
             InitializeComponent();
+            dtpFrom.Value = new DateTime(2026, 1, 1);
+            dtpTo.Value = new DateTime(2026, 12, 31);
             prescriptions = PatientMedicalRecord.LoadFromDB()
                 .Where(record => record.Prescriptions.Any())
                 .ToList();

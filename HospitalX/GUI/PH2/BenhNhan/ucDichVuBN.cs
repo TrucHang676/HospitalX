@@ -16,6 +16,8 @@ namespace HospitalX.GUI.PH2.BenhNhan
         public ucDichVuBN()
         {
             InitializeComponent();
+            dtpFrom.Value = new DateTime(2026, 1, 1);
+            dtpTo.Value = new DateTime(2026, 12, 31);
             services = PatientMedicalRecord.LoadFromDB()
                 .SelectMany(record => record.Services.Select(service => new ServiceItem(record, service)))
                 .ToList();
