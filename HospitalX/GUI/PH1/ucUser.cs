@@ -61,36 +61,69 @@ namespace HospitalX.GUI.PH1
             }
         }
 
-        // Khóa hoặc mở khóa tài khoản người dùng (goi stored procedure sp_LockUser hoặc sp_UnlockUser trên Oracle)
+        // Kiểm tra trạng thái hiện tại của user: Oracle có thể trả về nhiều giá trị
+        // như 'OPEN', 'LOCKED', 'EXPIRED', 'EXPIRED & LOCKED', 'LOCKED(TIMED)', v.v.
+        private bool IsAccountOpen(string status)
+        {
+            if (string.IsNullOrEmpty(status)) return false;
+            return status.Equals("OPEN", StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Khóa hoặc mở khóa tài khoản người dùng (gọi stored procedure sp_LockUser hoặc sp_UnlockUser trên Oracle)
+        // Sử dụng _connectionString trực tiếp để đảm bảo dùng quyền của Admin đang đăng nhập
         private void LockUnlockUser(UserItem item)
         {
             if (item == null) return;
 
-            bool isCurrentlyOpen = item.Status == "OPEN";
+            // Kiểm tra Oracle ACCOUNT_STATUS: chỉ 'OPEN' là mở; mọi giá trị khác đều coi là đã khóa/hạn chế
+            bool isCurrentlyOpen = IsAccountOpen(item.Status);
             string action = isCurrentlyOpen ? "khóa" : "mở khóa";
-            string newStatus = isCurrentlyOpen ? "LOCKED" : "OPEN";
 
-            var dr = MessageBox.Show($"Bạn có chắc muốn {action} tài khoản {item.Username}?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var dr = MessageBox.Show(
+                $"Bạn có chắc muốn {action} tài khoản [{item.Username}]?\n" +
+                $"Trạng thái hiện tại: {item.Status}",
+                "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (dr != DialogResult.Yes) return;
 
             try
             {
                 string spName = isCurrentlyOpen ? "sp_LockUser" : "sp_UnlockUser";
-                var parameters = new OracleParameter[] {
-                    new OracleParameter("p_username", OracleDbType.Varchar2, item.Username, System.Data.ParameterDirection.Input)
-                };
 
-                DataProvider.Instance.ExecuteNonQuery(spName, parameters);
+                // Dùng _connectionString của ucUser (connection admin đã đăng nhập)
+                // để đảm bảo có đủ quyền ALTER USER
+                using (var conn = new OracleConnection(_connectionString))
+                {
+                    conn.Open();
+                    using (var cmd = new OracleCommand(spName, conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.BindByName = true;
+                        cmd.Parameters.Add(new OracleParameter("p_username", OracleDbType.Varchar2) { Value = item.Username });
+                        cmd.ExecuteNonQuery();
+                    }
+                }
 
-                MessageBox.Show($"Đã {action} tài khoản {item.Username}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    $"Đã {action} tài khoản [{item.Username}] thành công!\n" +
+                    $"Tài khoản này {(isCurrentlyOpen ? "sẽ KHÔNG thể đăng nhập" : "có thể đăng nhập lại")}.",
+                    "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Reload
+                // Reload để cập nhật trạng thái mới
                 LoadUsersFromDb();
                 ApplyFilters();
             }
-            catch (Oracle.ManagedDataAccess.Client.OracleException ex)
+            catch (OracleException ex)
             {
-                MessageBox.Show($"Lỗi khi {action} tài khoản: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"Lỗi Oracle khi {action} tài khoản [{item.Username}]:\n" +
+                    $"ORA-{ex.Number}: {ex.Message}",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Lỗi không xác định khi {action} tài khoản [{item.Username}]:\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
