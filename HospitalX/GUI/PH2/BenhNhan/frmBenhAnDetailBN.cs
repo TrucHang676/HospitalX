@@ -13,6 +13,56 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.record = record;
             InitializeComponent();
             BindData();
+            AddNavigationButtons();
+        }
+
+        private void AddNavigationButtons()
+        {
+            // Nút xem chi tiết dịch vụ ở pnlServices
+            var btnViewServices = new Guna2Button
+            {
+                Text = "Xem chi tiết",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 105, 85),
+                FillColor = Color.FromArgb(230, 245, 239),
+                BorderRadius = 6,
+                Cursor = Cursors.Hand,
+                Size = new Size(110, 28),
+                Location = new Point(pnlServices.Width - 130, 16)
+            };
+            btnViewServices.HoverState.FillColor = Color.FromArgb(200, 235, 225);
+            btnViewServices.Click += (sender, e) =>
+            {
+                this.Close();
+                if (Main_BN.Instance != null)
+                {
+                    Main_BN.Instance.NavigateToDichVu();
+                }
+            };
+            pnlServices.Controls.Add(btnViewServices);
+
+            // Nút xem chi tiết đơn thuốc ở pnlPrescription
+            var btnViewPrescriptions = new Guna2Button
+            {
+                Text = "Xem chi tiết",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(0, 105, 85),
+                FillColor = Color.FromArgb(230, 245, 239),
+                BorderRadius = 6,
+                Cursor = Cursors.Hand,
+                Size = new Size(110, 28),
+                Location = new Point(pnlPrescription.Width - 130, 16)
+            };
+            btnViewPrescriptions.HoverState.FillColor = Color.FromArgb(200, 235, 225);
+            btnViewPrescriptions.Click += (sender, e) =>
+            {
+                this.Close();
+                if (Main_BN.Instance != null)
+                {
+                    Main_BN.Instance.NavigateToDonThuoc();
+                }
+            };
+            pnlPrescription.Controls.Add(btnViewPrescriptions);
         }
 
         private void BindData()
@@ -68,7 +118,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 FillColor = Color.FromArgb(250, 252, 251),
                 Height = 74,
                 Margin = new Padding(0, 0, 0, 8),
-                Width = 445
+                Width = 460
             };
 
             row.Controls.Add(new Label
@@ -78,7 +128,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 Font = new Font("Segoe UI", 10F, FontStyle.Bold),
                 ForeColor = Color.FromArgb(10, 42, 64),
                 Location = new Point(14, 8),
-                Size = new Size(415, 24),
+                Size = new Size(430, 24),
                 Text = title
             });
 
@@ -100,7 +150,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
                 Font = new Font("Segoe UI", 8.5F),
                 ForeColor = Color.FromArgb(74, 98, 92),
                 Location = new Point(204, 38),
-                Size = new Size(225, 22),
+                Size = new Size(245, 22),
                 Text = note
             });
 

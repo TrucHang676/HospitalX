@@ -10,16 +10,36 @@ namespace HospitalX.GUI.PH2
 {
     public partial class Main_BN : Form
     {
+        public static Main_BN Instance { get; private set; }
         private bool _isLoggingOut = false;
 
         public Main_BN()
         {
             InitializeComponent();
+            Instance = this;
             this.FormClosed += Main_BN_FormClosed;
             WireNavigationEvents();
             LoadPage(new ucHSCN(), "Trang chủ");
             btnHSCN.Checked = true;
             LoadPatientInfo();
+        }
+
+        public void NavigateToDichVu()
+        {
+            btnDV.Checked = true;
+            btnHSBA.Checked = false;
+            btnDT.Checked = false;
+            btnHSCN.Checked = false;
+            LoadPage(new ucDichVuBN(), "Dịch vụ");
+        }
+
+        public void NavigateToDonThuoc()
+        {
+            btnDT.Checked = true;
+            btnHSBA.Checked = false;
+            btnDV.Checked = false;
+            btnHSCN.Checked = false;
+            LoadPage(new ucDonThuocBN(), "Đơn thuốc");
         }
 
         // Gắn sự kiện điều hướng cho các nút sidebar.
@@ -87,6 +107,10 @@ namespace HospitalX.GUI.PH2
 
         private void Main_BN_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (ReferenceEquals(Instance, this))
+            {
+                Instance = null;
+            }
             if (!_isLoggingOut)
             {
                 Application.Exit();

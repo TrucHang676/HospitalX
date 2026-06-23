@@ -376,11 +376,12 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // lblRecordDateValue
             // 
             this.lblRecordDateValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRecordDateValue.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Bold);
+            this.lblRecordDateValue.BackColor = System.Drawing.Color.Transparent;
+            this.lblRecordDateValue.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblRecordDateValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(105)))), ((int)(((byte)(85)))));
-            this.lblRecordDateValue.Location = new System.Drawing.Point(510, 14);
+            this.lblRecordDateValue.Location = new System.Drawing.Point(505, 18);
             this.lblRecordDateValue.Name = "lblRecordDateValue";
-            this.lblRecordDateValue.Size = new System.Drawing.Size(120, 28);
+            this.lblRecordDateValue.Size = new System.Drawing.Size(125, 22);
             this.lblRecordDateValue.TabIndex = 6;
             this.lblRecordDateValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -388,11 +389,11 @@ namespace HospitalX.GUI.PH2.BenhNhan
             // 
             this.lblRecordDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRecordDate.BackColor = System.Drawing.Color.Transparent;
-            this.lblRecordDate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblRecordDate.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblRecordDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(112)))), ((int)(((byte)(138)))), ((int)(((byte)(132)))));
-            this.lblRecordDate.Location = new System.Drawing.Point(430, 14);
+            this.lblRecordDate.Location = new System.Drawing.Point(410, 18);
             this.lblRecordDate.Name = "lblRecordDate";
-            this.lblRecordDate.Size = new System.Drawing.Size(80, 28);
+            this.lblRecordDate.Size = new System.Drawing.Size(90, 22);
             this.lblRecordDate.TabIndex = 7;
             this.lblRecordDate.Text = "Ngày lập:";
             this.lblRecordDate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -403,7 +404,7 @@ namespace HospitalX.GUI.PH2.BenhNhan
             this.lblRecordTitle.BackColor = System.Drawing.Color.Transparent;
             this.lblRecordTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblRecordTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
-            this.lblRecordTitle.Location = new System.Drawing.Point(20, 14);
+            this.lblRecordTitle.Location = new System.Drawing.Point(20, 16);
             this.lblRecordTitle.Name = "lblRecordTitle";
             this.lblRecordTitle.Size = new System.Drawing.Size(162, 28);
             this.lblRecordTitle.TabIndex = 8;
