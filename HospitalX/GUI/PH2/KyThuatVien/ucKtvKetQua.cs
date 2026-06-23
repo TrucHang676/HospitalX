@@ -811,7 +811,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 x.Patient,
                 x.Service,
                 x.NgayDv,
-                Status = string.IsNullOrWhiteSpace(x.KetQua) ? "Chá» cáº­p nháº­t" : "HoÃ n thÃ nh"
+                Status = (string.IsNullOrWhiteSpace(x.KetQua) || x.KetQua.Trim().StartsWith("Chua", StringComparison.OrdinalIgnoreCase) || x.KetQua.Trim().StartsWith("Chưa", StringComparison.OrdinalIgnoreCase)) ? "Chá»  cáº­p nháº­t" : "HoÃ n thÃ nh"
             }).ToList();
 
             int activeIndex = allServices.IndexOf(activeService);

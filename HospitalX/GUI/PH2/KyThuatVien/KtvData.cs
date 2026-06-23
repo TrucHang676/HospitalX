@@ -29,7 +29,24 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         public string RecordId { get; set; }  // MAHSBA — alias để tương thích UI
 
         // Trạng thái dẫn xuất — KHÔNG lưu trong DB, tính từ KETQUA
-        public string Status => string.IsNullOrEmpty(KetQua) ? "Chờ thực hiện" : "Hoàn thành";
+        public string Status
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(KetQua))
+                    return "Chờ thực hiện";
+                string kq = KetQua.Trim();
+                if (kq.Equals("Chưa có kết quả", StringComparison.OrdinalIgnoreCase) ||
+                    kq.Equals("Chua co ket qua", StringComparison.OrdinalIgnoreCase) ||
+                    kq.Equals("Chua c k t qu", StringComparison.OrdinalIgnoreCase) ||
+                    kq.StartsWith("Chưa", StringComparison.OrdinalIgnoreCase) ||
+                    kq.StartsWith("Chua", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "Chờ thực hiện";
+                }
+                return "Hoàn thành";
+            }
+        }
     }
 
     /// <summary>
