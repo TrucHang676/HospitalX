@@ -120,7 +120,7 @@
             this.pnlBody.FillColor = System.Drawing.Color.White;
             this.pnlBody.Location = new System.Drawing.Point(24, 158);
             this.pnlBody.Name = "pnlBody";
-            this.pnlBody.Size = new System.Drawing.Size(752, 270);
+            this.pnlBody.Size = new System.Drawing.Size(752, 370);
             this.pnlBody.TabIndex = 1;
             // 
             // txtResult
@@ -138,8 +138,9 @@
             this.txtResult.Name = "txtResult";
             this.txtResult.PlaceholderText = "";
             this.txtResult.ReadOnly = true;
+            this.txtResult.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtResult.SelectedText = "";
-            this.txtResult.Size = new System.Drawing.Size(684, 42);
+            this.txtResult.Size = new System.Drawing.Size(684, 142);
             this.txtResult.TabIndex = 0;
             // 
             // lblResult
@@ -255,7 +256,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(245)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(800, 454);
+            this.ClientSize = new System.Drawing.Size(800, 554);
             this.Controls.Add(this.pnlBody);
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
