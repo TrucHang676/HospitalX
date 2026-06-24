@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -44,14 +44,14 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         private Label lblAvatarText;
         private Label lblPatientName;
         private Label lblPatientMeta;
-        // pnlPrioBadge removed â€” Priority does not exist in Oracle DB schema
+        // pnlPrioBadge removed — Priority does not exist in Oracle DB schema
         private Label lblSvcTitle;
         private Label lblSvcMeta;
         private Guna2Panel divSvc1;
         private Guna2Panel divSvc2;
         private Label lblParamsTitle;
         private Guna2Panel pnlTableHeader;
-        // pnlPrioBadge and lblPrioText removed â€” Priority does not exist in Oracle DB schema
+        // pnlPrioBadge and lblPrioText removed — Priority does not exist in Oracle DB schema
 
         private Label lblConclusionHeader;
         private Label lblRemarksLabel;
@@ -69,7 +69,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private Label lblActionsKtvInfo;
         private Guna2Button btnSaveDraft;
-        // btnSendDoctor removed â€” 'Äang thá»±c hiá»‡n' state does not exist in Oracle DB schema (only KETQUA IS NULL or IS NOT NULL)
+        // btnSendDoctor removed — 'Äang thá»±c hiá»‡n' state does not exist in Oracle DB schema (only KETQUA IS NULL or IS NOT NULL)
         private Guna2Button btnComplete;
 
         // Topbar
@@ -204,7 +204,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
             txtSearchQueue = new Guna2TextBox
             {
-                PlaceholderText = "TÃ¬m bá»‡nh nhÃ¢nâ€¦",
+                PlaceholderText = "Tìm bệnh nhân...",
                 FillColor = Color.FromArgb(244, 247, 250),
                 BorderColor = KtvTheme.Border,
                 BorderRadius = 8,
@@ -394,8 +394,26 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private void BindDesignerNativeForm()
         {
-            if (activeService == null) return;
+            if (activeService == null)
+            {
+                lblSimplePatient.Text = "Không có bệnh nhân hoặc dịch vụ cần thực hiện.";
+                txtDensity.Text = string.Empty;
+                txtDensity.Enabled = false;
+                txtLesion.Text = string.Empty;
+                txtLesion.Enabled = false;
+                cboConclusion.Enabled = false;
+                txtRemarks.Text = string.Empty;
+                txtRemarks.Enabled = false;
+                btnComplete.Enabled = false;
+                RenderServiceCards();
+                return;
+            }
 
+            txtDensity.Enabled = true;
+            txtLesion.Enabled = true;
+            cboConclusion.Enabled = true;
+            txtRemarks.Enabled = true;
+            btnComplete.Enabled = true;
 
             lblSimplePatient.Text = $"B\u1ec7nh nh\u00e2n: {activeService.Patient} - {activeService.MaBn}";
             txtDensity.Text = "B\u00ecnh th\u01b0\u1eddng";
@@ -832,10 +850,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             grid.ColumnHeadersHeight = 34;
 
             grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "HSBA", DataPropertyName = "MaHsba", FillWeight = 16 });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Bá»‡nh nhÃ¢n", DataPropertyName = "Patient", FillWeight = 28 });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Dá»‹ch vá»¥", DataPropertyName = "Service", FillWeight = 32 });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "NgÃ y DV", DataPropertyName = "NgayDv", FillWeight = 14 });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Tráº¡ng thÃ¡i", DataPropertyName = "Status", FillWeight = 16 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Bệnh nhân", DataPropertyName = "Patient", FillWeight = 28 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Dịch vụ", DataPropertyName = "Service", FillWeight = 32 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Ngày DV", DataPropertyName = "NgayDv", FillWeight = 14 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Trạng thái", DataPropertyName = "Status", FillWeight = 16 });
 
             grid.DataSource = allServices.Select(x => new
             {
@@ -843,7 +861,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 x.Patient,
                 x.Service,
                 x.NgayDv,
-                Status = (string.IsNullOrWhiteSpace(x.KetQua) || x.KetQua.Trim().StartsWith("Chua", StringComparison.OrdinalIgnoreCase) || x.KetQua.Trim().StartsWith("Chưa", StringComparison.OrdinalIgnoreCase)) ? "Chá»  cáº­p nháº­t" : "HoÃ n thÃ nh"
+                Status = (string.IsNullOrWhiteSpace(x.KetQua) || x.KetQua.Trim().StartsWith("Chua", StringComparison.OrdinalIgnoreCase) || x.KetQua.Trim().StartsWith("Chưa", StringComparison.OrdinalIgnoreCase)) ? "Chờ cập nhật" : "Hoàn thành"
             }).ToList();
 
             int activeIndex = allServices.IndexOf(activeService);
@@ -1362,10 +1380,10 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 // Simple text comparison
                 if (txt.Text.Trim().ToLower().Contains("báº¥t thÆ°á»ng") ||
-                    txt.Text.Trim().ToLower().Contains("háº¹p") ||
-                    txt.Text.Trim().ToLower().Contains("dÃ y") ||
+                    txt.Text.Trim().ToLower().Contains("hẹp") ||
+                    txt.Text.Trim().ToLower().Contains("dày") ||
                     txt.Text.Trim().ToLower().Contains("sá»i") ||
-                    txt.Text.Trim().ToLower().Contains("loÃ£ng"))
+                    txt.Text.Trim().ToLower().Contains("loãng"))
                 {
                     txt.FillColor = KtvTheme.DangerSoft;
                     txt.BorderColor = KtvTheme.Danger;
@@ -1417,7 +1435,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                     txt.FillColor = Color.White;
                     txt.BorderColor = KtvTheme.Border;
                     pnl.FillColor = KtvTheme.TextLight;
-                    lbl.Text = "â€”";
+                    lbl.Text = "—";
                     lbl.ForeColor = Color.White;
                 }
             }
@@ -1434,7 +1452,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             {
                 mockAttachedFiles.Add(selected);
                 RenderAttachmentsList();
-                ShowToastNotification($"ðŸ“Ž ÄÃ£ Ä‘Ã­nh kÃ¨m tá»‡p {selected} thÃ nh cÃ´ng!");
+                ShowToastNotification($"📎 Đã đính kèm tệp {selected} thành công!");
             }
         }
 
@@ -1444,7 +1462,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             flpUploadedFiles.Controls.Clear();
 
             // Default mock file if empty
-            if (mockAttachedFiles.Count == 0 && activeService.Patient == "Tráº§n VÄƒn BÃ¬nh")
+            if (mockAttachedFiles.Count == 0 && activeService.Patient == "Trần Văn Bình")
             {
                 mockAttachedFiles.Add("CBC_BinhTranVan_240525.pdf");
             }
@@ -1461,7 +1479,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
                 var lblName = new Label
                 {
-                    Text = $"ðŸ“„ {file}",
+                    Text = $"📄 {file}",
                     Font = new Font("Segoe UI", 8F, FontStyle.Bold),
                     ForeColor = KtvTheme.Teal,
                     Location = new Point(10, 0),
@@ -1472,7 +1490,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
                 var btnDelete = new Guna2Button
                 {
-                    Text = "âœ•",
+                    Text = "✖",
                     Size = new Size(20, 20),
                     Location = new Point(190, 6),
                     BorderRadius = 10,
@@ -1511,20 +1529,20 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             ).ToList();
 
             // Count waiting patients
-            int waitCount = allServices.Count(x => x.Status != "HoÃ n thÃ nh");
-            lblQueueCount.Text = $"{waitCount} chá»";
+            int waitCount = allServices.Count(x => x.Status != "Hoàn thành");
+            lblQueueCount.Text = $"{waitCount} chờ";
 
             // Update topbar badge
             if (lblTopbarBadge != null)
             {
-                lblTopbarBadge.Text = $"â³ {waitCount} chá» cáº­p nháº­t";
-                lblTopbarSub.Text = $"{waitCount} káº¿t quáº£ Ä‘ang chá» cáº­p nháº­t Â· HÃ´m nay {DateTime.Now:dd/MM/yyyy}";
+                lblTopbarBadge.Text = $"⏳ {waitCount} chờ cập nhật";
+                lblTopbarSub.Text = $"{waitCount} kết quả đang chờ cập nhật · Hôm nay {DateTime.Now:dd/MM/yyyy}";
             }
 
             foreach (var service in filtered)
             {
                 bool isActive = (service == activeService);
-                bool isDone = service.Status == "HoÃ n thÃ nh";
+                bool isDone = service.Status == "Hoàn thành";
 
                 // Wrapper panel that draws bottom border line
                 var pnlWrapper = new Panel
@@ -1591,26 +1609,26 @@ namespace HospitalX.GUI.PH2.KyThuatVien
                 pnlItem.Controls.Add(lblSvc);
                 lblSvc.Click += (s, e) => SelectPatient(service);
 
-                // Status Badge â€” auto-width to prevent text crop
+                // Status Badge — auto-width to prevent text crop
                 string stText;
                 Color stBg = KtvTheme.AccentSoft;
                 Color stFg = Color.FromArgb(160, 112, 0);
 
-                if (service.Status == "HoÃ n thÃ nh")
+                if (service.Status == "Hoàn thành")
                 {
-                    stText = "âœ… HoÃ n thÃ nh";
+                    stText = "✅ Hoàn thành";
                     stBg = KtvTheme.TealLight;
                     stFg = isDone ? Color.FromArgb(150, 165, 160) : KtvTheme.Teal;
                 }
-                else if (service.Status == "Äang thá»±c hiá»‡n")
+                else if (service.Status == "Đang thực hiện")
                 {
-                    stText = "âš™ï¸ Äang thá»±c hiá»‡n";
+                    stText = "⚙️ Đang thực hiện";
                     stBg = KtvTheme.InfoSoft;
                     stFg = KtvTheme.Info;
                 }
                 else
                 {
-                    stText = "â³ Chá» cáº­p nháº­t";
+                    stText = "⏳ Chờ cập nhật";
                 }
 
                 var lblBadge = KtvTheme.Label(stText, 0, 0, 7.5F, FontStyle.Bold, stFg);
@@ -1705,42 +1723,42 @@ namespace HospitalX.GUI.PH2.KyThuatVien
         {
             var list = new List<TestParam>();
 
-            if (serviceName.Contains("mÃ¡u toÃ n pháº§n") || serviceName.Contains("CBC"))
+            if (serviceName.Contains("máu toàn phần") || serviceName.Contains("CBC"))
             {
-                list.Add(new TestParam { Name = "WBC (Báº¡ch cáº§u)", SubName = "White Blood Cells", MinVal = 4.0, MaxVal = 10.0, Unit = "Ã—10Â³/Î¼L", DefaultVal = 8.2 });
-                list.Add(new TestParam { Name = "RBC (Há»“ng cáº§u)", SubName = "Red Blood Cells", MinVal = 4.2, MaxVal = 5.5, Unit = "Ã—10â¶/Î¼L", DefaultVal = 3.8 });
-                list.Add(new TestParam { Name = "HGB (Hemoglobin)", SubName = "Huyáº¿t sáº¯c tá»‘", MinVal = 13.0, MaxVal = 17.0, Unit = "g/dL", DefaultVal = 11.5 });
-                list.Add(new TestParam { Name = "HCT (Hematocrit)", SubName = "Thá»ƒ tÃ­ch khá»‘i há»“ng cáº§u", MinVal = 40.0, MaxVal = 52.0, Unit = "%", DefaultVal = 35.2 });
-                list.Add(new TestParam { Name = "PLT (Tiá»ƒu cáº§u)", SubName = "Platelets", MinVal = 150.0, MaxVal = 400.0, Unit = "Ã—10Â³/Î¼L", DefaultVal = 220.0 });
-                list.Add(new TestParam { Name = "MCV", SubName = "Thá»ƒ tÃ­ch trung bÃ¬nh há»“ng cáº§u", MinVal = 80.0, MaxVal = 100.0, Unit = "fL", DefaultVal = 75.4 });
-                list.Add(new TestParam { Name = "Neutrophil", SubName = "Báº¡ch cáº§u trung tÃ­nh", MinVal = 50.0, MaxVal = 70.0, Unit = "%", DefaultVal = 65.0 });
+                list.Add(new TestParam { Name = "WBC (Bạch cầu)", SubName = "White Blood Cells", MinVal = 4.0, MaxVal = 10.0, Unit = "×10³/μL", DefaultVal = 8.2 });
+                list.Add(new TestParam { Name = "RBC (Hồng cầu)", SubName = "Red Blood Cells", MinVal = 4.2, MaxVal = 5.5, Unit = "×10⁶/μL", DefaultVal = 3.8 });
+                list.Add(new TestParam { Name = "HGB (Hemoglobin)", SubName = "Huyết sắc tố", MinVal = 13.0, MaxVal = 17.0, Unit = "g/dL", DefaultVal = 11.5 });
+                list.Add(new TestParam { Name = "HCT (Hematocrit)", SubName = "Thể tích khối hồng cầu", MinVal = 40.0, MaxVal = 52.0, Unit = "%", DefaultVal = 35.2 });
+                list.Add(new TestParam { Name = "PLT (Tiểu cầu)", SubName = "Platelets", MinVal = 150.0, MaxVal = 400.0, Unit = "×10³/μL", DefaultVal = 220.0 });
+                list.Add(new TestParam { Name = "MCV", SubName = "Thể tích trung bình hồng cầu", MinVal = 80.0, MaxVal = 100.0, Unit = "fL", DefaultVal = 75.4 });
+                list.Add(new TestParam { Name = "Neutrophil", SubName = "Bạch cầu trung tính", MinVal = 50.0, MaxVal = 70.0, Unit = "%", DefaultVal = 65.0 });
             }
-            else if (serviceName.Contains("Sinh hÃ³a mÃ¡u"))
+            else if (serviceName.Contains("Sinh hóa máu"))
             {
-                list.Add(new TestParam { Name = "Glucose", SubName = "ÄÆ°á»ng huyáº¿t", MinVal = 3.9, MaxVal = 6.4, Unit = "mmol/L", DefaultVal = 7.2 });
-                list.Add(new TestParam { Name = "Cholesterol toÃ n pháº§n", SubName = "Total Cholesterol", MinVal = 3.9, MaxVal = 5.2, Unit = "mmol/L", DefaultVal = 5.8 });
-                list.Add(new TestParam { Name = "Triglycerides", SubName = "Cháº¥t bÃ©o trung tÃ­nh", MinVal = 0.46, MaxVal = 1.88, Unit = "mmol/L", DefaultVal = 1.50 });
+                list.Add(new TestParam { Name = "Glucose", SubName = "Đường huyết", MinVal = 3.9, MaxVal = 6.4, Unit = "mmol/L", DefaultVal = 7.2 });
+                list.Add(new TestParam { Name = "Cholesterol toàn phần", SubName = "Total Cholesterol", MinVal = 3.9, MaxVal = 5.2, Unit = "mmol/L", DefaultVal = 5.8 });
+                list.Add(new TestParam { Name = "Triglycerides", SubName = "Chất béo trung tính", MinVal = 0.46, MaxVal = 1.88, Unit = "mmol/L", DefaultVal = 1.50 });
                 list.Add(new TestParam { Name = "AST (SGOT)", SubName = "Men gan AST", MinVal = 0.0, MaxVal = 37.0, Unit = "U/L", DefaultVal = 24.0 });
                 list.Add(new TestParam { Name = "ALT (SGPT)", SubName = "Men gan ALT", MinVal = 0.0, MaxVal = 41.0, Unit = "U/L", DefaultVal = 28.0 });
             }
-            else if (serviceName.Contains("nÆ°á»›c tiá»ƒu") || serviceName.Contains("Urinalysis"))
+            else if (serviceName.Contains("nước tiểu") || serviceName.Contains("Urinalysis"))
             {
-                list.Add(new TestParam { Name = "pH nÆ°á»›c tiá»ƒu", SubName = "Urinary pH", MinVal = 5.0, MaxVal = 8.5, Unit = "pH", DefaultVal = 6.0 });
-                list.Add(new TestParam { Name = "Glucose nÆ°á»›c tiá»ƒu", SubName = "U-Glucose", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Ã‚m tÃ­nh (Negative)", IsTextParam = true });
-                list.Add(new TestParam { Name = "Protein nÆ°á»›c tiá»ƒu", SubName = "U-Protein", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Ã‚m tÃ­nh (Negative)", IsTextParam = true });
-                list.Add(new TestParam { Name = "Ketone nÆ°á»›c tiá»ƒu", SubName = "U-Ketones", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Ã‚m tÃ­nh (Negative)", IsTextParam = true });
+                list.Add(new TestParam { Name = "pH nước tiểu", SubName = "Urinary pH", MinVal = 5.0, MaxVal = 8.5, Unit = "pH", DefaultVal = 6.0 });
+                list.Add(new TestParam { Name = "Glucose nước tiểu", SubName = "U-Glucose", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Âm tính (Negative)", IsTextParam = true });
+                list.Add(new TestParam { Name = "Protein nước tiểu", SubName = "U-Protein", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Âm tính (Negative)", IsTextParam = true });
+                list.Add(new TestParam { Name = "Ketone nước tiểu", SubName = "U-Ketones", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Âm tính (Negative)", IsTextParam = true });
             }
-            else if (serviceName.Contains("Äiá»‡n tim") || serviceName.Contains("ECG"))
+            else if (serviceName.Contains("Điện tim") || serviceName.Contains("ECG"))
             {
-                list.Add(new TestParam { Name = "Nhá»‹p tim (HR)", SubName = "Heart Rate", MinVal = 60.0, MaxVal = 100.0, Unit = "bpm", DefaultVal = 78.0 });
-                list.Add(new TestParam { Name = "Nhá»‹p xoang", SubName = "Rhythm", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Nhá»‹p xoang Ä‘á»u", IsTextParam = true });
-                list.Add(new TestParam { Name = "Trá»¥c Ä‘iá»‡n tim", SubName = "Axis", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "Trá»¥c trung gian", IsTextParam = true });
+                list.Add(new TestParam { Name = "Nhịp tim (HR)", SubName = "Heart Rate", MinVal = 60.0, MaxVal = 100.0, Unit = "bpm", DefaultVal = 78.0 });
+                list.Add(new TestParam { Name = "Nhịp xoang", SubName = "Rhythm", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Nhịp xoang đều", IsTextParam = true });
+                list.Add(new TestParam { Name = "Trục điện tim", SubName = "Axis", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Trục trung gian", IsTextParam = true });
             }
             else
             {
                 // General/image-based defaults
-                list.Add(new TestParam { Name = "Máº­t Ä‘á»™/HÃ¬nh áº£nh", SubName = "Density/Visuals", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "BÃ¬nh thÆ°á»ng á»•n Ä‘á»‹nh", IsTextParam = true });
-                list.Add(new TestParam { Name = "MÃ´ táº£ tá»•n thÆ°Æ¡ng", SubName = "Lesions/Anomalies", MinVal = 0, MaxVal = 0, Unit = "â€”", DefaultText = "KhÃ´ng cÃ³ tá»•n thÆ°Æ¡ng khu trÃº phÃ¡t hiá»‡n", IsTextParam = true });
+                list.Add(new TestParam { Name = "Mật độ/Hình ảnh", SubName = "Density/Visuals", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Bình thường ổn định", IsTextParam = true });
+                list.Add(new TestParam { Name = "Mô tả tổn thương", SubName = "Lesions/Anomalies", MinVal = 0, MaxVal = 0, Unit = "—", DefaultText = "Không có tổn thương khu trú phát hiện", IsTextParam = true });
             }
 
             return list;
@@ -1748,17 +1766,17 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private string GetInitials(string fullName)
         {
-            if (string.IsNullOrWhiteSpace(fullName)) return "â€”";
+            if (string.IsNullOrWhiteSpace(fullName)) return "—";
 
-            // Loáº¡i bá» khoáº£ng tráº¯ng thá»«a
+            // Loại bỏ khoảng trắng thừa
             var parts = fullName.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length >= 2)
             {
-                // Láº¥y chá»¯ cÃ¡i Ä‘áº§u cá»§a tá»« Ã¡p chÃ³t vÃ  tá»« cuá»‘i cÃ¹ng (VD: Nguyá»…n Thá»‹ Mai -> TM)
+                // Lấy chữ cái đầu của từ áp chót và từ cuối cùng (VD: Nguyễn Thị Mai -> TM)
                 return (parts[parts.Length - 2].Substring(0, 1) + parts[parts.Length - 1].Substring(0, 1)).ToUpper();
             }
-            // Náº¿u chá»‰ cÃ³ 1 tÃªn
+            // Nếu chỉ có 1 tên
             return fullName.Substring(0, Math.Min(2, fullName.Length)).ToUpper();
         }
 

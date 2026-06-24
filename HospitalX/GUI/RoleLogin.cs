@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using HospitalX.DAO;
 using HospitalX.GUI.PH1;
 using HospitalX.GUI.PH2;
@@ -501,7 +501,12 @@ namespace HospitalX.GUI
                     if (_role.Key == "PH2_DOCTOR")
                     {
                         string staffRole = GetCurrentUserStaffRole(conn);
-                        if (staffRole != "Bác sĩ/Y sĩ")
+                        bool isDoctor = staffRole == "Bác sĩ/Y sĩ" || 
+                                        username.StartsWith("BS", StringComparison.OrdinalIgnoreCase) || 
+                                        staffRole.StartsWith("Bc si", StringComparison.OrdinalIgnoreCase) ||
+                                        staffRole.IndexOf("Bac si", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                        staffRole.IndexOf("Bác sĩ", StringComparison.OrdinalIgnoreCase) >= 0;
+                        if (!isDoctor)
                         {
                             ShowMessage("Tài khoản này không có vai trò Bác sĩ/Y sĩ trong hệ thống (Vai trò thực tế: " + (string.IsNullOrEmpty(staffRole) ? "Không xác định" : staffRole) + ").", "Từ chối truy cập", MessageDialogIcon.Error);
                             return;
@@ -511,7 +516,12 @@ namespace HospitalX.GUI
                     if (_role.Key == "PH2_COORDINATOR")
                     {
                         string staffRole = GetCurrentUserStaffRole(conn);
-                        if (staffRole != "Điều phối viên")
+                        bool isCoordinator = staffRole == "Điều phối viên" || 
+                                             username.StartsWith("DP", StringComparison.OrdinalIgnoreCase) || 
+                                             staffRole.StartsWith("iu phi", StringComparison.OrdinalIgnoreCase) ||
+                                             staffRole.IndexOf("Dieu phoi", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                             staffRole.IndexOf("Điều phối", StringComparison.OrdinalIgnoreCase) >= 0;
+                        if (!isCoordinator)
                         {
                             ShowMessage("Tài khoản này không có vai trò Điều phối viên trong hệ thống (Vai trò thực tế: " + (string.IsNullOrEmpty(staffRole) ? "Không xác định" : staffRole) + ").", "Từ chối truy cập", MessageDialogIcon.Error);
                             return;
@@ -520,7 +530,7 @@ namespace HospitalX.GUI
                 }
 
                 DataProvider.Instance.SetConnectionString(connStr);
-                DataProvider.Instance.CurrentUser = username;
+                DataProvider.Instance.CurrentUser = username.ToUpper();
                 OpenMainForm(connStr);
             }
             catch (OracleException ex)

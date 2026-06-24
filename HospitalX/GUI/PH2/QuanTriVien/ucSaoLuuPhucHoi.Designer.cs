@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.QuanTriVien
+﻿namespace HospitalX.GUI.PH2.QuanTriVien
 {
     partial class ucSaoLuuPhucHoi
     {

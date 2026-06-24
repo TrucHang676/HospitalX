@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2
+﻿namespace HospitalX.GUI.PH2
 {
     partial class Main_DPV
     {

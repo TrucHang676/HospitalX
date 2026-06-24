@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace HospitalX
@@ -11,6 +11,10 @@ namespace HospitalX
         [STAThread]
         static void Main()
         {
+            // Set environment variables for Oracle Client / Managed ODP.NET to enforce UTF-8
+            Environment.SetEnvironmentVariable("NLS_LANG", ".AL32UTF8");
+            Environment.SetEnvironmentVariable("ORA_NCHAR_LITERAL_REPLACE", "TRUE");
+
             if (Environment.OSVersion.Version.Major >= 6) SetProcessDPIAware();
 
             Application.EnableVisualStyles();

@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.BenhNhan
+﻿namespace HospitalX.GUI.PH2.BenhNhan
 {
     partial class ucDichVuBN
     {

@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH1
+﻿namespace HospitalX.GUI.PH1
 {
     partial class ucUser
     {

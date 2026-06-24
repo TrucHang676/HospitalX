@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using HospitalX.GUI.PH2.DieuPhoiVien;
 using System;
 using System.Collections.Generic;

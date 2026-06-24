@@ -1,4 +1,4 @@
-namespace HospitalX.GUI
+﻿namespace HospitalX.GUI
 {
     partial class RoleLogin
     {

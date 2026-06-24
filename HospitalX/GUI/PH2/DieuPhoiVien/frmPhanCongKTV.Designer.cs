@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.DieuPhoiVien
+﻿namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
     partial class frmPhanCongKTV
     {

@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -147,6 +147,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             cboKhoa.Items.Add(new DepartmentItem { MaKhoa = "", TenKhoa = "Chưa chọn khoa" });
 
             cboDeptFilter.Items.Clear();
+            cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "", TenKhoa = "Tất cả các khoa" });
+            cboDeptFilter.Items.Add(new DepartmentItem { MaKhoa = "NONE", TenKhoa = "Chưa chỉ định khoa" });
             
             try
             {
@@ -238,9 +240,19 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             foreach (var item in _hsbaList)
             {
-                if (!string.IsNullOrEmpty(selectedDept) && item.MaKhoa != selectedDept)
+                if (selectedDept == "NONE")
                 {
-                    continue;
+                    if (!string.IsNullOrEmpty(item.MaKhoa))
+                    {
+                        continue;
+                    }
+                }
+                else if (!string.IsNullOrEmpty(selectedDept))
+                {
+                    if (item.MaKhoa != selectedDept)
+                    {
+                        continue;
+                    }
                 }
 
                 string bsDisplay = string.IsNullOrEmpty(item.MaBs) ? "Chưa chỉ định" : $"{item.TenBs} ({item.MaBs})";
@@ -556,7 +568,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             cboFacilityFilter.Visible = false;
 
-            cboDeptFilter.Width = 180; // Increased width to contain full department name
+            cboDeptFilter.Width = 200; // Increased width to contain full department name
             cboDeptFilter.Left = txtSearch.Left - cboDeptFilter.Width - gap;
             cboDeptFilter.Top = txtSearch.Top;
 

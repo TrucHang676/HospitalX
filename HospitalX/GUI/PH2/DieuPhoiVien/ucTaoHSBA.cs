@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using System;
 using System.Data;
 using System.Drawing;
@@ -92,7 +92,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             };
             cboKhoaDT.SelectedIndexChanged += (s, ev) =>
             {
-                SetSummaryText(lblSumKhoa, string.IsNullOrEmpty(_selectedDoctorCode) ? "Chưa có" : cboKhoaDT.Text);
+                SetSummaryText(lblSumKhoa, cboKhoaDT.SelectedItem == null ? "Chưa có" : cboKhoaDT.Text);
                 BuildDoctorCards();
             };
             txtChanDoan.TextChanged += (s, ev) =>
@@ -128,6 +128,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         private void InitComboBoxes()
         {
             cboKhoaDT.Items.Clear();
+            cboKhoaDT.Items.Add("Chưa chỉ định khoa");
             try
             {
                 DataTable dt = HospitalX.DAO.HsbaDAO.GetDepartments();
@@ -148,7 +149,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             }
 
             // Fallback if empty
-            if (cboKhoaDT.Items.Count == 0)
+            if (cboKhoaDT.Items.Count == 1)
             {
                 cboKhoaDT.Items.Add("Khoa tim mạch");
                 cboKhoaDT.Items.Add("Khoa tiêu hóa");
@@ -173,11 +174,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             pnlSteps.Controls.Clear();
 
             bool step1Done = pnlPatientFound.Visible;
-            bool step2Done = step1Done && !string.IsNullOrWhiteSpace(txtChanDoan.Text) 
-                                       && !string.IsNullOrWhiteSpace(txtDieuTri.Text) 
-                                       && !string.IsNullOrWhiteSpace(txtKetLuan.Text);
-            bool step3Done = step2Done && _selectedDoctorCard != null;
-            bool step4Done = step3Done && _step4Done;
+            bool step2Done = step1Done;
+            bool step3Done = step1Done;
+            bool step4Done = step1Done && _step4Done;
 
             bool[] done = { step1Done, step2Done, step3Done, step4Done };
             bool[] active = {
@@ -260,10 +259,24 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             _selectedDoctorName = "";
             SetSummaryText(lblSumBS, "Chưa có");
 
-            string currentDept = "Khoa tim mạch";
+            string currentDept = "Chưa chỉ định khoa";
             if (cboKhoaDT.SelectedItem != null)
             {
                 currentDept = cboKhoaDT.SelectedItem.ToString().Trim();
+            }
+
+            if (currentDept == "Chưa chỉ định khoa")
+            {
+                var lblNoDoctor = new Label();
+                lblNoDoctor.Text = "Vui lòng chọn một khoa điều trị để xem danh sách bác sĩ.";
+                lblNoDoctor.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
+                lblNoDoctor.ForeColor = Color.Gray;
+                lblNoDoctor.AutoSize = true;
+                lblNoDoctor.Location = new Point(20, 20);
+                pnlDoctorGrid.Controls.Add(lblNoDoctor);
+                BuildStepsIndicator();
+                AdjustLayout();
+                return;
             }
 
             var doctorsList = new System.Collections.Generic.List<dynamic>();
@@ -293,10 +306,16 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
             if (doctorsList.Count == 0)
             {
-                doctorsList.Add(new { Code = "BS-TM-001", Name = "BS. Trần Minh Khoa", Spec = currentDept, Status = "● Đang rảnh", IsFree = true, IsSelected = false });
-                doctorsList.Add(new { Code = "BS-TM-002", Name = "BS. Nguyễn Thị Hồng", Spec = currentDept, Status = "● Đang bận", IsFree = false, IsSelected = false });
-                doctorsList.Add(new { Code = "BS-TM-003", Name = "TS. Lê Đình Phước", Spec = currentDept, Status = "● Đang rảnh", IsFree = true, IsSelected = false });
-                doctorsList.Add(new { Code = "BS-TM-004", Name = "BS. Phạm Thu Hà", Spec = currentDept, Status = "● Đang bận", IsFree = false, IsSelected = false });
+                var lblNoDoctor = new Label();
+                lblNoDoctor.Text = "Không có bác sĩ nào thuộc chuyên khoa này tại cơ sở của bạn.";
+                lblNoDoctor.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
+                lblNoDoctor.ForeColor = Color.Gray;
+                lblNoDoctor.AutoSize = true;
+                lblNoDoctor.Location = new Point(20, 20);
+                pnlDoctorGrid.Controls.Add(lblNoDoctor);
+                BuildStepsIndicator();
+                AdjustLayout();
+                return;
             }
 
             int cardW = 435;
@@ -828,7 +847,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             SetSummaryText(lblSumBN, name);
             SetSummaryText(lblSumMaBN, code);
             SetSummaryText(lblSumNgayMo, dtpNgayMo.Value.ToString("dd/MM/yyyy"));
-            SetSummaryText(lblSumKhoa, "Chưa có");
+            SetSummaryText(lblSumKhoa, cboKhoaDT.Text);
             SetSummaryText(lblSumChanDoan, "Chưa có");
             SetSummaryText(lblSumDieuTri, "Chưa có");
             SetSummaryText(lblSumKetLuan, "Chưa có");
@@ -856,6 +875,10 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             BuildStepsIndicator();
 
             // Clear doctor selection
+            if (cboKhoaDT.Items.Count > 0)
+            {
+                cboKhoaDT.SelectedIndex = 0;
+            }
             SelectDoctorByCode("");
 
             // Clear summary
@@ -879,7 +902,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
         // =============================================
         private string MapKhoaToCode(string text)
         {
-            if (string.IsNullOrEmpty(text)) return "";
+            if (string.IsNullOrEmpty(text) || text == "Chưa chỉ định khoa") return "";
             string lower = text.ToLower();
             if (lower.Contains("tim mạch") || lower.Contains("ktm")) return "KTM";
             if (lower.Contains("thần kinh") || lower.Contains("ktk")) return "KTK";
@@ -896,38 +919,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private void CreateHSBA()
         {
-            // Validate required fields
-            bool valid = true;
-            string errorMsg = "Vui lòng điền đầy đủ thông tin bắt buộc:";
-
-            if (string.IsNullOrWhiteSpace(txtChanDoan.Text))
-            {
-                valid = false;
-                errorMsg += "\n- Chẩn đoán sơ bộ";
-                txtChanDoan.BorderColor = Color.FromArgb(253, 114, 114);
-            }
-            if (string.IsNullOrWhiteSpace(txtDieuTri.Text))
-            {
-                valid = false;
-                errorMsg += "\n- Hướng điều trị";
-                txtDieuTri.BorderColor = Color.FromArgb(253, 114, 114);
-            }
-            if (string.IsNullOrWhiteSpace(txtKetLuan.Text))
-            {
-                valid = false;
-                errorMsg += "\n- Kết luận";
-                txtKetLuan.BorderColor = Color.FromArgb(253, 114, 114);
-            }
-
             if (!pnlPatientFound.Visible)
             {
-                valid = false;
-                errorMsg += "\n- Chưa chọn bệnh nhân";
-            }
-
-            if (!valid)
-            {
-                ShowDialog("Thiếu thông tin", errorMsg, Guna.UI2.WinForms.MessageDialogIcon.Warning);
+                ShowDialog("Thiếu thông tin", "Vui lòng chọn bệnh nhân trước khi tạo hồ sơ bệnh án.", Guna.UI2.WinForms.MessageDialogIcon.Warning);
                 return;
             }
 
@@ -937,7 +931,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             string chanDoan = txtChanDoan.Text.Trim();
             string dieuTri = txtDieuTri.Text.Trim();
             string maBs = string.IsNullOrEmpty(_selectedDoctorCode) ? null : _selectedDoctorCode.Trim();
-            string maKhoa = string.IsNullOrEmpty(_selectedDoctorCode) ? null : MapKhoaToCode(cboKhoaDT.Text);
+            string maKhoa = cboKhoaDT.SelectedItem == null ? null : MapKhoaToCode(cboKhoaDT.Text);
             string ketLuan = txtKetLuan.Text.Trim();
 
             bool dbSuccess = false;

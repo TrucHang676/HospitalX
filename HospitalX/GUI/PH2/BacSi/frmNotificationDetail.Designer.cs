@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.BacSi
+﻿namespace HospitalX.GUI.PH2.BacSi
 {
     partial class frmNotificationDetail
     {

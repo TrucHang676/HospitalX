@@ -1,4 +1,4 @@
--- ========================================================
+﻿-- ========================================================
 -- THÔNG TIN CHUNG
 -- ========================================================
 
@@ -259,6 +259,7 @@ CREATE TABLE HSBA (
     MABS            VARCHAR2(10),
     MAKHOA          VARCHAR2(10),
     KETLUAN         NVARCHAR2(200),
+    COSO            NVARCHAR2(100),
 
     CONSTRAINT FK_HSBA_BENHNHAN
         FOREIGN KEY (MABN) REFERENCES BENHNHAN(MABN),
@@ -424,23 +425,26 @@ CONNECT BY LEVEL <= 100000;
 
 -- 100 hồ sơ bệnh án mẫu
 INSERT INTO HSBA (
-    MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN
+    MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO
 )
 SELECT
-    'HSBA' || LPAD(LEVEL, 5, '0'),
-    'BN' || LPAD(LEVEL, 6, '0'),
-    DATE '2026-05-01' + LEVEL,
-    N'Chẩn đoán ban đầu ' || TO_NCHAR(LEVEL),
-    N'Hướng điều trị ' || TO_NCHAR(LEVEL),
-    'BS' || LPAD(MOD(LEVEL - 1, 100) + 1, 4, '0'),
-    CASE MOD(LEVEL + FLOOR((LEVEL - 1) / 3), 3)
+    'HSBA' || LPAD(L.LVL, 5, '0'),
+    'BN' || LPAD(L.LVL, 6, '0'),
+    DATE '2026-05-01' + L.LVL,
+    N'Chẩn đoán ban đầu ' || TO_NCHAR(L.LVL),
+    N'Hướng điều trị ' || TO_NCHAR(L.LVL),
+    'BS' || LPAD(MOD(L.LVL - 1, 100) + 1, 4, '0'),
+    CASE MOD(L.LVL + FLOOR((L.LVL - 1) / 3), 3)
         WHEN 0 THEN 'KTH' --khoa tiêu hóa
         WHEN 1 THEN 'KTK' --khoa thần kinh
         ELSE 'KTM'  --khoa tim mạch
     END,
-    N'Đang theo dõi'
-FROM DUAL
-CONNECT BY LEVEL <= 100;
+    N'Đang theo dõi',
+    NV.COSO
+FROM (
+    SELECT LEVEL AS LVL FROM DUAL CONNECT BY LEVEL <= 100
+) L
+LEFT JOIN NHANVIEN NV ON NV.MANV = 'BS' || LPAD(MOD(L.LVL - 1, 100) + 1, 4, '0');
 
 
 -- 100 dịch vụ hỗ trợ chẩn đoán mẫu
@@ -497,35 +501,35 @@ COMMIT;
 
 -- Tại đây 
 -- Chèn 10 HSBA cho BS0001
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00101', 'BN000001', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Đau dạ dày cấp', N'Uống thuốc dạ dày', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00101', 'BN000001', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Đau dạ dày cấp', N'Uống thuốc dạ dày', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00102', 'BN000002', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Rối loạn tiêu hóa', N'Kháng sinh và men tiêu hóa', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00102', 'BN000002', TO_DATE('2026-06-02', 'YYYY-MM-DD'), N'Rối loạn tiêu hóa', N'Kháng sinh và men tiêu hóa', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00103', 'BN000003', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Trào ngược dạ dày', N'Uống thuốc kháng acid', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00103', 'BN000003', TO_DATE('2026-06-03', 'YYYY-MM-DD'), N'Trào ngược dạ dày', N'Uống thuốc kháng acid', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00104', 'BN000004', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Viêm đại tràng', N'Chế độ ăn kiêng và kháng sinh', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00104', 'BN000004', TO_DATE('2026-06-04', 'YYYY-MM-DD'), N'Viêm đại tràng', N'Chế độ ăn kiêng và kháng sinh', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00105', 'BN000005', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Đau bụng chưa rõ nguyên nhân', N'Theo dõi lâm sàng', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00105', 'BN000005', TO_DATE('2026-06-05', 'YYYY-MM-DD'), N'Đau bụng chưa rõ nguyên nhân', N'Theo dõi lâm sàng', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00106', 'BN000006', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ngộ độc thực phẩm', N'Truyền dịch', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00106', 'BN000006', TO_DATE('2026-06-06', 'YYYY-MM-DD'), N'Ngộ độc thực phẩm', N'Truyền dịch', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00107', 'BN000007', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Viêm dạ dày mãn tính', N'Điều trị kết hợp', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00107', 'BN000007', TO_DATE('2026-06-07', 'YYYY-MM-DD'), N'Viêm dạ dày mãn tính', N'Điều trị kết hợp', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00108', 'BN000008', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Loét dạ dày tá tràng', N'Phác đồ diệt HP', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00108', 'BN000008', TO_DATE('2026-06-08', 'YYYY-MM-DD'), N'Loét dạ dày tá tràng', N'Phác đồ diệt HP', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00109', 'BN000009', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Hội chứng ruột kích thích', N'Điều chỉnh lối sống', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00109', 'BN000009', TO_DATE('2026-06-09', 'YYYY-MM-DD'), N'Hội chứng ruột kích thích', N'Điều chỉnh lối sống', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
-INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
-VALUES ('HSBA00110', 'BN000010', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Xuất huyết tiêu hóa nhẹ', N'Nội soi can thiệp', 'BS0001', 'KTH', N'Đang theo dõi');
+INSERT INTO HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO)
+VALUES ('HSBA00110', 'BN000010', TO_DATE('2026-06-10', 'YYYY-MM-DD'), N'Xuất huyết tiêu hóa nhẹ', N'Nội soi can thiệp', 'BS0001', 'KTH', N'Đang theo dõi', N'Hồ Chí Minh');
 
 -- 2 đơn thuốc cho mỗi HSBA từ HSBA00101 đến HSBA00110
 INSERT INTO DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG) VALUES ('HSBA00101', TO_DATE('2026-06-01', 'YYYY-MM-DD'), N'Paracetamol 500mg', N'Ngày 2 lần, mỗi lần 1 viên');
@@ -1154,16 +1158,12 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
         END IF;
 
         IF IS_DPV THEN
-            -- Điều phối viên chỉ xem được HSBA có bác sĩ làm cùng chi nhánh/cơ sở (hoặc chưa chỉ định bác sĩ)
-            RETURN 'MABS IS NULL OR MABS IN (
-                SELECT NV.MANV
-                FROM ADMINHOS.NHANVIEN NV
-                WHERE NV.COSO = (
-                    SELECT DP.COSO
-                    FROM ADMINHOS.NHANVIEN DP
-                    WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
-                      AND DP.VAITRO = N''Điều phối viên''
-                )
+            -- Điều phối viên chỉ xem được HSBA thuộc cùng chi nhánh/cơ sở của mình
+            RETURN 'COSO = (
+                SELECT DP.COSO
+                FROM ADMINHOS.NHANVIEN DP
+                WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
+                  AND DP.VAITRO = N''Điều phối viên''
             )';
         END IF;
 
@@ -1177,16 +1177,12 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
     ) RETURN VARCHAR2 AS
     BEGIN
         IF IS_DPV THEN
-            -- Chỉ cho phép cập nhật HSBA mà bác sĩ làm cùng chi nhánh/cơ sở hoặc chưa chỉ định bác sĩ
-            RETURN 'MABS IS NULL OR MABS IN (
-                SELECT NV.MANV
-                FROM ADMINHOS.NHANVIEN NV
-                WHERE NV.COSO = (
-                    SELECT DP.COSO
-                    FROM ADMINHOS.NHANVIEN DP
-                    WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
-                      AND DP.VAITRO = N''Điều phối viên''
-                )
+            -- Chỉ cho phép cập nhật HSBA thuộc cùng chi nhánh/cơ sở của mình
+            RETURN 'COSO = (
+                SELECT DP.COSO
+                FROM ADMINHOS.NHANVIEN DP
+                WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
+                  AND DP.VAITRO = N''Điều phối viên''
             )';
         END IF;
 
@@ -1200,9 +1196,17 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
     ) RETURN VARCHAR2 AS
     BEGIN
         IF IS_DPV THEN
-            -- Điều phối viên được xem toàn bộ HSBA_DV
-            -- và cập nhật MAKTV để điều phối KTV
-            RETURN '1 = 1';
+            -- Điều phối viên chỉ được xem HSBA_DV có KTV thuộc cùng cơ sở (hoặc chưa phân công KTV)
+            RETURN 'MAKTV IS NULL OR MAKTV IN (
+                SELECT NV.MANV
+                FROM ADMINHOS.NHANVIEN NV
+                WHERE NV.COSO = (
+                    SELECT DP.COSO
+                    FROM ADMINHOS.NHANVIEN DP
+                    WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
+                      AND DP.VAITRO = N''Điều phối viên''
+                )
+            )';
         END IF;
 
         RETURN NULL;
@@ -1799,7 +1803,7 @@ SET SERVEROUTPUT ON;
 -- 3. Cấp quyền cần thiết cho ADMINHOS
 -- =====================================================================
 
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -1939,7 +1943,7 @@ BEGIN
 END;
 /
 
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
 -- Cấp quyền dùng các package OLS cho ADMINHOS
@@ -2027,7 +2031,7 @@ END;
 -- PHẦN 3. QUAY LẠI SYSDBA
 -- Đảm bảo role THONGBAO_OLS_DBA luôn tồn tại và cấp cho ADMINHOS
 -- =====================================================================
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
 DECLARE
@@ -2497,7 +2501,7 @@ END;
 -- VẬN DỤNG CƠ CHẾ KIỂM TOÁN
 -- ==========================================================
 
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -2507,7 +2511,7 @@ SET SERVEROUTPUT ON;
 -- Kiểm tra chế độ audit hiện tại
 SHOW PARAMETER audit_trail;
 
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -2649,7 +2653,7 @@ NOAUDIT EXECUTE ON ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA;
 NOAUDIT EXECUTE ON ADMINHOS.FN_DEM_DONTHUOC;
 NOAUDIT INSERT, UPDATE, DELETE ON ADMINHOS.HSBA_DV;
 
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -3183,7 +3187,7 @@ END;
 -- Kỳ vọng: LOG_MODE = ARCHIVELOG, DB_RECOVERY_FILE_DEST đã cấu hình
 -- ==========================================================
 
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 
 PROMPT [A.1.1] KIEM TRA ARCHIVELOG MODE - Ky vong: LOG_MODE = ARCHIVELOG
 SELECT
@@ -3319,7 +3323,7 @@ RMAN> ALTER DATABASE OPEN RESETLOGS;
 -- Lưu ý: Thư mục D:\DATAPUMP_BACKUP phải được tạo thủ công trên OS trước
 -- ==========================================================
 
-CONNECT SYS@localhost:1521/PDBHOSX AS SYSDBA;
+CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -4040,11 +4044,22 @@ CREATE OR REPLACE PROCEDURE SP_INSERT_HSBA (
 )
 AUTHID DEFINER
 AS
+    v_coso NVARCHAR2(100);
 BEGIN
+    -- Lấy cơ sở của DPV (hoặc người thực hiện)
+    BEGIN
+        SELECT COSO INTO v_coso
+        FROM ADMINHOS.NHANVIEN
+        WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER');
+    EXCEPTION
+        WHEN OTHERS THEN
+            v_coso := NULL;
+    END;
+
     INSERT INTO ADMINHOS.HSBA (
-        MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN
+        MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN, COSO
     ) VALUES (
-        p_mahsba, p_mabn, p_ngay, p_chandoan, p_dieutri, p_mabs, p_makhoa, p_ketluan
+        p_mahsba, p_mabn, p_ngay, p_chandoan, p_dieutri, p_mabs, p_makhoa, p_ketluan, v_coso
     );
     COMMIT;
 END;
@@ -4100,7 +4115,11 @@ BEGIN
         BS.HOTEN AS TEN_BACSI,
         BS.CHUYENKHOA AS CHUYENKHOA_BACSI,
         HS.KETLUAN,
-        CASE WHEN HS.MABS IS NULL OR BS.MANV IS NOT NULL THEN 1 ELSE 0 END AS CUNG_CO_SO
+        CASE WHEN HS.COSO IS NULL OR HS.COSO = (
+            SELECT DP.COSO 
+            FROM ADMINHOS.NHANVIEN DP 
+            WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
+        ) THEN 1 ELSE 0 END AS CUNG_CO_SO
     FROM ADMINHOS.HSBA HS
     LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
     LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI BS ON HS.MABS = BS.MANV AND TRIM(BS.VAITRO) = N'Bác sĩ/Y sĩ'
@@ -4291,7 +4310,7 @@ BEGIN
     FROM ADMINHOS.HSBA HS
     LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
     LEFT JOIN ADMINHOS.NHANVIEN NV ON HS.MABS = NV.MANV
-    WHERE HS.MABN = p_mabn
+    WHERE HS.MABN = UPPER(p_mabn)
     ORDER BY HS.NGAY DESC;
 END;
 /
@@ -5051,3 +5070,5 @@ PROMPT
 PROMPT ================================================
 PROMPT  SETUP BACKUP/RESTORE HOÀN TẤT THÀNH CÔNG!
 PROMPT ================================================
+EXIT;
+

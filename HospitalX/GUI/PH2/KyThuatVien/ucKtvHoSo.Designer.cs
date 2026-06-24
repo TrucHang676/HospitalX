@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.KyThuatVien
+﻿namespace HospitalX.GUI.PH2.KyThuatVien
 {
     partial class ucKtvHoSo
     {

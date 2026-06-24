@@ -1,4 +1,4 @@
-using Guna.UI2.WinForms;
+﻿using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -520,7 +520,7 @@ namespace HospitalX.GUI.PH2.KyThuatVien
 
         private int StatusRank(string status)
         {
-            if (status == "Chá»  thá»±c hiá»‡n" || status == "Chờ thực hiện") return 0;
+            if (status == "Chờ thực hiện") return 0;
             return 1;
         }
 

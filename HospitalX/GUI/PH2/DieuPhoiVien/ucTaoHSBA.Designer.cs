@@ -1,4 +1,4 @@
-namespace HospitalX.GUI.PH2.DieuPhoiVien
+﻿namespace HospitalX.GUI.PH2.DieuPhoiVien
 {
     partial class ucTaoHSBA
     {
@@ -369,7 +369,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblChanDoan.Name = "lblChanDoan";
             this.lblChanDoan.Size = new System.Drawing.Size(125, 15);
             this.lblChanDoan.TabIndex = 5;
-            this.lblChanDoan.Text = "CHẨN ĐOÁN SƠ BỘ *";
+            this.lblChanDoan.Text = "CHẨN ĐOÁN SƠ BỘ";
             // 
             // txtChanDoan
             // 
@@ -405,7 +405,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblDieuTri.Name = "lblDieuTri";
             this.lblDieuTri.Size = new System.Drawing.Size(65, 15);
             this.lblDieuTri.TabIndex = 7;
-            this.lblDieuTri.Text = "ĐIỀU TRỊ *";
+            this.lblDieuTri.Text = "ĐIỀU TRỊ";
             // 
             // txtDieuTri
             // 
@@ -441,7 +441,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKetLuan.Name = "lblKetLuan";
             this.lblKetLuan.Size = new System.Drawing.Size(71, 15);
             this.lblKetLuan.TabIndex = 9;
-            this.lblKetLuan.Text = "KẾT LUẬN *";
+            this.lblKetLuan.Text = "KẾT LUẬN";
             // 
             // txtKetLuan
             // 
@@ -508,7 +508,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKhoaDT.Name = "lblKhoaDT";
             this.lblKhoaDT.Size = new System.Drawing.Size(102, 15);
             this.lblKhoaDT.TabIndex = 1;
-            this.lblKhoaDT.Text = "KHOA ĐIỀU TRỊ *";
+            this.lblKhoaDT.Text = "KHOA ĐIỀU TRỊ";
             // 
             // cboKhoaDT
             // 
@@ -542,7 +542,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblChonBS.Name = "lblChonBS";
             this.lblChonBS.Size = new System.Drawing.Size(159, 15);
             this.lblChonBS.TabIndex = 3;
-            this.lblChonBS.Text = "CHỌN BÁC SĨ PHỤ TRÁCH *";
+            this.lblChonBS.Text = "CHỌN BÁC SĨ PHỤ TRÁCH";
             // 
             // pnlDoctorGrid
             // 
