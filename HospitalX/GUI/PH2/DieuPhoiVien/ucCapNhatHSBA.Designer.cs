@@ -34,6 +34,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.colNgay = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colKhoa = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colBacSi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cboFacilityFilter = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.cboDeptFilter = new Guna.UI2.WinForms.Guna2ComboBox();
             this.pnlDetailCard = new Guna.UI2.WinForms.Guna2Panel();
             this.lblDetailTitle = new System.Windows.Forms.Label();
             this.lblDetailSub = new System.Windows.Forms.Label();
@@ -54,10 +56,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblBacSiLabel = new System.Windows.Forms.Label();
             this.cboBacSi = new Guna.UI2.WinForms.Guna2ComboBox();
             this.btnUpdate = new Guna.UI2.WinForms.Guna2Button();
-            this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
-            this.cboFacilityFilter = new Guna.UI2.WinForms.Guna2ComboBox();
             this.lblWarning = new System.Windows.Forms.Label();
-            this.cboDeptFilter = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.guna2MessageDialog1 = new Guna.UI2.WinForms.Guna2MessageDialog();
             this.pnlScroll.SuspendLayout();
             this.pnlListCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHsba)).BeginInit();
@@ -102,7 +102,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblListTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.lblListTitle.Location = new System.Drawing.Point(20, 20);
             this.lblListTitle.Name = "lblListTitle";
-            this.lblListTitle.Size = new System.Drawing.Size(325, 28);
+            this.lblListTitle.Size = new System.Drawing.Size(254, 28);
             this.lblListTitle.TabIndex = 0;
             this.lblListTitle.Text = "HỒ SƠ BỆNH ÁN ĐÃ TẠO";
             // 
@@ -113,7 +113,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblListSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblListSub.Location = new System.Drawing.Point(20, 48);
             this.lblListSub.Name = "lblListSub";
-            this.lblListSub.Size = new System.Drawing.Size(180, 20);
+            this.lblListSub.Size = new System.Drawing.Size(170, 20);
             this.lblListSub.TabIndex = 1;
             this.lblListSub.Text = "Hiển thị 0 hồ sơ bệnh án";
             // 
@@ -132,8 +132,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
             this.txtSearch.Location = new System.Drawing.Point(330, 16);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PasswordChar = '\0';
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.Silver;
             this.txtSearch.PlaceholderText = "Tìm theo Mã HSBA, Tên bệnh nhân...";
             this.txtSearch.SelectedText = "";
@@ -147,10 +147,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.dgvHsba.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
             this.dgvHsba.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvHsba.BackgroundColor = System.Drawing.Color.White;
-            this.dgvHsba.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvHsba.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.dgvHsba.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(248)))));
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
@@ -181,8 +178,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.dgvHsba.Name = "dgvHsba";
             this.dgvHsba.ReadOnly = true;
             this.dgvHsba.RowHeadersVisible = false;
+            this.dgvHsba.RowHeadersWidth = 51;
             this.dgvHsba.RowTemplate.Height = 48;
-            this.dgvHsba.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvHsba.Size = new System.Drawing.Size(690, 650);
             this.dgvHsba.TabIndex = 3;
             this.dgvHsba.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(251)))), ((int)(((byte)(250)))));
@@ -210,44 +207,78 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             // colMaHSBA
             // 
             this.colMaHSBA.HeaderText = "MÃ HSBA";
+            this.colMaHSBA.MinimumWidth = 6;
             this.colMaHSBA.Name = "colMaHSBA";
             this.colMaHSBA.ReadOnly = true;
-            this.colMaHSBA.Width = 100;
             // 
             // colMaBN
             // 
             this.colMaBN.HeaderText = "MÃ BN";
+            this.colMaBN.MinimumWidth = 6;
             this.colMaBN.Name = "colMaBN";
             this.colMaBN.ReadOnly = true;
-            this.colMaBN.Width = 90;
             // 
             // colTenBN
             // 
             this.colTenBN.HeaderText = "TÊN BỆNH NHÂN";
+            this.colTenBN.MinimumWidth = 6;
             this.colTenBN.Name = "colTenBN";
             this.colTenBN.ReadOnly = true;
-            this.colTenBN.Width = 140;
             // 
             // colNgay
             // 
             this.colNgay.HeaderText = "NGÀY TẠO";
+            this.colNgay.MinimumWidth = 6;
             this.colNgay.Name = "colNgay";
             this.colNgay.ReadOnly = true;
-            this.colNgay.Width = 100;
             // 
             // colKhoa
             // 
             this.colKhoa.HeaderText = "KHOA";
+            this.colKhoa.MinimumWidth = 6;
             this.colKhoa.Name = "colKhoa";
             this.colKhoa.ReadOnly = true;
-            this.colKhoa.Width = 110;
             // 
             // colBacSi
             // 
             this.colBacSi.HeaderText = "BÁC SĨ PHỤ TRÁCH";
+            this.colBacSi.MinimumWidth = 6;
             this.colBacSi.Name = "colBacSi";
             this.colBacSi.ReadOnly = true;
-            this.colBacSi.Width = 150;
+            // 
+            // cboFacilityFilter
+            // 
+            this.cboFacilityFilter.BackColor = System.Drawing.Color.Transparent;
+            this.cboFacilityFilter.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cboFacilityFilter.BorderRadius = 8;
+            this.cboFacilityFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboFacilityFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboFacilityFilter.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboFacilityFilter.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboFacilityFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cboFacilityFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            this.cboFacilityFilter.ItemHeight = 30;
+            this.cboFacilityFilter.Location = new System.Drawing.Point(154, 16);
+            this.cboFacilityFilter.Name = "cboFacilityFilter";
+            this.cboFacilityFilter.Size = new System.Drawing.Size(170, 36);
+            this.cboFacilityFilter.TabIndex = 4;
+            // 
+            // cboDeptFilter
+            // 
+            this.cboDeptFilter.BackColor = System.Drawing.Color.Transparent;
+            this.cboDeptFilter.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
+            this.cboDeptFilter.BorderRadius = 8;
+            this.cboDeptFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cboDeptFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboDeptFilter.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboDeptFilter.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
+            this.cboDeptFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cboDeptFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            this.cboDeptFilter.ItemHeight = 30;
+            this.cboDeptFilter.Location = new System.Drawing.Point(330, 16);
+            this.cboDeptFilter.Name = "cboDeptFilter";
+            this.cboDeptFilter.Size = new System.Drawing.Size(150, 36);
+            this.cboDeptFilter.TabIndex = 5;
             // 
             // pnlDetailCard
             // 
@@ -288,7 +319,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblDetailTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(10)))), ((int)(((byte)(42)))), ((int)(((byte)(64)))));
             this.lblDetailTitle.Location = new System.Drawing.Point(20, 20);
             this.lblDetailTitle.Name = "lblDetailTitle";
-            this.lblDetailTitle.Size = new System.Drawing.Size(222, 28);
+            this.lblDetailTitle.Size = new System.Drawing.Size(199, 28);
             this.lblDetailTitle.TabIndex = 0;
             this.lblDetailTitle.Text = "CHI TIẾT CẬP NHẬT";
             // 
@@ -299,7 +330,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblDetailSub.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblDetailSub.Location = new System.Drawing.Point(20, 48);
             this.lblDetailSub.Name = "lblDetailSub";
-            this.lblDetailSub.Size = new System.Drawing.Size(239, 20);
+            this.lblDetailSub.Size = new System.Drawing.Size(233, 20);
             this.lblDetailSub.TabIndex = 1;
             this.lblDetailSub.Text = "Cập nhật Khoa và Bác sĩ phụ trách";
             // 
@@ -310,7 +341,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblMaHSBALabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblMaHSBALabel.Location = new System.Drawing.Point(20, 85);
             this.lblMaHSBALabel.Name = "lblMaHSBALabel";
-            this.lblMaHSBALabel.Size = new System.Drawing.Size(76, 20);
+            this.lblMaHSBALabel.Size = new System.Drawing.Size(78, 20);
             this.lblMaHSBALabel.TabIndex = 2;
             this.lblMaHSBALabel.Text = "MÃ HSBA";
             // 
@@ -328,8 +359,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtMaHSBA.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.txtMaHSBA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
             this.txtMaHSBA.Location = new System.Drawing.Point(20, 108);
+            this.txtMaHSBA.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtMaHSBA.Name = "txtMaHSBA";
-            this.txtMaHSBA.PasswordChar = '\0';
             this.txtMaHSBA.PlaceholderText = "";
             this.txtMaHSBA.SelectedText = "";
             this.txtMaHSBA.Size = new System.Drawing.Size(170, 36);
@@ -342,7 +373,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblTenBNLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblTenBNLabel.Location = new System.Drawing.Point(205, 85);
             this.lblTenBNLabel.Name = "lblTenBNLabel";
-            this.lblTenBNLabel.Size = new System.Drawing.Size(96, 20);
+            this.lblTenBNLabel.Size = new System.Drawing.Size(100, 20);
             this.lblTenBNLabel.TabIndex = 4;
             this.lblTenBNLabel.Text = "BỆNH NHÂN";
             // 
@@ -360,8 +391,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtTenBN.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.txtTenBN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
             this.txtTenBN.Location = new System.Drawing.Point(205, 108);
+            this.txtTenBN.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtTenBN.Name = "txtTenBN";
-            this.txtTenBN.PasswordChar = '\0';
             this.txtTenBN.PlaceholderText = "";
             this.txtTenBN.SelectedText = "";
             this.txtTenBN.Size = new System.Drawing.Size(185, 36);
@@ -374,7 +405,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblNgayTaoLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblNgayTaoLabel.Location = new System.Drawing.Point(20, 155);
             this.lblNgayTaoLabel.Name = "lblNgayTaoLabel";
-            this.lblNgayTaoLabel.Size = new System.Drawing.Size(89, 20);
+            this.lblNgayTaoLabel.Size = new System.Drawing.Size(86, 20);
             this.lblNgayTaoLabel.TabIndex = 6;
             this.lblNgayTaoLabel.Text = "NGÀY TẠO";
             // 
@@ -392,8 +423,8 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtNgayTao.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.txtNgayTao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
             this.txtNgayTao.Location = new System.Drawing.Point(20, 178);
+            this.txtNgayTao.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtNgayTao.Name = "txtNgayTao";
-            this.txtNgayTao.PasswordChar = '\0';
             this.txtNgayTao.PlaceholderText = "";
             this.txtNgayTao.SelectedText = "";
             this.txtNgayTao.Size = new System.Drawing.Size(370, 36);
@@ -406,7 +437,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblChanDoanLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblChanDoanLabel.Location = new System.Drawing.Point(20, 225);
             this.lblChanDoanLabel.Name = "lblChanDoanLabel";
-            this.lblChanDoanLabel.Size = new System.Drawing.Size(104, 20);
+            this.lblChanDoanLabel.Size = new System.Drawing.Size(101, 20);
             this.lblChanDoanLabel.TabIndex = 8;
             this.lblChanDoanLabel.Text = "CHẨN ĐOÁN";
             // 
@@ -424,9 +455,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtChanDoan.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.txtChanDoan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
             this.txtChanDoan.Location = new System.Drawing.Point(20, 248);
+            this.txtChanDoan.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtChanDoan.Multiline = true;
             this.txtChanDoan.Name = "txtChanDoan";
-            this.txtChanDoan.PasswordChar = '\0';
             this.txtChanDoan.PlaceholderText = "";
             this.txtChanDoan.SelectedText = "";
             this.txtChanDoan.Size = new System.Drawing.Size(370, 50);
@@ -439,7 +470,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblDieuTriLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblDieuTriLabel.Location = new System.Drawing.Point(20, 305);
             this.lblDieuTriLabel.Name = "lblDieuTriLabel";
-            this.lblDieuTriLabel.Size = new System.Drawing.Size(76, 20);
+            this.lblDieuTriLabel.Size = new System.Drawing.Size(72, 20);
             this.lblDieuTriLabel.TabIndex = 10;
             this.lblDieuTriLabel.Text = "ĐIỀU TRỊ";
             // 
@@ -457,9 +488,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtDieuTri.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.txtDieuTri.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
             this.txtDieuTri.Location = new System.Drawing.Point(20, 328);
+            this.txtDieuTri.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtDieuTri.Multiline = true;
             this.txtDieuTri.Name = "txtDieuTri";
-            this.txtDieuTri.PasswordChar = '\0';
             this.txtDieuTri.PlaceholderText = "";
             this.txtDieuTri.SelectedText = "";
             this.txtDieuTri.Size = new System.Drawing.Size(370, 50);
@@ -472,7 +503,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKetLuanLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblKetLuanLabel.Location = new System.Drawing.Point(20, 385);
             this.lblKetLuanLabel.Name = "lblKetLuanLabel";
-            this.lblKetLuanLabel.Size = new System.Drawing.Size(81, 20);
+            this.lblKetLuanLabel.Size = new System.Drawing.Size(82, 20);
             this.lblKetLuanLabel.TabIndex = 12;
             this.lblKetLuanLabel.Text = "KẾT LUÂN";
             // 
@@ -490,9 +521,9 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.txtKetLuan.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.txtKetLuan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(46)))), ((int)(((byte)(39)))));
             this.txtKetLuan.Location = new System.Drawing.Point(20, 408);
+            this.txtKetLuan.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtKetLuan.Multiline = true;
             this.txtKetLuan.Name = "txtKetLuan";
-            this.txtKetLuan.PasswordChar = '\0';
             this.txtKetLuan.PlaceholderText = "";
             this.txtKetLuan.SelectedText = "";
             this.txtKetLuan.Size = new System.Drawing.Size(370, 50);
@@ -505,7 +536,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblKhoaLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblKhoaLabel.Location = new System.Drawing.Point(20, 465);
             this.lblKhoaLabel.Name = "lblKhoaLabel";
-            this.lblKhoaLabel.Size = new System.Drawing.Size(126, 20);
+            this.lblKhoaLabel.Size = new System.Drawing.Size(141, 20);
             this.lblKhoaLabel.TabIndex = 14;
             this.lblKhoaLabel.Text = "KHOA PHỤ TRÁCH";
             // 
@@ -533,7 +564,7 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.lblBacSiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(137)))));
             this.lblBacSiLabel.Location = new System.Drawing.Point(20, 535);
             this.lblBacSiLabel.Name = "lblBacSiLabel";
-            this.lblBacSiLabel.Size = new System.Drawing.Size(142, 20);
+            this.lblBacSiLabel.Size = new System.Drawing.Size(145, 20);
             this.lblBacSiLabel.TabIndex = 16;
             this.lblBacSiLabel.Text = "BÁC SĨ PHỤ TRÁCH";
             // 
@@ -568,6 +599,18 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.btnUpdate.TabIndex = 18;
             this.btnUpdate.Text = "CẬP NHẬT HỒ SƠ";
             // 
+            // lblWarning
+            // 
+            this.lblWarning.AutoSize = true;
+            this.lblWarning.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
+            this.lblWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.lblWarning.Location = new System.Drawing.Point(20, 620);
+            this.lblWarning.Name = "lblWarning";
+            this.lblWarning.Size = new System.Drawing.Size(358, 20);
+            this.lblWarning.TabIndex = 19;
+            this.lblWarning.Text = "⚠️ Chỉ được chỉnh sửa hồ sơ thuộc cơ sở của mình.";
+            this.lblWarning.Visible = false;
+            // 
             // guna2MessageDialog1
             // 
             this.guna2MessageDialog1.Buttons = Guna.UI2.WinForms.MessageDialogButtons.OK;
@@ -576,52 +619,6 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
             this.guna2MessageDialog1.Parent = null;
             this.guna2MessageDialog1.Style = Guna.UI2.WinForms.MessageDialogStyle.Light;
             this.guna2MessageDialog1.Text = null;
-            // 
-            // cboFacilityFilter
-            // 
-            this.cboFacilityFilter.BackColor = System.Drawing.Color.Transparent;
-            this.cboFacilityFilter.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.cboFacilityFilter.BorderRadius = 8;
-            this.cboFacilityFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboFacilityFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboFacilityFilter.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.cboFacilityFilter.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.cboFacilityFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cboFacilityFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
-            this.cboFacilityFilter.ItemHeight = 30;
-            this.cboFacilityFilter.Location = new System.Drawing.Point(150, 16);
-            this.cboFacilityFilter.Name = "cboFacilityFilter";
-            this.cboFacilityFilter.Size = new System.Drawing.Size(170, 36);
-            this.cboFacilityFilter.TabIndex = 4;
-            // 
-            // lblWarning
-            // 
-            this.lblWarning.AutoSize = true;
-            this.lblWarning.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.lblWarning.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
-            this.lblWarning.Location = new System.Drawing.Point(20, 620);
-            this.lblWarning.Name = "lblWarning";
-            this.lblWarning.Size = new System.Drawing.Size(350, 20);
-            this.lblWarning.TabIndex = 19;
-            this.lblWarning.Text = "⚠️ Chỉ được chỉnh sửa hồ sơ thuộc cơ sở của mình.";
-            this.lblWarning.Visible = false;
-            // 
-            // cboDeptFilter
-            // 
-            this.cboDeptFilter.BackColor = System.Drawing.Color.Transparent;
-            this.cboDeptFilter.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(232)))), ((int)(((byte)(226)))));
-            this.cboDeptFilter.BorderRadius = 8;
-            this.cboDeptFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboDeptFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboDeptFilter.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.cboDeptFilter.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(110)))), ((int)(((byte)(86)))));
-            this.cboDeptFilter.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.cboDeptFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
-            this.cboDeptFilter.ItemHeight = 30;
-            this.cboDeptFilter.Location = new System.Drawing.Point(330, 16);
-            this.cboDeptFilter.Name = "cboDeptFilter";
-            this.cboDeptFilter.Size = new System.Drawing.Size(150, 36);
-            this.cboDeptFilter.TabIndex = 5;
             // 
             // ucCapNhatHSBA
             // 

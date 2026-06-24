@@ -1168,12 +1168,11 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
         END IF;
 
         IF IS_DPV THEN
-            -- Điều phối viên chỉ xem được HSBA thuộc cùng chi nhánh/cơ sở của mình
+            -- Điều phối viên chỉ xem được HSBA thuộc cùng chi nhánh/cơ sở của mình (qua view VW_NHANVIEN_SELF)
             RETURN 'COSO = (
                 SELECT DP.COSO
-                FROM ADMINHOS.NHANVIEN DP
-                WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
-                  AND DP.VAITRO = N''Điều phối viên''
+                FROM ADMINHOS.VW_NHANVIEN_SELF DP
+                WHERE DP.VAITRO = N''Điều phối viên''
             )';
         END IF;
 
@@ -1187,12 +1186,11 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
     ) RETURN VARCHAR2 AS
     BEGIN
         IF IS_DPV THEN
-            -- Chỉ cho phép cập nhật HSBA thuộc cùng chi nhánh/cơ sở của mình
+            -- Chỉ cho phép cập nhật HSBA thuộc cùng chi nhánh/cơ sở của mình (qua view VW_NHANVIEN_SELF)
             RETURN 'COSO = (
                 SELECT DP.COSO
-                FROM ADMINHOS.NHANVIEN DP
-                WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
-                  AND DP.VAITRO = N''Điều phối viên''
+                FROM ADMINHOS.VW_NHANVIEN_SELF DP
+                WHERE DP.VAITRO = N''Điều phối viên''
             )';
         END IF;
 
@@ -1206,16 +1204,9 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
     ) RETURN VARCHAR2 AS
     BEGIN
         IF IS_DPV THEN
-            -- Điều phối viên chỉ được xem HSBA_DV có KTV thuộc cùng cơ sở (hoặc chưa phân công KTV)
+            -- Điều phối viên chỉ được xem HSBA_DV có KTV thuộc cùng cơ sở (truy xuất qua view VW_NHANVIEN_DIEUPHOI)
             RETURN 'MAKTV IS NULL OR MAKTV IN (
-                SELECT NV.MANV
-                FROM ADMINHOS.NHANVIEN NV
-                WHERE NV.COSO = (
-                    SELECT DP.COSO
-                    FROM ADMINHOS.NHANVIEN DP
-                    WHERE DP.MANV = SYS_CONTEXT(''USERENV'', ''SESSION_USER'')
-                      AND DP.VAITRO = N''Điều phối viên''
-                )
+                SELECT MANV FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI
             )';
         END IF;
 
@@ -1361,7 +1352,7 @@ BEGIN
         policy_name     => 'VPD_YC1C3_HSBA_SEL_DPV',
         function_schema => 'ADMINHOS',
         policy_function => 'PKG_VPD_YC1C3.FN_HSBA_SEL_DPV',
-        statement_types => 'SELECT, INSERT',
+        statement_types => 'SELECT',
         update_check    => TRUE,
         enable          => TRUE
     );
