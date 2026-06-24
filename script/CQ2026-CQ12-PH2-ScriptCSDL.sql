@@ -1,4 +1,4 @@
-﻿-- ========================================================
+-- ========================================================
 -- THÔNG TIN CHUNG
 -- ========================================================
 
@@ -25,6 +25,16 @@
 
 SET SERVEROUTPUT ON;
 SET SQLBLANKLINES ON;
+SET VERIFY OFF
+
+-- =====================================================================
+-- Nhap mat khau cua SYS MOT LAN. Cac buoc "CONNECT SYS ... AS SYSDBA"
+-- ben duoi se tu dung lai gia tri nay -> chay het script trong 1 lan,
+-- khong bi loi ORA-01017 do mat khau SYS khac '123'.
+-- (Mat khau cac tai khoan khac nhu adminHos do CHINH script tao = "123".)
+-- =====================================================================
+SET DEFINE ON
+ACCEPT SYS_PWD CHAR PROMPT 'Nhap mat khau cua SYS (de ket noi lai AS SYSDBA): ' HIDE
 
 -- Chuyển sang PDB của dự án
 SHOW CON_NAME;
@@ -1803,7 +1813,9 @@ SET SERVEROUTPUT ON;
 -- 3. Cấp quyền cần thiết cho ADMINHOS
 -- =====================================================================
 
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -1943,7 +1955,9 @@ BEGIN
 END;
 /
 
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
 -- Cấp quyền dùng các package OLS cho ADMINHOS
@@ -2031,7 +2045,9 @@ END;
 -- PHẦN 3. QUAY LẠI SYSDBA
 -- Đảm bảo role THONGBAO_OLS_DBA luôn tồn tại và cấp cho ADMINHOS
 -- =====================================================================
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
 DECLARE
@@ -2501,7 +2517,9 @@ END;
 -- VẬN DỤNG CƠ CHẾ KIỂM TOÁN
 -- ==========================================================
 
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -2511,7 +2529,9 @@ SET SERVEROUTPUT ON;
 -- Kiểm tra chế độ audit hiện tại
 SHOW PARAMETER audit_trail;
 
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -2653,7 +2673,9 @@ NOAUDIT EXECUTE ON ADMINHOS.SP_CAPNHAT_KETLUAN_HSBA;
 NOAUDIT EXECUTE ON ADMINHOS.FN_DEM_DONTHUOC;
 NOAUDIT INSERT, UPDATE, DELETE ON ADMINHOS.HSBA_DV;
 
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -3187,7 +3209,9 @@ END;
 -- Kỳ vọng: LOG_MODE = ARCHIVELOG, DB_RECOVERY_FILE_DEST đã cấu hình
 -- ==========================================================
 
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 
 PROMPT [A.1.1] KIEM TRA ARCHIVELOG MODE - Ky vong: LOG_MODE = ARCHIVELOG
 SELECT
@@ -3323,7 +3347,9 @@ RMAN> ALTER DATABASE OPEN RESETLOGS;
 -- Lưu ý: Thư mục D:\DATAPUMP_BACKUP phải được tạo thủ công trên OS trước
 -- ==========================================================
 
-CONNECT SYS/123@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
@@ -4791,7 +4817,11 @@ END;
 
 -- -------------------------------------------------------
 -- BƯỚC 2: Cấp quyền READ/WRITE trên directory cho các user
+-- Cap bang SYS de tranh ORA-01749 (ADMINHOS khong duoc tu GRANT cho chinh minh).
 -- -------------------------------------------------------
+SET DEFINE ON
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
 GRANT READ, WRITE ON DIRECTORY HOSPITALX_BACKUP_DIR TO ADMINHOS;
 GRANT READ, WRITE ON DIRECTORY HOSPITALX_BACKUP_DIR TO admin_ph2;
 GRANT READ, WRITE ON DIRECTORY DATA_PUMP_DIR        TO ADMINHOS;
@@ -4807,6 +4837,9 @@ GRANT DATAPUMP_IMP_FULL_DATABASE TO admin_ph2;
 GRANT DATAPUMP_IMP_FULL_DATABASE TO ADMINHOS;
 GRANT SELECT_CATALOG_ROLE        TO admin_ph2;
 GRANT SELECT_CATALOG_ROLE        TO ADMINHOS;
+
+-- Quay lai ADMINHOS de tao cac doi tuong thuoc schema ADMINHOS (bang, SP...).
+CONNECT adminHos/123@localhost:1521/PDBHOSX
 
 -- -------------------------------------------------------
 -- BƯỚC 4: Tạo/Reset bảng BACKUP_LOG và Sequence
@@ -5042,6 +5075,573 @@ GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY_APP TO DBA;
 GRANT SELECT, INSERT, UPDATE ON ADMINHOS.BACKUP_LOG TO admin_ph2;
 GRANT SELECT ON ADMINHOS.BACKUP_LOG                 TO DBA;
 
+
+-- =======================================================================
+-- =======================================================================
+-- YÊU CẦU 4 (tt): KHÔI PHỤC DỮ LIỆU DỰA VÀO NHẬT KÝ KIỂM TOÁN (FGA)
+--                 SAU KHI CÓ SỰ CỐ (TỰ ĐỘNG)
+-- -----------------------------------------------------------------------
+-- Ý tưởng:
+--   YC3 (FGA) đã ghi lại MỌI hành vi bất hợp pháp trên HSBA / HSBA_DV
+--   (và mọi lần sửa DONTHUOC) kèm EXTENDED_TIMESTAMP chính xác.
+--   Ta dùng chính mốc thời gian đó để Flashback dữ liệu về trạng thái
+--   NGAY TRƯỚC sự cố:
+--     (1) Đọc DBA_FGA_AUDIT_TRAIL -> lấy thời điểm sự cố sớm nhất.
+--     (2) Lùi 1 giây  -> thời điểm dữ liệu còn nguyên vẹn.
+--     (3) TIMESTAMP_TO_SCN -> đổi sang SCN sạch.
+--     (4) SELECT ... AS OF SCN (Flashback Query) -> lấy bản gốc.
+--     (5) MERGE / INSERT / DELETE -> đưa bảng hiện tại khớp bản gốc:
+--           - hoàn tác UPDATE  (cập nhật lại cột về giá trị cũ)
+--           - hoàn tác DELETE  (chèn lại dòng bị xóa trộm)
+--           - hoàn tác INSERT  (xóa dòng bị chèn trộm)
+--
+-- Ghi chú kỹ thuật:
+--   - Tất cả SP chạy bằng quyền ADMINHOS (AUTHID DEFINER). ADMINHOS là
+--     chủ sở hữu bảng nên KHÔNG bị VPD lọc -> thấy & sửa được toàn bộ dòng.
+--   - Điều kiện hoạt động: dữ liệu sự cố còn nằm trong UNDO
+--     (UNDO_RETENTION đủ dài) -> nên chạy khôi phục sớm sau sự cố.
+--   - Bỏ qua các hành vi do chính ADMINHOS / ADMIN_PH2 thực hiện để
+--     không tự coi thao tác khôi phục là "sự cố".
+-- =======================================================================
+-- =======================================================================
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R1: Bảng & sequence ghi nhật ký KHÔI PHỤC
+-- -----------------------------------------------------------------------
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE ADMINHOS.SEQ_RECOVERY_LOG'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE ADMINHOS.RECOVERY_LOG CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+CREATE TABLE ADMINHOS.RECOVERY_LOG (
+    ID            VARCHAR2(50)  PRIMARY KEY,
+    RUN_TIME      TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+    SCN_HSBA      NUMBER,
+    SCN_HSBA_DV   NUMBER,
+    SCN_DONTHUOC  NUMBER,
+    ROWS_AFFECTED NUMBER        DEFAULT 0,
+    STATUS        VARCHAR2(20)  DEFAULT 'RUNNING',
+    DETAILS       VARCHAR2(1000),
+    RUN_BY        VARCHAR2(50)  DEFAULT SYS_CONTEXT('USERENV','SESSION_USER')
+)
+/
+
+CREATE SEQUENCE ADMINHOS.SEQ_RECOVERY_LOG START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE
+/
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R2: Hàm lấy "SCN sạch" của một bảng từ nhật ký kiểm toán FGA
+--   p_object    : tên bảng (HSBA / HSBA_DV / DONTHUOC)
+--   p_policy_like: mẫu tên policy FGA xác định "sự cố" cần khôi phục
+--   Trả về: SCN của thời điểm (sự cố sớm nhất - 1 giây), hoặc NULL nếu
+--           không có sự cố / không đổi được sang SCN (ngoài cửa sổ UNDO).
+-- -----------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION ADMINHOS.FN_GET_CLEAN_SCN (
+    p_object      IN VARCHAR2,
+    p_policy_like IN VARCHAR2 DEFAULT '%BATHOPPHAP%'
+) RETURN NUMBER
+AUTHID DEFINER
+AS
+    v_ts  TIMESTAMP;
+    v_scn NUMBER;
+BEGIN
+    SELECT MIN(EXTENDED_TIMESTAMP)
+    INTO   v_ts
+    FROM   DBA_FGA_AUDIT_TRAIL
+    WHERE  OBJECT_SCHEMA = 'ADMINHOS'
+      AND  OBJECT_NAME   = p_object
+      AND  POLICY_NAME   LIKE p_policy_like
+      AND  DB_USER NOT IN ('ADMINHOS', 'ADMIN_PH2');   -- bỏ qua thao tác của admin
+
+    IF v_ts IS NULL THEN
+        RETURN NULL;                                   -- không có sự cố
+    END IF;
+
+    v_scn := TIMESTAMP_TO_SCN(v_ts - INTERVAL '1' SECOND);
+    RETURN v_scn;
+EXCEPTION
+    WHEN OTHERS THEN
+        RETURN NULL;                                   -- ngoài cửa sổ flashback...
+END FN_GET_CLEAN_SCN;
+/
+SHOW ERRORS FUNCTION ADMINHOS.FN_GET_CLEAN_SCN;
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R3: Khôi phục bảng HSBA về SCN sạch
+--   Hoàn tác UPDATE (CHANDOAN/DIEUTRI/KETLUAN/MABS/MAKHOA/MABN/NGAY),
+--   hoàn tác DELETE (chèn lại) và INSERT (xóa đi) bất hợp pháp.
+-- -----------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_KHOIPHUC_HSBA_THEO_AUDIT (
+    p_scn        IN  NUMBER,
+    p_updated    OUT NUMBER,
+    p_reinserted OUT NUMBER,
+    p_removed    OUT NUMBER
+) AUTHID DEFINER
+AS
+BEGIN
+    p_updated := 0; p_reinserted := 0; p_removed := 0;
+    IF p_scn IS NULL THEN RETURN; END IF;
+
+    -- (1) Hoàn tác UPDATE: chỉ cập nhật những dòng thực sự khác bản gốc
+    MERGE INTO ADMINHOS.HSBA cur
+    USING (SELECT * FROM ADMINHOS.HSBA AS OF SCN p_scn) snap
+    ON (cur.MAHSBA = snap.MAHSBA)
+    WHEN MATCHED THEN UPDATE SET
+        cur.MABN     = snap.MABN,
+        cur.NGAY     = snap.NGAY,
+        cur.CHANDOAN = snap.CHANDOAN,
+        cur.DIEUTRI  = snap.DIEUTRI,
+        cur.MABS     = snap.MABS,
+        cur.MAKHOA   = snap.MAKHOA,
+        cur.KETLUAN  = snap.KETLUAN
+    WHERE  NVL(cur.CHANDOAN,'#') <> NVL(snap.CHANDOAN,'#')
+        OR NVL(cur.DIEUTRI ,'#') <> NVL(snap.DIEUTRI ,'#')
+        OR NVL(cur.KETLUAN ,'#') <> NVL(snap.KETLUAN ,'#')
+        OR NVL(cur.MABS    ,'#') <> NVL(snap.MABS    ,'#')
+        OR NVL(cur.MAKHOA  ,'#') <> NVL(snap.MAKHOA  ,'#')
+        OR NVL(cur.MABN    ,'#') <> NVL(snap.MABN    ,'#');
+    p_updated := SQL%ROWCOUNT;
+
+    -- (2) Hoàn tác DELETE: dòng có trong bản gốc nhưng đã biến mất -> chèn lại
+    INSERT INTO ADMINHOS.HSBA (MAHSBA, MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN)
+    SELECT s.MAHSBA, s.MABN, s.NGAY, s.CHANDOAN, s.DIEUTRI, s.MABS, s.MAKHOA, s.KETLUAN
+    FROM   ADMINHOS.HSBA AS OF SCN p_scn s
+    WHERE  NOT EXISTS (SELECT 1 FROM ADMINHOS.HSBA c WHERE c.MAHSBA = s.MAHSBA);
+    p_reinserted := SQL%ROWCOUNT;
+
+    -- (3) Hoàn tác INSERT: dòng hiện có nhưng không có trong bản gốc -> xóa
+    DELETE FROM ADMINHOS.HSBA c
+    WHERE  NOT EXISTS (SELECT 1 FROM ADMINHOS.HSBA AS OF SCN p_scn s WHERE s.MAHSBA = c.MAHSBA);
+    p_removed := SQL%ROWCOUNT;
+END SP_KHOIPHUC_HSBA_THEO_AUDIT;
+/
+SHOW ERRORS PROCEDURE ADMINHOS.SP_KHOIPHUC_HSBA_THEO_AUDIT;
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R4: Khôi phục bảng HSBA_DV về SCN sạch (PK ghép: MAHSBA+LOAIDV+NGAYDV)
+--   Lưu ý: trigger TRG_DELETE_HSBA_DV_MAKTV chặn DELETE khi MAKTV<>NULL,
+--   nên TẠM VÔ HIỆU trigger ở SP tổng (BƯỚC R6) trước khi gọi SP này.
+-- -----------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_KHOIPHUC_HSBA_DV_THEO_AUDIT (
+    p_scn        IN  NUMBER,
+    p_updated    OUT NUMBER,
+    p_reinserted OUT NUMBER,
+    p_removed    OUT NUMBER
+) AUTHID DEFINER
+AS
+BEGIN
+    p_updated := 0; p_reinserted := 0; p_removed := 0;
+    IF p_scn IS NULL THEN RETURN; END IF;
+
+    -- (1) Hoàn tác UPDATE (MAKTV / KETQUA)
+    MERGE INTO ADMINHOS.HSBA_DV cur
+    USING (SELECT * FROM ADMINHOS.HSBA_DV AS OF SCN p_scn) snap
+    ON (    cur.MAHSBA = snap.MAHSBA
+        AND cur.LOAIDV = snap.LOAIDV
+        AND cur.NGAYDV = snap.NGAYDV)
+    WHEN MATCHED THEN UPDATE SET
+        cur.MAKTV  = snap.MAKTV,
+        cur.KETQUA = snap.KETQUA
+    WHERE  NVL(cur.MAKTV ,'#') <> NVL(snap.MAKTV ,'#')
+        OR NVL(cur.KETQUA,'#') <> NVL(snap.KETQUA,'#');
+    p_updated := SQL%ROWCOUNT;
+
+    -- (2) Hoàn tác DELETE -> chèn lại
+    INSERT INTO ADMINHOS.HSBA_DV (MAHSBA, LOAIDV, NGAYDV, MAKTV, KETQUA)
+    SELECT s.MAHSBA, s.LOAIDV, s.NGAYDV, s.MAKTV, s.KETQUA
+    FROM   ADMINHOS.HSBA_DV AS OF SCN p_scn s
+    WHERE  NOT EXISTS (
+        SELECT 1 FROM ADMINHOS.HSBA_DV c
+        WHERE c.MAHSBA = s.MAHSBA AND c.LOAIDV = s.LOAIDV AND c.NGAYDV = s.NGAYDV);
+    p_reinserted := SQL%ROWCOUNT;
+
+    -- (3) Hoàn tác INSERT -> xóa dòng chèn trộm
+    DELETE FROM ADMINHOS.HSBA_DV c
+    WHERE  NOT EXISTS (
+        SELECT 1 FROM ADMINHOS.HSBA_DV AS OF SCN p_scn s
+        WHERE s.MAHSBA = c.MAHSBA AND s.LOAIDV = c.LOAIDV AND s.NGAYDV = c.NGAYDV);
+    p_removed := SQL%ROWCOUNT;
+END SP_KHOIPHUC_HSBA_DV_THEO_AUDIT;
+/
+SHOW ERRORS PROCEDURE ADMINHOS.SP_KHOIPHUC_HSBA_DV_THEO_AUDIT;
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R5: Khôi phục bảng DONTHUOC về SCN sạch (PK ghép: MAHSBA+NGAYDT+TENTHUOC)
+-- -----------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_KHOIPHUC_DONTHUOC_THEO_AUDIT (
+    p_scn        IN  NUMBER,
+    p_updated    OUT NUMBER,
+    p_reinserted OUT NUMBER,
+    p_removed    OUT NUMBER
+) AUTHID DEFINER
+AS
+BEGIN
+    p_updated := 0; p_reinserted := 0; p_removed := 0;
+    IF p_scn IS NULL THEN RETURN; END IF;
+
+    -- (1) Hoàn tác UPDATE (LIEUDUNG là cột duy nhất ngoài khóa)
+    MERGE INTO ADMINHOS.DONTHUOC cur
+    USING (SELECT * FROM ADMINHOS.DONTHUOC AS OF SCN p_scn) snap
+    ON (    cur.MAHSBA   = snap.MAHSBA
+        AND cur.NGAYDT   = snap.NGAYDT
+        AND cur.TENTHUOC = snap.TENTHUOC)
+    WHEN MATCHED THEN UPDATE SET
+        cur.LIEUDUNG = snap.LIEUDUNG
+    WHERE  NVL(cur.LIEUDUNG,'#') <> NVL(snap.LIEUDUNG,'#');
+    p_updated := SQL%ROWCOUNT;
+
+    -- (2) Hoàn tác DELETE
+    INSERT INTO ADMINHOS.DONTHUOC (MAHSBA, NGAYDT, TENTHUOC, LIEUDUNG)
+    SELECT s.MAHSBA, s.NGAYDT, s.TENTHUOC, s.LIEUDUNG
+    FROM   ADMINHOS.DONTHUOC AS OF SCN p_scn s
+    WHERE  NOT EXISTS (
+        SELECT 1 FROM ADMINHOS.DONTHUOC c
+        WHERE c.MAHSBA = s.MAHSBA AND c.NGAYDT = s.NGAYDT AND c.TENTHUOC = s.TENTHUOC);
+    p_reinserted := SQL%ROWCOUNT;
+
+    -- (3) Hoàn tác INSERT
+    DELETE FROM ADMINHOS.DONTHUOC c
+    WHERE  NOT EXISTS (
+        SELECT 1 FROM ADMINHOS.DONTHUOC AS OF SCN p_scn s
+        WHERE s.MAHSBA = c.MAHSBA AND s.NGAYDT = c.NGAYDT AND s.TENTHUOC = c.TENTHUOC);
+    p_removed := SQL%ROWCOUNT;
+END SP_KHOIPHUC_DONTHUOC_THEO_AUDIT;
+/
+SHOW ERRORS PROCEDURE ADMINHOS.SP_KHOIPHUC_DONTHUOC_THEO_AUDIT;
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R6: SP TỔNG - KHÔI PHỤC TỰ ĐỘNG TOÀN BỘ DỰA VÀO NHẬT KÝ KIỂM TOÁN
+--   - Tự dò sự cố trên HSBA, HSBA_DV, DONTHUOC từ FGA.
+--   - Khôi phục theo thứ tự an toàn khóa ngoại: HSBA -> HSBA_DV -> DONTHUOC.
+--   - Tạm vô hiệu trigger chặn xóa HSBA_DV trong lúc khôi phục.
+--   - Ghi RECOVERY_LOG, trả p_status / p_message cho ứng dụng.
+-- -----------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_KHOIPHUC_TUDONG_THEO_AUDIT (
+    p_log_id  OUT VARCHAR2,
+    p_status  OUT VARCHAR2,
+    p_message OUT VARCHAR2
+) AUTHID DEFINER
+AS
+    v_scn_hsba NUMBER;
+    v_scn_dv   NUMBER;
+    v_scn_dt   NUMBER;
+    u1 NUMBER := 0; r1 NUMBER := 0; d1 NUMBER := 0;
+    u2 NUMBER := 0; r2 NUMBER := 0; d2 NUMBER := 0;
+    u3 NUMBER := 0; r3 NUMBER := 0; d3 NUMBER := 0;
+    v_total NUMBER := 0;
+    v_id    VARCHAR2(50);
+    v_msg   VARCHAR2(1000);
+BEGIN
+    v_id := 'RC-' || TO_CHAR(SYSDATE,'YYYYMMDD') || '-' ||
+            LPAD(TO_CHAR(ADMINHOS.SEQ_RECOVERY_LOG.NEXTVAL), 4, '0');
+    p_log_id := v_id;
+
+    -- Dò "SCN sạch" cho từng bảng từ nhật ký kiểm toán
+    v_scn_hsba := ADMINHOS.FN_GET_CLEAN_SCN('HSBA',     'FGA_HSBA_UPDATE_BATHOPPHAP');
+    v_scn_dv   := ADMINHOS.FN_GET_CLEAN_SCN('HSBA_DV',  '%BATHOPPHAP%');
+    v_scn_dt   := ADMINHOS.FN_GET_CLEAN_SCN('DONTHUOC', 'FGA_DONTHUOC_UPDATE');
+
+    IF v_scn_hsba IS NULL AND v_scn_dv IS NULL AND v_scn_dt IS NULL THEN
+        p_status  := 'NO_INCIDENT';
+        p_message := 'Khong phat hien su co trong nhat ky kiem toan FGA. Khong can khoi phuc.';
+        INSERT INTO ADMINHOS.RECOVERY_LOG (ID, RUN_TIME, ROWS_AFFECTED, STATUS, DETAILS)
+        VALUES (v_id, SYSTIMESTAMP, 0, p_status, p_message);
+        COMMIT;
+        RETURN;
+    END IF;
+
+    -- Tạm vô hiệu trigger chặn xóa dịch vụ (để hoàn tác INSERT/DELETE trên HSBA_DV)
+    BEGIN EXECUTE IMMEDIATE 'ALTER TRIGGER ADMINHOS.TRG_DELETE_HSBA_DV_MAKTV DISABLE';
+    EXCEPTION WHEN OTHERS THEN NULL; END;
+
+    -- Khôi phục theo thứ tự an toàn khóa ngoại
+    ADMINHOS.SP_KHOIPHUC_HSBA_THEO_AUDIT    (v_scn_hsba, u1, r1, d1);
+    ADMINHOS.SP_KHOIPHUC_HSBA_DV_THEO_AUDIT (v_scn_dv,   u2, r2, d2);
+    ADMINHOS.SP_KHOIPHUC_DONTHUOC_THEO_AUDIT(v_scn_dt,   u3, r3, d3);
+
+    -- Bật lại trigger
+    BEGIN EXECUTE IMMEDIATE 'ALTER TRIGGER ADMINHOS.TRG_DELETE_HSBA_DV_MAKTV ENABLE';
+    EXCEPTION WHEN OTHERS THEN NULL; END;
+
+    v_total := u1+r1+d1 + u2+r2+d2 + u3+r3+d3;
+    COMMIT;
+
+    v_msg := 'HSBA[sua '   || u1 || ', chen lai ' || r1 || ', xoa ' || d1 || '] '
+          || 'HSBA_DV[sua '|| u2 || ', chen lai ' || r2 || ', xoa ' || d2 || '] '
+          || 'DONTHUOC[sua '|| u3 || ', chen lai ' || r3 || ', xoa ' || d3 || ']';
+    p_status  := CASE WHEN v_total > 0 THEN 'RECOVERED' ELSE 'NOTHING_TO_DO' END;
+    p_message := 'Khoi phuc theo nhat ky kiem toan hoan tat. Tong ' || v_total
+              || ' dong da xu ly. Chi tiet: ' || v_msg;
+
+    UPDATE ADMINHOS.RECOVERY_LOG
+       SET ROWS_AFFECTED = v_total, STATUS = p_status, DETAILS = v_msg,
+           SCN_HSBA = v_scn_hsba, SCN_HSBA_DV = v_scn_dv, SCN_DONTHUOC = v_scn_dt
+     WHERE ID = v_id;
+    IF SQL%ROWCOUNT = 0 THEN
+        INSERT INTO ADMINHOS.RECOVERY_LOG
+            (ID, RUN_TIME, SCN_HSBA, SCN_HSBA_DV, SCN_DONTHUOC, ROWS_AFFECTED, STATUS, DETAILS)
+        VALUES (v_id, SYSTIMESTAMP, v_scn_hsba, v_scn_dv, v_scn_dt, v_total, p_status, v_msg);
+    END IF;
+    COMMIT;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        BEGIN EXECUTE IMMEDIATE 'ALTER TRIGGER ADMINHOS.TRG_DELETE_HSBA_DV_MAKTV ENABLE';
+        EXCEPTION WHEN OTHERS THEN NULL; END;
+        p_status  := 'FAILED';
+        p_message := SUBSTR(SQLERRM, 1, 900);
+        BEGIN
+            INSERT INTO ADMINHOS.RECOVERY_LOG (ID, RUN_TIME, STATUS, DETAILS)
+            VALUES (v_id, SYSTIMESTAMP, 'FAILED', p_message);
+            COMMIT;
+        EXCEPTION WHEN OTHERS THEN NULL; END;
+END SP_KHOIPHUC_TUDONG_THEO_AUDIT;
+/
+SHOW ERRORS PROCEDURE ADMINHOS.SP_KHOIPHUC_TUDONG_THEO_AUDIT;
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R7: SP xem DANH SÁCH SỰ CỐ phát hiện từ nhật ký kiểm toán (cho app)
+-- -----------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_SUCO_FROM_AUDIT (
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT
+            CAST(DB_USER             AS VARCHAR2(50))   AS KE_TINH_NGHI,
+            CAST(OBJECT_NAME         AS VARCHAR2(30))   AS BANG_BI_TAN_CONG,
+            CAST(STATEMENT_TYPE      AS VARCHAR2(20))   AS HANH_VI,
+            CAST(POLICY_NAME         AS VARCHAR2(60))   AS POLICY_FGA,
+            EXTENDED_TIMESTAMP                          AS THOI_DIEM,
+            CAST(SUBSTR(SQL_TEXT,1,400) AS VARCHAR2(400)) AS CAU_LENH
+        FROM   DBA_FGA_AUDIT_TRAIL
+        WHERE  OBJECT_SCHEMA = 'ADMINHOS'
+          AND  (POLICY_NAME LIKE '%BATHOPPHAP%' OR POLICY_NAME = 'FGA_DONTHUOC_UPDATE')
+          AND  DB_USER NOT IN ('ADMINHOS', 'ADMIN_PH2')
+        ORDER BY EXTENDED_TIMESTAMP DESC;
+END SP_GET_SUCO_FROM_AUDIT;
+/
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R8: SP xem LỊCH SỬ KHÔI PHỤC (cho app)
+-- -----------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_RECOVERY_HISTORY (
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT ID, RUN_TIME, ROWS_AFFECTED, STATUS, DETAILS, RUN_BY
+        FROM   ADMINHOS.RECOVERY_LOG
+        ORDER BY RUN_TIME DESC;
+END SP_GET_RECOVERY_HISTORY;
+/
+
+-- -----------------------------------------------------------------------
+-- BƯỚC R9: Cấp quyền
+-- -----------------------------------------------------------------------
+GRANT EXECUTE ON ADMINHOS.SP_KHOIPHUC_TUDONG_THEO_AUDIT TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_KHOIPHUC_TUDONG_THEO_AUDIT TO DBA;
+GRANT EXECUTE ON ADMINHOS.SP_GET_SUCO_FROM_AUDIT        TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_GET_SUCO_FROM_AUDIT        TO DBA;
+GRANT EXECUTE ON ADMINHOS.SP_GET_RECOVERY_HISTORY       TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_GET_RECOVERY_HISTORY       TO DBA;
+GRANT SELECT  ON ADMINHOS.RECOVERY_LOG                  TO admin_ph2;
+GRANT SELECT  ON ADMINHOS.RECOVERY_LOG                  TO DBA;
+
+-- =======================================================================
+-- BƯỚC R10 (DEMO - tùy chọn, KHÔNG tự chạy khi cài đặt):
+-- Khối này nằm trong /* ... */ nên khi @ cả script Oracle sẽ BỎ QUA.
+-- Muốn demo: copy từng lệnh chạy tay theo đúng thứ tự (hoặc bỏ /* */).
+--
+-- Vì sao cần bước (b): bình thường VPD của bác sĩ (VPD_YC1C3_HSBA_BS) sẽ
+-- tự thêm "AND MABS = user" nên BS0002 KHÔNG chạm được hồ sơ của BS0001
+-- (câu lệnh 0 dòng -> không có gì để FGA ghi). Ta TẠM tắt policy đó + cấp
+-- UPDATE để mô phỏng tình huống "hàng rào VPD bị lọt", cho câu lệnh trái
+-- phép chạm tới bảng và bị FGA ghi nhận BATHOPPHAP. Sau đó BẬT LẠI ngay.
+-- =======================================================================
+/*
+-- (a) [adminHos] Trạng thái GỐC của hồ sơ HSBA00101 (do BS0001 phụ trách)
+CONNECT adminHos/123@localhost:1521/PDBHOSX
+SELECT MAHSBA, CHANDOAN, KETLUAN FROM ADMINHOS.HSBA WHERE MAHSBA = 'HSBA00101';
+
+-- (b) [adminHos] Mô phỏng "VPD bị lọt": tạm tắt policy BS trên HSBA + cấp UPDATE
+BEGIN DBMS_RLS.ENABLE_POLICY('ADMINHOS', 'HSBA', 'VPD_YC1C3_HSBA_BS', FALSE); END;
+/
+GRANT UPDATE ON ADMINHOS.HSBA TO BS0002;
+
+-- (c) [BS0002] KẺ TẤN CÔNG sửa trộm hồ sơ của BS0001 (mật khẩu mặc định: Hos@123456)
+CONNECT BS0002/Hos@123456@localhost:1521/PDBHOSX
+UPDATE ADMINHOS.HSBA
+   SET CHANDOAN = N'BI SUA TRAI PHEP', KETLUAN = N'PHA HOAI'
+ WHERE MAHSBA = 'HSBA00101';
+COMMIT;
+
+-- (d) [adminHos] BẬT LẠI hàng rào VPD + thu hồi quyền vừa cấp
+CONNECT adminHos/123@localhost:1521/PDBHOSX
+BEGIN DBMS_RLS.ENABLE_POLICY('ADMINHOS', 'HSBA', 'VPD_YC1C3_HSBA_BS', TRUE); END;
+/
+REVOKE UPDATE ON ADMINHOS.HSBA FROM BS0002;
+
+-- (e) [adminHos] Xem sự cố đã được FGA ghi nhận (hoặc xem trên app: màn Kiểm toán)
+SELECT DB_USER, OBJECT_NAME, POLICY_NAME, EXTENDED_TIMESTAMP
+FROM   DBA_FGA_AUDIT_TRAIL
+WHERE  OBJECT_NAME = 'HSBA' AND POLICY_NAME = 'FGA_HSBA_UPDATE_BATHOPPHAP'
+ORDER BY EXTENDED_TIMESTAMP DESC;
+
+-- (f) [adminHos] KHÔI PHỤC tự động dựa vào nhật ký kiểm toán
+SET SERVEROUTPUT ON
+DECLARE v_id VARCHAR2(50); v_st VARCHAR2(20); v_msg VARCHAR2(1000);
+BEGIN
+    ADMINHOS.SP_KHOIPHUC_TUDONG_THEO_AUDIT(v_id, v_st, v_msg);
+    DBMS_OUTPUT.PUT_LINE('LOG_ID : ' || v_id);
+    DBMS_OUTPUT.PUT_LINE('STATUS : ' || v_st);
+    DBMS_OUTPUT.PUT_LINE('MESSAGE: ' || v_msg);
+END;
+/
+
+-- (g) [adminHos] Kiểm tra: dữ liệu đã trở về như cũ
+SELECT MAHSBA, CHANDOAN, KETLUAN FROM ADMINHOS.HSBA WHERE MAHSBA = 'HSBA00101';
+*/
+
+
+-- =======================================================================
+-- =======================================================================
+-- YÊU CẦU 4 - PHẦN 3 & 4: ĐÁNH GIÁ ƯU/KHUYẾT ĐIỂM VÀ KẾT LUẬN
+-- (Phần lý thuyết, không thực thi - để trong block comment)
+-- =======================================================================
+-- =======================================================================
+/*
+
+=========================================================================
+ 1. TỔNG HỢP CÁC PHƯƠNG PHÁP ĐÃ TÌM HIỂU & HIỆN THỰC
+=========================================================================
+ A. RMAN (Recovery Manager)        - Sao lưu VẬT LÝ (physical): datafile,
+                                      control file, archived redo log.
+ B. Data Pump (expdp/impdp,        - Sao lưu LOGIC (logical) ở mức schema/
+    DBMS_DATAPUMP)                   bảng (.dmp). Đã hiện thực CHỦ ĐỘNG
+                                      (SP_RUN_DATAPUMP_BACKUP) và TỰ ĐỘNG
+                                      (DBMS_SCHEDULER: JOB_DAILY_DATAPUMP_BACKUP).
+ C. Oracle Flashback               - Phục hồi nhanh dựa trên UNDO/recycle bin:
+    (Query/Table/Drop/Database)      Flashback Query (AS OF SCN/TIMESTAMP),
+                                      Flashback Table, Flashback Drop,
+                                      Flashback Database.
+ D. KHÔI PHỤC DỰA VÀO NHẬT KÝ      - Kết hợp YC3 (FGA) + Flashback Query:
+    KIỂM TOÁN (đã hiện thực)         đọc DBA_FGA_AUDIT_TRAIL -> lấy thời điểm
+                                      sự cố -> TIMESTAMP_TO_SCN(t-1s) ->
+                                      SELECT ... AS OF SCN -> MERGE/INSERT/
+                                      DELETE hoàn tác. (SP_KHOIPHUC_*_THEO_AUDIT)
+
+=========================================================================
+ 2. ĐÁNH GIÁ ƯU / KHUYẾT ĐIỂM TỪNG PHƯƠNG PHÁP
+=========================================================================
+
+ -----------------------------------------------------------------------
+ A. RMAN (PHYSICAL BACKUP)
+ -----------------------------------------------------------------------
+ Ưu điểm:
+   - Sao lưu/phục hồi ở mức TOÀN BỘ database, datafile, tablespace.
+   - Hỗ trợ Point-In-Time Recovery (PITR) nhờ ARCHIVELOG: phục hồi tới
+     đúng một mốc thời gian/SCN bất kỳ.
+   - Backup gia tăng (incremental level 0/1), nén, kiểm tra tính hợp lệ
+     (VALIDATE), tự quản lý qua catalog/control file.
+   - Phù hợp thảm họa lớn: hỏng đĩa, mất file, crash instance.
+ Khuyết điểm:
+   - Nặng, phức tạp; chạy ở mức OS (command-line), khó gọi trực tiếp từ app.
+   - Đòi hỏi cấu hình ARCHIVELOG, Fast Recovery Area, dung lượng lớn.
+   - Phục hồi thường ở mức toàn DB -> "dùng dao mổ trâu" để sửa vài dòng
+     bị hỏng; thời gian phục hồi (RTO) lâu.
+   - Không phân biệt được "ai phá hoại" - chỉ đưa DB về mốc thời gian.
+
+ -----------------------------------------------------------------------
+ B. DATA PUMP (LOGICAL BACKUP) - CHỦ ĐỘNG & TỰ ĐỘNG
+ -----------------------------------------------------------------------
+ Ưu điểm:
+   - Linh hoạt mức SCHEMA/BẢNG/đối tượng; file .dmp di chuyển được giữa
+     các DB, khác nền tảng, khác phiên bản (version).
+   - Có API PL/SQL (DBMS_DATAPUMP) -> gọi được TRỰC TIẾP từ trong DB và
+     từ ứng dụng, lập lịch tự động bằng DBMS_SCHEDULER (sao lưu 02:00).
+   - Nhẹ hơn RMAN cho việc sao lưu chọn lọc; có ghi BACKUP_LOG để theo dõi.
+ Khuyết điểm:
+   - Là ảnh chụp tại thời điểm export -> KHÔNG có PITR; dữ liệu phát sinh
+     sau lần export gần nhất sẽ mất nếu phải phục hồi từ .dmp.
+   - Phục hồi (impdp) có thể chậm với dữ liệu lớn; không thay thế được
+     backup vật lý khi hỏng cấu trúc/đĩa.
+   - Cần Oracle DIRECTORY + thư mục OS tồn tại; phụ thuộc lịch chạy job.
+
+ -----------------------------------------------------------------------
+ C. ORACLE FLASHBACK
+ -----------------------------------------------------------------------
+ Ưu điểm:
+   - Phục hồi RẤT NHANH lỗi logic của người dùng (UPDATE/DELETE/DROP nhầm)
+     mà KHÔNG cần restore từ file backup.
+   - Nhiều mức: Flashback Query (xem/lấy lại dữ liệu quá khứ), Table
+     (đưa bảng về quá khứ), Drop (khôi phục bảng đã DROP), Database.
+   - Thao tác đơn giản bằng SQL; có thể nhắm đúng dòng/bảng cần.
+ Khuyết điểm:
+   - Phụ thuộc UNDO segment (UNDO_RETENTION) và recycle bin -> chỉ phục hồi
+     trong CỬA SỔ thời gian giới hạn; quá hạn sẽ ORA-01555 (snapshot too old).
+   - Flashback Database cần bật flashback logs (tốn dung lượng).
+   - Không thay được backup khi hỏng vật lý datafile.
+   - Tự bản thân Flashback KHÔNG biết "phục hồi tới mốc nào" - cần nguồn
+     thông tin về thời điểm sự cố (đây là chỗ nhật ký kiểm toán bổ khuyết).
+
+ -----------------------------------------------------------------------
+ D. KHÔI PHỤC DỰA VÀO NHẬT KÝ KIỂM TOÁN (FGA + FLASHBACK QUERY)
+ -----------------------------------------------------------------------
+ Ưu điểm:
+   - Đúng tinh thần đề: tận dụng YC3 (FGA) làm nguồn xác định CHÍNH XÁC
+     thời điểm và đối tượng bị tấn công, rồi tự Flashback về trước sự cố.
+   - Có chọn lọc: chỉ hoàn tác đúng các dòng bị sửa/xóa/chèn trái phép
+     (hoàn tác cả UPDATE, INSERT, DELETE), ít ảnh hưởng dữ liệu hợp lệ.
+   - Tự động hóa cao (1 lệnh gọi SP tổng), có ghi RECOVERY_LOG để truy vết,
+     biến nhật ký GIÁM SÁT thành công cụ PHỤC HỒI.
+   - Gắn kết YC3 và YC4 thành một quy trình "phát hiện -> khôi phục".
+ Khuyết điểm:
+   - Cũng phụ thuộc UNDO_RETENTION (vì dùng Flashback Query AS OF SCN)
+     -> phải khôi phục SỚM sau sự cố, quá hạn thì không lấy lại được.
+   - Chỉ khôi phục được những gì FGA có ghi nhận; nếu policy chưa bao phủ
+     hành vi nào thì hành vi đó không được phát hiện để khôi phục.
+   - Là cơ chế bù đắp ở tầng dữ liệu, không thay thế backup vật lý/logic
+     cho thảm họa diện rộng.
+
+=========================================================================
+ 3. BẢNG SO SÁNH TỔNG HỢP
+=========================================================================
+ Tiêu chí          | RMAN        | Data Pump   | Flashback   | Khôi phục
+                   | (vật lý)    | (logic)     |             | theo Audit
+ ------------------+-------------+-------------+-------------+-------------
+ Mức tác động      | Toàn DB     | Schema/bảng | Dòng/bảng/DB| Dòng cụ thể
+ PITR (mốc bất kỳ) | Có          | Không       | Trong UNDO  | Trong UNDO
+ Phụ thuộc UNDO    | Không       | Không       | Có          | Có
+ Tốc độ phục hồi   | Chậm        | Trung bình  | Rất nhanh   | Rất nhanh
+ Gọi từ app/PLSQL  | Khó (OS)    | Dễ (API)    | Dễ (SQL)    | Dễ (SP)
+ Tự động hóa       | Lịch RMAN   | Scheduler   | Thủ công    | 1 SP tổng
+ Hỏng đĩa/file     | Cứu được    | Hạn chế     | Không       | Không
+ Biết "mốc sự cố"? | Không       | Không       | Không tự    | CÓ (từ FGA)
+
+=========================================================================
+ 4. KẾT LUẬN
+=========================================================================
+ - Không có MỘT phương pháp duy nhất là đủ; các phương pháp BỔ SUNG cho
+   nhau theo nguyên tắc phòng vệ nhiều lớp:
+     * RMAN (vật lý)  : lớp nền chống thảm họa hạ tầng (hỏng đĩa/file/crash),
+                        cho phép PITR toàn hệ thống.
+     * Data Pump      : sao lưu logic linh hoạt, CHỦ ĐỘNG + TỰ ĐỘNG (02:00),
+                        dùng để di chuyển/khôi phục theo schema/bảng.
+     * Flashback      : xử lý nhanh lỗi logic trong cửa sổ UNDO.
+     * Khôi phục theo : đúng trọng tâm YC4 - dùng NHẬT KÝ KIỂM TOÁN (YC3) để
+       nhật ký KT       phát hiện sự cố và Flashback CHÍNH XÁC phần bị tấn công.
+ - Chiến lược của đồ án: dùng Data Pump cho sao lưu định kỳ (phòng ngừa),
+   và Khôi phục-theo-Audit cho khắc phục sau sự cố bảo mật (phản ứng).
+   RMAN/Flashback được trình bày như các lớp bổ trợ.
+ - Khuyến nghị vận hành: bật ARCHIVELOG, đặt UNDO_RETENTION đủ dài, sao lưu
+   định kỳ + kiểm tra khả năng phục hồi (restore test) thường xuyên, và
+   chạy khôi-phục-theo-audit càng SỚM càng tốt sau khi phát hiện sự cố để
+   dữ liệu còn trong cửa sổ Flashback.
+
+*/
+
+
 -- -------------------------------------------------------
 -- KIỂM TRA KẾT QUẢ
 -- -------------------------------------------------------
@@ -5054,7 +5654,12 @@ SELECT OBJECT_NAME, OBJECT_TYPE, STATUS
 FROM   USER_OBJECTS
 WHERE  OBJECT_NAME IN (
     'BACKUP_LOG','SEQ_BACKUP_LOG',
-    'SP_RUN_DATAPUMP_BACKUP','SP_GET_BACKUP_HISTORY_APP'
+    'SP_RUN_DATAPUMP_BACKUP','SP_GET_BACKUP_HISTORY_APP',
+    -- Khôi phục dựa vào nhật ký kiểm toán
+    'RECOVERY_LOG','SEQ_RECOVERY_LOG','FN_GET_CLEAN_SCN',
+    'SP_KHOIPHUC_HSBA_THEO_AUDIT','SP_KHOIPHUC_HSBA_DV_THEO_AUDIT',
+    'SP_KHOIPHUC_DONTHUOC_THEO_AUDIT','SP_KHOIPHUC_TUDONG_THEO_AUDIT',
+    'SP_GET_SUCO_FROM_AUDIT','SP_GET_RECOVERY_HISTORY'
 )
 ORDER BY OBJECT_TYPE, OBJECT_NAME;
 
@@ -5066,9 +5671,5 @@ FROM   DBA_DIRECTORIES
 WHERE  DIRECTORY_NAME IN ('HOSPITALX_BACKUP_DIR','DATA_PUMP_DIR')
 ORDER BY DIRECTORY_NAME;
 
-PROMPT
-PROMPT ================================================
-PROMPT  SETUP BACKUP/RESTORE HOÀN TẤT THÀNH CÔNG!
-PROMPT ================================================
 EXIT;
 

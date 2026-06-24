@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,6 +20,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private Guna2ComboBox cmbAuditType;
         private Label lblAuditType;
+        private Guna2Button btnRecoverAudit;
 
         public ucAudit()
         {
@@ -35,6 +36,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
             _isLoaded = true;
             InitializeAuditTypeFilter();
+            InitializeRecoveryButton();
             SetupAuditGrids();
             InitializeDateFilters();
             LoadLogsFromDatabase();
@@ -71,6 +73,39 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
             pnlFilter.Controls.Add(lblAuditType);
             pnlFilter.Controls.Add(cmbAuditType);
+        }
+
+        // Nút mở hộp thoại khôi phục dữ liệu dựa vào nhật ký kiểm toán (FGA).
+        private void InitializeRecoveryButton()
+        {
+            btnRecoverAudit = new Guna2Button
+            {
+                Text = "Khôi phục theo nhật ký",
+                Location = new Point(240, 15),
+                Size = new Size(232, 32),
+                BorderRadius = 8,
+                FillColor = Color.FromArgb(15, 110, 86),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnRecoverAudit.HoverState.FillColor = Color.FromArgb(10, 79, 61);
+            btnRecoverAudit.Click += BtnRecoverAudit_Click;
+
+            pnlLogsHeader.Controls.Add(btnRecoverAudit);
+            btnRecoverAudit.BringToFront();
+        }
+
+        private void BtnRecoverAudit_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new frmRecoveryAudit())
+            {
+                dlg.ShowDialog(FindForm());
+            }
+
+            // Tải lại nhật ký để phản ánh kết quả khôi phục
+            LoadLogsFromDatabase();
+            ApplyFilters();
         }
 
         private void InitializeDateFilters()
@@ -766,5 +801,358 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         public string Result { get; private set; }
         public string Detail { get; private set; }
         public string Terminal { get; private set; }
+    }
+
+    // =====================================================================
+    // Hộp thoại KHÔI PHỤC DỮ LIỆU DỰA VÀO NHẬT KÝ KIỂM TOÁN (FGA)
+    // Xây dựng hoàn toàn bằng code (không Designer/resx) để không phải sửa
+    // .csproj. Gọi xuống Oracle qua AuditLogDAO. Chạy đồng bộ + bắt lỗi đầy đủ.
+    // =====================================================================
+    public class frmRecoveryAudit : Form
+    {
+        private Guna2DataGridView dgvIncidents;
+        private Guna2DataGridView dgvHistory;
+        private Guna2Panel pnlStatusAlert;
+        private Label lblStatus;
+        private Guna2Button btnRecover;
+        private Guna2Button btnReload;
+        private Guna2Button btnClose;
+
+        public frmRecoveryAudit()
+        {
+            Text = "Khôi phục dữ liệu theo nhật ký kiểm toán (FGA)";
+            StartPosition = FormStartPosition.CenterParent;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            ClientSize = new Size(940, 630);
+            BackColor = Color.White;
+            Font = new Font("Segoe UI", 9F);
+
+            BuildUi();
+            LoadIncidents();
+            LoadHistory();
+        }
+
+        private void BuildUi()
+        {
+            Label lblTitle = new Label
+            {
+                Text = "Sự cố phát hiện từ nhật ký kiểm toán",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(10, 42, 64),
+                Location = new Point(16, 14)
+            };
+            Label lblHint = new Label
+            {
+                Text = "Hệ thống đọc DBA_FGA_AUDIT_TRAIL, tính SCN ngay trước thời điểm sự cố và Flashback "
+                     + "HSBA / HSBA_DV / DONTHUOC về trạng thái nguyên bản (hoàn tác UPDATE/INSERT/DELETE trái phép).",
+                AutoSize = false,
+                Location = new Point(16, 44),
+                Size = new Size(908, 20),
+                ForeColor = Color.FromArgb(100, 116, 110)
+            };
+
+            // Container cho dgvIncidents để tạo viền bo tròn đẹp
+            Guna2Panel pnlIncidentsContainer = new Guna2Panel
+            {
+                Location = new Point(16, 72),
+                Size = new Size(908, 246),
+                BorderRadius = 8,
+                BorderThickness = 1,
+                BorderColor = Color.FromArgb(218, 232, 226),
+                FillColor = Color.White
+            };
+
+            dgvIncidents = NewGrid();
+            dgvIncidents.Location = new Point(2, 2);
+            dgvIncidents.Size = new Size(904, 242);
+            pnlIncidentsContainer.Controls.Add(dgvIncidents);
+
+            Label lblHist = new Label
+            {
+                Text = "Lịch sử khôi phục",
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(10, 42, 64),
+                Location = new Point(16, 330)
+            };
+
+            // Container cho dgvHistory để tạo viền bo tròn đẹp
+            Guna2Panel pnlHistoryContainer = new Guna2Panel
+            {
+                Location = new Point(16, 356),
+                Size = new Size(908, 158),
+                BorderRadius = 8,
+                BorderThickness = 1,
+                BorderColor = Color.FromArgb(218, 232, 226),
+                FillColor = Color.White
+            };
+
+            dgvHistory = NewGrid();
+            dgvHistory.Location = new Point(2, 2);
+            dgvHistory.Size = new Size(904, 154);
+            pnlHistoryContainer.Controls.Add(dgvHistory);
+
+            // Panel trạng thái / Alert box
+            pnlStatusAlert = new Guna2Panel
+            {
+                Location = new Point(16, 520),
+                Size = new Size(908, 42),
+                BorderRadius = 6,
+                FillColor = Color.FromArgb(243, 244, 246)
+            };
+
+            lblStatus = new Label
+            {
+                Text = "Sẵn sàng.",
+                AutoSize = false,
+                Dock = DockStyle.Fill,
+                Font = new Font("Segoe UI", 9.25F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(75, 85, 99),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(10, 0, 10, 0),
+                BackColor = Color.Transparent
+            };
+            pnlStatusAlert.Controls.Add(lblStatus);
+
+            btnRecover = new Guna2Button
+            {
+                Text = "Khôi phục ngay",
+                Size = new Size(170, 38),
+                Location = new Point(16, 572),
+                FillColor = Color.FromArgb(15, 110, 86),
+                ForeColor = Color.White,
+                BorderRadius = 8,
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnRecover.HoverState.FillColor = Color.FromArgb(10, 79, 61);
+            btnRecover.Click += BtnRecover_Click;
+
+            btnReload = new Guna2Button
+            {
+                Text = "Tải lại sự cố",
+                Size = new Size(130, 38),
+                Location = new Point(198, 572),
+                FillColor = Color.White,
+                ForeColor = Color.FromArgb(15, 110, 86),
+                BorderColor = Color.FromArgb(15, 110, 86),
+                BorderThickness = 1,
+                BorderRadius = 8,
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnReload.HoverState.FillColor = Color.FromArgb(240, 248, 245);
+            btnReload.Click += (s, e) => { LoadIncidents(); LoadHistory(); };
+
+            btnClose = new Guna2Button
+            {
+                Text = "Đóng",
+                Size = new Size(100, 38),
+                Location = new Point(824, 572),
+                FillColor = Color.White,
+                ForeColor = Color.FromArgb(80, 90, 85),
+                BorderColor = Color.FromArgb(218, 232, 226),
+                BorderThickness = 1,
+                BorderRadius = 8,
+                Font = new Font("Segoe UI", 9.5F, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnClose.HoverState.FillColor = Color.FromArgb(245, 247, 246);
+            btnClose.Click += (s, e) => Close();
+
+            Controls.Add(lblTitle);
+            Controls.Add(lblHint);
+            Controls.Add(pnlIncidentsContainer);
+            Controls.Add(lblHist);
+            Controls.Add(pnlHistoryContainer);
+            Controls.Add(pnlStatusAlert);
+            Controls.Add(btnRecover);
+            Controls.Add(btnReload);
+            Controls.Add(btnClose);
+        }
+
+        private static void SetupSoftGrid(DataGridView grid, int rowHeight, int headerHeight)
+        {
+            grid.EnableHeadersVisualStyles = false;
+            grid.BackgroundColor = Color.White;
+            grid.BorderStyle = BorderStyle.None;
+            grid.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            grid.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            grid.GridColor = Color.White;
+            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            grid.MultiSelect = false;
+            grid.RowHeadersVisible = false;
+            grid.AllowUserToResizeRows = false;
+            grid.AllowUserToResizeColumns = false;
+            grid.ColumnHeadersHeight = headerHeight;
+            grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            grid.RowTemplate.Height = rowHeight;
+            grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            grid.AdvancedCellBorderStyle.All = DataGridViewAdvancedCellBorderStyle.None;
+            grid.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.None;
+
+            Guna2DataGridView gunaGrid = grid as Guna2DataGridView;
+            if (gunaGrid != null)
+            {
+                gunaGrid.ThemeStyle.GridColor = Color.White;
+                gunaGrid.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+                gunaGrid.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.None;
+            }
+
+            grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(122, 149, 137);
+            grid.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(247, 249, 248);
+            grid.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(122, 149, 137);
+
+            grid.DefaultCellStyle.BackColor = Color.White;
+            grid.DefaultCellStyle.ForeColor = Color.FromArgb(24, 48, 42);
+            grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 244, 240);
+            grid.DefaultCellStyle.SelectionForeColor = Color.FromArgb(24, 48, 42);
+
+            grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 251, 250);
+        }
+
+        private static Guna2DataGridView NewGrid()
+        {
+            Guna2DataGridView g = new Guna2DataGridView();
+            SetupSoftGrid(g, 36, 36);
+
+            g.Theme = Guna.UI2.WinForms.Enums.DataGridViewPresetThemes.Default;
+            g.BorderStyle = BorderStyle.None;
+            g.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            g.GridColor = Color.FromArgb(240, 244, 242);
+
+            g.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(247, 249, 248);
+            g.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(122, 149, 137);
+            g.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            g.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.FromArgb(247, 249, 248);
+            g.ColumnHeadersDefaultCellStyle.SelectionForeColor = Color.FromArgb(122, 149, 137);
+
+            g.DefaultCellStyle.BackColor = Color.White;
+            g.DefaultCellStyle.ForeColor = Color.FromArgb(24, 48, 42);
+            g.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 244, 240);
+            g.DefaultCellStyle.SelectionForeColor = Color.FromArgb(24, 48, 42);
+            g.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+
+            g.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 251, 250);
+
+            g.ThemeStyle.AlternatingRowsStyle.BackColor = Color.FromArgb(248, 251, 250);
+            g.ThemeStyle.BackColor = Color.White;
+            g.ThemeStyle.GridColor = Color.FromArgb(240, 244, 242);
+            g.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(247, 249, 248);
+            g.ThemeStyle.HeaderStyle.ForeColor = Color.FromArgb(122, 149, 137);
+            g.ThemeStyle.RowsStyle.BackColor = Color.White;
+            g.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(24, 48, 42);
+            g.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 244, 240);
+            g.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(24, 48, 42);
+
+            return g;
+        }
+
+        private void LoadIncidents()
+        {
+            try
+            {
+                DataTable dt = HospitalX.DAO.AuditLogDAO.GetIncidentsFromAudit();
+                dgvIncidents.DataSource = dt;
+                int n = dt != null ? dt.Rows.Count : 0;
+                btnRecover.Enabled = n > 0;
+                if (n > 0)
+                {
+                    lblStatus.Text = "Phát hiện " + n + " sự cố trong nhật ký kiểm toán. Nhấn 'Khôi phục ngay' để hoàn tác.";
+                    lblStatus.ForeColor = Color.FromArgb(153, 27, 27);
+                    pnlStatusAlert.FillColor = Color.FromArgb(254, 242, 242);
+                }
+                else
+                {
+                    lblStatus.Text = "Không phát hiện sự cố bất hợp pháp trong nhật ký kiểm toán. Không cần khôi phục.";
+                    lblStatus.ForeColor = Color.FromArgb(17, 94, 89);
+                    pnlStatusAlert.FillColor = Color.FromArgb(240, 253, 250);
+                }
+            }
+            catch (Exception ex)
+            {
+                btnRecover.Enabled = false;
+                lblStatus.Text = "Lỗi tải danh sách sự cố: " + ex.Message;
+                lblStatus.ForeColor = Color.FromArgb(153, 27, 27);
+                pnlStatusAlert.FillColor = Color.FromArgb(254, 242, 242);
+            }
+        }
+
+        private void LoadHistory()
+        {
+            try
+            {
+                dgvHistory.DataSource = HospitalX.DAO.AuditLogDAO.GetRecoveryHistory();
+            }
+            catch
+            {
+                // Lịch sử khôi phục là phụ trợ, lỗi ở đây không chặn chức năng chính.
+            }
+        }
+
+        private void BtnRecover_Click(object sender, EventArgs e)
+        {
+            DialogResult confirm = MessageBox.Show(
+                this,
+                "Hệ thống sẽ Flashback HSBA, HSBA_DV, DONTHUOC về trạng thái NGAY TRƯỚC sự cố "
+                + "dựa trên mốc thời gian trong nhật ký kiểm toán.\n\nTiếp tục khôi phục?",
+                "Xác nhận khôi phục",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes)
+            {
+                return;
+            }
+
+            btnRecover.Enabled = false;
+            btnReload.Enabled = false;
+            Cursor = Cursors.WaitCursor;
+            lblStatus.Text = "Đang khôi phục dữ liệu theo nhật ký kiểm toán...";
+            lblStatus.ForeColor = Color.FromArgb(30, 64, 175);
+            pnlStatusAlert.FillColor = Color.FromArgb(239, 246, 255);
+            Application.DoEvents();
+
+            string logId = "";
+            string status = "";
+            string message = "";
+            bool ok = false;
+
+            try
+            {
+                ok = HospitalX.DAO.AuditLogDAO.RunAutoRecoveryFromAudit(out logId, out status, out message);
+
+                lblStatus.Text = "[" + status + "] " + message;
+                lblStatus.ForeColor = ok ? Color.FromArgb(17, 94, 89) : Color.FromArgb(153, 27, 27);
+                pnlStatusAlert.FillColor = ok ? Color.FromArgb(240, 253, 250) : Color.FromArgb(254, 242, 242);
+
+                MessageBox.Show(
+                    this,
+                    message + "\n\nMã khôi phục: " + logId,
+                    "Kết quả khôi phục (" + status + ")",
+                    MessageBoxButtons.OK,
+                    ok ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                lblStatus.Text = "Lỗi khôi phục: " + ex.Message;
+                lblStatus.ForeColor = Color.FromArgb(153, 27, 27);
+                pnlStatusAlert.FillColor = Color.FromArgb(254, 242, 242);
+                MessageBox.Show(this, ex.Message, "Lỗi khôi phục", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                btnReload.Enabled = true;
+                LoadIncidents();
+                LoadHistory();
+            }
+        }
     }
 }

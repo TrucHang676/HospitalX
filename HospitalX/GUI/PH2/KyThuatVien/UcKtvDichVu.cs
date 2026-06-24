@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -268,12 +268,12 @@ namespace HospitalX.GUI.PH2.KyThuatVien
             // Columns widths
             dgv.Columns["colIndex"].FillWeight = 8;
             dgv.Columns["colIndex"].MinimumWidth = 62;
-            dgv.Columns["colPatient"].FillWeight = 24;
-            dgv.Columns["colPatient"].MinimumWidth = 130;
-            dgv.Columns["colService"].FillWeight = 24;
-            dgv.Columns["colService"].MinimumWidth = 130;
-            dgv.Columns["colMaHsba"].FillWeight = 18;
-            dgv.Columns["colMaHsba"].MinimumWidth = 90;
+            dgv.Columns["colPatient"].FillWeight = 35;
+            dgv.Columns["colPatient"].MinimumWidth = 200;
+            dgv.Columns["colService"].FillWeight = 20;
+            dgv.Columns["colService"].MinimumWidth = 120;
+            dgv.Columns["colMaHsba"].FillWeight = 15;
+            dgv.Columns["colMaHsba"].MinimumWidth = 80;
             dgv.Columns["colTime"].FillWeight = 20;
             dgv.Columns["colTime"].MinimumWidth = 110;
             dgv.Columns["colStatus"].FillWeight = 22;
