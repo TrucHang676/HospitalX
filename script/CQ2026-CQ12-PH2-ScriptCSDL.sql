@@ -5164,10 +5164,36 @@ BEGIN
         job_name  => v_jobname,
         version   => 'LATEST'
     );
-    DBMS_DATAPUMP.ADD_FILE(v_job, v_file,    v_dir, DBMS_DATAPUMP.KU$_FILE_TYPE_DUMP_FILE);
-    DBMS_DATAPUMP.ADD_FILE(v_job, v_logfile, v_dir, DBMS_DATAPUMP.KU$_FILE_TYPE_LOG_FILE);
-    DBMS_DATAPUMP.METADATA_FILTER(v_job, 'SCHEMA_EXPR', q'[IN ('ADMINHOS')]');
-    DBMS_DATAPUMP.SET_PARAMETER(v_job, 'TABLE_EXISTS_ACTION', 'TRUNCATE');
+    DBMS_DATAPUMP.ADD_FILE(
+        handle    => v_job,
+        filename  => v_file,
+        directory => v_dir,
+        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_DUMP_FILE
+    );
+    DBMS_DATAPUMP.ADD_FILE(
+        handle    => v_job,
+        filename  => v_logfile,
+        directory => v_dir,
+        filetype  => DBMS_DATAPUMP.KU$_FILE_TYPE_LOG_FILE
+    );
+    DBMS_DATAPUMP.METADATA_FILTER(
+        handle => v_job,
+        name   => 'SCHEMA_EXPR',
+        value  => q'[IN ('ADMINHOS')]'
+    );
+    -- Chi nap lai 5 bang du lieu y te -> KHONG dung toi BACKUP_LOG/RESTORE_LOG/
+    -- RECOVERY_LOG (giu nguyen lich su) va khong nap lai THONGBAO (tranh loi OLS).
+    DBMS_DATAPUMP.METADATA_FILTER(
+        handle      => v_job,
+        name        => 'NAME_EXPR',
+        value       => q'[IN ('BENHNHAN','NHANVIEN','HSBA','HSBA_DV','DONTHUOC')]',
+        object_path => 'TABLE'
+    );
+    DBMS_DATAPUMP.SET_PARAMETER(
+        handle => v_job,
+        name   => 'TABLE_EXISTS_ACTION',
+        value  => 'TRUNCATE'
+    );
     DBMS_DATAPUMP.START_JOB(v_job);
     DBMS_DATAPUMP.WAIT_FOR_JOB(v_job, v_state);
 
