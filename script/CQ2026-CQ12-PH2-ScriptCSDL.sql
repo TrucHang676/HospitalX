@@ -2214,13 +2214,29 @@ BEGIN
                     user_name   => ''ADMINHOS'',
                     privileges  => ''FULL''
                 );
+
+                SA_USER_ADMIN.SET_USER_LABELS(
+                    policy_name     => ''THONGBAO_OLS'',
+                    user_name       => ''ADMIN_PH2'',
+                    max_read_label  => ''BGD:TH,TK,TM:HCM,HP,HN'',
+                    max_write_label => ''BGD:TH,TK,TM:HCM,HP,HN'',
+                    min_write_label => ''NV'',
+                    def_label       => ''BGD:TH,TK,TM:HCM,HP,HN'',
+                    row_label       => ''BGD:TH,TK,TM:HCM,HP,HN''
+                );
+
+                SA_USER_ADMIN.SET_USER_PRIVS(
+                    policy_name => ''THONGBAO_OLS'',
+                    user_name   => ''ADMIN_PH2'',
+                    privileges  => ''FULL''
+                );
             END;';
-            DBMS_OUTPUT.PUT_LINE('Da gan FULL OLS cho ADMINHOS.');
+            DBMS_OUTPUT.PUT_LINE('Da gan FULL OLS cho ADMINHOS va ADMIN_PH2.');
         EXCEPTION WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Loi gan user labels cho ADMINHOS: ' || SQLERRM);
+            DBMS_OUTPUT.PUT_LINE('Loi gan user labels cho ADMINHOS/ADMIN_PH2: ' || SQLERRM);
         END;
     ELSE
-        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Skipping user labels for ADMINHOS.');
+        DBMS_OUTPUT.PUT_LINE('OLS is disabled. Skipping user labels for ADMINHOS/ADMIN_PH2.');
     END IF;
 END;
 /
@@ -2411,6 +2427,8 @@ GRANT SELECT ON ADMINHOS.VW_THONGBAO_APP TO U5;
 GRANT SELECT ON ADMINHOS.VW_THONGBAO_APP TO U6;
 GRANT SELECT ON ADMINHOS.VW_THONGBAO_APP TO U7;
 GRANT SELECT ON ADMINHOS.VW_THONGBAO_APP TO U8;
+GRANT SELECT ON ADMINHOS.VW_THONGBAO_APP TO admin_ph2;
+GRANT INSERT ON ADMINHOS.THONGBAO TO admin_ph2;
 
 -- =====================================================================
 -- PHẦN 11B. GÁN OLS LABEL VÀ CẤP QUYỀN XEM THÔNG BÁO
