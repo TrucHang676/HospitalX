@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -532,11 +532,11 @@ namespace HospitalX.GUI.PH2.DieuPhoiVien
 
         private string MapKhoaToCode(string text)
         {
-            if (string.IsNullOrEmpty(text)) return "";
+            if (string.IsNullOrEmpty(text) || text == "Chưa chỉ định khoa" || text == "Chưa chọn khoa") return "";
             string lower = text.ToLower();
-            if (lower.Contains("tim mạch") || lower.Contains("ktm")) return "KTM";
-            if (lower.Contains("thần kinh") || lower.Contains("ktk")) return "KTK";
-            if (lower.Contains("tiêu hóa") || lower.Contains("kth")) return "KTH";
+            if (lower.Contains("tim") || lower.Contains("ktm")) return "KTM";
+            if (lower.Contains("thần") || lower.Contains("than") || lower.Contains("ktk")) return "KTK";
+            if (lower.Contains("tiêu") || lower.Contains("tieu") || lower.Contains("kth")) return "KTH";
             
             int start = text.IndexOf('(');
             int end = text.IndexOf(')');
