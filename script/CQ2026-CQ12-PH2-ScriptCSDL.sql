@@ -3161,7 +3161,7 @@ BEGIN
         object_schema      => 'ADMINHOS',
         object_name        => 'HSBA_DV',
         policy_name        => 'FGA_HSBA_DV_UPDATE_OTHER_BATHOPPHAP',
-        audit_condition    => '1 = 1',
+        audit_condition    => '1 = 0',
         audit_column       => 'MAHSBA,LOAIDV,NGAYDV',
         statement_types    => 'UPDATE',
         audit_trail        => DBMS_FGA.DB + DBMS_FGA.EXTENDED,
@@ -5378,23 +5378,23 @@ BEGIN
     IF p_scn IS NULL THEN RETURN; END IF;
 
     -- (1) Hoàn tác UPDATE: chỉ cập nhật những dòng thực sự khác bản gốc
-    MERGE INTO ADMINHOS.HSBA cur
-    USING (SELECT * FROM ADMINHOS.HSBA AS OF SCN p_scn) snap
-    ON (cur.MAHSBA = snap.MAHSBA)
-    WHEN MATCHED THEN UPDATE SET
-        cur.MABN     = snap.MABN,
-        cur.NGAY     = snap.NGAY,
-        cur.CHANDOAN = snap.CHANDOAN,
-        cur.DIEUTRI  = snap.DIEUTRI,
-        cur.MABS     = snap.MABS,
-        cur.MAKHOA   = snap.MAKHOA,
-        cur.KETLUAN  = snap.KETLUAN
-    WHERE  NVL(cur.CHANDOAN,'#') <> NVL(snap.CHANDOAN,'#')
-        OR NVL(cur.DIEUTRI ,'#') <> NVL(snap.DIEUTRI ,'#')
-        OR NVL(cur.KETLUAN ,'#') <> NVL(snap.KETLUAN ,'#')
-        OR NVL(cur.MABS    ,'#') <> NVL(snap.MABS    ,'#')
-        OR NVL(cur.MAKHOA  ,'#') <> NVL(snap.MAKHOA  ,'#')
-        OR NVL(cur.MABN    ,'#') <> NVL(snap.MABN    ,'#');
+    -- Khong dung MERGE vi Oracle khong ho tro MERGE INTO tren bang co VPD/RLS policy.
+    UPDATE ADMINHOS.HSBA cur
+       SET (MABN, NGAY, CHANDOAN, DIEUTRI, MABS, MAKHOA, KETLUAN) =
+           (SELECT snap.MABN, snap.NGAY, snap.CHANDOAN, snap.DIEUTRI,
+                   snap.MABS, snap.MAKHOA, snap.KETLUAN
+            FROM ADMINHOS.HSBA AS OF SCN p_scn snap
+            WHERE snap.MAHSBA = cur.MAHSBA)
+     WHERE EXISTS (
+           SELECT 1
+           FROM ADMINHOS.HSBA AS OF SCN p_scn snap
+           WHERE snap.MAHSBA = cur.MAHSBA
+             AND (   NVL(cur.CHANDOAN,'#') <> NVL(snap.CHANDOAN,'#')
+                  OR NVL(cur.DIEUTRI ,'#') <> NVL(snap.DIEUTRI ,'#')
+                  OR NVL(cur.KETLUAN ,'#') <> NVL(snap.KETLUAN ,'#')
+                  OR NVL(cur.MABS    ,'#') <> NVL(snap.MABS    ,'#')
+                  OR NVL(cur.MAKHOA  ,'#') <> NVL(snap.MAKHOA  ,'#')
+                  OR NVL(cur.MABN    ,'#') <> NVL(snap.MABN    ,'#')));
     p_updated := SQL%ROWCOUNT;
 
     -- (2) Hoàn tác DELETE: dòng có trong bản gốc nhưng đã biến mất -> chèn lại
@@ -5429,16 +5429,22 @@ BEGIN
     IF p_scn IS NULL THEN RETURN; END IF;
 
     -- (1) Hoàn tác UPDATE (MAKTV / KETQUA)
-    MERGE INTO ADMINHOS.HSBA_DV cur
-    USING (SELECT * FROM ADMINHOS.HSBA_DV AS OF SCN p_scn) snap
-    ON (    cur.MAHSBA = snap.MAHSBA
-        AND cur.LOAIDV = snap.LOAIDV
-        AND cur.NGAYDV = snap.NGAYDV)
-    WHEN MATCHED THEN UPDATE SET
-        cur.MAKTV  = snap.MAKTV,
-        cur.KETQUA = snap.KETQUA
-    WHERE  NVL(cur.MAKTV ,'#') <> NVL(snap.MAKTV ,'#')
-        OR NVL(cur.KETQUA,'#') <> NVL(snap.KETQUA,'#');
+    -- Khong dung MERGE vi Oracle khong ho tro MERGE INTO tren bang co VPD/RLS policy.
+    UPDATE ADMINHOS.HSBA_DV cur
+       SET (MAKTV, KETQUA) =
+           (SELECT snap.MAKTV, snap.KETQUA
+            FROM ADMINHOS.HSBA_DV AS OF SCN p_scn snap
+            WHERE snap.MAHSBA = cur.MAHSBA
+              AND snap.LOAIDV = cur.LOAIDV
+              AND snap.NGAYDV = cur.NGAYDV)
+     WHERE EXISTS (
+           SELECT 1
+           FROM ADMINHOS.HSBA_DV AS OF SCN p_scn snap
+           WHERE snap.MAHSBA = cur.MAHSBA
+             AND snap.LOAIDV = cur.LOAIDV
+             AND snap.NGAYDV = cur.NGAYDV
+             AND (   NVL(cur.MAKTV ,'#') <> NVL(snap.MAKTV ,'#')
+                  OR NVL(cur.KETQUA,'#') <> NVL(snap.KETQUA,'#')));
     p_updated := SQL%ROWCOUNT;
 
     -- (2) Hoàn tác DELETE -> chèn lại
@@ -5475,14 +5481,21 @@ BEGIN
     IF p_scn IS NULL THEN RETURN; END IF;
 
     -- (1) Hoàn tác UPDATE (LIEUDUNG là cột duy nhất ngoài khóa)
-    MERGE INTO ADMINHOS.DONTHUOC cur
-    USING (SELECT * FROM ADMINHOS.DONTHUOC AS OF SCN p_scn) snap
-    ON (    cur.MAHSBA   = snap.MAHSBA
-        AND cur.NGAYDT   = snap.NGAYDT
-        AND cur.TENTHUOC = snap.TENTHUOC)
-    WHEN MATCHED THEN UPDATE SET
-        cur.LIEUDUNG = snap.LIEUDUNG
-    WHERE  NVL(cur.LIEUDUNG,'#') <> NVL(snap.LIEUDUNG,'#');
+    -- Khong dung MERGE vi Oracle khong ho tro MERGE INTO tren bang co VPD/RLS policy.
+    UPDATE ADMINHOS.DONTHUOC cur
+       SET LIEUDUNG =
+           (SELECT snap.LIEUDUNG
+            FROM ADMINHOS.DONTHUOC AS OF SCN p_scn snap
+            WHERE snap.MAHSBA = cur.MAHSBA
+              AND snap.NGAYDT = cur.NGAYDT
+              AND snap.TENTHUOC = cur.TENTHUOC)
+     WHERE EXISTS (
+           SELECT 1
+           FROM ADMINHOS.DONTHUOC AS OF SCN p_scn snap
+           WHERE snap.MAHSBA = cur.MAHSBA
+             AND snap.NGAYDT = cur.NGAYDT
+             AND snap.TENTHUOC = cur.TENTHUOC
+             AND NVL(cur.LIEUDUNG,'#') <> NVL(snap.LIEUDUNG,'#'));
     p_updated := SQL%ROWCOUNT;
 
     -- (2) Hoàn tác DELETE
@@ -5665,7 +5678,7 @@ BEGIN DBMS_RLS.ENABLE_POLICY('ADMINHOS', 'HSBA', 'VPD_YC1C3_HSBA_BS', FALSE); EN
 GRANT UPDATE ON ADMINHOS.HSBA TO BS0002;
 
 -- (c) [BS0002] KẺ TẤN CÔNG sửa trộm hồ sơ của BS0001 (mật khẩu mặc định: Hos@123456)
-CONNECT BS0002/Hos@123456@localhost:1521/PDBHOSX
+CONNECT BS0002/"Hos@123456"@localhost:1521/PDBHOSX
 UPDATE ADMINHOS.HSBA
    SET CHANDOAN = N'BI SUA TRAI PHEP', KETLUAN = N'PHA HOAI'
  WHERE MAHSBA = 'HSBA00101';
@@ -5697,6 +5710,7 @@ END;
 -- (g) [adminHos] Kiểm tra: dữ liệu đã trở về như cũ
 SELECT MAHSBA, CHANDOAN, KETLUAN FROM ADMINHOS.HSBA WHERE MAHSBA = 'HSBA00101';
 */
+
 
 
 -- =======================================================================
@@ -5867,4 +5881,3 @@ WHERE  DIRECTORY_NAME IN ('HOSPITALX_BACKUP_DIR','DATA_PUMP_DIR')
 ORDER BY DIRECTORY_NAME;
 
 EXIT;
-
