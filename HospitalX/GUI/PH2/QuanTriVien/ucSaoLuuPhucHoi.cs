@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -162,17 +162,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             {
                 System.Diagnostics.Debug.WriteLine("Warning: Loi load backup history: " + ex.Message);
             }
-
-            // Du lieu mau neu chua co ban sao luu nao
-            if (_backups.Count == 0)
-            {
-                _backups.Add(new BackupRecord("BK-20260524-F",   new DateTime(2026, 5, 24, 0, 1, 0),  "FULL", "AUTO",   "8.4 GB", "48m 10s", true));
-                _backups.Add(new BackupRecord("BK-20260523-I18",  new DateTime(2026, 5, 23, 18, 0, 0), "INCR", "AUTO",   "2.1 GB", "13m 40s", true));
-                _backups.Add(new BackupRecord("BK-20260523-I12",  new DateTime(2026, 5, 23, 12, 0, 0), "INCR", "AUTO",   "1.7 GB", "10m 58s", true));
-                _backups.Add(new BackupRecord("BK-20260523-F",    new DateTime(2026, 5, 23, 0, 1, 0),  "FULL", "AUTO",   "8.3 GB", "47m 05s", true));
-                _backups.Add(new BackupRecord("BK-20260522-M01",  new DateTime(2026, 5, 22, 9, 30, 0), "FULL", "MANUAL", "8.2 GB", "46m 12s", true));
-                _backups.Add(new BackupRecord("BK-20260521-I18",  new DateTime(2026, 5, 21, 18, 0, 0), "INCR", "AUTO",   "-",       "-",       false));
-            }
+            // Chi lay du lieu tu database, khong dung du lieu gia lap
         }
 
         // -------------------------------------------------------------------
