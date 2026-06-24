@@ -14,6 +14,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         private Timer _restoreTimer;
         private int _backupPercent;
         private int _restoreStep;
+        private int _restorePercent;
         private int _selectedRestoreIndex;
 
         public ucSaoLuuPhucHoi()
@@ -693,21 +694,124 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             msgDialog.Icon = MessageDialogIcon.Warning;
             msgDialog.Buttons = MessageDialogButtons.YesNo;
             msgDialog.Caption = "Xác nhận phục hồi CSDL";
-            msgDialog.Text = "Phục hồi về bản " + selected.Id + " sẽ dừng kết nối và không thể hoàn tác. Tiếp tục?";
+            msgDialog.Text = "Phục hồi dữ liệu từ bản " + selected.Id + " (Data Pump import) sẽ nạp đè dữ liệu hiện tại. Tiếp tục?";
             if (msgDialog.Show() != DialogResult.Yes)
             {
                 return;
             }
 
             _restoreStep = 0;
+            _restorePercent = 0;
             progressRestore.Value = 0;
             lblRestorePercent.Text = "0%";
             lblRestoreStatus.Text = "Running";
             txtConsole.Text = "";
             ResetStepLabels();
+            btnStartRestore.Enabled = false;
             _restoreTimer.Start();
             UpdateStartRestoreButtonState();
-            AppendConsole("RMAN restore initiated - target " + selected.Id);
+            AppendConsole("Bắt đầu phục hồi dữ liệu từ bản backup " + selected.Id + " (Data Pump IMPORT)...");
+
+            string backupId = selected.Id;
+
+            // Chạy Data Pump IMPORT thật trong background thread (không treo UI)
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                string logId = null;
+                string status = null;
+                string message = null;
+                Exception caughtEx = null;
+
+                try
+                {
+                    var pBackupId = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_backup_id", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2)
+                    { Value = backupId, Direction = System.Data.ParameterDirection.Input };
+
+                    var pLogId = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_log_id", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 50)
+                    { Direction = System.Data.ParameterDirection.Output };
+
+                    var pStatus = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_status", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 20)
+                    { Direction = System.Data.ParameterDirection.Output };
+
+                    var pMessage = new Oracle.ManagedDataAccess.Client.OracleParameter(
+                        "p_message", Oracle.ManagedDataAccess.Client.OracleDbType.Varchar2, 1000)
+                    { Direction = System.Data.ParameterDirection.Output };
+
+                    HospitalX.DAO.DataProvider.Instance.ExecuteNonQuery(
+                        "ADMINHOS.SP_RUN_DATAPUMP_RESTORE",
+                        new Oracle.ManagedDataAccess.Client.OracleParameter[] { pBackupId, pLogId, pStatus, pMessage },
+                        true);
+
+                    logId   = pLogId.Value?.ToString();
+                    status  = pStatus.Value?.ToString() ?? "FAILED";
+                    message = pMessage.Value?.ToString() ?? "";
+                }
+                catch (Exception ex)
+                {
+                    status   = "FAILED";
+                    caughtEx = ex;
+                    message  = ex.Message;
+                }
+
+                // Cập nhật UI trên main thread
+                this.Invoke((System.Action)(() =>
+                {
+                    _restoreTimer.Stop();
+                    btnStartRestore.Enabled = true;
+
+                    bool ok = status == "SUCCESS" || status == "COMPLETED_WITH_WARN";
+                    if (ok)
+                    {
+                        _restorePercent = 100;
+                        progressRestore.Value = 100;
+                        lblRestorePercent.Text = "100%";
+                        lblRestoreStatus.Text = "Done";
+                        for (int i = 1; i <= 5; i++) SetStepDone(i, StepText(i));
+                        AppendConsole("[" + status + "] " + message);
+                        AppendConsole("Hoàn tất phục hồi dữ liệu.");
+
+                        LoadBackupHistoryFromDB();
+                        RenderHistory();
+                        RenderRestoreCards();
+
+                        MessageBox.Show(
+                            "Phục hồi hoàn tất!\n" + message,
+                            "Phục hồi CSDL", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        lblRestoreStatus.Text = "Failed";
+                        lblRestorePercent.Text = "Lỗi";
+                        string errMsg = caughtEx != null ? caughtEx.Message : message;
+                        AppendConsole("LỖI: " + errMsg);
+
+                        MessageBox.Show(
+                            "Phục hồi thất bại!\n\n" + errMsg + "\n\n" +
+                            "Kiểm tra:\n" +
+                            "1. Bản backup đã chọn có file .dmp thật trong thư mục Oracle không?\n" +
+                            "2. User có quyền DATAPUMP_IMP_FULL_DATABASE và READ/WRITE trên directory?\n" +
+                            "3. Bản backup phải ở trạng thái SUCCESS trong BACKUP_LOG.",
+                            "Lỗi phục hồi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+
+                    UpdateStartRestoreButtonState();
+                }));
+            });
+        }
+
+        private static string StepText(int step)
+        {
+            switch (step)
+            {
+                case 1: return "Xác thực bản backup";
+                case 2: return "Khởi động DBMS_DATAPUMP (IMPORT)";
+                case 3: return "Tạm vô hiệu khóa ngoại";
+                case 4: return "Nạp lại dữ liệu (TRUNCATE + load)";
+                default: return "Bật lại khóa ngoại & hoàn tất";
+            }
         }
 
         private BackupRecord GetSelectedRestore()
@@ -718,30 +822,29 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void RestoreTimer_Tick(object sender, EventArgs e)
         {
-            string[] steps =
+            // Hiển thị tiến trình trong khi Oracle Data Pump IMPORT đang chạy nền
+            // (tối đa 90%, 10% còn lại dành cho khi job hoàn tất).
+            if (_restorePercent < 90)
             {
-                "Xác thực bản backup",
-                "Tắt DB / MOUNT mode",
-                "Restore datafiles",
-                "Recover archive log",
-                "OPEN RESETLOGS"
-            };
+                _restorePercent = Math.Min(90, _restorePercent + 5);
+            }
+            progressRestore.Value = _restorePercent;
+            lblRestorePercent.Text = _restorePercent + "%";
 
-            if (_restoreStep >= steps.Length)
+            int step = Math.Min(5, _restorePercent / 18 + 1);
+            if (step > _restoreStep)
             {
-                _restoreTimer.Stop();
-                lblRestoreStatus.Text = "Done";
-                UpdateStartRestoreButtonState();
-                AppendConsole("Hoàn tất phục hồi CSDL.");
-                return;
+                _restoreStep = step;
+                SetStepDone(_restoreStep, StepText(_restoreStep));
+                AppendConsole(StepText(_restoreStep) + "...");
             }
 
-            int percent = (_restoreStep + 1) * 20;
-            progressRestore.Value = percent;
-            lblRestorePercent.Text = percent + "%";
-            SetStepDone(_restoreStep + 1, steps[_restoreStep]);
-            AppendConsole("Hoàn thành: " + steps[_restoreStep]);
-            _restoreStep++;
+            if (_restorePercent < 20)
+                lblRestoreStatus.Text = "Đang xác thực bản backup...";
+            else if (_restorePercent < 55)
+                lblRestoreStatus.Text = "Đang nạp lại dữ liệu (Data Pump import)...";
+            else
+                lblRestoreStatus.Text = "Đang hoàn tất phục hồi...";
         }
 
         private void PrepareMessageDialog()
@@ -752,11 +855,11 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
         private void ResetStepLabels()
         {
-            lblStep1.Text = "1. Xác thực bản backup";
-            lblStep2.Text = "2. Tắt DB / MOUNT mode";
-            lblStep3.Text = "3. Restore datafiles";
-            lblStep4.Text = "4. Recover archive log";
-            lblStep5.Text = "5. OPEN RESETLOGS";
+            lblStep1.Text = "1. " + StepText(1);
+            lblStep2.Text = "2. " + StepText(2);
+            lblStep3.Text = "3. " + StepText(3);
+            lblStep4.Text = "4. " + StepText(4);
+            lblStep5.Text = "5. " + StepText(5);
             lblStep1.ForeColor = lblStep2.ForeColor = lblStep3.ForeColor = lblStep4.ForeColor = lblStep5.ForeColor = Color.FromArgb(122, 149, 137);
         }
 

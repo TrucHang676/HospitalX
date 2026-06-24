@@ -5066,8 +5066,168 @@ END;
 /
 
 -- -------------------------------------------------------
+-- BƯỚC 6B: PHỤC HỒI DỮ LIỆU TỪ BẢN BACKUP (DATA PUMP IMPORT)
+-- Dùng cho nút "Phục hồi" trên app. Nạp lại DỮ LIỆU schema ADMINHOS từ
+-- file .dmp đã chọn, GIỮ NGUYÊN cấu trúc + chính sách bảo mật
+-- (VPD/OLS/trigger/view) bằng TABLE_EXISTS_ACTION = TRUNCATE.
+-- Tạm vô hiệu khóa ngoại trong lúc nạp để tránh lỗi thứ tự truncate.
+-- -------------------------------------------------------
+BEGIN EXECUTE IMMEDIATE 'DROP SEQUENCE ADMINHOS.SEQ_RESTORE_LOG'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+BEGIN EXECUTE IMMEDIATE 'DROP TABLE ADMINHOS.RESTORE_LOG CASCADE CONSTRAINTS PURGE'; EXCEPTION WHEN OTHERS THEN NULL; END;
+/
+
+CREATE TABLE ADMINHOS.RESTORE_LOG (
+    ID         VARCHAR2(50)  PRIMARY KEY,
+    START_TIME TIMESTAMP     DEFAULT CURRENT_TIMESTAMP,
+    END_TIME   TIMESTAMP,
+    BACKUP_ID  VARCHAR2(50),
+    DUMP_FILE  VARCHAR2(200),
+    DIR_NAME   VARCHAR2(100),
+    STATUS     VARCHAR2(20)  DEFAULT 'RUNNING',
+    MESSAGE    VARCHAR2(1000),
+    RUN_BY     VARCHAR2(50)  DEFAULT SYS_CONTEXT('USERENV','SESSION_USER')
+)
+/
+CREATE SEQUENCE ADMINHOS.SEQ_RESTORE_LOG START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE
+/
+
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_RUN_DATAPUMP_RESTORE (
+    p_backup_id IN  VARCHAR2,
+    p_log_id    OUT VARCHAR2,
+    p_status    OUT VARCHAR2,
+    p_message   OUT VARCHAR2
+) AUTHID DEFINER
+AS
+    v_job      NUMBER;
+    v_state    VARCHAR2(30);
+    v_file     VARCHAR2(200);
+    v_dir      VARCHAR2(100);
+    v_logfile  VARCHAR2(200);
+    v_jobname  VARCHAR2(30);
+    v_id       VARCHAR2(50);
+    v_ts       VARCHAR2(20);
+    v_err      VARCHAR2(1000);
+
+    PROCEDURE set_fk(p_enable IN BOOLEAN) IS
+    BEGIN
+        FOR c IN (
+            SELECT table_name, constraint_name
+            FROM   USER_CONSTRAINTS
+            WHERE  constraint_type = 'R'
+              AND  table_name IN ('HSBA','HSBA_DV','DONTHUOC','BENHNHAN','NHANVIEN')
+        ) LOOP
+            BEGIN
+                IF p_enable THEN
+                    EXECUTE IMMEDIATE 'ALTER TABLE '||c.table_name
+                        ||' ENABLE NOVALIDATE CONSTRAINT '||c.constraint_name;
+                ELSE
+                    EXECUTE IMMEDIATE 'ALTER TABLE '||c.table_name
+                        ||' DISABLE CONSTRAINT '||c.constraint_name;
+                END IF;
+            EXCEPTION WHEN OTHERS THEN NULL;
+            END;
+        END LOOP;
+    END set_fk;
+BEGIN
+    -- 1. Lấy thông tin bản backup từ BACKUP_LOG
+    BEGIN
+        SELECT FILE_NAME, DIR_NAME
+        INTO   v_file, v_dir
+        FROM   ADMINHOS.BACKUP_LOG
+        WHERE  ID = p_backup_id AND STATUS = 'SUCCESS' AND ROWNUM = 1;
+    EXCEPTION WHEN NO_DATA_FOUND THEN
+        p_status  := 'FAILED';
+        p_message := 'Khong tim thay ban sao luu THANH CONG co ma: ' || NVL(p_backup_id, '(null)');
+        p_log_id  := NULL;
+        RETURN;
+    END;
+
+    v_ts      := TO_CHAR(SYSDATE, 'YYYYMMDD_HH24MISS');
+    v_id      := 'RS-' || TO_CHAR(SYSDATE, 'YYYYMMDD') || '-'
+                 || LPAD(TO_CHAR(ADMINHOS.SEQ_RESTORE_LOG.NEXTVAL), 4, '0');
+    p_log_id  := v_id;
+    v_logfile := 'HX_RESTORE_' || v_ts || '.log';
+    v_jobname := 'HXIMP' || TO_CHAR(SYSDATE, 'MMDDHH24MISS');
+
+    INSERT INTO ADMINHOS.RESTORE_LOG (ID, START_TIME, BACKUP_ID, DUMP_FILE, DIR_NAME, STATUS)
+    VALUES (v_id, SYSTIMESTAMP, p_backup_id, v_file, v_dir, 'RUNNING');
+    COMMIT;
+
+    -- 2. Tạm vô hiệu khóa ngoại để TRUNCATE không vướng thứ tự cha/con
+    set_fk(FALSE);
+
+    -- 3. Data Pump IMPORT (chỉ nạp lại DỮ LIỆU, giữ cấu trúc + bảo mật)
+    v_job := DBMS_DATAPUMP.OPEN(
+        operation => 'IMPORT',
+        job_mode  => 'SCHEMA',
+        job_name  => v_jobname,
+        version   => 'LATEST'
+    );
+    DBMS_DATAPUMP.ADD_FILE(v_job, v_file,    v_dir, DBMS_DATAPUMP.KU$_FILE_TYPE_DUMP_FILE);
+    DBMS_DATAPUMP.ADD_FILE(v_job, v_logfile, v_dir, DBMS_DATAPUMP.KU$_FILE_TYPE_LOG_FILE);
+    DBMS_DATAPUMP.METADATA_FILTER(v_job, 'SCHEMA_EXPR', q'[IN ('ADMINHOS')]');
+    DBMS_DATAPUMP.SET_PARAMETER(v_job, 'TABLE_EXISTS_ACTION', 'TRUNCATE');
+    DBMS_DATAPUMP.START_JOB(v_job);
+    DBMS_DATAPUMP.WAIT_FOR_JOB(v_job, v_state);
+
+    -- 4. Bật lại khóa ngoại
+    set_fk(TRUE);
+
+    IF v_state = 'COMPLETED' THEN
+        p_status  := 'SUCCESS';
+        p_message := 'Phuc hoi du lieu thanh cong tu file ' || v_file;
+    ELSE
+        p_status  := 'COMPLETED_WITH_WARN';
+        p_message := 'Import ket thuc voi trang thai: ' || v_state
+                  || '. Xem chi tiet trong ' || v_logfile;
+    END IF;
+
+    UPDATE ADMINHOS.RESTORE_LOG
+       SET STATUS = p_status, END_TIME = SYSTIMESTAMP, MESSAGE = p_message
+     WHERE ID = v_id;
+    COMMIT;
+
+    BEGIN DBMS_DATAPUMP.DETACH(v_job); EXCEPTION WHEN OTHERS THEN NULL; END;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        v_err := SUBSTR(SQLERRM, 1, 900);
+        BEGIN set_fk(TRUE); EXCEPTION WHEN OTHERS THEN NULL; END;   -- luôn bật lại FK
+        p_status  := 'FAILED';
+        p_message := v_err;
+        BEGIN
+            UPDATE ADMINHOS.RESTORE_LOG
+               SET STATUS = 'FAILED', END_TIME = SYSTIMESTAMP, MESSAGE = v_err
+             WHERE ID = v_id;
+            COMMIT;
+        EXCEPTION WHEN OTHERS THEN NULL;
+        END;
+        BEGIN DBMS_DATAPUMP.STOP_JOB(v_job, 1, 0); EXCEPTION WHEN OTHERS THEN NULL; END;
+END SP_RUN_DATAPUMP_RESTORE;
+/
+SHOW ERRORS PROCEDURE ADMINHOS.SP_RUN_DATAPUMP_RESTORE;
+
+CREATE OR REPLACE PROCEDURE ADMINHOS.SP_GET_RESTORE_HISTORY (
+    p_cursor OUT SYS_REFCURSOR
+) AS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT ID, START_TIME, BACKUP_ID, DUMP_FILE, STATUS, MESSAGE, RUN_BY
+        FROM   ADMINHOS.RESTORE_LOG
+        ORDER BY START_TIME DESC;
+END;
+/
+
+-- -------------------------------------------------------
 -- BƯỚC 7: Cấp đầy đủ quyền
 -- -------------------------------------------------------
+GRANT EXECUTE ON ADMINHOS.SP_RUN_DATAPUMP_RESTORE   TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_RUN_DATAPUMP_RESTORE   TO DBA;
+GRANT EXECUTE ON ADMINHOS.SP_GET_RESTORE_HISTORY    TO admin_ph2;
+GRANT EXECUTE ON ADMINHOS.SP_GET_RESTORE_HISTORY    TO DBA;
+GRANT SELECT  ON ADMINHOS.RESTORE_LOG               TO admin_ph2;
+GRANT SELECT  ON ADMINHOS.RESTORE_LOG               TO DBA;
 GRANT EXECUTE ON ADMINHOS.SP_RUN_DATAPUMP_BACKUP    TO admin_ph2;
 GRANT EXECUTE ON ADMINHOS.SP_RUN_DATAPUMP_BACKUP    TO DBA;
 GRANT EXECUTE ON ADMINHOS.SP_GET_BACKUP_HISTORY_APP TO admin_ph2;
