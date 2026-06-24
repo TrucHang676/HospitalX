@@ -226,6 +226,13 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                     logId   = pLogId.Value?.ToString();
                     status  = pStatus.Value?.ToString() ?? "FAILED";
                     message = pMessage.Value?.ToString() ?? "";
+
+                    if (!string.IsNullOrEmpty(message))
+                    {
+                        message = message.Replace("Sao l?u th?nh c?ng!", "Sao lưu thành công!")
+                                         .Replace("Th? m?c Oracle:", "Thư mục Oracle!")
+                                         .Replace("Job k?t th?c v?i tr?ng th?i:", "Job kết thúc với trạng thái:");
+                    }
                 }
                 catch (Exception ex)
                 {
