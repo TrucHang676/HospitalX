@@ -1,4 +1,4 @@
-﻿using Guna.UI2.WinForms;
+using Guna.UI2.WinForms;
 using System;
 using System.Windows.Forms;
 
@@ -40,8 +40,12 @@ namespace HospitalX.GUI.PH2.BacSi
             _originalTreatment = txtTreatment.Text.Trim();
             _originalConclusion = txtConclusion.Text.Trim();
             lstServices.Items.Clear();
+            lstServices.HorizontalScrollbar = true;
+            lstServices.HorizontalExtent = 1200;
             lstServices.Items.AddRange(_record.Services.ToArray());
             lstPrescriptions.Items.Clear();
+            lstPrescriptions.HorizontalScrollbar = true;
+            lstPrescriptions.HorizontalExtent = 1200;
             lstPrescriptions.Items.AddRange(_record.Prescriptions.ToArray());
             UpdateSaveButtonState();
             _isLoadingRecord = false;

@@ -4035,14 +4035,23 @@ BEGIN
             SELECT COUNT(*)
             FROM ADMINHOS.HSBA HS
             WHERE HS.MABN = BN.MABN
+              AND HS.MABS = SYS_CONTEXT('USERENV','SESSION_USER')
         ) AS SO_HSBA,
         (
             SELECT COUNT(*)
             FROM ADMINHOS.DONTHUOC DT
             JOIN ADMINHOS.HSBA HS ON DT.MAHSBA = HS.MAHSBA
             WHERE HS.MABN = BN.MABN
+              AND HS.MABS = SYS_CONTEXT('USERENV','SESSION_USER')
         ) AS SO_DONTHUOC
     FROM ADMINHOS.BENHNHAN BN
+    -- Chi lay benh nhan CO HSBA do chinh bac si nay phu trach (loc tuong minh
+    -- theo SESSION_USER -> dung nghiep vu + nhanh, khong quet 100k benh nhan).
+    WHERE BN.MABN IN (
+        SELECT HS.MABN
+        FROM   ADMINHOS.HSBA HS
+        WHERE  HS.MABS = SYS_CONTEXT('USERENV','SESSION_USER')
+    )
     ORDER BY BN.MABN;
 END;
 /
@@ -4206,6 +4215,7 @@ BEGIN
         HS.KETLUAN
     FROM ADMINHOS.HSBA HS
     LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
+    WHERE HS.MABS = SYS_CONTEXT('USERENV','SESSION_USER')
     ORDER BY HS.NGAY DESC;
 END;
 /
