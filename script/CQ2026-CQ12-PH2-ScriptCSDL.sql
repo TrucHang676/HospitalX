@@ -1,4 +1,4 @@
--- ========================================================
+﻿-- ========================================================
 -- THÔNG TIN CHUNG
 -- ========================================================
 
@@ -1171,7 +1171,6 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
             RETURN 'COSO = (
                 SELECT DP.COSO
                 FROM ADMINHOS.VW_NHANVIEN_SELF DP
-                WHERE DP.VAITRO = N''Điều phối viên''
             )';
         END IF;
 
@@ -1189,7 +1188,6 @@ CREATE OR REPLACE PACKAGE BODY ADMINHOS.PKG_VPD_YC1C3 AS
             RETURN 'COSO = (
                 SELECT DP.COSO
                 FROM ADMINHOS.VW_NHANVIEN_SELF DP
-                WHERE DP.VAITRO = N''Điều phối viên''
             )';
         END IF;
 
@@ -1583,12 +1581,12 @@ SELECT
     NV.VAITRO,
     NV.COSO
 FROM ADMINHOS.NHANVIEN NV
-WHERE NV.VAITRO IN (N'Bác sĩ/Y sĩ', N'Kỹ thuật viên')
+WHERE NV.VAITRO IN (UNISTR('B\00e1c s\0129/Y s\0129'), UNISTR('K\1ef9 thu\1eadt vi\00ean'))
   AND NV.COSO = (
         SELECT DP.COSO
         FROM ADMINHOS.NHANVIEN DP
         WHERE DP.MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
-          AND DP.VAITRO = N'Điều phối viên'
+          AND DP.VAITRO = UNISTR('\0110i\1ec1u ph\1ed1i vi\00ean')
   );
 /
 
@@ -1597,7 +1595,7 @@ BEGIN
     FOR r IN (
         SELECT MANV
         FROM ADMINHOS.NHANVIEN
-        WHERE VAITRO = N'Điều phối viên'
+        WHERE VAITRO = UNISTR('\0110i\1ec1u ph\1ed1i vi\00ean')
     ) LOOP
 
         -- ------------------------------------------------------------
@@ -1666,7 +1664,7 @@ BEGIN
     FOR r IN (
         SELECT MANV
         FROM ADMINHOS.NHANVIEN
-        WHERE VAITRO = N'Bác sĩ/Y sĩ'
+        WHERE VAITRO = UNISTR('B\00e1c s\0129/Y s\0129')
     ) LOOP
 
         -- ------------------------------------------------------------
@@ -1864,15 +1862,13 @@ GRANT SELECT ON V_$OPTION TO ADMINHOS;
 -- Dọn public synonym cũ nếu trước đó đã lỡ tạo
 BEGIN
     EXECUTE IMMEDIATE 'DROP PUBLIC SYNONYM THONGBAO';
-EXCEPTION
-    WHEN OTHERS THEN NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
 END;
 /
 
 BEGIN
     EXECUTE IMMEDIATE 'DROP PUBLIC SYNONYM VW_THONGBAO_APP';
-EXCEPTION
-    WHEN OTHERS THEN NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
 END;
 /
 
@@ -1887,26 +1883,21 @@ BEGIN
             drop_column => TRUE
         );
     END;';
-EXCEPTION
-    WHEN OTHERS THEN NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
 END;
 /
 
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
--- Xóa view cũ nếu tồn tại
+-- Xóa view cũ của ADMINHOS nếu tồn tại
 BEGIN
     EXECUTE IMMEDIATE 'DROP VIEW ADMINHOS.VW_THONGBAO_APP';
-EXCEPTION
-    WHEN OTHERS THEN NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
 END;
 /
 
--- Xóa bảng cũ nếu tồn tại
+-- Xóa bảng cũ của ADMINHOS nếu tồn tại
 BEGIN
     EXECUTE IMMEDIATE 'DROP TABLE ADMINHOS.THONGBAO CASCADE CONSTRAINTS PURGE';
-EXCEPTION
-    WHEN OTHERS THEN NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
 END;
 /
 
@@ -1919,16 +1910,14 @@ BEGIN
             drop_column => TRUE
         );
     END;';
-EXCEPTION
-    WHEN OTHERS THEN NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
 END;
 /
 
 -- Xóa role policy cũ nếu còn sót lại
 BEGIN
     EXECUTE IMMEDIATE 'DROP ROLE THONGBAO_OLS_DBA';
-EXCEPTION
-    WHEN OTHERS THEN NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
 END;
 /
 
@@ -1945,11 +1934,6 @@ BEGIN
 END;
 /
 
-SET DEFINE ON
-CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
-SET DEFINE OFF
-ALTER SESSION SET CONTAINER = PDBHOSX;
-
 -- Cấu hình và kích hoạt OLS trong PDB nếu chưa chạy
 DECLARE
     v_ols_enabled VARCHAR2(10) := 'FALSE';
@@ -1964,7 +1948,6 @@ BEGIN
     IF v_ols_enabled = 'TRUE' THEN
         -- Kiểm tra OLS đã cấu hình trong PDB chưa
         BEGIN
-            -- Lưu ý: DBA_OLS_STATUS có thể không tồn tại nếu OLS chưa được load, ta bắt exception
             EXECUTE IMMEDIATE 'SELECT STATUS FROM DBA_OLS_STATUS WHERE NAME = ''OLS_CONFIGURE_STATUS''' INTO v_ols_status;
         EXCEPTION WHEN OTHERS THEN
             v_ols_status := 'FALSE';
@@ -1998,9 +1981,10 @@ BEGIN
 END;
 /
 
--- Cấp quyền dùng các package OLS cho ADMINHOS (Tách riêng để dễ debug)
+-- Cấp quyền dùng các package OLS cho ADMINHOS và đảm bảo role THONGBAO_OLS_DBA tồn tại
 DECLARE
     v_ols_enabled VARCHAR2(10) := 'FALSE';
+    v_count NUMBER;
 BEGIN
     BEGIN
         SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
@@ -2009,20 +1993,34 @@ BEGIN
     END;
 
     IF v_ols_enabled = 'TRUE' THEN
-        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SYSDBA TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_SYSDBA: ' || SQLERRM); END;
-        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_COMPONENTS TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_COMPONENTS: ' || SQLERRM); END;
-        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_LABEL_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_LABEL_ADMIN: ' || SQLERRM); END;
-        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_POLICY_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_POLICY_ADMIN: ' || SQLERRM); END;
-        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_USER_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_USER_ADMIN: ' || SQLERRM); END;
-        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SESSION TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_SESSION: ' || SQLERRM); END;
-        BEGIN EXECUTE IMMEDIATE 'GRANT LBAC_DBA TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap role LBAC_DBA: ' || SQLERRM); END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SYSDBA TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_COMPONENTS TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_LABEL_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_POLICY_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_USER_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SESSION TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT LBAC_DBA TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN NULL; END;
+        
+        -- Cấp role policy cho ADMINHOS
+        BEGIN
+            EXECUTE IMMEDIATE 'GRANT THONGBAO_OLS_DBA TO ADMINHOS';
+        EXCEPTION WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap role THONGBAO_OLS_DBA: ' || SQLERRM);
+        END;
+    ELSE
+        -- Nếu OLS không bật, tạo Role ảo THONGBAO_OLS_DBA để tránh lỗi khi SET ROLE
+        SELECT COUNT(*) INTO v_count FROM DBA_ROLES WHERE ROLE = 'THONGBAO_OLS_DBA';
+        IF v_count = 0 THEN
+            EXECUTE IMMEDIATE 'CREATE ROLE THONGBAO_OLS_DBA';
+        END IF;
+        EXECUTE IMMEDIATE 'GRANT THONGBAO_OLS_DBA TO ADMINHOS';
     END IF;
 END;
 /
 
 -- =====================================================================
 -- PHẦN 2. CHẠY BẰNG ADMINHOS
--- Tạo bảng THONGBAO và tạo OLS policy
+-- Tạo bảng THONGBAO và các thành phần nhãn OLS
 -- =====================================================================
 CONNECT adminHos/123@localhost:1521/PDBHOSX
 
@@ -2048,7 +2046,7 @@ BEGIN
     END;
 
     IF v_ols_enabled = 'TRUE' THEN
-        DBMS_OUTPUT.PUT_LINE('OLS is enabled. Policy THONGBAO_OLS should have been created by SYSDBA.');
+        DBMS_OUTPUT.PUT_LINE('OLS is enabled. Policy THONGBAO_OLS has been created by SYSDBA.');
     ELSE
         DBMS_OUTPUT.PUT_LINE('OLS is disabled. Creating dummy OLS column and helper functions.');
         
@@ -2075,46 +2073,7 @@ BEGIN
 END;
 /
 
--- =====================================================================
--- PHẦN 3. QUAY LẠI SYSDBA
--- Đảm bảo role THONGBAO_OLS_DBA luôn tồn tại và cấp cho ADMINHOS
--- =====================================================================
-SET DEFINE ON
-CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
-SET DEFINE OFF
-ALTER SESSION SET CONTAINER = PDBHOSX;
-
-DECLARE
-    v_ols_enabled VARCHAR2(10) := 'FALSE';
-    v_count NUMBER;
-BEGIN
-    BEGIN
-        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
-    EXCEPTION WHEN OTHERS THEN
-        v_ols_enabled := 'FALSE';
-    END;
-
-    -- Nếu OLS không bật, tạo Role ảo THONGBAO_OLS_DBA để tránh lỗi khi SET ROLE
-    IF v_ols_enabled != 'TRUE' THEN
-        SELECT COUNT(*) INTO v_count FROM DBA_ROLES WHERE ROLE = 'THONGBAO_OLS_DBA';
-        IF v_count = 0 THEN
-            EXECUTE IMMEDIATE 'CREATE ROLE THONGBAO_OLS_DBA';
-        END IF;
-    END IF;
-    
-    EXECUTE IMMEDIATE 'GRANT THONGBAO_OLS_DBA TO ADMINHOS';
-EXCEPTION WHEN OTHERS THEN
-    DBMS_OUTPUT.PUT_LINE('Loi cap role: ' || SQLERRM);
-END;
-/
-
--- =====================================================================
--- PHẦN 4. QUAY LẠI ADMINHOS
--- Bật role policy và tạo LEVEL / COMPARTMENT / GROUP
--- =====================================================================
-CONNECT adminHos/123@localhost:1521/PDBHOSX
-
-SET SERVEROUTPUT ON;
+-- Kích hoạt role để thực hiện cấu hình OLS tiếp theo
 SET ROLE THONGBAO_OLS_DBA;
 
 -- 4.1. TẠO LEVEL / COMPARTMENT / GROUP dynamically
@@ -2988,7 +2947,7 @@ BEGIN
       ON NV.MANV = H.MABS
     WHERE H.MAHSBA = p_mahsba
       AND H.MABS = SYS_CONTEXT('USERENV', 'SESSION_USER')
-      AND NV.VAITRO = N'Bác sĩ/Y sĩ';
+      AND NV.VAITRO = UNISTR('B\00e1c s\0129/Y s\0129');
 
     IF v_count > 0 THEN
         RETURN 1;
@@ -3013,7 +2972,7 @@ BEGIN
     INTO v_count
     FROM ADMINHOS.NHANVIEN
     WHERE MANV = SYS_CONTEXT('USERENV', 'SESSION_USER')
-      AND VAITRO = N'Điều phối viên';
+      AND VAITRO = UNISTR('\0110i\1ec1u ph\1ed1i vi\00ean');
 
     IF v_count > 0 THEN
         RETURN 1;
@@ -3647,17 +3606,17 @@ BEGIN
         COALESCE(
             NV.CHUYENKHOA,
             CASE HS.MAKHOA
-                WHEN 'KTH' THEN N'Khoa tiêu hóa'
-                WHEN 'KTK' THEN N'Khoa thần kinh'
-                WHEN 'KTM' THEN N'Khoa tim mạch'
-                ELSE N'Chưa xác định'
+                WHEN 'KTH' THEN UNISTR('Khoa ti\00eau h\\00f3a')
+                WHEN 'KTK' THEN UNISTR('Khoa th\\1ea7n kinh')
+                WHEN 'KTM' THEN UNISTR('Khoa tim m\\1ea1ch')
+                ELSE UNISTR('Ch\\01b0a x\\00e1c \\0111\\1ecbnh')
             END
         ) AS KHOA,
         DV.LOAIDV AS DICH_VU_CAN
     FROM ADMINHOS.HSBA_DV DV
     JOIN ADMINHOS.HSBA HS ON DV.MAHSBA = HS.MAHSBA
     JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
-    LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI NV ON HS.MABS = NV.MANV AND NV.VAITRO = N'Bác sĩ/Y sĩ'
+    LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI NV ON HS.MABS = NV.MANV AND NV.VAITRO = UNISTR('B\00e1c s\0129/Y s\0129')
     WHERE DV.MAKTV IS NULL;
 END;
 /
@@ -4162,7 +4121,7 @@ BEGIN
     OPEN p_cursor FOR
     SELECT MANV, HOTEN, CHUYENKHOA
     FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI
-    WHERE VAITRO = N'Bác sĩ/Y sĩ'
+    WHERE VAITRO = UNISTR('B\00e1c s\0129/Y s\0129')
       AND CHUYENKHOA = p_specialty
     ORDER BY MANV ASC;
 END;
@@ -4178,7 +4137,7 @@ BEGIN
     SELECT DISTINCT CHUYENKHOA 
     FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI 
     WHERE CHUYENKHOA IS NOT NULL 
-      AND VAITRO = N'Bác sĩ/Y sĩ'
+      AND VAITRO = UNISTR('B\00e1c s\0129/Y s\0129')
     ORDER BY CHUYENKHOA ASC;
 END;
 /
@@ -4209,7 +4168,7 @@ BEGIN
         ) THEN 1 ELSE 0 END AS CUNG_CO_SO
     FROM ADMINHOS.HSBA HS
     LEFT JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
-    LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI BS ON HS.MABS = BS.MANV AND TRIM(BS.VAITRO) = N'Bác sĩ/Y sĩ'
+    LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI BS ON HS.MABS = BS.MANV AND TRIM(BS.VAITRO) = UNISTR('B\00e1c s\0129/Y s\0129')
     ORDER BY HS.MAHSBA;
 END;
 /
@@ -4469,7 +4428,7 @@ BEGIN
     JOIN ADMINHOS.BENHNHAN BN ON HS.MABN = BN.MABN
     LEFT JOIN ADMINHOS.VW_NHANVIEN_DIEUPHOI NV 
         ON DV.MAKTV = NV.MANV 
-        AND NV.VAITRO = N'Kỹ thuật viên'
+        AND NV.VAITRO = UNISTR('K\1ef9 thu\1eadt vi\00ean')
     ORDER BY DV.NGAYDV DESC, DV.MAHSBA DESC;
 END;
 /
@@ -4486,7 +4445,7 @@ BEGIN
         NV.HOTEN,
         NV.CHUYENKHOA
     FROM ADMINHOS.VW_NHANVIEN_DIEUPHOI NV
-    WHERE NV.VAITRO = N'Kỹ thuật viên'
+    WHERE NV.VAITRO = UNISTR('K\1ef9 thu\1eadt vi\00ean')
     ORDER BY NV.MANV ASC;
 END;
 /
@@ -4582,7 +4541,7 @@ DECLARE
 BEGIN
     -- 1. Cấp quyền cho Điều phối viên (DPV)
     FOR u IN (
-        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = N'Điều phối viên'
+        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = UNISTR('\0110i\1ec1u ph\1ed1i vi\00ean')
     ) LOOP
         -- Cấp SP riêng của DPV
         FOR i IN 1..v_dpv_procs.COUNT LOOP
@@ -4597,7 +4556,7 @@ BEGIN
 
     -- 2. Cấp quyền cho Bác sĩ/Y sĩ (BS)
     FOR u IN (
-        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = N'Bác sĩ/Y sĩ'
+        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = UNISTR('B\00e1c s\0129/Y s\0129')
     ) LOOP
         -- Cấp SP riêng của BS
         FOR i IN 1..v_bs_procs.COUNT LOOP
@@ -4612,7 +4571,7 @@ BEGIN
 
     -- 3. Cấp quyền cho Kỹ thuật viên (KTV)
     FOR u IN (
-        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = N'Kỹ thuật viên'
+        SELECT MANV FROM ADMINHOS.NHANVIEN WHERE VAITRO = UNISTR('K\1ef9 thu\1eadt vi\00ean')
     ) LOOP
         -- Cấp SP dùng chung
         FOR i IN 1..v_common_procs.COUNT LOOP

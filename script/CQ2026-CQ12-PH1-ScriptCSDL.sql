@@ -1,4 +1,4 @@
--- ========================================================
+﻿-- ========================================================
 -- THÔNG TIN CHUNG
 -- ========================================================
 
@@ -16,12 +16,33 @@
 
 -- THIẾT LẬP BAN ĐẦU: Chạy với sysdba
 SET SERVEROUTPUT ON;
+SET SQLBLANKLINES ON;
+SET VERIFY OFF;
 
--- Mở PDB và save giúp PDB luôn mở
-ALTER PLUGGABLE DATABASE PDBHOSX SAVE STATE;
+SET DEFINE ON
+ACCEPT SYS_PWD CHAR PROMPT 'Nhap mat khau cua SYS (de ket noi AS SYSDBA): ' HIDE
+CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
+SET DEFINE OFF
+
+-- Mở PDB và save giúp PDB luôn mở (Bọc trong PL/SQL để tránh lỗi khi đã ở sẵn trong PDB)
+BEGIN
+    EXECUTE IMMEDIATE 'ALTER PLUGGABLE DATABASE PDBHOSX OPEN';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+BEGIN
+    EXECUTE IMMEDIATE 'ALTER PLUGGABLE DATABASE PDBHOSX SAVE STATE';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
 
 -- 1. Chuyển sang PDB của dự án
-ALTER SESSION SET CONTAINER = PDBHOSX;
+BEGIN
+    EXECUTE IMMEDIATE 'ALTER SESSION SET CONTAINER = PDBHOSX';
+EXCEPTION WHEN OTHERS THEN NULL;
+END;
+/
+
 -- Kiểm tra (phải hiện PDBHOSX)
 SHOW CON_NAME;
 
@@ -107,6 +128,7 @@ GRANT DROP ANY VIEW TO adminHos;
 
 -- TỰ ĐỘNG CHUYỂN SANG ADMINHOS
 conn adminHos/123@localhost:1521/PDBHOSX
+SET SERVEROUTPUT ON;
 SET SQLBLANKLINES ON;
 
 -- ==========================================================
@@ -1262,6 +1284,7 @@ EXCEPTION
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20003, 'Loi lay phan bo role: ' || SQLERRM);
 END USP_DASHBOARD_ROLE_DISTRIBUTION;
+/
 
 -- Lấy các obj đang có — đếm cả quyền mức bảng (DBA_TAB_PRIVS) + mức cột (DBA_COL_PRIVS)
 create or replace PROCEDURE USP_DASHBOARD_OBJECTS (
@@ -1368,6 +1391,7 @@ EXCEPTION
         ROLLBACK;
         RAISE_APPLICATION_ERROR(-20002, 'Loi cap nhat thong tin User: ' || SQLERRM);
 END sp_UpdateUserInfo;
+/
 
 -- ==========================================================
 -- STORED PROCEDURES BO SUNG (CHUYEN NGHIEP VU TU C# XUONG ORACLE)

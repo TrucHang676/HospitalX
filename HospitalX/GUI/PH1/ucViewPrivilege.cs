@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // ucViewPrivilege.cs
 // Giao diện "Xem quyền" — cho phép DBA xem toàn bộ quyền
 // của một User hoặc Role trong hệ thống Oracle.
