@@ -29,8 +29,7 @@ SET VERIFY OFF
 
 -- =====================================================================
 -- Nhap mat khau cua SYS MOT LAN. Cac buoc "CONNECT SYS ... AS SYSDBA"
--- ben duoi se tu dung lai gia tri nay -> chay het script trong 1 lan,
--- khong bi loi ORA-01017 do mat khau SYS khac '123'.
+-- ben duoi se tu dung lai gia tri nay -> chay het script trong 1 lan
 -- (Mat khau cac tai khoan khac nhu adminHos do CHINH script tao = "123".)
 -- =====================================================================
 SET DEFINE ON
@@ -3222,7 +3221,7 @@ SET DEFINE ON
 CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
 SET DEFINE OFF
 
-PROMPT [A.1.1] KIEM TRA ARCHIVELOG MODE - Ky vong: LOG_MODE = ARCHIVELOG
+-- [A.1.1] KIEM TRA ARCHIVELOG MODE - Ky vong: LOG_MODE = ARCHIVELOG
 SELECT
     NAME,
     DB_UNIQUE_NAME,
@@ -3231,7 +3230,7 @@ SELECT
 FROM V$DATABASE;
 
 
-PROMPT [A.1.2] KIEM TRA THAM SO FAST RECOVERY AREA VA UNDO
+-- [A.1.2] KIEM TRA THAM SO FAST RECOVERY AREA VA UNDO
 SELECT NAME, VALUE
 FROM V$PARAMETER
 WHERE NAME IN (
@@ -3244,7 +3243,7 @@ WHERE NAME IN (
 ORDER BY NAME;
 
 
-PROMPT [A.1.3] KIEM TRA DUNG LUONG FAST RECOVERY AREA
+-- [A.1.3] KIEM TRA DUNG LUONG FAST RECOVERY AREA
 SELECT
     SPACE_LIMIT / 1024 / 1024 / 1024    AS LIMIT_GB,
     SPACE_USED  / 1024 / 1024 / 1024    AS USED_GB,
@@ -3258,7 +3257,7 @@ FROM V$RECOVERY_FILE_DEST;
 -- Kỳ vọng: Danh sách các archived log đã được tạo
 -- ==========================================================
 
-PROMPT [A.2] KIEM TRA ARCHIVED LOG GAN NHAT
+-- [A.2] KIEM TRA ARCHIVED LOG GAN NHAT
 SELECT
     SEQUENCE#,
     FIRST_TIME,
@@ -3277,7 +3276,7 @@ FETCH FIRST 5 ROWS ONLY;
 -- Kỳ vọng: Nếu đã chạy RMAN backup, hiện danh sách bản backup
 -- ==========================================================
 
-PROMPT [A.3] KIEM TRA BAN SAO LUU RMAN QUA V$BACKUP_SET
+-- [A.3] KIEM TRA BAN SAO LUU RMAN QUA V$BACKUP_SET
 SELECT
     BS.SET_STAMP,
     BS.SET_COUNT,
