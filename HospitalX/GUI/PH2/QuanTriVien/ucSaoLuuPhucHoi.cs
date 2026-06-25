@@ -26,6 +26,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             StyleHistoryGrid();
             RenderHistory();
             RenderRestoreCards();
+            RefreshInfoStats();
             ShowBackupTab();
             UpdateStartRestoreButtonState();
         }
@@ -37,8 +38,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             btnStartBackup.Click += BtnStartBackup_Click;
             btnDryRun.Click += BtnDryRun_Click;
             btnStartRestore.Click += BtnStartRestore_Click;
-            chkFull.CheckedChanged += BackupTypeChanged;
-            chkIncremental.CheckedChanged += BackupTypeChanged;
             dgvHistory.CellPainting += dgvHistory_CellPainting;
 
             _backupTimer = new Timer { Interval = 180 };
@@ -56,8 +55,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             pnlBackupLeft.Width = 392;
             pnlRestoreLeft.Width = 500;
 
-            pnlBackupProgress.Visible = true;
-            pnlBackupProgress.Location = new Point(26, 458);
+            pnlBackupProgress.Visible = false;
+            pnlBackupProgress.Location = new Point(26, 430);
             pnlBackupProgress.Size = new Size(330, 82);
             lblBackupPercent.Text = "Sẵn sàng";
             lblBackupStatus.Text = "Chưa có tiến trình sao lưu đang chạy.";
@@ -172,8 +171,8 @@ namespace HospitalX.GUI.PH2.QuanTriVien
         // -------------------------------------------------------------------
         private void BtnStartBackup_Click(object sender, EventArgs e)
         {
-            string backupType = chkIncremental.Checked ? "INCR" : "FULL";
-            string tag = txtBackupTag?.Text?.Trim() ?? "";
+            string backupType = "FULL";
+            string tag = "";
 
             // Khoa nut, reset progress
             _backupPercent = 0;
@@ -261,6 +260,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                         _backups.Insert(0, record);
                         RenderHistory();
                         RenderRestoreCards();
+                        RefreshInfoStats();
 
                         // Reload từ DB để lấy thông tin chính xác
                         System.Threading.Tasks.Task.Delay(2000).ContinueWith(_ =>
@@ -270,6 +270,7 @@ namespace HospitalX.GUI.PH2.QuanTriVien
                                 LoadBackupHistoryFromDB();
                                 RenderHistory();
                                 RenderRestoreCards();
+                                RefreshInfoStats();
                             }));
                         });
 
@@ -323,16 +324,18 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             btnTabBackup.Text = "Sao lưu";
             btnTabRestore.Text = "Phục hồi";
             lblManualTitle.Text = "Sao lưu chủ động";
-            lblBackupType.Text = "LOẠI SAO LƯU";
-            chkFull.Text = "FULL - Toàn bộ CSDL";
-            chkIncremental.Text = "INCREMENTAL - Dữ liệu thay đổi";
-            lblDestination.Text = "ĐÍCH LƯU TRỮ";
-            lblCompression.Text = "NÉN DỮ LIỆU";
-            lblBackupTag.Text = "GHI CHÚ / TAG";
-            btnStartBackup.Text = "Bắt đầu sao lưu";
+            btnStartBackup.Text = "▶  Bắt đầu sao lưu";
             lblBackupPercent.Text = "Sẵn sàng";
             lblBackupStatus.Text = "Chưa có tiến trình sao lưu đang chạy.";
             lblHistoryTitle.Text = "Lịch sử sao lưu";
+
+            // Info cards
+            lblInfoAutoTitle.Text = "🕑  LỊCH TỰ ĐỘNG";
+            lblInfoAutoValue.Text = "Mỗi ngày lúc 02:00 AM";
+            lblInfoDirTitle.Text = "📁  THƯ MỤC LƯU TRỮ";
+            lblInfoDirValue.Text = "HOSPITALX_BACKUP_DIR";
+            lblInfoStatsTitle.Text = "📊  THỐNG KÊ BẢN SAO LƯU";
+            lblInfoStatsValue.Text = "Đang tải...";
 
             lblRestoreListTitle.Text = "Chọn bản backup";
             lblPointInTime.Text = "POINT-IN-TIME RECOVERY";
@@ -421,22 +424,6 @@ namespace HospitalX.GUI.PH2.QuanTriVien
             btnTabRestore.Checked = true;
         }
 
-        private void BackupTypeChanged(object sender, EventArgs e)
-        {
-            if (sender == chkFull && chkFull.Checked)
-            {
-                chkIncremental.Checked = false;
-            }
-            else if (sender == chkIncremental && chkIncremental.Checked)
-            {
-                chkFull.Checked = false;
-            }
-
-            if (!chkFull.Checked && !chkIncremental.Checked)
-            {
-                chkFull.Checked = true;
-            }
-        }
 
         private void BtnDryRun_Click(object sender, EventArgs e)
         {
@@ -471,6 +458,20 @@ namespace HospitalX.GUI.PH2.QuanTriVien
 
             dgvHistory.ClearSelection();
             lblHistoryTotal.Text = "Tổng: " + _backups.Count + " bản backup";
+        }
+
+        private void RefreshInfoStats()
+        {
+            int total = _backups.Count;
+            int success = _backups.Count(b => b.Success);
+            if (total == 0)
+            {
+                lblInfoStatsValue.Text = "Chưa có bản sao lưu nào";
+                return;
+            }
+            BackupRecord last = _backups.OrderByDescending(b => b.Time).FirstOrDefault();
+            string lastStr = last != null ? last.Time.ToString("dd/MM/yyyy HH:mm") : "—";
+            lblInfoStatsValue.Text = total + " bản  •  " + success + " thành công  •  Cuối: " + lastStr;
         }
 
         private void RenderRestoreCards()
