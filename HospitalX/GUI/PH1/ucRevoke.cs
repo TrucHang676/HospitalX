@@ -1,4 +1,4 @@
-﻿using HospitalX.DAO;
+using HospitalX.DAO;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
@@ -21,6 +21,7 @@ namespace HospitalX.GUI.PH1
         private string _connectionString;
         private string _currentGrantee = "";
         private List<GranteeItem> _allGrantees = new List<GranteeItem>();
+        private Guna.UI2.WinForms.Guna2TextBox txtSearchDGV;
 
         // ================================================
         // CONSTRUCTOR — khởi tạo component và wire toàn bộ sự kiện
@@ -46,7 +47,29 @@ namespace HospitalX.GUI.PH1
             btnClearAllCols.Click += (s, e) => SetAllChecked(false);
             txtSearchGrantee.TextChanged += TxtSearch_TextChanged;
 
+            // Tạo ô tìm kiếm quyền trên DGV
+            txtSearchDGV = new Guna.UI2.WinForms.Guna2TextBox();
+            txtSearchDGV.Name = "txtSearchDGV";
+            txtSearchDGV.PlaceholderText = "Tìm kiếm quyền, đối tượng...";
+            txtSearchDGV.Size = new Size(250, 36);
+            txtSearchDGV.Location = new Point(pnlGrant.Width - txtSearchDGV.Width - 10, 10);
+            txtSearchDGV.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtSearchDGV.BorderRadius = 8;
+            txtSearchDGV.FillColor = Color.FromArgb(247, 250, 252);
+            txtSearchDGV.BorderColor = Color.FromArgb(208, 228, 240);
+            txtSearchDGV.Font = new Font("Segoe UI", 9F);
+            txtSearchDGV.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearchDGV.FocusedState.BorderColor = Color.FromArgb(228, 45, 45); // Tông đỏ của Revoke
+
+            pnlGrant.Controls.Add(txtSearchDGV);
+            txtSearchDGV.BringToFront();
+
+            txtSearchDGV.TextChanged += TxtSearchDGV_TextChanged;
+
             StyleDataGridView();
+
+            // Cho phép dgvCurrentPrivs tự động co giãn theo Panel ngoài
+            dgvCurrentPrivs.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
             // QUAN TRỌNG: Phải wire 2 event này để checkbox DGV hoạt động đúng
             // Nếu thiếu → tick checkbox xong nút Revoke không enable lên được
@@ -274,6 +297,7 @@ namespace HospitalX.GUI.PH1
             if (lstGrantees.SelectedItem is GranteeItem item)
             {
                 _currentGrantee = item.Name;
+                if (txtSearchDGV != null) txtSearchDGV.Text = ""; // Reset ô tìm kiếm DGV
                 LoadPrivilegesFromDb(item.Name);
                 UpdateActionBar();
             }
@@ -431,7 +455,12 @@ namespace HospitalX.GUI.PH1
         private void SetAllChecked(bool value)
         {
             foreach (DataGridViewRow row in dgvCurrentPrivs.Rows)
-                row.Cells[colSelect.Name].Value = value;
+            {
+                if (row.Visible)
+                {
+                    row.Cells[colSelect.Name].Value = value;
+                }
+            }
             UpdateActionBar();
         }
 
@@ -467,6 +496,31 @@ namespace HospitalX.GUI.PH1
                 for (int i = 0; i < lstGrantees.Items.Count; i++)
                     if ((lstGrantees.Items[i] as GranteeItem)?.Name == selected.Name)
                     { lstGrantees.SelectedIndex = i; break; }
+        }
+
+        // ================================================
+        // TÌM KIẾM DGV REALTIME
+        // ================================================
+        private void TxtSearchDGV_TextChanged(object sender, EventArgs e)
+        {
+            string kw = txtSearchDGV.Text.Trim().ToLower();
+            dgvCurrentPrivs.CurrentCell = null; // Tránh lỗi CurrencyManager khi ẩn dòng đang được select
+            foreach (DataGridViewRow row in dgvCurrentPrivs.Rows)
+            {
+                bool match = false;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.ColumnIndex > 0 && cell.Value != null)
+                    {
+                        if (cell.Value.ToString().ToLower().Contains(kw))
+                        {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+                row.Visible = string.IsNullOrEmpty(kw) || match;
+            }
         }
 
         // ================================================

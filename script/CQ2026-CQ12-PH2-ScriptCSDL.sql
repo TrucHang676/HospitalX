@@ -1950,16 +1950,73 @@ CONNECT SYS/"&SYS_PWD"@localhost:1521/PDBHOSX AS SYSDBA;
 SET DEFINE OFF
 ALTER SESSION SET CONTAINER = PDBHOSX;
 
--- Cấp quyền dùng các package OLS cho ADMINHOS
+-- Cấu hình và kích hoạt OLS trong PDB nếu chưa chạy
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
+    v_ols_status VARCHAR2(128) := 'FALSE';
 BEGIN
-    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SYSDBA       TO ADMINHOS';
-    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_COMPONENTS   TO ADMINHOS';
-    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_LABEL_ADMIN  TO ADMINHOS';
-    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_POLICY_ADMIN TO ADMINHOS';
-    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_USER_ADMIN   TO ADMINHOS';
-    EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SESSION      TO ADMINHOS';
-    EXECUTE IMMEDIATE 'GRANT LBAC_DBA TO ADMINHOS';
-EXCEPTION WHEN OTHERS THEN NULL;
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
+
+    IF v_ols_enabled = 'TRUE' THEN
+        -- Kiểm tra OLS đã cấu hình trong PDB chưa
+        BEGIN
+            -- Lưu ý: DBA_OLS_STATUS có thể không tồn tại nếu OLS chưa được load, ta bắt exception
+            EXECUTE IMMEDIATE 'SELECT STATUS FROM DBA_OLS_STATUS WHERE NAME = ''OLS_CONFIGURE_STATUS''' INTO v_ols_status;
+        EXCEPTION WHEN OTHERS THEN
+            v_ols_status := 'FALSE';
+        END;
+
+        IF v_ols_status != 'TRUE' THEN
+            BEGIN
+                EXECUTE IMMEDIATE 'BEGIN LBACSYS.CONFIGURE_OLS; END;';
+                EXECUTE IMMEDIATE 'BEGIN LBACSYS.OLS_ENFORCEMENT.ENABLE_OLS; END;';
+                DBMS_OUTPUT.PUT_LINE('--- OK: Da dang ky va kich hoat OLS trong PDB. NHO KHOI DONG LAI PDB CON DE AP DUNG! ---');
+            EXCEPTION WHEN OTHERS THEN
+                DBMS_OUTPUT.PUT_LINE('--- Canh bao: Loi tu dong dang ky OLS: ' || SQLERRM || ' ---');
+            END;
+        END IF;
+
+        -- Tạo OLS Policy trực tiếp bằng quyền SYSDBA để tránh lỗi ORA-12440
+        BEGIN
+            EXECUTE IMMEDIATE '
+            BEGIN
+                SA_SYSDBA.CREATE_POLICY(
+                    policy_name     => ''THONGBAO_OLS'',
+                    column_name     => ''OLS_LABEL'',
+                    default_options => ''READ_CONTROL,WRITE_CONTROL,CHECK_CONTROL''
+                );
+            END;';
+            DBMS_OUTPUT.PUT_LINE('--- OK: SYSDBA da tao OLS policy THONGBAO_OLS. ---');
+        EXCEPTION WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('--- Thong bao: OLS policy co the da ton tai hoac loi: ' || SQLERRM || ' ---');
+        END;
+    END IF;
+END;
+/
+
+-- Cấp quyền dùng các package OLS cho ADMINHOS (Tách riêng để dễ debug)
+DECLARE
+    v_ols_enabled VARCHAR2(10) := 'FALSE';
+BEGIN
+    BEGIN
+        SELECT VALUE INTO v_ols_enabled FROM V$OPTION WHERE PARAMETER = 'Oracle Label Security';
+    EXCEPTION WHEN OTHERS THEN
+        v_ols_enabled := 'FALSE';
+    END;
+
+    IF v_ols_enabled = 'TRUE' THEN
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SYSDBA TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_SYSDBA: ' || SQLERRM); END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_COMPONENTS TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_COMPONENTS: ' || SQLERRM); END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_LABEL_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_LABEL_ADMIN: ' || SQLERRM); END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_POLICY_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_POLICY_ADMIN: ' || SQLERRM); END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_USER_ADMIN TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_USER_ADMIN: ' || SQLERRM); END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT EXECUTE ON LBACSYS.SA_SESSION TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap SA_SESSION: ' || SQLERRM); END;
+        BEGIN EXECUTE IMMEDIATE 'GRANT LBAC_DBA TO ADMINHOS'; EXCEPTION WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE('Canh bao: Loi cap role LBAC_DBA: ' || SQLERRM); END;
+    END IF;
 END;
 /
 
@@ -1991,20 +2048,7 @@ BEGIN
     END;
 
     IF v_ols_enabled = 'TRUE' THEN
-        -- Real OLS Policy creation
-        BEGIN
-            EXECUTE IMMEDIATE '
-            BEGIN
-                SA_SYSDBA.CREATE_POLICY(
-                    policy_name     => ''THONGBAO_OLS'',
-                    column_name     => ''OLS_LABEL'',
-                    default_options => ''READ_CONTROL,WRITE_CONTROL,CHECK_CONTROL''
-                );
-            END;';
-            DBMS_OUTPUT.PUT_LINE('Da tao policy THONGBAO_OLS.');
-        EXCEPTION WHEN OTHERS THEN
-            DBMS_OUTPUT.PUT_LINE('Loi tao policy OLS: ' || SQLERRM);
-        END;
+        DBMS_OUTPUT.PUT_LINE('OLS is enabled. Policy THONGBAO_OLS should have been created by SYSDBA.');
     ELSE
         DBMS_OUTPUT.PUT_LINE('OLS is disabled. Creating dummy OLS column and helper functions.');
         

@@ -1,4 +1,4 @@
-﻿using HospitalX.DAO;
+using HospitalX.DAO;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using HospitalX.Helpers;
@@ -449,7 +449,7 @@ namespace HospitalX.GUI.PH1
             new OracleParameter("p_privilege", OracleDbType.Varchar2) { Value = roleName },
             new OracleParameter("p_object", OracleDbType.Varchar2) { Value = DBNull.Value },
             new OracleParameter("p_grantee", OracleDbType.Varchar2) { Value = username },
-            new OracleParameter("p_column", OracleDbType.Varchar2) { Value = DBNull.Value }
+            new OracleParameter("p_columns", OracleDbType.Varchar2) { Value = DBNull.Value }
         };
 
                 DataProvider.Instance.ExecuteNonQuery("sp_revoke_privilege", parameters);

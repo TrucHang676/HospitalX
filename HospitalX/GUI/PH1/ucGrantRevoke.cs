@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -118,6 +118,10 @@ namespace HospitalX.GUI.PH1
             btnTypeView.Click += (s, e) => ApplyObjectFilter("VIEW");
             btnTypeProc.Click += (s, e) => ApplyObjectFilter("PROCEDURE");
             btnTypeFunc.Click += (s, e) => ApplyObjectFilter("FUNCTION");
+
+            // Wire sự kiện tìm kiếm realtime
+            txtSearchGrantee.TextChanged += (s, e) => ApplyGranteeFilter(_currentGranteeTab);
+            txtSearchObject.TextChanged += (s, e) => ApplyObjectFilter(_currentObjectFilter);
 
             // Panel chứa ucRevoke — ẩn mặc định khi mới vào tab Grant
             pnlContentRevoke.Visible = false;
@@ -510,12 +514,18 @@ namespace HospitalX.GUI.PH1
             _currentGranteeTab = tab;
             lstGrantees.Items.Clear();
 
-            // Lọc danh sách _allGrantees theo tab được chọn
+            string kw = txtSearchGrantee.Text.Trim().ToLower();
+
+            // Lọc danh sách _allGrantees theo tab được chọn và keyword tìm kiếm
             foreach (var grantee in _allGrantees)
             {
                 if (grantee.RoleName == tab)
                 {
-                    lstGrantees.Items.Add(grantee);
+                    bool match = string.IsNullOrEmpty(kw) || grantee.Name.ToLower().Contains(kw);
+                    if (match)
+                    {
+                        lstGrantees.Items.Add(grantee);
+                    }
                 }
             }
 
@@ -536,12 +546,18 @@ namespace HospitalX.GUI.PH1
             _currentObjectFilter = objType;
             lstObjects.Items.Clear();
 
-            // Nếu objType rỗng, hiển thị tất cả; ngược lại chỉ hiển thị loại được chọn
+            string kw = txtSearchObject.Text.Trim().ToLower();
+
+            // Nếu objType rỗng, hiển thị tất cả; ngược lại chỉ hiển thị loại được chọn có chứa keyword
             foreach (var obj in _allObjects)
             {
                 if (string.IsNullOrEmpty(objType) || obj.Type == objType)
                 {
-                    lstObjects.Items.Add(obj);
+                    bool match = string.IsNullOrEmpty(kw) || obj.Name.ToLower().Contains(kw);
+                    if (match)
+                    {
+                        lstObjects.Items.Add(obj);
+                    }
                 }
             }
 

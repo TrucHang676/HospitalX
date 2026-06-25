@@ -1,4 +1,4 @@
-﻿// ============================================================
+// ============================================================
 // ucViewPrivilege.cs
 // Giao diện "Xem quyền" — cho phép DBA xem toàn bộ quyền
 // của một User hoặc Role trong hệ thống Oracle.
@@ -22,6 +22,9 @@ namespace HospitalX.GUI.PH1
         // ===================================================
         private string _connectionString;
         private string _currentTab = "OBJ"; // Tab đang chọn: OBJ / SYS / ROLE
+        private List<UserItem> _allUsers = new List<UserItem>();
+        private List<UserItem> _allRoles = new List<UserItem>();
+        private Guna.UI2.WinForms.Guna2TextBox txtSearchDGV;
 
         public ucViewPrivilege(string connStr)
         {
@@ -48,6 +51,30 @@ namespace HospitalX.GUI.PH1
             btnTabRole.Click += btnTabRole_Click;
             cboPrivType.SelectedIndexChanged += cboPrivType_SelectedIndexChanged;
             cboObjType.SelectedIndexChanged += cboObjType_SelectedIndexChanged;
+
+            // Tạo ô tìm kiếm trên Grid Quyền programmatically
+            txtSearchDGV = new Guna.UI2.WinForms.Guna2TextBox();
+            txtSearchDGV.Name = "txtSearchDGV";
+            txtSearchDGV.PlaceholderText = "Tìm kiếm quyền, đối tượng...";
+            txtSearchDGV.Size = new Size(300, 36);
+            txtSearchDGV.Location = new Point(pnlData.Width - txtSearchDGV.Width - 10, 10);
+            txtSearchDGV.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtSearchDGV.BorderRadius = 8;
+            txtSearchDGV.FillColor = Color.FromArgb(247, 250, 252);
+            txtSearchDGV.BorderColor = Color.FromArgb(208, 228, 240);
+            txtSearchDGV.Font = new Font("Segoe UI", 9F);
+            txtSearchDGV.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearchDGV.FocusedState.BorderColor = Color.FromArgb(0, 120, 180); // Tông xanh dương của Xem quyền
+
+            pnlData.Controls.Add(txtSearchDGV);
+            txtSearchDGV.BringToFront();
+
+            txtSearchDGV.TextChanged += TxtSearchDGV_TextChanged;
+
+            // Co giãn DGV tự động
+            dgvPrivileges.Location = new Point(9, 52);
+            dgvPrivileges.Size = new Size(pnlData.Width - 18, pnlData.Height - 62);
+            dgvPrivileges.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
             this.Load += ucViewPrivilege_Load;
         }
@@ -104,6 +131,7 @@ namespace HospitalX.GUI.PH1
         private void SetupColumns(string tabType)
         {
             _currentTab = tabType;
+            if (txtSearchDGV != null) txtSearchDGV.Text = ""; // Reset tìm kiếm DGV khi chuyển tab
             dgvPrivileges.Columns.Clear();
 
             switch (tabType)
@@ -180,14 +208,11 @@ namespace HospitalX.GUI.PH1
                         else if (userRole.Contains("KYTHUATVIEN")) color = Color.Orange;
                         else color = Color.SlateGray;
 
-                        lstUsers.Items.Add(new UserItem(username, userRole, privCount, color));
+                        _allUsers.Add(new UserItem(username, userRole, privCount, color));
                     }
                 }
 
-                // Chọn dòng đầu → tự động kích hoạt LstUsers_SelectedIndexChanged
-                // → cập nhật toàn bộ cột 2 (header + bảng quyền)
-                if (lstUsers.Items.Count > 0)
-                    lstUsers.SelectedIndex = 0;
+                ApplyUserFilter();
             }
             catch (Exception ex)
             {
@@ -230,12 +255,11 @@ namespace HospitalX.GUI.PH1
                         else if (roleName.Contains("KYTHUATVIEN")) color = Color.Orange;
                         else color = Color.SlateGray;
 
-                        lstUsers.Items.Add(new UserItem(roleName, "Role", privCount, color));
+                        _allRoles.Add(new UserItem(roleName, "Role", privCount, color));
                     }
                 }
 
-                if (lstUsers.Items.Count > 0)
-                    lstUsers.SelectedIndex = 0;
+                ApplyUserFilter();
             }
             catch (Exception ex)
             {
@@ -516,6 +540,9 @@ namespace HospitalX.GUI.PH1
             var item = lstUsers.Items[lstUsers.SelectedIndex] as UserItem;
             if (item == null) return;
 
+            // Reset DGV search box when selected user changes
+            if (txtSearchDGV != null) txtSearchDGV.Text = "";
+
             // Cập nhật header (avatar, tên, role)
             UpdateDetailHeader(item);
 
@@ -566,6 +593,7 @@ namespace HospitalX.GUI.PH1
         {
             btnSubUser.Checked = true;
             btnSubRole.Checked = false;
+            txtSearch.Text = ""; // Clear tìm kiếm user/role
             LoadMockUsers();
         }
 
@@ -573,6 +601,7 @@ namespace HospitalX.GUI.PH1
         {
             btnSubRole.Checked = true;
             btnSubUser.Checked = false;
+            txtSearch.Text = ""; // Clear tìm kiếm user/role
             LoadMockRoles();
         }
 
@@ -602,16 +631,66 @@ namespace HospitalX.GUI.PH1
         }
 
         // ===================================================
-        // SỰ KIỆN: TÌM KIẾM REALTIME TRÊN BẢNG QUYỀN
-        // Lọc các dòng theo keyword nhập vào
+        // SỰ KIỆN: TÌM KIẾM REALTIME TRÊN DANH SÁCH BÊN TRÁI
         // ===================================================
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
+            ApplyUserFilter();
+        }
+
+        private void ApplyUserFilter()
+        {
             string kw = txtSearch.Text.Trim().ToLower();
+            if (kw == "tìm username...") kw = "";
+
+            lstUsers.SelectedIndexChanged -= LstUsers_SelectedIndexChanged;
+            lstUsers.Items.Clear();
+
+            var sourceList = btnSubUser.Checked ? _allUsers : _allRoles;
+            foreach (var item in sourceList)
+            {
+                bool match = string.IsNullOrEmpty(kw)
+                    || item.Name.ToLower().Contains(kw)
+                    || item.RoleName.ToLower().Contains(kw);
+                if (match)
+                {
+                    lstUsers.Items.Add(item);
+                }
+            }
+
+            lstUsers.SelectedIndexChanged += LstUsers_SelectedIndexChanged;
+
+            if (lstUsers.Items.Count > 0)
+            {
+                lstUsers.SelectedIndex = 0;
+            }
+            else
+            {
+                dgvPrivileges.Rows.Clear();
+                lblObjPrivCount.Text = "0";
+                lblSysPrivCount.Text = "0";
+                lblRoleCount.Text = "0";
+            }
+        }
+
+        // ===================================================
+        // SỰ KIỆN: TÌM KIẾM REALTIME TRÊN GRID QUYỀN (BÊN PHẢI)
+        // ===================================================
+        private void TxtSearchDGV_TextChanged(object sender, EventArgs e)
+        {
+            string kw = txtSearchDGV.Text.Trim().ToLower();
+            dgvPrivileges.CurrentCell = null; // Tránh lỗi CurrencyManager khi ẩn dòng đang được select
             foreach (DataGridViewRow row in dgvPrivileges.Rows)
             {
-                bool match = row.Cells.Cast<DataGridViewCell>()
-                    .Any(c => c.Value?.ToString().ToLower().Contains(kw) == true);
+                bool match = false;
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Value != null && cell.Value.ToString().ToLower().Contains(kw))
+                    {
+                        match = true;
+                        break;
+                    }
+                }
                 row.Visible = string.IsNullOrEmpty(kw) || match;
             }
         }
@@ -622,6 +701,7 @@ namespace HospitalX.GUI.PH1
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             txtSearch.Text = "";
+            if (txtSearchDGV != null) txtSearchDGV.Text = "";
             cboPrivType.SelectedIndex = 0;
             cboObjType.SelectedIndex = 0;
 

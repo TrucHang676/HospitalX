@@ -296,6 +296,17 @@ CREATE TABLE VPD_COL_TRACKING (
     CONSTRAINT PK_VPD_COL PRIMARY KEY (SCHEMA_NAME, TABLE_NAME, POLICY_NAME)
 );
 
+-- Bảng tracking View ảo cho SELECT mức cột trên VIEW
+-- (Lưu mapping: View gốc <-> View ảo <-> Grantee <-> Cột được cấp)
+CREATE TABLE VIEW_COL_TRACKING (
+    SCHEMA_NAME   VARCHAR2(128) NOT NULL,
+    VIEW_NAME     VARCHAR2(128) NOT NULL,   -- Tên View GỐC
+    VIRT_VIEW     VARCHAR2(128) NOT NULL,   -- Tên View ảo tổng hợp (V_...)
+    GRANTEE       VARCHAR2(128) NOT NULL,
+    GRANTED_COLS  VARCHAR2(4000),           -- Danh sách cột đã được cấp
+    CONSTRAINT PK_VIEW_COL PRIMARY KEY (SCHEMA_NAME, VIEW_NAME, GRANTEE)
+);
+
 -- Dùng cho VPD để grant select mức cột
 CREATE OR REPLACE FUNCTION policy_select_column (
     p_schema IN VARCHAR2,
@@ -341,16 +352,18 @@ CREATE OR REPLACE PROCEDURE SP_GRANT_PRIVILEGE (
 )
 AS
     v_sql           VARCHAR2(2000);
-    v_option        VARCHAR2(50)  := '';
-    v_obj_type      VARCHAR2(20)  := UPPER(p_object_type);
-    v_priv          VARCHAR2(20)  := UPPER(p_privilege);
-    v_schema        VARCHAR2(50)  := SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA');
-    v_policy_name   VARCHAR2(128);
-    v_view_name     VARCHAR2(128);
-    v_hidden_cols   VARCHAR2(2000);
-    v_allowed_cols  VARCHAR2(2000);
-    v_existing_hidden VARCHAR2(2000);
-    v_count         INT;
+    v_option           VARCHAR2(50)  := '';
+    v_obj_type         VARCHAR2(20)  := UPPER(p_object_type);
+    v_priv             VARCHAR2(20)  := UPPER(p_privilege);
+    v_schema           VARCHAR2(50)  := SYS_CONTEXT('USERENV', 'CURRENT_SCHEMA');
+    v_policy_name      VARCHAR2(128);
+    v_view_name        VARCHAR2(128);
+    v_old_virt_view    VARCHAR2(128);
+    v_hidden_cols      VARCHAR2(2000);
+    v_allowed_cols     VARCHAR2(2000);
+    v_existing_hidden  VARCHAR2(2000);
+    v_old_granted_cols VARCHAR2(4000);
+    v_count            INT;
 BEGIN
     -- 1. KIỂM TRA LOGIC NGHIỆP VỤ (Theo yêu cầu 3c)
     
@@ -493,23 +506,46 @@ BEGIN
                                   VALUES (S.SCHEMA_NAME, S.TABLE_NAME, S.POLICY_NAME, S.GRANTEE, S.HIDDEN_COLS);
             COMMIT;
 
-        -- ═══ VIEW → View trung gian tái sử dụng ═══
+        -- ═══ VIEW → View trung gian tái sử dụng (có merge cột cũ + tracking) ═══
         ELSIF v_obj_type = 'VIEW' THEN
-            -- Chuẩn hóa danh sách cột theo thứ tự của view gốc
+
+            -- Đọc cột cũ từ VIEW_COL_TRACKING nếu Grantee đã có quyền trên View này
+            v_old_granted_cols := NULL;
+            v_old_virt_view    := NULL;
+            BEGIN
+                SELECT GRANTED_COLS, VIRT_VIEW
+                INTO v_old_granted_cols, v_old_virt_view
+                FROM VIEW_COL_TRACKING
+                WHERE SCHEMA_NAME = v_schema
+                  AND VIEW_NAME   = UPPER(p_object_name)
+                  AND GRANTEE     = UPPER(p_grantee);
+            EXCEPTION WHEN NO_DATA_FOUND THEN
+                NULL;
+            END;
+
+            -- Tổng hợp cột: merge cột cũ (nếu có) UNION cột mới, chuẩn hóa theo COLUMN_ID
             SELECT LISTAGG(COLUMN_NAME, ',') WITHIN GROUP (ORDER BY COLUMN_ID)
             INTO v_allowed_cols
             FROM DBA_TAB_COLUMNS
             WHERE TABLE_NAME = UPPER(p_object_name) AND OWNER = v_schema
               AND COLUMN_NAME IN (
+                  -- Cột mới yêu cầu
                   SELECT TRIM(UPPER(REGEXP_SUBSTR(UPPER(REPLACE(p_columns,' ','')), '[^,]+', 1, LEVEL)))
                   FROM DUAL
                   CONNECT BY REGEXP_SUBSTR(UPPER(REPLACE(p_columns,' ','')), '[^,]+', 1, LEVEL) IS NOT NULL
+                  UNION
+                  -- Cột cũ đã được cấp (nếu tồn tại)
+                  SELECT TRIM(UPPER(REGEXP_SUBSTR(v_old_granted_cols, '[^,]+', 1, LEVEL)))
+                  FROM DUAL
+                  WHERE v_old_granted_cols IS NOT NULL
+                  CONNECT BY REGEXP_SUBSTR(v_old_granted_cols, '[^,]+', 1, LEVEL) IS NOT NULL
               );
 
             -- Tên view tổ hợp (nhất quán nhờ COLUMN_ID ordering)
             v_view_name := SUBSTR('V_' || UPPER(p_object_name) || '_'
                            || REPLACE(v_allowed_cols, ',', '_'), 1, 128);
 
+            -- Tạo view ảo mới nếu chưa tồn tại
             SELECT COUNT(*) INTO v_count
             FROM DBA_VIEWS WHERE VIEW_NAME = v_view_name AND OWNER = v_schema;
 
@@ -522,10 +558,39 @@ BEGIN
                 DBMS_OUTPUT.PUT_LINE('Tai su dung view trung gian: ' || v_view_name);
             END IF;
 
+            -- Grant SELECT trên view ảo mới
             EXECUTE IMMEDIATE 'GRANT SELECT ON ' || v_schema || '.' || v_view_name
                 || ' TO ' || p_grantee || v_option;
             DBMS_OUTPUT.PUT_LINE('Grant SELECT [' || v_view_name || '] -> [' || p_grantee || ']');
+
+            -- Revoke view ảo cũ nếu khác view ảo mới (tránh duplicate access)
+            IF v_old_virt_view IS NOT NULL AND v_old_virt_view != v_view_name THEN
+                BEGIN
+                    EXECUTE IMMEDIATE 'REVOKE SELECT ON ' || v_schema || '.' || v_old_virt_view
+                        || ' FROM ' || p_grantee;
+                    DBMS_OUTPUT.PUT_LINE('Revoke view trung gian cu: ' || v_old_virt_view);
+                EXCEPTION WHEN OTHERS THEN NULL;
+                END;
+            END IF;
+
+            -- Ghi / cập nhật VIEW_COL_TRACKING
+            MERGE INTO VIEW_COL_TRACKING T
+            USING (SELECT v_schema             AS SCHEMA_NAME,
+                          UPPER(p_object_name) AS VIEW_NAME,
+                          v_view_name          AS VIRT_VIEW,
+                          UPPER(p_grantee)     AS GRANTEE,
+                          v_allowed_cols       AS GRANTED_COLS
+                   FROM DUAL) S
+            ON (T.SCHEMA_NAME = S.SCHEMA_NAME
+            AND T.VIEW_NAME   = S.VIEW_NAME
+            AND T.GRANTEE     = S.GRANTEE)
+            WHEN MATCHED     THEN UPDATE SET T.VIRT_VIEW    = S.VIRT_VIEW,
+                                             T.GRANTED_COLS = S.GRANTED_COLS
+            WHEN NOT MATCHED THEN INSERT (SCHEMA_NAME, VIEW_NAME, VIRT_VIEW, GRANTEE, GRANTED_COLS)
+                                  VALUES (S.SCHEMA_NAME, S.VIEW_NAME, S.VIRT_VIEW, S.GRANTEE, S.GRANTED_COLS);
+            COMMIT;
         END IF;
+
 
     -- ── UPDATE mức cột ──
     ELSIF v_priv = 'UPDATE' AND p_columns IS NOT NULL THEN
@@ -746,30 +811,33 @@ BEGIN
         IF UPPER(p_privilege) = 'SELECT' AND p_columns IS NOT NULL THEN
             -- ── Revoke lẻ cột trên VIEW ──
 
-            -- Tìm view trung gian hiện tại grantee đang có SELECT
+            -- Ưu tiên đọc từ VIEW_COL_TRACKING (chính xác hơn dò tên view)
             v_current_view := NULL;
-            FOR rec IN (
-                SELECT TABLE_NAME FROM DBA_TAB_PRIVS
-                WHERE OWNER     = v_schema
-                  AND GRANTEE   = UPPER(p_grantee)
-                  AND PRIVILEGE = 'SELECT'
-                  AND TABLE_NAME LIKE 'V_' || v_obj_clean || '_%'
-                  AND GRANTOR = v_schema
-            ) LOOP
-                v_current_view := rec.TABLE_NAME;
-                EXIT;
-            END LOOP;
+            BEGIN
+                SELECT VIRT_VIEW INTO v_current_view
+                FROM VIEW_COL_TRACKING
+                WHERE SCHEMA_NAME = v_schema
+                  AND VIEW_NAME   = v_obj_clean
+                  AND GRANTEE     = UPPER(p_grantee);
+            EXCEPTION WHEN NO_DATA_FOUND THEN
+                -- Fallback: tìm theo pattern tên view cũ (tương thích ngược)
+                FOR rec IN (
+                    SELECT TABLE_NAME FROM DBA_TAB_PRIVS
+                    WHERE OWNER     = v_schema
+                      AND GRANTEE   = UPPER(p_grantee)
+                      AND PRIVILEGE = 'SELECT'
+                      AND TABLE_NAME LIKE 'V_' || v_obj_clean || '_%'
+                      AND GRANTOR   = v_schema
+                ) LOOP
+                    v_current_view := rec.TABLE_NAME;
+                    EXIT;
+                END LOOP;
+            END;
 
             IF v_current_view IS NULL THEN
                 RAISE_APPLICATION_ERROR(-20010,
                     'Grantee ' || p_grantee || ' chua co quyen SELECT tren view ' || v_obj_clean);
             END IF;
-
-            -- Cột hiện tại của view trung gian đó
-            SELECT LISTAGG(COLUMN_NAME, ',') WITHIN GROUP (ORDER BY COLUMN_ID)
-            INTO v_current_cols
-            FROM DBA_TAB_COLUMNS
-            WHERE TABLE_NAME = v_current_view AND OWNER = v_schema;
 
             -- Cột còn lại = cột view trung gian - cột bị revoke
             SELECT LISTAGG(COLUMN_NAME, ',') WITHIN GROUP (ORDER BY COLUMN_ID)
@@ -783,12 +851,17 @@ BEGIN
               );
 
             IF v_remaining_cols IS NULL THEN
-                -- Không còn cột → revoke view trung gian luôn
+                -- Không còn cột → revoke view trung gian + xóa tracking
                 EXECUTE IMMEDIATE 'REVOKE SELECT ON ' || v_schema || '.' || v_current_view
                     || ' FROM ' || p_grantee;
+                DELETE FROM VIEW_COL_TRACKING
+                WHERE SCHEMA_NAME = v_schema
+                  AND VIEW_NAME   = v_obj_clean
+                  AND GRANTEE     = UPPER(p_grantee);
+                COMMIT;
                 DBMS_OUTPUT.PUT_LINE('Het cot -> Revoke SELECT tren VIEW [' || v_obj_clean || ']');
             ELSE
-                -- Còn cột → tìm/tạo view với cột còn lại rồi grant, revoke cái cũ
+                -- Còn cột → tạo view ảo mới trực tiếp (không gọi SP_GRANT để tránh đệ quy tracking)
                 v_new_view_name := SUBSTR('V_' || v_obj_clean || '_'
                                    || REPLACE(v_remaining_cols, ',', '_'), 1, 128);
 
@@ -796,27 +869,32 @@ BEGIN
                 FROM DBA_VIEWS WHERE VIEW_NAME = v_new_view_name AND OWNER = v_schema;
 
                 IF v_count = 0 THEN
-                    -- Chưa có → gọi lại SP_GRANT để tạo + grant
-                    SP_GRANT_PRIVILEGE(
-                        p_privilege    => 'SELECT',
-                        p_object_type  => 'VIEW',
-                        p_object_name  => v_obj_clean,
-                        p_columns      => v_remaining_cols,
-                        p_grantee      => p_grantee,
-                        p_grantee_type => 'USER',
-                        p_with_option  => 'NO'
-                    );
-                ELSE
-                    -- Đã có → grant trực tiếp
-                    EXECUTE IMMEDIATE 'GRANT SELECT ON ' || v_schema || '.' || v_new_view_name
-                        || ' TO ' || p_grantee;
+                    EXECUTE IMMEDIATE 'CREATE VIEW ' || v_schema || '.' || v_new_view_name
+                        || ' AS SELECT ' || v_remaining_cols
+                        || ' FROM ' || v_schema || '.' || v_obj_clean;
                 END IF;
+                EXECUTE IMMEDIATE 'GRANT SELECT ON ' || v_schema || '.' || v_new_view_name
+                    || ' TO ' || p_grantee;
 
                 -- Revoke view cũ (nếu khác view mới)
                 IF v_current_view != v_new_view_name THEN
                     EXECUTE IMMEDIATE 'REVOKE SELECT ON ' || v_schema || '.' || v_current_view
                         || ' FROM ' || p_grantee;
                 END IF;
+
+                -- Cập nhật VIEW_COL_TRACKING với cột còn lại và view ảo mới
+                UPDATE VIEW_COL_TRACKING
+                SET VIRT_VIEW    = v_new_view_name,
+                    GRANTED_COLS = v_remaining_cols
+                WHERE SCHEMA_NAME = v_schema
+                  AND VIEW_NAME   = v_obj_clean
+                  AND GRANTEE     = UPPER(p_grantee);
+                -- Nếu chưa có dòng (tương thích ngược), insert mới
+                IF SQL%ROWCOUNT = 0 THEN
+                    INSERT INTO VIEW_COL_TRACKING (SCHEMA_NAME, VIEW_NAME, VIRT_VIEW, GRANTEE, GRANTED_COLS)
+                    VALUES (v_schema, v_obj_clean, v_new_view_name, UPPER(p_grantee), v_remaining_cols);
+                END IF;
+                COMMIT;
                 DBMS_OUTPUT.PUT_LINE('Cap nhat view, cot con lai: ' || v_remaining_cols);
             END IF;
 
@@ -828,18 +906,33 @@ BEGIN
                     || ' FROM ' || p_grantee;
             EXCEPTION WHEN OTHERS THEN NULL;
             END;
-            -- Revoke cả các view trung gian (trường hợp grant có giới hạn cột)
+            -- Revoke cả các view trung gian (từ tracking hoặc dò theo pattern)
             FOR rec IN (
+                SELECT VIRT_VIEW AS TABLE_NAME FROM VIEW_COL_TRACKING
+                WHERE SCHEMA_NAME = v_schema
+                  AND VIEW_NAME   = v_obj_clean
+                  AND GRANTEE     = UPPER(p_grantee)
+                UNION
                 SELECT TABLE_NAME FROM DBA_TAB_PRIVS
                 WHERE OWNER     = v_schema
                   AND GRANTEE   = UPPER(p_grantee)
                   AND PRIVILEGE = 'SELECT'
                   AND TABLE_NAME LIKE 'V_' || v_obj_clean || '_%'
             ) LOOP
-                EXECUTE IMMEDIATE 'REVOKE SELECT ON ' || v_schema || '.' || rec.TABLE_NAME
-                    || ' FROM ' || p_grantee;
+                BEGIN
+                    EXECUTE IMMEDIATE 'REVOKE SELECT ON ' || v_schema || '.' || rec.TABLE_NAME
+                        || ' FROM ' || p_grantee;
+                EXCEPTION WHEN OTHERS THEN NULL;
+                END;
             END LOOP;
+            -- Xóa tracking
+            DELETE FROM VIEW_COL_TRACKING
+            WHERE SCHEMA_NAME = v_schema
+              AND VIEW_NAME   = v_obj_clean
+              AND GRANTEE     = UPPER(p_grantee);
+            COMMIT;
             DBMS_OUTPUT.PUT_LINE('Revoke SELECT toan bo VIEW [' || v_obj_clean || ']');
+
 
         ELSIF UPPER(p_privilege) = 'UPDATE' AND p_columns IS NOT NULL THEN
          -- ── Revoke lẻ cột UPDATE trên VIEW ──
@@ -917,6 +1010,7 @@ AS
 BEGIN
     OPEN p_result FOR
         -- A. CÁC QUYỀN BẢNG KHÔNG BỊ VPD (INSERT, DELETE, UPDATE ALL, SELECT ALL)
+        --    Lọc bỏ SELECT trên View ảo (V_...) vì sẽ được xử lý ở nhánh D
         SELECT 
             tp.TABLE_NAME AS OBJECT_NAME,
             tp.TYPE,
@@ -931,6 +1025,11 @@ BEGIN
               SELECT 1 FROM VPD_COL_TRACKING vt 
               WHERE vt.GRANTEE = tp.GRANTEE AND vt.TABLE_NAME = tp.TABLE_NAME
           ))
+          -- Loại trừ các View ảo tổng hợp (sẽ hiển thị qua View gốc ở nhánh D)
+          AND NOT EXISTS (
+              SELECT 1 FROM VIEW_COL_TRACKING vc
+              WHERE vc.VIRT_VIEW = tp.TABLE_NAME AND vc.GRANTEE = tp.GRANTEE
+          )
 
         UNION ALL
 
@@ -967,6 +1066,35 @@ BEGIN
         FROM DBA_COL_PRIVS cp
         WHERE UPPER(cp.GRANTEE) = UPPER(p_grantee)
           AND cp.OWNER = v_schema
+
+        UNION ALL
+
+        -- D. QUYỀN SELECT MỨC CỘT TRÊN VIEW (truy ngược từ VIEW_COL_TRACKING)
+        --    Hiển thị tên View GỐC + từng cột riêng 1 dòng (thay vì tên View ảo)
+        SELECT
+            vc.VIEW_NAME         AS OBJECT_NAME,  -- Tên View GỐC (không phải View ảo)
+            'VIEW'               AS TYPE,
+            'SELECT'             AS PRIVILEGE,
+            -- Tách GRANTED_COLS thành từng dòng dùng CONNECT BY (an toàn trong ngữ cảnh subquery)
+            TRIM(UPPER(
+                REGEXP_SUBSTR(vc.GRANTED_COLS, '[^,]+', 1, lvl.LVL)
+            ))                   AS COLUMN_NAME,
+            tp.GRANTABLE         AS GRANT_OPTION,
+            tp.GRANTOR
+        FROM VIEW_COL_TRACKING vc
+        JOIN DBA_TAB_PRIVS tp
+            ON  tp.GRANTEE    = vc.GRANTEE
+            AND tp.TABLE_NAME = vc.VIRT_VIEW
+            AND tp.PRIVILEGE  = 'SELECT'
+            AND tp.OWNER      = v_schema
+        JOIN (
+            SELECT LEVEL AS LVL FROM DUAL
+            CONNECT BY LEVEL <= 50   -- Giới hạn tối đa 50 cột / view
+        ) lvl
+            ON REGEXP_SUBSTR(vc.GRANTED_COLS, '[^,]+', 1, lvl.LVL) IS NOT NULL
+        WHERE vc.SCHEMA_NAME = v_schema
+          AND vc.GRANTEE     = UPPER(p_grantee)
+
         ORDER BY OBJECT_NAME, PRIVILEGE, COLUMN_NAME;
 END;
 /
