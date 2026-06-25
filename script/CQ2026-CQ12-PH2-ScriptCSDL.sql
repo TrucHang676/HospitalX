@@ -3160,7 +3160,7 @@ BEGIN
         object_schema      => 'ADMINHOS',
         object_name        => 'HSBA_DV',
         policy_name        => 'FGA_HSBA_DV_UPDATE_OTHER_BATHOPPHAP',
-        audit_condition    => '1 = 0',
+        audit_condition    => NULL,
         audit_column       => 'MAHSBA,LOAIDV,NGAYDV',
         statement_types    => 'UPDATE',
         audit_trail        => DBMS_FGA.DB + DBMS_FGA.EXTENDED,
