@@ -1,4 +1,4 @@
-﻿-- ========================================================
+-- ========================================================
 -- THÔNG TIN CHUNG
 -- ========================================================
 
@@ -1211,11 +1211,27 @@ create or replace PROCEDURE USP_DASHBOARD_STATS (
     p_cursor OUT SYS_REFCURSOR
 )
 AS
+    v_user_count NUMBER;
 BEGIN
+    SELECT NVL(SUM(cnt), 0) INTO v_user_count FROM (
+        SELECT COUNT(DISTINCT 
+            CASE 
+                WHEN du.ORACLE_MAINTAINED = 'N' AND du.USERNAME != 'ADMINHOS' AND du.USERNAME != 'C##ADMIN'
+                THEN rp.GRANTEE 
+                ELSE NULL 
+            END
+        ) AS cnt
+        FROM DBA_ROLES dr
+        LEFT JOIN DBA_ROLE_PRIVS rp ON dr.ROLE = rp.GRANTED_ROLE
+        LEFT JOIN DBA_USERS du ON rp.GRANTEE = du.USERNAME
+        WHERE dr.ORACLE_MAINTAINED = 'N'
+        GROUP BY dr.ROLE
+    );
+
     OPEN p_cursor FOR
         SELECT 
             -- 1. Dem user
-            (SELECT COUNT(*) FROM DBA_USERS WHERE ORACLE_MAINTAINED = 'N' AND USERNAME != 'ADMINHOS' AND USERNAME != 'C##ADMIN') AS USER_COUNT,
+            v_user_count AS USER_COUNT,
 
             -- 2. Dem role
             (SELECT COUNT(*) FROM DBA_ROLES WHERE ORACLE_MAINTAINED = 'N') AS ROLE_COUNT,
